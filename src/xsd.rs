@@ -192,6 +192,10 @@ pub struct XsdValidator {
     block_default_extension: bool,
     /// Schema-level blockDefault for restriction.
     block_default_restriction: bool,
+    /// Whether to enforce length/minLength/maxLength facets on QName and NOTATION types.
+    /// NIST tests expect these to be ignored (Bug #4009), MS tests expect enforcement.
+    /// Default: true (enforce).
+    enforce_qname_length_facets: bool,
 }
 
 /// An element declaration.
@@ -645,6 +649,13 @@ impl XsdValidator {
         Self::from_schema_with_base_path(schema_doc, None)
     }
 
+    /// Set whether length/minLength/maxLength facets on QName and NOTATION types
+    /// are enforced. Default is `true` (enforce). Set to `false` to ignore them,
+    /// which matches the NIST test suite interpretation of W3C Bug #4009.
+    pub fn set_enforce_qname_length_facets(&mut self, enforce: bool) {
+        self.enforce_qname_length_facets = enforce;
+    }
+
     /// Build a validator from a parsed XSD schema document, with a base path
     /// for resolving `schemaLocation` attributes in `xs:include` and `xs:redefine`.
     pub fn from_schema_with_base_path(
@@ -660,6 +671,7 @@ impl XsdValidator {
             target_namespace: None,
             block_default_extension: false,
             block_default_restriction: false,
+            enforce_qname_length_facets: true,
         };
 
         let schema_elem = schema_doc
@@ -2690,7 +2702,15 @@ impl XsdValidator {
                     validate_builtin_value(item, item_bt, doc, node, errors);
                     // Also validate item-level facets (from user-defined item types)
                     for facet in &st.item_facets {
-                        validate_facet(item, facet, item_bt, doc, node, errors);
+                        validate_facet(
+                            item,
+                            facet,
+                            item_bt,
+                            doc,
+                            node,
+                            errors,
+                            self.enforce_qname_length_facets,
+                        );
                     }
                 }
             }
@@ -2704,7 +2724,15 @@ impl XsdValidator {
 
             // Validate facets
             for facet in &st.facets {
-                validate_facet(&text, facet, &st.base, doc, node, errors);
+                validate_facet(
+                    &text,
+                    facet,
+                    &st.base,
+                    doc,
+                    node,
+                    errors,
+                    self.enforce_qname_length_facets,
+                );
             }
         }
     }
@@ -2731,7 +2759,15 @@ impl XsdValidator {
                                 for item in &items {
                                     validate_builtin_value(item, item_bt, doc, node, errors);
                                     for facet in &st.item_facets {
-                                        validate_facet(item, facet, item_bt, doc, node, errors);
+                                        validate_facet(
+                                            item,
+                                            facet,
+                                            item_bt,
+                                            doc,
+                                            node,
+                                            errors,
+                                            self.enforce_qname_length_facets,
+                                        );
                                     }
                                 }
                             }
@@ -2741,7 +2777,15 @@ impl XsdValidator {
                         } else {
                             validate_builtin_value(value, &st.base, doc, node, errors);
                             for facet in &st.facets {
-                                validate_facet(value, facet, &st.base, doc, node, errors);
+                                validate_facet(
+                                    value,
+                                    facet,
+                                    &st.base,
+                                    doc,
+                                    node,
+                                    errors,
+                                    self.enforce_qname_length_facets,
+                                );
                             }
                         }
                     }
@@ -2769,7 +2813,15 @@ impl XsdValidator {
                             for item in &items {
                                 validate_builtin_value(item, item_bt, doc, node, errors);
                                 for facet in &st.item_facets {
-                                    validate_facet(item, facet, item_bt, doc, node, errors);
+                                    validate_facet(
+                                        item,
+                                        facet,
+                                        item_bt,
+                                        doc,
+                                        node,
+                                        errors,
+                                        self.enforce_qname_length_facets,
+                                    );
                                 }
                             }
                         }
@@ -2779,7 +2831,15 @@ impl XsdValidator {
                     } else {
                         validate_builtin_value(value, &st.base, doc, node, errors);
                         for facet in &st.facets {
-                            validate_facet(value, facet, &st.base, doc, node, errors);
+                            validate_facet(
+                                value,
+                                facet,
+                                &st.base,
+                                doc,
+                                node,
+                                errors,
+                                self.enforce_qname_length_facets,
+                            );
                         }
                     }
                 } else if ns.as_deref() == Some(XS_NAMESPACE) {
@@ -5161,16 +5221,16 @@ fn validate_facet(
     doc: &Document,
     node: NodeId,
     errors: &mut Vec<ValidationError>,
+    enforce_qname_length_facets: bool,
 ) {
-    // Per XSD 1.0 Part 2 §4.3.1.3 (Length Valid, clause 1.3) and parallel
-    // rules for minLength/maxLength: length facets on QName and NOTATION are
-    // effectively ignored because there is no well-defined length measure.
-    // See https://www.w3.org/Bugs/Public/show_bug.cgi?id=4009
-    let length_facets_ignored = matches!(base_type, BuiltInType::QName | BuiltInType::NOTATION);
+    // When enforce_qname_length_facets is false, skip length/minLength/maxLength
+    // for QName and NOTATION types (NIST test suite interpretation of W3C Bug #4009).
+    let skip_length = !enforce_qname_length_facets
+        && matches!(base_type, BuiltInType::QName | BuiltInType::NOTATION);
 
     match facet {
         Facet::MinLength(min) => {
-            if !length_facets_ignored {
+            if !skip_length {
                 let len = type_aware_length(text, base_type, doc, node);
                 if len < *min {
                     errors.push(ValidationError {
@@ -5182,7 +5242,7 @@ fn validate_facet(
             }
         }
         Facet::MaxLength(max) => {
-            if !length_facets_ignored {
+            if !skip_length {
                 let len = type_aware_length(text, base_type, doc, node);
                 if len > *max {
                     errors.push(ValidationError {
@@ -5194,7 +5254,7 @@ fn validate_facet(
             }
         }
         Facet::Length(expected) => {
-            if !length_facets_ignored {
+            if !skip_length {
                 let len = type_aware_length(text, base_type, doc, node);
                 if len != *expected {
                     errors.push(ValidationError {

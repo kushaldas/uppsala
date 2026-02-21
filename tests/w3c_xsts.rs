@@ -179,7 +179,12 @@ fn parse_test_set(path: &Path) -> Vec<XstsTestGroup> {
 
 /// Run XSTS instance tests for a given test set file.
 /// Returns (passed, failed, skipped, failure_details).
-fn run_xsts_instance_tests(test_set_path: &Path) -> (usize, usize, usize, Vec<String>) {
+/// When `enforce_qname_length_facets` is false, QName/NOTATION length facets are skipped
+/// (needed for NIST tests which expect them to be ignored per W3C Bug #4009).
+fn run_xsts_instance_tests(
+    test_set_path: &Path,
+    enforce_qname_length_facets: bool,
+) -> (usize, usize, usize, Vec<String>) {
     let groups = parse_test_set(test_set_path);
     let mut passed = 0;
     let mut failed = 0;
@@ -220,7 +225,7 @@ fn run_xsts_instance_tests(test_set_path: &Path) -> (usize, usize, usize, Vec<St
         };
 
         eprintln!("  DEBUG: Compiling schema for group '{}'...", group.name);
-        let validator =
+        let mut validator =
             match XsdValidator::from_schema_with_base_path(&schema_doc, Some(schema_path)) {
                 Ok(v) => v,
                 Err(e) => {
@@ -237,6 +242,7 @@ fn run_xsts_instance_tests(test_set_path: &Path) -> (usize, usize, usize, Vec<St
                     continue;
                 }
             };
+        validator.set_enforce_qname_length_facets(enforce_qname_length_facets);
 
         for inst_test in &group.instance_tests {
             eprintln!("    DEBUG: Validating instance '{}'", inst_test.name);
@@ -306,7 +312,8 @@ fn xsts_nist_datatypes() {
         return;
     }
 
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path);
+    // NIST tests expect QName/NOTATION length facets to be ignored (W3C Bug #4009)
+    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, false);
     let total = passed + failed;
 
     println!(
@@ -372,7 +379,7 @@ fn xsts_sun_combined() {
         return;
     }
 
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path);
+    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, true);
     let total = passed + failed;
 
     println!(
@@ -406,7 +413,7 @@ fn xsts_ms_datatypes() {
         return;
     }
 
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path);
+    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, true);
     let total = passed + failed;
 
     println!(
