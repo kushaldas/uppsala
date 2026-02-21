@@ -369,12 +369,9 @@ fn xsts_sun_combined() {
         passed, failed, skipped
     );
     if !failures.is_empty() {
-        println!("Failures (first 30):");
-        for f in failures.iter().take(30) {
+        println!("Failures (all {}):", failures.len());
+        for f in failures.iter() {
             println!("  {}", f);
-        }
-        if failures.len() > 30 {
-            println!("  ... and {} more", failures.len() - 30);
         }
     }
 
