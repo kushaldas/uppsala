@@ -56,7 +56,9 @@ enum ClassMember {
     Escape(CharEscape),
     /// A Unicode property (\p{...} or \P{...}).
     Property(UnicodeProperty),
-    /// A nested character class (for subtraction).
+    /// A nested character class (for subtraction). Spec-complete placeholder;
+    /// the parser does not currently produce nested character classes.
+    #[allow(dead_code)]
     Nested(CharClass),
 }
 

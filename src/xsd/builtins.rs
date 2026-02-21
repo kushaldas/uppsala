@@ -665,7 +665,8 @@ pub(crate) fn validate_builtin_value(
             }
         }
         // MS tests: QName001/004/005/007/008/010/011
-        BuiltInType::QName | BuiltInType::NOTATION => {
+        // Note: NOTATION is handled above (validates as NCName, not full QName).
+        BuiltInType::QName => {
             let v = text.trim();
             if !is_valid_qname(v) {
                 errors.push(ValidationError {
@@ -674,9 +675,6 @@ pub(crate) fn validate_builtin_value(
                     column: Some(doc.node_column(node)),
                 });
             }
-        }
-        _ => {
-            // Other types - no additional lexical validation
         }
     }
 }

@@ -219,7 +219,6 @@ enum Token {
     LBracket,
     RBracket,
     Comma,
-    DoubleColon,
     // Functions
     FunctionName(String),
 }
@@ -445,8 +444,6 @@ enum Expr {
     // Path expressions
     Path(Vec<Step>),
     AbsolutePath(Vec<Step>),
-    // Filter (path with predicates)
-    Filter(Box<Expr>, Vec<Expr>),
     // Union
     Union(Box<Expr>, Box<Expr>),
     // Binary operators
@@ -1011,14 +1008,6 @@ fn evaluate_expr(expr: &Expr, ctx: &EvalContext) -> XmlResult<XPathValue> {
         Expr::StringLiteral(s) => Ok(XPathValue::String(s.clone())),
         Expr::NumberLiteral(n) => Ok(XPathValue::Number(*n)),
         Expr::FunctionCall(name, args) => evaluate_function(name, args, ctx),
-        Expr::Filter(base, predicates) => {
-            let base_val = evaluate_expr(base, ctx)?;
-            let mut nodes = base_val.as_node_set().to_vec();
-            for pred in predicates {
-                nodes = apply_predicate(pred, &nodes, ctx)?;
-            }
-            Ok(XPathValue::NodeSet(nodes))
-        }
     }
 }
 

@@ -57,7 +57,13 @@ pub(crate) struct ElementDecl {
     pub(super) name: String,
     pub(super) namespace: Option<String>,
     pub(super) type_ref: TypeRef,
+    /// Minimum number of occurrences (parsed for spec completeness; occurrence
+    /// checking is done on the `Particle` wrapper, not here).
+    #[allow(dead_code)]
     pub(super) min_occurs: u64,
+    /// Maximum number of occurrences (parsed for spec completeness; occurrence
+    /// checking is done on the `Particle` wrapper, not here).
+    #[allow(dead_code)]
     pub(super) max_occurs: MaxOccurs,
     pub(super) nillable: bool,
     /// Block constraint on this element (blocks xsi:type substitution).
@@ -283,7 +289,8 @@ pub(crate) enum ContentModel {
     Choice(Vec<Particle>, u64, MaxOccurs),   // particles, min_occurs, max_occurs
     All(Vec<Particle>),
     SimpleContent(Box<TypeRef>),
-    /// Any content (xs:anyType)
+    /// Any content (xs:anyType). Placeholder for future xs:anyType handling.
+    #[allow(dead_code)]
     Any,
 }
 
@@ -326,6 +333,8 @@ pub(crate) struct AttributeDecl {
     pub(super) name: String,
     pub(super) type_ref: TypeRef,
     pub(super) required: bool,
+    /// Default value (parsed for spec completeness; not yet enforced during validation).
+    #[allow(dead_code)]
     pub(super) default: Option<String>,
     pub(super) prohibited: bool,
 }
@@ -425,7 +434,7 @@ pub(crate) enum Facet {
     MaxExclusive(String),
     TotalDigits(usize),
     FractionDigits(usize),
-    WhiteSpace(WhiteSpaceHandling),
+    WhiteSpace(#[allow(dead_code)] WhiteSpaceHandling),
 }
 
 /// Whitespace handling mode for the whiteSpace facet.
