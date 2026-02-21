@@ -198,31 +198,15 @@ fn w3c_xmltest_not_well_formed_standalone() {
         }
 
         let file_path = test.base_dir.join(&test.uri);
-        let content = match fs::read_to_string(&file_path) {
-            Ok(c) => c,
+        let bytes = match fs::read(&file_path) {
+            Ok(b) => b,
             Err(_) => {
-                // Not valid UTF-8 — for not-wf tests, that's a pass
-                // (invalid UTF-8 means the document is not well-formed)
-                match fs::read(&file_path) {
-                    Ok(bytes) => {
-                        if String::from_utf8(bytes).is_err() {
-                            // Invalid UTF-8 = not well-formed, count as pass
-                            passed += 1;
-                            continue;
-                        }
-                        // Shouldn't reach here since read_to_string already failed
-                        skipped += 1;
-                        continue;
-                    }
-                    Err(_) => {
-                        skipped += 1;
-                        continue;
-                    }
-                }
+                skipped += 1;
+                continue;
             }
         };
 
-        let result = uppsala::parse(&content);
+        let result = uppsala::parse_bytes(&bytes);
         if result.is_err() {
             passed += 1;
         } else {
@@ -291,18 +275,15 @@ fn w3c_xmltest_valid_standalone() {
         }
 
         let file_path = test.base_dir.join(&test.uri);
-        let content = match fs::read_to_string(&file_path) {
-            Ok(c) => c,
-            Err(_) => match fs::read(&file_path) {
-                Ok(bytes) => String::from_utf8_lossy(&bytes).into_owned(),
-                Err(_) => {
-                    skipped += 1;
-                    continue;
-                }
-            },
+        let bytes = match fs::read(&file_path) {
+            Ok(b) => b,
+            Err(_) => {
+                skipped += 1;
+                continue;
+            }
         };
 
-        let result = uppsala::parse(&content);
+        let result = uppsala::parse_bytes(&bytes);
         if result.is_ok() {
             passed += 1;
         } else {
@@ -371,18 +352,15 @@ fn w3c_xmltest_invalid_standalone() {
         }
 
         let file_path = test.base_dir.join(&test.uri);
-        let content = match fs::read_to_string(&file_path) {
-            Ok(c) => c,
-            Err(_) => match fs::read(&file_path) {
-                Ok(bytes) => String::from_utf8_lossy(&bytes).into_owned(),
-                Err(_) => {
-                    skipped += 1;
-                    continue;
-                }
-            },
+        let bytes = match fs::read(&file_path) {
+            Ok(b) => b,
+            Err(_) => {
+                skipped += 1;
+                continue;
+            }
         };
 
-        let result = uppsala::parse(&content);
+        let result = uppsala::parse_bytes(&bytes);
         if result.is_ok() {
             passed += 1;
         } else {
