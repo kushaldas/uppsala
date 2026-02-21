@@ -5035,35 +5035,47 @@ fn validate_facet(
     node: NodeId,
     errors: &mut Vec<ValidationError>,
 ) {
+    // Per XSD 1.0 Part 2 §4.3.1.3 (Length Valid, clause 1.3) and parallel
+    // rules for minLength/maxLength: length facets on QName and NOTATION are
+    // effectively ignored because there is no well-defined length measure.
+    // See https://www.w3.org/Bugs/Public/show_bug.cgi?id=4009
+    let length_facets_ignored = matches!(base_type, BuiltInType::QName | BuiltInType::NOTATION);
+
     match facet {
         Facet::MinLength(min) => {
-            let len = type_aware_length(text, base_type, doc, node);
-            if len < *min {
-                errors.push(ValidationError {
-                    message: format!("Value length {} is less than minLength {}", len, min),
-                    line: Some(doc.node_line(node)),
-                    column: Some(doc.node_column(node)),
-                });
+            if !length_facets_ignored {
+                let len = type_aware_length(text, base_type, doc, node);
+                if len < *min {
+                    errors.push(ValidationError {
+                        message: format!("Value length {} is less than minLength {}", len, min),
+                        line: Some(doc.node_line(node)),
+                        column: Some(doc.node_column(node)),
+                    });
+                }
             }
         }
         Facet::MaxLength(max) => {
-            let len = type_aware_length(text, base_type, doc, node);
-            if len > *max {
-                errors.push(ValidationError {
-                    message: format!("Value length {} exceeds maxLength {}", len, max),
-                    line: Some(doc.node_line(node)),
-                    column: Some(doc.node_column(node)),
-                });
+            if !length_facets_ignored {
+                let len = type_aware_length(text, base_type, doc, node);
+                if len > *max {
+                    errors.push(ValidationError {
+                        message: format!("Value length {} exceeds maxLength {}", len, max),
+                        line: Some(doc.node_line(node)),
+                        column: Some(doc.node_column(node)),
+                    });
+                }
             }
         }
         Facet::Length(expected) => {
-            let len = type_aware_length(text, base_type, doc, node);
-            if len != *expected {
-                errors.push(ValidationError {
-                    message: format!("Value length {} does not match length {}", len, expected),
-                    line: Some(doc.node_line(node)),
-                    column: Some(doc.node_column(node)),
-                });
+            if !length_facets_ignored {
+                let len = type_aware_length(text, base_type, doc, node);
+                if len != *expected {
+                    errors.push(ValidationError {
+                        message: format!("Value length {} does not match length {}", len, expected),
+                        line: Some(doc.node_line(node)),
+                        column: Some(doc.node_column(node)),
+                    });
+                }
             }
         }
         Facet::Enumeration(values) => {
