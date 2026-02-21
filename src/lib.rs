@@ -18,8 +18,7 @@
 //! ## Parsing and querying
 //!
 //! ```
-//! use uppsala::{parse, NodeId, XPathEvaluator};
-//! use uppsala::xpath::XPathValue;
+//! use uppsala::{parse, NodeId, XPathEvaluator, XPathValue};
 //!
 //! let xml = r#"<library>
 //!   <book category="fiction"><title>Dune</title></book>
@@ -94,13 +93,20 @@ pub mod xsd;
 /// XSD regular expression engine for pattern facets.
 pub mod xsd_regex;
 
-pub use dom::{Attribute, Document, Element, NodeId, NodeKind, QName, XmlWriteOptions};
-pub use error::{XmlError, XmlResult};
+pub use dom::{
+    Attribute, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName, XmlDeclaration,
+    XmlWriteOptions,
+};
+pub use error::{
+    NamespaceError, ParseError, ValidationError, WellFormednessError, XPathError, XmlError,
+    XmlResult,
+};
 pub use namespace::NamespaceResolver;
 pub use parser::Parser;
 pub use writer::XmlWriter;
-pub use xpath::XPathEvaluator;
-pub use xsd::XsdValidator;
+pub use xpath::{XPathEvaluator, XPathValue};
+pub use xsd::{XsdValidator, XSI_NAMESPACE, XS_NAMESPACE};
+pub use xsd_regex::XsdRegex;
 
 /// Parse an XML string into a Document.
 pub fn parse(input: &str) -> XmlResult<Document<'_>> {

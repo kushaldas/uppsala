@@ -10,8 +10,30 @@ use std::collections::HashMap;
 use std::fmt;
 
 /// A unique identifier for a node within a [`Document`].
+///
+/// Node IDs are lightweight handles (just a `usize` index into the document's
+/// arena). They are [`Copy`], [`Hash`], and can be compared for equality.
+/// Use [`NodeId::index()`] to get the raw index and [`NodeId::new()`] to
+/// construct from a raw index (e.g. for FFI or serialization).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct NodeId(pub(crate) usize);
+
+impl NodeId {
+    /// Create a `NodeId` from a raw arena index.
+    ///
+    /// The caller is responsible for ensuring the index refers to a valid node
+    /// in the intended [`Document`]. Passing an out-of-range index will not
+    /// cause undefined behaviour, but operations on the resulting `NodeId` will
+    /// return `None` or silently do nothing.
+    pub fn new(index: usize) -> Self {
+        NodeId(index)
+    }
+
+    /// Return the raw arena index of this node.
+    pub fn index(&self) -> usize {
+        self.0
+    }
+}
 
 /// A qualified name consisting of an optional namespace URI, optional prefix,
 /// and a local name.
@@ -398,8 +420,11 @@ impl<'a> Document<'a> {
         }
     }
 
-    /// Get the attribute nodes for an element (used by XPath).
-    pub(crate) fn get_attribute_nodes(&self, element_id: NodeId) -> &[NodeId] {
+    /// Get the virtual attribute node IDs for an element.
+    ///
+    /// Returns an empty slice if [`prepare_xpath()`](Self::prepare_xpath) has
+    /// not been called or the element has no attributes.
+    pub fn get_attribute_nodes(&self, element_id: NodeId) -> &[NodeId] {
         self.attribute_nodes
             .get(&element_id)
             .map(|v| v.as_slice())
@@ -751,8 +776,12 @@ impl<'a> Document<'a> {
         }
     }
 
-    /// Detach a node from its parent (internal helper).
-    fn detach(&mut self, id: NodeId) {
+    /// Detach a node from its parent, removing it from the tree.
+    ///
+    /// The node remains in the arena and can be re-attached elsewhere with
+    /// [`append_child`](Self::append_child), [`insert_before`](Self::insert_before),
+    /// or [`insert_after`](Self::insert_after).
+    pub fn detach(&mut self, id: NodeId) {
         let (parent_id, prev, next) = match self.nodes.get(id.0) {
             Some(n) => (n.parent, n.prev_sibling, n.next_sibling),
             None => return,

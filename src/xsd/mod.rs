@@ -74,11 +74,11 @@ mod tests;
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-/// The XML Schema namespace URI (xs: / xsd:).
-pub(crate) const XS_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema";
+/// The XML Schema namespace URI (`xs:` / `xsd:`).
+pub const XS_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema";
 
-/// The XML Schema Instance namespace URI (xsi:).
-pub(crate) const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
+/// The XML Schema Instance namespace URI (`xsi:`).
+pub const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
 
 // ── Re-exports ───────────────────────────────────────────────────────────────
 
