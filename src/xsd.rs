@@ -4365,6 +4365,42 @@ fn is_valid_ncname(s: &str) -> bool {
         .all(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.'))
 }
 
+/// Check if a string is a valid XML Name (allows colons, unlike NCName).
+/// NameStartChar = letter | '_' | ':'
+/// NameChar = NameStartChar | digit | '.' | '-'
+/// Covers MS tests: Name001/004/005/006/014/017/018
+fn is_valid_xml_name(s: &str) -> bool {
+    if s.is_empty() {
+        return false;
+    }
+    let first = s.chars().next().unwrap();
+    if !(first.is_ascii_alphabetic() || first == '_' || first == ':') {
+        return false;
+    }
+    s.chars()
+        .all(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | ':'))
+}
+
+/// Check if a string is a valid QName (prefix:localname or just localname).
+/// Both prefix and localname must be valid NCNames.
+/// Covers MS tests: QName001/004/005/007/008/010/011
+fn is_valid_qname(s: &str) -> bool {
+    if s.is_empty() {
+        return false;
+    }
+    if let Some(colon_pos) = s.find(':') {
+        // Must have exactly one colon
+        if s[colon_pos + 1..].contains(':') {
+            return false;
+        }
+        let prefix = &s[..colon_pos];
+        let local = &s[colon_pos + 1..];
+        is_valid_ncname(prefix) && is_valid_ncname(local)
+    } else {
+        is_valid_ncname(s)
+    }
+}
+
 /// Determine the whiteSpace normalization mode for a built-in type.
 /// Per XSD Part 2: string→preserve, normalizedString→replace,
 /// token and all types derived from token→collapse.
@@ -4472,9 +4508,32 @@ fn validate_builtin_value(
                 });
             }
         }
+        // MS tests: decimal019-022/025 — reject scientific notation, INF, NaN
         BuiltInType::Decimal => {
             let v = text.trim();
-            if v.parse::<f64>().is_err() {
+            // XSD decimal lexical space: [+-]?digit+(.digit+)?
+            // Must NOT accept scientific notation (E/e), INF, NaN
+            let valid = {
+                let s = if v.starts_with('+') || v.starts_with('-') {
+                    &v[1..]
+                } else {
+                    v
+                };
+                if s.is_empty() {
+                    false
+                } else if let Some(dot_pos) = s.find('.') {
+                    let integer_part = &s[..dot_pos];
+                    let frac_part = &s[dot_pos + 1..];
+                    // Integer part can be empty if there's a fractional part (e.g., ".5")
+                    // but at least one of integer or fractional must be non-empty
+                    (integer_part.is_empty() || integer_part.chars().all(|c| c.is_ascii_digit()))
+                        && !frac_part.is_empty()
+                        && frac_part.chars().all(|c| c.is_ascii_digit())
+                } else {
+                    s.chars().all(|c| c.is_ascii_digit())
+                }
+            };
+            if !valid {
                 errors.push(ValidationError {
                     message: format!("'{}' is not a valid decimal", text),
                     line: Some(doc.node_line(node)),
@@ -4482,9 +4541,34 @@ fn validate_builtin_value(
                 });
             }
         }
+        // MS tests: float018/022-026, double018/022-026 — case-sensitive special values
         BuiltInType::Float | BuiltInType::Double => {
             let v = text.trim();
-            if v != "INF" && v != "-INF" && v != "NaN" && v.parse::<f64>().is_err() {
+            // XSD float/double lexical space: exact case-sensitive special values
+            // or a valid numeric literal (optional sign, digits, optional decimal, optional exponent)
+            let valid = if v == "INF" || v == "-INF" || v == "NaN" {
+                true
+            } else {
+                // Must be a valid numeric literal: [+-]?(digit+[.digit*]?|.digit+)([eE][+-]?digit+)?
+                // Reject +INF, +NaN, -NaN, inf, nan, NAN, etc.
+                // First reject known bad patterns that f64::parse might accept
+                if v.eq_ignore_ascii_case("inf")
+                    || v.eq_ignore_ascii_case("nan")
+                    || v.eq_ignore_ascii_case("-nan")
+                    || v.eq_ignore_ascii_case("+nan")
+                    || v == "+INF"
+                    || v == "+inf"
+                    || v == "infinity"
+                    || v == "+infinity"
+                    || v == "-infinity"
+                    || v.eq_ignore_ascii_case("infinity")
+                {
+                    false
+                } else {
+                    v.parse::<f64>().is_ok()
+                }
+            };
+            if !valid {
                 errors.push(ValidationError {
                     message: format!("'{}' is not a valid float/double", text),
                     line: Some(doc.node_line(node)),
@@ -4665,8 +4749,9 @@ fn validate_builtin_value(
                 });
             }
         }
+        // MS test: hexBinary003 — strip internal whitespace before validation
         BuiltInType::HexBinary => {
-            let v = text.trim();
+            let v: String = text.chars().filter(|c| !c.is_whitespace()).collect();
             if v.len() % 2 != 0 || !v.chars().all(|c| c.is_ascii_hexdigit()) {
                 errors.push(ValidationError {
                     message: format!("'{}' is not valid hexBinary", text),
@@ -4724,10 +4809,30 @@ fn validate_builtin_value(
                 });
             }
         }
+        // MS tests: language008/010 — enforce [a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})* pattern
         BuiltInType::Language => {
-            // RFC 4646 language tag pattern
+            // RFC 4646 / XSD language tag pattern: [a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*
             let v = text.trim();
-            if v.is_empty() || !v.chars().all(|c| c.is_ascii_alphanumeric() || c == '-') {
+            let valid = if v.is_empty() {
+                false
+            } else {
+                let subtags: Vec<&str> = v.split('-').collect();
+                // First subtag: 1-8 ASCII letters only
+                if subtags[0].is_empty()
+                    || subtags[0].len() > 8
+                    || !subtags[0].chars().all(|c| c.is_ascii_alphabetic())
+                {
+                    false
+                } else {
+                    // Subsequent subtags: 1-8 ASCII alphanumeric
+                    subtags[1..].iter().all(|sub| {
+                        !sub.is_empty()
+                            && sub.len() <= 8
+                            && sub.chars().all(|c| c.is_ascii_alphanumeric())
+                    })
+                }
+            };
+            if !valid {
                 errors.push(ValidationError {
                     message: format!("'{}' is not a valid language tag", text),
                     line: Some(doc.node_line(node)),
@@ -4898,8 +5003,30 @@ fn validate_builtin_value(
                 });
             }
         }
+        // MS tests: Name001/004/005/006/014/017/018
+        BuiltInType::Name => {
+            let v = text.trim();
+            if !is_valid_xml_name(v) {
+                errors.push(ValidationError {
+                    message: format!("'{}' is not a valid Name", text),
+                    line: Some(doc.node_line(node)),
+                    column: Some(doc.node_column(node)),
+                });
+            }
+        }
+        // MS tests: QName001/004/005/007/008/010/011
+        BuiltInType::QName | BuiltInType::NOTATION => {
+            let v = text.trim();
+            if !is_valid_qname(v) {
+                errors.push(ValidationError {
+                    message: format!("'{}' is not a valid QName", text),
+                    line: Some(doc.node_line(node)),
+                    column: Some(doc.node_column(node)),
+                });
+            }
+        }
         _ => {
-            // QName - would need namespace context for full validation
+            // Other types - no additional lexical validation
         }
     }
 }
@@ -5342,6 +5469,27 @@ fn max_days_for_month(month: u32) -> u32 {
     }
 }
 
+/// Maximum days in a month for a specific year (handles leap years)
+fn max_days_for_month_year(month: u32, year: u32) -> u32 {
+    match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 => {
+            if is_leap_year(year) {
+                29
+            } else {
+                28
+            }
+        }
+        _ => 0,
+    }
+}
+
+/// Check if a year is a leap year
+fn is_leap_year(year: u32) -> bool {
+    (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
+}
+
 /// Validate gMonthDay format: --MM-DD[Z|(+|-)hh:mm]
 fn is_valid_gmonthday(s: &str) -> bool {
     let s = strip_timezone(s);
@@ -5447,6 +5595,7 @@ fn is_valid_datetime(s: &str) -> bool {
     }
 }
 
+/// MS tests: date003/004/009, dateTime011 — reject invalid ranges (month>12, day>max, year=0000)
 fn is_valid_date(s: &str) -> bool {
     // YYYY-MM-DD[Z|(+|-)hh:mm]
     let s = strip_timezone(s);
@@ -5457,22 +5606,74 @@ fn is_valid_date(s: &str) -> bool {
             return false;
         }
         // parts[0] is empty, parts[1] is year, parts[2] month, parts[3] day
-        return parts[1].len() >= 4
-            && parts[1].chars().all(|c| c.is_ascii_digit())
-            && parts[2].len() == 2
-            && parts[3].len() == 2;
+        if parts[1].len() < 4 || !parts[1].chars().all(|c| c.is_ascii_digit()) {
+            return false;
+        }
+        if parts[2].len() != 2 || parts[3].len() != 2 {
+            return false;
+        }
+        let year: u32 = match parts[1].parse() {
+            Ok(y) => y,
+            Err(_) => return false,
+        };
+        let month: u32 = match parts[2].parse() {
+            Ok(m) => m,
+            Err(_) => return false,
+        };
+        let day: u32 = match parts[3].parse() {
+            Ok(d) => d,
+            Err(_) => return false,
+        };
+        // year 0000 is invalid in XSD (no year zero)
+        if year == 0 {
+            return false;
+        }
+        if !(1..=12).contains(&month) {
+            return false;
+        }
+        if day < 1 || day > max_days_for_month_year(month, year) {
+            return false;
+        }
+        return true;
     }
     if parts.len() != 3 {
         return false;
     }
-    parts[0].len() >= 4
-        && parts[0].chars().all(|c| c.is_ascii_digit())
-        && parts[1].len() == 2
-        && parts[1].chars().all(|c| c.is_ascii_digit())
-        && parts[2].len() == 2
-        && parts[2].chars().all(|c| c.is_ascii_digit())
+    if parts[0].len() < 4
+        || !parts[0].chars().all(|c| c.is_ascii_digit())
+        || parts[1].len() != 2
+        || !parts[1].chars().all(|c| c.is_ascii_digit())
+        || parts[2].len() != 2
+        || !parts[2].chars().all(|c| c.is_ascii_digit())
+    {
+        return false;
+    }
+    let year: u32 = match parts[0].parse() {
+        Ok(y) => y,
+        Err(_) => return false,
+    };
+    let month: u32 = match parts[1].parse() {
+        Ok(m) => m,
+        Err(_) => return false,
+    };
+    let day: u32 = match parts[2].parse() {
+        Ok(d) => d,
+        Err(_) => return false,
+    };
+    // year 0000 is invalid in XSD (no year zero)
+    if year == 0 {
+        return false;
+    }
+    if !(1..=12).contains(&month) {
+        return false;
+    }
+    if day < 1 || day > max_days_for_month_year(month, year) {
+        return false;
+    }
+    true
 }
 
+/// MS tests: time016/017/018 — reject invalid ranges (hours>24, minutes>59, seconds>59)
 fn is_valid_time(s: &str) -> bool {
     // hh:mm:ss[.sss][Z|(+|-)hh:mm]
     let s = strip_time_timezone(s);
@@ -5482,12 +5683,32 @@ fn is_valid_time(s: &str) -> bool {
     }
     // Allow seconds with fractional part
     let seconds_parts: Vec<&str> = parts[2].split('.').collect();
-    parts[0].len() == 2
-        && parts[1].len() == 2
-        && seconds_parts[0].len() == 2
-        && parts[0].chars().all(|c| c.is_ascii_digit())
-        && parts[1].chars().all(|c| c.is_ascii_digit())
-        && seconds_parts[0].chars().all(|c| c.is_ascii_digit())
+    if parts[0].len() != 2
+        || parts[1].len() != 2
+        || seconds_parts[0].len() != 2
+        || !parts[0].chars().all(|c| c.is_ascii_digit())
+        || !parts[1].chars().all(|c| c.is_ascii_digit())
+        || !seconds_parts[0].chars().all(|c| c.is_ascii_digit())
+    {
+        return false;
+    }
+    let hours: u32 = match parts[0].parse() {
+        Ok(h) => h,
+        Err(_) => return false,
+    };
+    let minutes: u32 = match parts[1].parse() {
+        Ok(m) => m,
+        Err(_) => return false,
+    };
+    let seconds: u32 = match seconds_parts[0].parse() {
+        Ok(s) => s,
+        Err(_) => return false,
+    };
+    // 24:00:00 is allowed as midnight end-of-day, but nothing else with hour=24
+    if hours == 24 {
+        return minutes == 0 && seconds == 0;
+    }
+    hours <= 23 && minutes <= 59 && seconds <= 59
 }
 
 /// Strip timezone from a time-only string (hh:mm:ss[.sss][Z|(+|-)hh:mm]).
@@ -5507,26 +5728,29 @@ fn strip_time_timezone(s: &str) -> &str {
     s
 }
 
+/// Strip timezone suffix from date strings.
+/// Timezone is Z, +hh:mm, or -hh:mm at the end.
+/// MS tests: gYearMonth003, gYear006, gMonthDay003, gDay003, gMonth004 —
+/// the old `pos > 8` heuristic failed for short types like gYear, gDay.
 fn strip_timezone(s: &str) -> &str {
     if s.ends_with('Z') {
-        &s[..s.len() - 1]
-    } else if let Some(pos) = s.rfind('+') {
-        if pos > 0 {
-            &s[..pos]
-        } else {
-            s
-        }
-    } else if let Some(pos) = s.rfind('-') {
-        // Be careful not to strip the date separator
-        // Timezone offset is at the end: ...±hh:mm
-        if pos > 8 {
-            &s[..pos]
-        } else {
-            s
-        }
-    } else {
-        s
+        return &s[..s.len() - 1];
     }
+    // Check for +hh:mm or -hh:mm at the end (exactly 6 chars: [+-]dd:dd)
+    if s.len() >= 6 {
+        let tz_start = s.len() - 6;
+        let b = s.as_bytes();
+        if (b[tz_start] == b'+' || b[tz_start] == b'-')
+            && b[tz_start + 1].is_ascii_digit()
+            && b[tz_start + 2].is_ascii_digit()
+            && b[tz_start + 3] == b':'
+            && b[tz_start + 4].is_ascii_digit()
+            && b[tz_start + 5].is_ascii_digit()
+        {
+            return &s[..tz_start];
+        }
+    }
+    s
 }
 
 /// Resolve list item facets for an inline SimpleTypeDef within a TypeRef.
