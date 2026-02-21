@@ -66,10 +66,10 @@ impl XsdValidator {
 
         // Find matching top-level element declaration
         let key_with_ns = (
-            elem.name.namespace_uri.clone(),
-            elem.name.local_name.clone(),
+            elem.name.namespace_uri.as_deref().map(|s| s.to_string()),
+            elem.name.local_name.to_string(),
         );
-        let key_no_ns = (None, elem.name.local_name.clone());
+        let key_no_ns = (None, elem.name.local_name.to_string());
 
         let decl = self
             .elements
@@ -174,7 +174,7 @@ impl XsdValidator {
             elem.attributes
                 .iter()
                 .find(|a| a.name.local_name == "type" && a.name.prefix.as_deref() == Some("xsi"))
-                .map(|a| a.value.as_str())
+                .map(|a| &*a.value)
         })?;
 
         // Parse the QName value (may be prefixed like "xs:int")
@@ -613,7 +613,7 @@ impl XsdValidator {
                 elem.attributes
                     .iter()
                     .find(|a| a.name.local_name == "nil" && a.name.prefix.as_deref() == Some("xsi"))
-                    .map(|a| a.value.as_str())
+                    .map(|a| &*a.value)
             });
             if xsi_nil_value == Some("true") || xsi_nil_value == Some("1") {
                 if !decl.nillable {
@@ -762,7 +762,7 @@ impl XsdValidator {
                 if self.element_has_child_elements(doc, node) {
                     let elem_name = doc
                         .element(node)
-                        .map(|e| e.name.local_name.as_str())
+                        .map(|e| &*e.name.local_name)
                         .unwrap_or("?");
                     errors.push(ValidationError {
                         message: format!(
@@ -789,7 +789,7 @@ impl XsdValidator {
                             if self.element_has_child_elements(doc, node) {
                                 let elem_name = doc
                                     .element(node)
-                                    .map(|e| e.name.local_name.as_str())
+                                    .map(|e| &*e.name.local_name)
                                     .unwrap_or("?");
                                 errors.push(ValidationError {
                                     message: format!(
@@ -847,10 +847,10 @@ impl XsdValidator {
             if let Some(NodeKind::Element(child_elem)) = doc.node_kind(child) {
                 // Look up child element in global declarations
                 let key_with_ns = (
-                    child_elem.name.namespace_uri.clone(),
-                    child_elem.name.local_name.clone(),
+                    child_elem.name.namespace_uri.as_deref().map(|s| s.to_string()),
+                    child_elem.name.local_name.to_string(),
                 );
-                let key_no_ns = (None, child_elem.name.local_name.clone());
+                let key_no_ns = (None, child_elem.name.local_name.to_string());
 
                 let child_decl = self
                     .elements
@@ -954,15 +954,15 @@ impl XsdValidator {
                         continue;
                     }
 
-                    let attr_ns = attr.name.namespace_uri.as_ref().cloned();
+                    let attr_ns_str = attr.name.namespace_uri.as_deref().map(|s| s.to_string());
 
                     // Check namespace constraint
-                    if !wildcard.allows_namespace(&attr_ns) {
+                    if !wildcard.allows_namespace(attr_ns_str.as_deref()) {
                         errors.push(ValidationError {
                             message: format!(
                                 "Attribute '{}' in namespace '{}' is not allowed by wildcard constraint",
                                 attr.name.local_name,
-                                attr_ns.as_deref().unwrap_or("(no namespace)")
+                                attr_ns_str.as_deref().unwrap_or("(no namespace)")
                             ),
                             line: Some(doc.node_line(node)),
                             column: Some(doc.node_column(node)),
@@ -977,10 +977,10 @@ impl XsdValidator {
                         }
                         ProcessContents::Lax | ProcessContents::Strict => {
                             // Look up in global attribute declarations
-                            let key = (attr_ns.clone(), attr.name.local_name.clone());
+                            let key = (attr_ns_str.clone(), attr.name.local_name.to_string());
                             let global_decl = self.global_attributes.get(&key).or_else(|| {
                                 let key2 =
-                                    (self.target_namespace.clone(), attr.name.local_name.clone());
+                                    (self.target_namespace.clone(), attr.name.local_name.to_string());
                                 self.global_attributes.get(&key2)
                             });
                             match global_decl {
@@ -1001,7 +1001,7 @@ impl XsdValidator {
                                             message: format!(
                                                 "Attribute '{}' in namespace '{}' has no global declaration (strict processContents)",
                                                 attr.name.local_name,
-                                                attr_ns.as_deref().unwrap_or("(no namespace)")
+                                                attr_ns_str.as_deref().unwrap_or("(no namespace)")
                                             ),
                                             line: Some(doc.node_line(node)),
                                             column: Some(doc.node_column(node)),
@@ -1213,8 +1213,8 @@ impl XsdValidator {
     }
 
     /// Find a global element declaration by local name and namespace.
-    fn find_global_element(&self, name: &str, ns: &Option<String>) -> Option<ElementDecl> {
-        let key = (ns.clone(), name.to_string());
+    fn find_global_element(&self, name: &str, ns: Option<&str>) -> Option<ElementDecl> {
+        let key = (ns.map(|s| s.to_string()), name.to_string());
         self.elements.get(&key).cloned()
     }
 
@@ -1227,14 +1227,14 @@ impl XsdValidator {
     fn element_matches_with_substitution(
         &self,
         elem_name: &str,
-        elem_ns: &Option<String>,
+        elem_ns: Option<&str>,
         decl: &ElementDecl,
     ) -> Option<ElementDecl> {
         // Check if the instance element is a member of the substitution group
         // headed by decl.
         let head_key = (decl.namespace.clone(), decl.name.clone());
         if let Some(members) = self.substitution_groups.get(&head_key) {
-            let elem_key = (elem_ns.clone(), elem_name.to_string());
+            let elem_key = (elem_ns.map(|s| s.to_string()), elem_name.to_string());
             if members.contains(&elem_key) {
                 // Found: the instance element substitutes for the declared element.
                 // Return the member's own global declaration for type validation.
@@ -1299,7 +1299,7 @@ impl XsdValidator {
                                 } else if let Some(subst_decl) = self
                                     .element_matches_with_substitution(
                                         &elem.name.local_name,
-                                        &elem.name.namespace_uri,
+                                        elem.name.namespace_uri.as_deref(),
                                         decl,
                                     )
                                 {
@@ -1376,7 +1376,7 @@ impl XsdValidator {
                             if let Some(elem) = doc.element(child) {
                                 if wildcard_allows_namespace(
                                     namespace_constraint,
-                                    &elem.name.namespace_uri,
+                                    elem.name.namespace_uri.as_deref(),
                                 ) {
                                     // Namespace matches; apply processContents
                                     match process_contents {
@@ -1387,7 +1387,7 @@ impl XsdValidator {
                                             // Try to find global element declaration; validate if found
                                             if let Some(global_decl) = self.find_global_element(
                                                 &elem.name.local_name,
-                                                &elem.name.namespace_uri,
+                                                elem.name.namespace_uri.as_deref(),
                                             ) {
                                                 self.validate_element(
                                                     doc,
@@ -1401,7 +1401,7 @@ impl XsdValidator {
                                             // Must find global element declaration
                                             if let Some(global_decl) = self.find_global_element(
                                                 &elem.name.local_name,
-                                                &elem.name.namespace_uri,
+                                                elem.name.namespace_uri.as_deref(),
                                             ) {
                                                 self.validate_element(
                                                     doc,
@@ -1542,7 +1542,7 @@ impl XsdValidator {
                         let subst_decl = if !(name_matches && ns_matches) {
                             self.element_matches_with_substitution(
                                 &elem.name.local_name,
-                                &elem.name.namespace_uri,
+                                elem.name.namespace_uri.as_deref(),
                                 decl,
                             )
                         } else {
@@ -1573,7 +1573,7 @@ impl XsdValidator {
                                     } else if let Some(child_subst) = self
                                         .element_matches_with_substitution(
                                             &child_elem.name.local_name,
-                                            &child_elem.name.namespace_uri,
+                                            child_elem.name.namespace_uri.as_deref(),
                                             decl,
                                         )
                                     {
@@ -1657,7 +1657,7 @@ impl XsdValidator {
                         namespace_constraint,
                         process_contents,
                     } => {
-                        if wildcard_allows_namespace(namespace_constraint, &elem.name.namespace_uri)
+                        if wildcard_allows_namespace(namespace_constraint, elem.name.namespace_uri.as_deref())
                         {
                             // Consume as many wildcard-matching elements as allowed
                             let max = match p.max_occurs {
@@ -1670,14 +1670,14 @@ impl XsdValidator {
                                 if let Some(child_elem) = doc.element(child) {
                                     if wildcard_allows_namespace(
                                         namespace_constraint,
-                                        &child_elem.name.namespace_uri,
+                                        child_elem.name.namespace_uri.as_deref(),
                                     ) {
                                         match process_contents {
                                             ProcessContents::Skip => {}
                                             ProcessContents::Lax => {
                                                 if let Some(global_decl) = self.find_global_element(
                                                     &child_elem.name.local_name,
-                                                    &child_elem.name.namespace_uri,
+                                                    child_elem.name.namespace_uri.as_deref(),
                                                 ) {
                                                     self.validate_element(
                                                         doc,
@@ -1690,7 +1690,7 @@ impl XsdValidator {
                                             ProcessContents::Strict => {
                                                 if let Some(global_decl) = self.find_global_element(
                                                     &child_elem.name.local_name,
-                                                    &child_elem.name.namespace_uri,
+                                                    child_elem.name.namespace_uri.as_deref(),
                                                 ) {
                                                     self.validate_element(
                                                         doc,
@@ -1794,7 +1794,7 @@ impl XsdValidator {
                             let subst_decl = if !(name_matches && ns_matches) {
                                 self.element_matches_with_substitution(
                                     &elem.name.local_name,
-                                    &elem.name.namespace_uri,
+                                    elem.name.namespace_uri.as_deref(),
                                     decl,
                                 )
                             } else {
@@ -1828,7 +1828,7 @@ impl XsdValidator {
                         } => {
                             if wildcard_allows_namespace(
                                 namespace_constraint,
-                                &elem.name.namespace_uri,
+                                elem.name.namespace_uri.as_deref(),
                             ) {
                                 matched[i] = true;
                                 match process_contents {
@@ -1836,7 +1836,7 @@ impl XsdValidator {
                                     ProcessContents::Lax => {
                                         if let Some(global_decl) = self.find_global_element(
                                             &elem.name.local_name,
-                                            &elem.name.namespace_uri,
+                                            elem.name.namespace_uri.as_deref(),
                                         ) {
                                             self.validate_element(doc, child, &global_decl, errors);
                                         }
@@ -1844,7 +1844,7 @@ impl XsdValidator {
                                     ProcessContents::Strict => {
                                         if let Some(global_decl) = self.find_global_element(
                                             &elem.name.local_name,
-                                            &elem.name.namespace_uri,
+                                            elem.name.namespace_uri.as_deref(),
                                         ) {
                                             self.validate_element(doc, child, &global_decl, errors);
                                         } else {

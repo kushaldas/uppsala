@@ -159,7 +159,7 @@ fn parse_identity_constraints(doc: &Document, elem_node: NodeId) -> Vec<Identity
             if !is_xs {
                 continue;
             }
-            let kind = match child_elem.name.local_name.as_str() {
+            let kind = match child_elem.name.local_name.as_ref() {
                 "key" => IdentityConstraintKind::Key,
                 "unique" => IdentityConstraintKind::Unique,
                 "keyref" => IdentityConstraintKind::KeyRef,
@@ -188,7 +188,7 @@ fn parse_identity_constraints(doc: &Document, elem_node: NodeId) -> Vec<Identity
                             continue;
                         }
                         if let Some(gce) = doc.element(gc) {
-                            match gc_elem.name.local_name.as_str() {
+                            match gc_elem.name.local_name.as_ref() {
                                 "selector" => {
                                     selector = gce.get_attribute("xpath").unwrap_or("").to_string();
                                 }
@@ -238,7 +238,7 @@ fn parse_substitution_group(
             .attributes
             .iter()
             .find(|a| a.name.prefix.as_deref() == Some("xmlns") && a.name.local_name == prefix)
-            .map(|a| a.value.clone())
+            .map(|a| a.value.to_string())
             .or_else(|| {
                 // For elements in the schema's target namespace with a matching prefix,
                 // use the target namespace
@@ -408,7 +408,7 @@ pub(super) fn parse_complex_type(
                 continue;
             }
 
-            match child_elem.name.local_name.as_str() {
+            match child_elem.name.local_name.as_ref() {
                 "sequence" => {
                     let min_occ = child_elem
                         .get_attribute("minOccurs")
@@ -524,7 +524,7 @@ pub(super) fn parse_complex_type(
                             if !gc_is_xs {
                                 continue;
                             }
-                            match gc_elem.name.local_name.as_str() {
+                            match gc_elem.name.local_name.as_ref() {
                                 "extension" | "restriction" => {
                                     let is_extension = gc_elem.name.local_name == "extension";
                                     derived_by_extension = Some(is_extension);
@@ -556,7 +556,7 @@ pub(super) fn parse_complex_type(
                                             if !gcce_is_xs {
                                                 continue;
                                             }
-                                            match gc_child_elem.name.local_name.as_str() {
+                                            match gc_child_elem.name.local_name.as_ref() {
                                                 "attribute" => {
                                                     attributes
                                                         .push(parse_attribute_decl(doc, gc_child)?);
@@ -761,7 +761,7 @@ pub(super) fn parse_attribute_group_def(
             if !is_xs {
                 continue;
             }
-            match child_elem.name.local_name.as_str() {
+            match child_elem.name.local_name.as_ref() {
                 "attribute" => {
                     // Check if this is an attribute reference
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
@@ -852,7 +852,7 @@ pub(super) fn parse_model_group_def(
             if !is_xs {
                 continue;
             }
-            match child_elem.name.local_name.as_str() {
+            match child_elem.name.local_name.as_ref() {
                 "sequence" => {
                     let min_occ = child_elem
                         .get_attribute("minOccurs")
@@ -968,7 +968,7 @@ fn parse_particles(
                 None => MaxOccurs::Bounded(1),
             };
 
-            match child_elem.name.local_name.as_str() {
+            match child_elem.name.local_name.as_ref() {
                 "element" => {
                     // Check if this is an element reference (<element ref="..."/>)
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
@@ -1269,7 +1269,7 @@ pub(super) fn parse_simple_type(doc: &Document, node: NodeId) -> XmlResult<TypeD
                     if let Some(NodeKind::Element(facet_elem)) = doc.node_kind(facet_child) {
                         let value = facet_elem.get_attribute("value").unwrap_or("").to_string();
 
-                        match facet_elem.name.local_name.as_str() {
+                        match facet_elem.name.local_name.as_ref() {
                             "minLength" => {
                                 if let Ok(n) = value.parse() {
                                     facets.push(Facet::MinLength(n));

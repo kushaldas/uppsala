@@ -27,7 +27,7 @@ pub use xpath::XPathEvaluator;
 pub use xsd::XsdValidator;
 
 /// Parse an XML string into a Document.
-pub fn parse(input: &str) -> XmlResult<Document> {
+pub fn parse(input: &str) -> XmlResult<Document<'_>> {
     let parser = Parser::new();
     parser.parse(input)
 }
@@ -41,9 +41,10 @@ pub fn parse(input: &str) -> XmlResult<Document> {
 /// - No BOM with `00 3C`: UTF-16 BE without BOM
 /// - No BOM with `3C 00`: UTF-16 LE without BOM
 /// - Otherwise: UTF-8
-pub fn parse_bytes(input: &[u8]) -> XmlResult<Document> {
+pub fn parse_bytes(input: &[u8]) -> XmlResult<Document<'static>> {
     let text = decode_xml_bytes(input)?;
-    parse(&text)
+    let doc = Parser::new().parse(&text)?;
+    Ok(doc.into_static())
 }
 
 /// Decode raw XML bytes to a String, auto-detecting encoding.

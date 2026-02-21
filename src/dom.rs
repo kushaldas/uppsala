@@ -5,6 +5,7 @@
 //! the [`Document`]. This avoids reference-counting overhead and makes tree
 //! mutation straightforward.
 
+use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt;
 
@@ -15,18 +16,18 @@ pub struct NodeId(pub(crate) usize);
 /// A qualified name consisting of an optional namespace URI, optional prefix,
 /// and a local name.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct QName {
+pub struct QName<'a> {
     /// The namespace URI, if any.
-    pub namespace_uri: Option<String>,
+    pub namespace_uri: Option<Cow<'a, str>>,
     /// The namespace prefix, if any (e.g. `"soap"` in `soap:Envelope`).
-    pub prefix: Option<String>,
+    pub prefix: Option<Cow<'a, str>>,
     /// The local part of the name.
-    pub local_name: String,
+    pub local_name: Cow<'a, str>,
 }
 
-impl QName {
+impl<'a> QName<'a> {
     /// Create a QName with only a local name (no namespace).
-    pub fn local(name: impl Into<String>) -> Self {
+    pub fn local(name: impl Into<Cow<'a, str>>) -> Self {
         QName {
             namespace_uri: None,
             prefix: None,
@@ -35,7 +36,10 @@ impl QName {
     }
 
     /// Create a QName with a namespace URI and local name.
-    pub fn with_namespace(namespace_uri: impl Into<String>, local_name: impl Into<String>) -> Self {
+    pub fn with_namespace(
+        namespace_uri: impl Into<Cow<'a, str>>,
+        local_name: impl Into<Cow<'a, str>>,
+    ) -> Self {
         QName {
             namespace_uri: Some(namespace_uri.into()),
             prefix: None,
@@ -45,9 +49,9 @@ impl QName {
 
     /// Create a QName with prefix, namespace URI, and local name.
     pub fn full(
-        prefix: impl Into<String>,
-        namespace_uri: impl Into<String>,
-        local_name: impl Into<String>,
+        prefix: impl Into<Cow<'a, str>>,
+        namespace_uri: impl Into<Cow<'a, str>>,
+        local_name: impl Into<Cow<'a, str>>,
     ) -> Self {
         QName {
             namespace_uri: Some(namespace_uri.into()),
@@ -57,15 +61,24 @@ impl QName {
     }
 
     /// Returns the prefixed form (e.g. `"soap:Envelope"`) or just the local name.
-    pub fn prefixed_name(&self) -> String {
+    pub fn prefixed_name(&self) -> Cow<'_, str> {
         match &self.prefix {
-            Some(p) => format!("{}:{}", p, self.local_name),
-            None => self.local_name.clone(),
+            Some(p) => Cow::Owned(format!("{}:{}", p, self.local_name)),
+            None => Cow::Borrowed(&self.local_name),
+        }
+    }
+
+    /// Convert this QName into a `'static` lifetime by taking ownership of all data.
+    pub fn into_static(self) -> QName<'static> {
+        QName {
+            namespace_uri: self.namespace_uri.map(|s| Cow::Owned(s.into_owned())),
+            prefix: self.prefix.map(|s| Cow::Owned(s.into_owned())),
+            local_name: Cow::Owned(self.local_name.into_owned()),
         }
     }
 }
 
-impl fmt::Display for QName {
+impl<'a> fmt::Display for QName<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match (&self.namespace_uri, &self.prefix) {
             (Some(ns), Some(p)) => write!(f, "{{{}}}{}:{}", ns, p, self.local_name),
@@ -77,67 +90,117 @@ impl fmt::Display for QName {
 
 /// An XML attribute (part of the Infoset attribute information item).
 #[derive(Debug, Clone, PartialEq)]
-pub struct Attribute {
+pub struct Attribute<'a> {
     /// The qualified name of the attribute.
-    pub name: QName,
+    pub name: QName<'a>,
     /// The normalized attribute value.
-    pub value: String,
+    pub value: Cow<'a, str>,
+}
+
+impl<'a> Attribute<'a> {
+    /// Convert this Attribute into a `'static` lifetime.
+    pub fn into_static(self) -> Attribute<'static> {
+        Attribute {
+            name: self.name.into_static(),
+            value: Cow::Owned(self.value.into_owned()),
+        }
+    }
 }
 
 /// The XML declaration (`<?xml version="1.0" encoding="UTF-8"?>`).
 #[derive(Debug, Clone, PartialEq)]
-pub struct XmlDeclaration {
-    pub version: String,
-    pub encoding: Option<String>,
+pub struct XmlDeclaration<'a> {
+    pub version: Cow<'a, str>,
+    pub encoding: Option<Cow<'a, str>>,
     pub standalone: Option<bool>,
+}
+
+impl<'a> XmlDeclaration<'a> {
+    /// Convert this XmlDeclaration into a `'static` lifetime.
+    pub fn into_static(self) -> XmlDeclaration<'static> {
+        XmlDeclaration {
+            version: Cow::Owned(self.version.into_owned()),
+            encoding: self.encoding.map(|s| Cow::Owned(s.into_owned())),
+            standalone: self.standalone,
+        }
+    }
 }
 
 /// A processing instruction (`<?target data?>`).
 #[derive(Debug, Clone, PartialEq)]
-pub struct ProcessingInstruction {
-    pub target: String,
-    pub data: Option<String>,
+pub struct ProcessingInstruction<'a> {
+    pub target: Cow<'a, str>,
+    pub data: Option<Cow<'a, str>>,
+}
+
+impl<'a> ProcessingInstruction<'a> {
+    /// Convert this ProcessingInstruction into a `'static` lifetime.
+    pub fn into_static(self) -> ProcessingInstruction<'static> {
+        ProcessingInstruction {
+            target: Cow::Owned(self.target.into_owned()),
+            data: self.data.map(|s| Cow::Owned(s.into_owned())),
+        }
+    }
 }
 
 /// The different kinds of nodes in the DOM tree.
 #[derive(Debug, Clone, PartialEq)]
-pub enum NodeKind {
+pub enum NodeKind<'a> {
     /// The document root (Infoset document information item).
     Document,
     /// An element node (Infoset element information item).
-    Element(Element),
+    Element(Element<'a>),
     /// A text node (Infoset character information item).
-    Text(String),
+    Text(Cow<'a, str>),
     /// A CDATA section.
-    CData(String),
+    CData(Cow<'a, str>),
     /// A comment node (Infoset comment information item).
-    Comment(String),
+    Comment(Cow<'a, str>),
     /// A processing instruction (Infoset PI information item).
-    ProcessingInstruction(ProcessingInstruction),
+    ProcessingInstruction(ProcessingInstruction<'a>),
     /// A virtual attribute node (used by XPath evaluation).
     /// Not part of the normal child tree.
-    Attribute(QName, String),
+    Attribute(QName<'a>, Cow<'a, str>),
+}
+
+impl<'a> NodeKind<'a> {
+    /// Convert this NodeKind into a `'static` lifetime.
+    pub fn into_static(self) -> NodeKind<'static> {
+        match self {
+            NodeKind::Document => NodeKind::Document,
+            NodeKind::Element(e) => NodeKind::Element(e.into_static()),
+            NodeKind::Text(t) => NodeKind::Text(Cow::Owned(t.into_owned())),
+            NodeKind::CData(t) => NodeKind::CData(Cow::Owned(t.into_owned())),
+            NodeKind::Comment(t) => NodeKind::Comment(Cow::Owned(t.into_owned())),
+            NodeKind::ProcessingInstruction(pi) => {
+                NodeKind::ProcessingInstruction(pi.into_static())
+            }
+            NodeKind::Attribute(name, value) => {
+                NodeKind::Attribute(name.into_static(), Cow::Owned(value.into_owned()))
+            }
+        }
+    }
 }
 
 /// An element with its qualified name and attributes.
 #[derive(Debug, Clone, PartialEq)]
-pub struct Element {
+pub struct Element<'a> {
     /// The qualified name of the element.
-    pub name: QName,
+    pub name: QName<'a>,
     /// The element's attributes.
-    pub attributes: Vec<Attribute>,
+    pub attributes: Vec<Attribute<'a>>,
     /// In-scope namespace declarations on this element.
-    /// Maps prefix (empty string for default namespace) to namespace URI.
-    pub namespace_declarations: HashMap<String, String>,
+    /// Each pair is (prefix, namespace_uri). Empty prefix for default namespace.
+    pub namespace_declarations: Vec<(Cow<'a, str>, Cow<'a, str>)>,
 }
 
-impl Element {
+impl<'a> Element<'a> {
     /// Get an attribute value by local name (ignoring namespace).
     pub fn get_attribute(&self, local_name: &str) -> Option<&str> {
         self.attributes
             .iter()
-            .find(|a| a.name.local_name == local_name)
-            .map(|a| a.value.as_str())
+            .find(|a| *a.name.local_name == *local_name)
+            .map(|a| &*a.value)
     }
 
     /// Get an attribute value by namespace URI and local name.
@@ -145,14 +208,14 @@ impl Element {
         self.attributes
             .iter()
             .find(|a| {
-                a.name.local_name == local_name
+                *a.name.local_name == *local_name
                     && a.name.namespace_uri.as_deref() == Some(namespace_uri)
             })
-            .map(|a| a.value.as_str())
+            .map(|a| &*a.value)
     }
 
     /// Set or update an attribute. Returns the old value if the attribute already existed.
-    pub fn set_attribute(&mut self, name: QName, value: String) -> Option<String> {
+    pub fn set_attribute(&mut self, name: QName<'a>, value: Cow<'a, str>) -> Option<Cow<'a, str>> {
         for attr in &mut self.attributes {
             if attr.name == name {
                 let old = std::mem::replace(&mut attr.value, value);
@@ -164,28 +227,58 @@ impl Element {
     }
 
     /// Remove an attribute by local name. Returns the removed value if found.
-    pub fn remove_attribute(&mut self, local_name: &str) -> Option<String> {
+    pub fn remove_attribute(&mut self, local_name: &str) -> Option<Cow<'a, str>> {
         if let Some(pos) = self
             .attributes
             .iter()
-            .position(|a| a.name.local_name == local_name)
+            .position(|a| *a.name.local_name == *local_name)
         {
             Some(self.attributes.remove(pos).value)
         } else {
             None
         }
     }
+
+    /// Convert this Element into a `'static` lifetime.
+    pub fn into_static(self) -> Element<'static> {
+        Element {
+            name: self.name.into_static(),
+            attributes: self.attributes.into_iter().map(|a| a.into_static()).collect(),
+            namespace_declarations: self
+                .namespace_declarations
+                .into_iter()
+                .map(|(k, v)| (Cow::Owned(k.into_owned()), Cow::Owned(v.into_owned())))
+                .collect::<Vec<_>>(),
+        }
+    }
 }
 
 /// Internal representation of a node in the arena.
 #[derive(Debug, Clone)]
-pub(crate) struct NodeData {
-    pub kind: NodeKind,
+pub(crate) struct NodeData<'a> {
+    pub kind: NodeKind<'a>,
     pub parent: Option<NodeId>,
-    pub children: Vec<NodeId>,
-    /// Source location (line, column) for error reporting.
-    pub line: usize,
-    pub column: usize,
+    pub first_child: Option<NodeId>,
+    pub last_child: Option<NodeId>,
+    pub next_sibling: Option<NodeId>,
+    pub prev_sibling: Option<NodeId>,
+    /// Byte position in the original input for lazy line/column computation.
+    pub byte_pos: usize,
+}
+
+impl<'a> NodeData<'a> {
+    /// Convert this NodeData into a `'static` lifetime.
+    pub fn into_static(self) -> NodeData<'static> {
+        NodeData {
+            kind: self.kind.into_static(),
+            parent: self.parent,
+            first_child: self.first_child,
+            last_child: self.last_child,
+            next_sibling: self.next_sibling,
+            prev_sibling: self.prev_sibling,
+            byte_pos: self.byte_pos,
+        }
+    }
 }
 
 /// An XML document represented as an arena-based tree.
@@ -193,30 +286,34 @@ pub(crate) struct NodeData {
 /// Nodes are stored in a flat `Vec` and referenced by [`NodeId`]. This provides
 /// O(1) node access and simple tree mutation without reference counting.
 #[derive(Debug, Clone)]
-pub struct Document {
+pub struct Document<'a> {
     /// The node arena.
-    pub(crate) nodes: Vec<NodeData>,
+    pub(crate) nodes: Vec<NodeData<'a>>,
     /// The root node id (always NodeId(0), the Document node).
     root: NodeId,
     /// Optional XML declaration.
-    pub xml_declaration: Option<XmlDeclaration>,
+    pub xml_declaration: Option<XmlDeclaration<'a>>,
     /// Raw DOCTYPE declaration text, preserved verbatim for round-trip fidelity.
     /// e.g. `<!DOCTYPE root SYSTEM "root.dtd">` or `<!DOCTYPE html>`.
-    pub doctype: Option<String>,
+    pub doctype: Option<Cow<'a, str>>,
     /// Attribute nodes for each element, keyed by element NodeId.
     /// These are virtual nodes used by XPath attribute axis traversal.
     pub(crate) attribute_nodes: HashMap<NodeId, Vec<NodeId>>,
+    /// Original input for lazy line/column computation from byte positions.
+    pub(crate) input: &'a str,
 }
 
-impl Document {
+impl<'a> Document<'a> {
     /// Create a new empty document.
     pub fn new() -> Self {
         let root_node = NodeData {
             kind: NodeKind::Document,
             parent: None,
-            children: Vec::new(),
-            line: 0,
-            column: 0,
+            first_child: None,
+            last_child: None,
+            next_sibling: None,
+            prev_sibling: None,
+            byte_pos: 0,
         };
         Document {
             nodes: vec![root_node],
@@ -224,6 +321,19 @@ impl Document {
             xml_declaration: None,
             doctype: None,
             attribute_nodes: HashMap::new(),
+            input: "",
+        }
+    }
+
+    /// Convert this Document into a `'static` lifetime by taking ownership of all data.
+    pub fn into_static(self) -> Document<'static> {
+        Document {
+            nodes: self.nodes.into_iter().map(|n| n.into_static()).collect(),
+            root: self.root,
+            xml_declaration: self.xml_declaration.map(|d| d.into_static()),
+            doctype: self.doctype.map(|s| Cow::Owned(s.into_owned())),
+            attribute_nodes: self.attribute_nodes,
+            input: "",
         }
     }
 
@@ -240,14 +350,16 @@ impl Document {
     }
 
     /// Allocate a new node in the arena and return its id.
-    pub(crate) fn alloc_node(&mut self, kind: NodeKind, line: usize, column: usize) -> NodeId {
+    pub(crate) fn alloc_node(&mut self, kind: NodeKind<'a>, byte_pos: usize) -> NodeId {
         let id = NodeId(self.nodes.len());
         self.nodes.push(NodeData {
             kind,
             parent: None,
-            children: Vec::new(),
-            line,
-            column,
+            first_child: None,
+            last_child: None,
+            next_sibling: None,
+            prev_sibling: None,
+            byte_pos,
         });
         id
     }
@@ -255,7 +367,7 @@ impl Document {
     /// Allocate virtual attribute nodes for an element.
     /// Call this after adding an element with attributes to enable XPath attribute axis.
     pub(crate) fn build_attribute_nodes(&mut self, element_id: NodeId) {
-        let attrs: Vec<(QName, String)> = match self.node_kind(element_id) {
+        let attrs: Vec<(QName<'a>, Cow<'a, str>)> = match self.node_kind(element_id) {
             Some(NodeKind::Element(e)) => e
                 .attributes
                 .iter()
@@ -265,7 +377,7 @@ impl Document {
         };
         let mut attr_ids = Vec::with_capacity(attrs.len());
         for (name, value) in attrs {
-            let attr_id = self.alloc_node(NodeKind::Attribute(name, value), 0, 0);
+            let attr_id = self.alloc_node(NodeKind::Attribute(name, value), 0);
             // Set parent to the element (attribute nodes have an owner element)
             if let Some(node) = self.nodes.get_mut(attr_id.0) {
                 node.parent = Some(element_id);
@@ -285,34 +397,54 @@ impl Document {
             .unwrap_or(&[])
     }
 
+    /// Build virtual attribute nodes for all elements in the document.
+    /// Must be called before XPath evaluation if the document was parsed
+    /// without attribute node construction (the default for performance).
+    pub fn prepare_xpath(&mut self) {
+        if !self.attribute_nodes.is_empty() {
+            return; // Already prepared
+        }
+        let element_ids: Vec<NodeId> = self
+            .nodes
+            .iter()
+            .enumerate()
+            .filter_map(|(i, n)| match &n.kind {
+                NodeKind::Element(e) if !e.attributes.is_empty() => Some(NodeId(i)),
+                _ => None,
+            })
+            .collect();
+        for elem_id in element_ids {
+            self.build_attribute_nodes(elem_id);
+        }
+    }
+
     /// Create a new element node (not yet attached to the tree).
-    pub fn create_element(&mut self, name: QName) -> NodeId {
+    pub fn create_element(&mut self, name: QName<'a>) -> NodeId {
         self.alloc_node(
             NodeKind::Element(Element {
                 name,
                 attributes: Vec::new(),
-                namespace_declarations: HashMap::new(),
+                namespace_declarations: Vec::new(),
             }),
-            0,
             0,
         )
     }
 
     /// Create a new text node (not yet attached to the tree).
-    pub fn create_text(&mut self, text: impl Into<String>) -> NodeId {
-        self.alloc_node(NodeKind::Text(text.into()), 0, 0)
+    pub fn create_text(&mut self, text: impl Into<Cow<'a, str>>) -> NodeId {
+        self.alloc_node(NodeKind::Text(text.into()), 0)
     }
 
     /// Create a new comment node (not yet attached to the tree).
-    pub fn create_comment(&mut self, text: impl Into<String>) -> NodeId {
-        self.alloc_node(NodeKind::Comment(text.into()), 0, 0)
+    pub fn create_comment(&mut self, text: impl Into<Cow<'a, str>>) -> NodeId {
+        self.alloc_node(NodeKind::Comment(text.into()), 0)
     }
 
     /// Create a new processing instruction node (not yet attached to the tree).
     pub fn create_processing_instruction(
         &mut self,
-        target: impl Into<String>,
-        data: Option<String>,
+        target: impl Into<Cow<'a, str>>,
+        data: Option<Cow<'a, str>>,
     ) -> NodeId {
         self.alloc_node(
             NodeKind::ProcessingInstruction(ProcessingInstruction {
@@ -320,29 +452,28 @@ impl Document {
                 data,
             }),
             0,
-            0,
         )
     }
 
     /// Create a new CDATA node (not yet attached to the tree).
-    pub fn create_cdata(&mut self, text: impl Into<String>) -> NodeId {
-        self.alloc_node(NodeKind::CData(text.into()), 0, 0)
+    pub fn create_cdata(&mut self, text: impl Into<Cow<'a, str>>) -> NodeId {
+        self.alloc_node(NodeKind::CData(text.into()), 0)
     }
 
     // ─── Tree access ───
 
     /// Get the kind of a node.
-    pub fn node_kind(&self, id: NodeId) -> Option<&NodeKind> {
+    pub fn node_kind(&self, id: NodeId) -> Option<&NodeKind<'a>> {
         self.nodes.get(id.0).map(|n| &n.kind)
     }
 
     /// Get a mutable reference to a node's kind.
-    pub fn node_kind_mut(&mut self, id: NodeId) -> Option<&mut NodeKind> {
+    pub fn node_kind_mut(&mut self, id: NodeId) -> Option<&mut NodeKind<'a>> {
         self.nodes.get_mut(id.0).map(|n| &mut n.kind)
     }
 
     /// Get the element data for an element node.
-    pub fn element(&self, id: NodeId) -> Option<&Element> {
+    pub fn element(&self, id: NodeId) -> Option<&Element<'a>> {
         match self.node_kind(id) {
             Some(NodeKind::Element(e)) => Some(e),
             _ => None,
@@ -350,7 +481,7 @@ impl Document {
     }
 
     /// Get mutable element data for an element node.
-    pub fn element_mut(&mut self, id: NodeId) -> Option<&mut Element> {
+    pub fn element_mut(&mut self, id: NodeId) -> Option<&mut Element<'a>> {
         match self.node_kind_mut(id) {
             Some(NodeKind::Element(e)) => Some(e),
             _ => None,
@@ -360,8 +491,8 @@ impl Document {
     /// Get the text content of a text or CDATA node.
     pub fn text_content(&self, id: NodeId) -> Option<&str> {
         match self.node_kind(id) {
-            Some(NodeKind::Text(t)) => Some(t.as_str()),
-            Some(NodeKind::CData(t)) => Some(t.as_str()),
+            Some(NodeKind::Text(t)) => Some(t),
+            Some(NodeKind::CData(t)) => Some(t),
             _ => None,
         }
     }
@@ -373,20 +504,41 @@ impl Document {
 
     /// Get the children of a node.
     pub fn children(&self, id: NodeId) -> Vec<NodeId> {
-        self.nodes
-            .get(id.0)
-            .map(|n| n.children.clone())
-            .unwrap_or_default()
+        let mut result = Vec::new();
+        let mut current = self.nodes.get(id.0).and_then(|n| n.first_child);
+        while let Some(child_id) = current {
+            result.push(child_id);
+            current = self.nodes.get(child_id.0).and_then(|n| n.next_sibling);
+        }
+        result
     }
 
-    /// Get the source line of a node.
+    /// Get the source line of a node (computed lazily from byte position).
     pub fn node_line(&self, id: NodeId) -> usize {
-        self.nodes.get(id.0).map(|n| n.line).unwrap_or(0)
+        let byte_pos = match self.nodes.get(id.0) {
+            Some(n) => n.byte_pos,
+            None => return 0,
+        };
+        if self.input.is_empty() || byte_pos == 0 {
+            return 1;
+        }
+        self.input.as_bytes()[..byte_pos].iter().filter(|&&b| b == b'\n').count() + 1
     }
 
-    /// Get the source column of a node.
+    /// Get the source column of a node (computed lazily from byte position).
     pub fn node_column(&self, id: NodeId) -> usize {
-        self.nodes.get(id.0).map(|n| n.column).unwrap_or(0)
+        let byte_pos = match self.nodes.get(id.0) {
+            Some(n) => n.byte_pos,
+            None => return 0,
+        };
+        if self.input.is_empty() || byte_pos == 0 {
+            return 1;
+        }
+        let bytes = &self.input.as_bytes()[..byte_pos];
+        match bytes.iter().rposition(|&b| b == b'\n') {
+            Some(nl_pos) => byte_pos - nl_pos,
+            None => byte_pos + 1,
+        }
     }
 
     /// Get all descendant element nodes matching a local name.
@@ -403,7 +555,7 @@ impl Document {
         results: &mut Vec<NodeId>,
     ) {
         if let Some(NodeKind::Element(e)) = self.node_kind(id) {
-            if e.name.local_name == local_name {
+            if *e.name.local_name == *local_name {
                 results.push(id);
             }
         }
@@ -431,7 +583,7 @@ impl Document {
         results: &mut Vec<NodeId>,
     ) {
         if let Some(NodeKind::Element(e)) = self.node_kind(id) {
-            if e.name.local_name == local_name
+            if *e.name.local_name == *local_name
                 && e.name.namespace_uri.as_deref() == Some(namespace_uri)
             {
                 results.push(id);
@@ -467,13 +619,26 @@ impl Document {
     pub fn append_child(&mut self, parent: NodeId, child: NodeId) {
         // Detach from old parent first
         self.detach(child);
+        self.append_child_unchecked(parent, child);
+    }
+
+    /// Append a freshly-allocated child node to a parent without detaching.
+    /// The child must have no parent, no siblings. Used during parsing for speed.
+    #[inline]
+    pub(crate) fn append_child_unchecked(&mut self, parent: NodeId, child: NodeId) {
         // Set new parent
-        if let Some(node) = self.nodes.get_mut(child.0) {
-            node.parent = Some(parent);
-        }
-        // Add to new parent's children
-        if let Some(node) = self.nodes.get_mut(parent.0) {
-            node.children.push(child);
+        self.nodes[child.0].parent = Some(parent);
+        // Link into parent's child list
+        let last = self.nodes[parent.0].last_child;
+        if let Some(last_id) = last {
+            // Append after last child
+            self.nodes[last_id.0].next_sibling = Some(child);
+            self.nodes[child.0].prev_sibling = Some(last_id);
+            self.nodes[parent.0].last_child = Some(child);
+        } else {
+            // First child
+            self.nodes[parent.0].first_child = Some(child);
+            self.nodes[parent.0].last_child = Some(child);
         }
     }
 
@@ -483,12 +648,23 @@ impl Document {
         if let Some(node) = self.nodes.get_mut(new_child.0) {
             node.parent = Some(parent);
         }
-        if let Some(node) = self.nodes.get_mut(parent.0) {
-            if let Some(pos) = node.children.iter().position(|&c| c == reference) {
-                node.children.insert(pos, new_child);
-            } else {
-                // If reference not found, append at the end
-                node.children.push(new_child);
+        let prev = self.nodes.get(reference.0).and_then(|n| n.prev_sibling);
+        // Link new_child before reference
+        if let Some(nc) = self.nodes.get_mut(new_child.0) {
+            nc.prev_sibling = prev;
+            nc.next_sibling = Some(reference);
+        }
+        if let Some(r) = self.nodes.get_mut(reference.0) {
+            r.prev_sibling = Some(new_child);
+        }
+        if let Some(prev_id) = prev {
+            if let Some(p) = self.nodes.get_mut(prev_id.0) {
+                p.next_sibling = Some(new_child);
+            }
+        } else {
+            // new_child is now the first child
+            if let Some(p) = self.nodes.get_mut(parent.0) {
+                p.first_child = Some(new_child);
             }
         }
     }
@@ -499,49 +675,101 @@ impl Document {
         if let Some(node) = self.nodes.get_mut(new_child.0) {
             node.parent = Some(parent);
         }
-        if let Some(node) = self.nodes.get_mut(parent.0) {
-            if let Some(pos) = node.children.iter().position(|&c| c == reference) {
-                node.children.insert(pos + 1, new_child);
-            } else {
-                node.children.push(new_child);
+        let next = self.nodes.get(reference.0).and_then(|n| n.next_sibling);
+        if let Some(nc) = self.nodes.get_mut(new_child.0) {
+            nc.prev_sibling = Some(reference);
+            nc.next_sibling = next;
+        }
+        if let Some(r) = self.nodes.get_mut(reference.0) {
+            r.next_sibling = Some(new_child);
+        }
+        if let Some(next_id) = next {
+            if let Some(n) = self.nodes.get_mut(next_id.0) {
+                n.prev_sibling = Some(new_child);
+            }
+        } else {
+            // new_child is now the last child
+            if let Some(p) = self.nodes.get_mut(parent.0) {
+                p.last_child = Some(new_child);
             }
         }
     }
 
     /// Remove a child from its parent. The node remains in the arena but is detached.
-    pub fn remove_child(&mut self, parent: NodeId, child: NodeId) {
-        if let Some(node) = self.nodes.get_mut(parent.0) {
-            node.children.retain(|&c| c != child);
-        }
-        if let Some(node) = self.nodes.get_mut(child.0) {
-            node.parent = None;
-        }
+    pub fn remove_child(&mut self, _parent: NodeId, child: NodeId) {
+        self.detach(child);
     }
 
     /// Replace an old child with a new child under the given parent.
     pub fn replace_child(&mut self, parent: NodeId, new_child: NodeId, old_child: NodeId) {
         self.detach(new_child);
-        if let Some(node) = self.nodes.get_mut(new_child.0) {
-            node.parent = Some(parent);
+        let prev = self.nodes.get(old_child.0).and_then(|n| n.prev_sibling);
+        let next = self.nodes.get(old_child.0).and_then(|n| n.next_sibling);
+        // Set new_child links
+        if let Some(nc) = self.nodes.get_mut(new_child.0) {
+            nc.parent = Some(parent);
+            nc.prev_sibling = prev;
+            nc.next_sibling = next;
         }
-        if let Some(node) = self.nodes.get_mut(parent.0) {
-            if let Some(pos) = node.children.iter().position(|&c| c == old_child) {
-                node.children[pos] = new_child;
+        // Update neighbors
+        if let Some(prev_id) = prev {
+            if let Some(p) = self.nodes.get_mut(prev_id.0) {
+                p.next_sibling = Some(new_child);
+            }
+        } else {
+            if let Some(p) = self.nodes.get_mut(parent.0) {
+                p.first_child = Some(new_child);
             }
         }
-        if let Some(node) = self.nodes.get_mut(old_child.0) {
-            node.parent = None;
+        if let Some(next_id) = next {
+            if let Some(n) = self.nodes.get_mut(next_id.0) {
+                n.prev_sibling = Some(new_child);
+            }
+        } else {
+            if let Some(p) = self.nodes.get_mut(parent.0) {
+                p.last_child = Some(new_child);
+            }
+        }
+        // Detach old_child
+        if let Some(oc) = self.nodes.get_mut(old_child.0) {
+            oc.parent = None;
+            oc.prev_sibling = None;
+            oc.next_sibling = None;
         }
     }
 
     /// Detach a node from its parent (internal helper).
     fn detach(&mut self, id: NodeId) {
-        if let Some(parent_id) = self.nodes.get(id.0).and_then(|n| n.parent) {
-            if let Some(parent) = self.nodes.get_mut(parent_id.0) {
-                parent.children.retain(|&c| c != id);
+        let (parent_id, prev, next) = match self.nodes.get(id.0) {
+            Some(n) => (n.parent, n.prev_sibling, n.next_sibling),
+            None => return,
+        };
+        if let Some(parent_id) = parent_id {
+            // Update prev sibling or parent's first_child
+            if let Some(prev_id) = prev {
+                if let Some(p) = self.nodes.get_mut(prev_id.0) {
+                    p.next_sibling = next;
+                }
+            } else {
+                if let Some(p) = self.nodes.get_mut(parent_id.0) {
+                    p.first_child = next;
+                }
             }
+            // Update next sibling or parent's last_child
+            if let Some(next_id) = next {
+                if let Some(n) = self.nodes.get_mut(next_id.0) {
+                    n.prev_sibling = prev;
+                }
+            } else {
+                if let Some(p) = self.nodes.get_mut(parent_id.0) {
+                    p.last_child = prev;
+                }
+            }
+            // Clear the detached node's links
             if let Some(node) = self.nodes.get_mut(id.0) {
                 node.parent = None;
+                node.prev_sibling = None;
+                node.next_sibling = None;
             }
         }
     }
@@ -550,36 +778,22 @@ impl Document {
 
     /// Get the first child of a node.
     pub fn first_child(&self, id: NodeId) -> Option<NodeId> {
-        self.nodes
-            .get(id.0)
-            .and_then(|n| n.children.first().copied())
+        self.nodes.get(id.0).and_then(|n| n.first_child)
     }
 
     /// Get the last child of a node.
     pub fn last_child(&self, id: NodeId) -> Option<NodeId> {
-        self.nodes
-            .get(id.0)
-            .and_then(|n| n.children.last().copied())
+        self.nodes.get(id.0).and_then(|n| n.last_child)
     }
 
     /// Get the next sibling of a node.
     pub fn next_sibling(&self, id: NodeId) -> Option<NodeId> {
-        let parent = self.parent(id)?;
-        let children = &self.nodes[parent.0].children;
-        let pos = children.iter().position(|&c| c == id)?;
-        children.get(pos + 1).copied()
+        self.nodes.get(id.0).and_then(|n| n.next_sibling)
     }
 
     /// Get the previous sibling of a node.
     pub fn previous_sibling(&self, id: NodeId) -> Option<NodeId> {
-        let parent = self.parent(id)?;
-        let children = &self.nodes[parent.0].children;
-        let pos = children.iter().position(|&c| c == id)?;
-        if pos > 0 {
-            Some(children[pos - 1])
-        } else {
-            None
-        }
+        self.nodes.get(id.0).and_then(|n| n.prev_sibling)
     }
 
     /// Return all ancestor node ids from the node up to (but not including) the root.
@@ -705,7 +919,8 @@ impl Document {
                     write_indent(out, opts, depth)?;
                 }
                 out.write_char('<')?;
-                out.write_str(&elem.name.prefixed_name())?;
+                let pname = elem.name.prefixed_name();
+                out.write_str(&pname)?;
                 // Namespace declarations
                 for (prefix, uri) in &elem.namespace_declarations {
                     if prefix.is_empty() {
@@ -721,7 +936,8 @@ impl Document {
                 // Attributes
                 for attr in &elem.attributes {
                     out.write_char(' ')?;
-                    out.write_str(&attr.name.prefixed_name())?;
+                    let aname = attr.name.prefixed_name();
+                    out.write_str(&aname)?;
                     out.write_str("=\"")?;
                     write_escaped_attr(out, &attr.value)?;
                     out.write_char('"')?;
@@ -730,7 +946,7 @@ impl Document {
                 if children.is_empty() {
                     if opts.expand_empty_elements {
                         out.write_str("></")?;
-                        out.write_str(&elem.name.prefixed_name())?;
+                        out.write_str(&pname)?;
                         out.write_char('>')?;
                     } else {
                         out.write_str("/>")?;
@@ -757,7 +973,7 @@ impl Document {
                         write_indent(out, opts, depth)?;
                     }
                     out.write_str("</")?;
-                    out.write_str(&elem.name.prefixed_name())?;
+                    out.write_str(&pname)?;
                     out.write_char('>')?;
                 }
                 // Trailing newline after the document element when pretty-printing
@@ -813,13 +1029,13 @@ impl Document {
     }
 }
 
-impl Default for Document {
+impl<'a> Default for Document<'a> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl fmt::Display for Document {
+impl<'a> fmt::Display for Document<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.write_document_to(f, &XmlWriteOptions::default())
     }
@@ -927,11 +1143,11 @@ fn write_escaped_attr(out: &mut dyn fmt::Write, s: &str) -> fmt::Result {
 }
 
 /// Adapter that allows writing to an `io::Write` via the `fmt::Write` trait.
-struct IoWriteAdapter<'a> {
-    inner: &'a mut dyn std::io::Write,
+struct IoWriteAdapter<'w> {
+    inner: &'w mut dyn std::io::Write,
 }
 
-impl<'a> fmt::Write for IoWriteAdapter<'a> {
+impl<'w> fmt::Write for IoWriteAdapter<'w> {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.inner.write_all(s.as_bytes()).map_err(|_| fmt::Error)
     }

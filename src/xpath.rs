@@ -46,7 +46,7 @@ impl XPathValue {
     }
 
     /// Coerce to number per XPath 1.0 rules.
-    pub fn to_number(&self, doc: &Document) -> f64 {
+    pub fn to_number(&self, doc: &Document<'_>) -> f64 {
         match self {
             XPathValue::Number(n) => *n,
             XPathValue::Boolean(b) => {
@@ -65,7 +65,7 @@ impl XPathValue {
     }
 
     /// Coerce to string per XPath 1.0 rules.
-    pub fn to_string_value(&self, doc: &Document) -> String {
+    pub fn to_string_value(&self, doc: &Document<'_>) -> String {
         match self {
             XPathValue::String(s) => s.clone(),
             XPathValue::Boolean(b) => {
@@ -112,14 +112,16 @@ impl XPathValue {
 }
 
 /// Get the string-value of a node per XPath 1.0 rules.
-fn string_value_of_node(doc: &Document, id: NodeId) -> String {
+fn string_value_of_node(doc: &Document<'_>, id: NodeId) -> String {
     match doc.node_kind(id) {
         Some(NodeKind::Document) | Some(NodeKind::Element(_)) => doc.text_content_deep(id),
-        Some(NodeKind::Text(t)) => t.clone(),
-        Some(NodeKind::CData(t)) => t.clone(),
-        Some(NodeKind::Comment(c)) => c.clone(),
-        Some(NodeKind::ProcessingInstruction(pi)) => pi.data.clone().unwrap_or_default(),
-        Some(NodeKind::Attribute(_, v)) => v.clone(),
+        Some(NodeKind::Text(t)) => t.to_string(),
+        Some(NodeKind::CData(t)) => t.to_string(),
+        Some(NodeKind::Comment(c)) => c.to_string(),
+        Some(NodeKind::ProcessingInstruction(pi)) => {
+            pi.data.as_ref().map(|d| d.to_string()).unwrap_or_default()
+        }
+        Some(NodeKind::Attribute(_, v)) => v.to_string(),
         None => String::new(),
     }
 }
@@ -144,7 +146,12 @@ impl XPathEvaluator {
     }
 
     /// Evaluate an XPath expression from the given context node.
-    pub fn evaluate(&self, doc: &Document, context: NodeId, expr: &str) -> XmlResult<XPathValue> {
+    pub fn evaluate(
+        &self,
+        doc: &Document<'_>,
+        context: NodeId,
+        expr: &str,
+    ) -> XmlResult<XPathValue> {
         let tokens = tokenize(expr)?;
         let mut parser = XPathParser::new(&tokens);
         let ast = parser.parse_expr()?;
@@ -161,7 +168,7 @@ impl XPathEvaluator {
     /// Convenience: evaluate and return the resulting node set.
     pub fn select_nodes(
         &self,
-        doc: &Document,
+        doc: &Document<'_>,
         context: NodeId,
         expr: &str,
     ) -> XmlResult<Vec<NodeId>> {
@@ -636,9 +643,6 @@ impl<'a> XPathParser<'a> {
         loop {
             match self.peek() {
                 Some(Token::Star) => {
-                    // Only treat as multiply if left is not a step
-                    // This is context-dependent; for simplicity, check if there's
-                    // something on the left that could be a number/expression
                     self.advance();
                     let right = self.parse_unary_expr()?;
                     left = Expr::Mul(Box::new(left), Box::new(right));
@@ -894,11 +898,11 @@ fn parse_axis_name(name: &str) -> XmlResult<Axis> {
 
 // ─── XPath Evaluator ───────────────────────────────────
 
-struct EvalContext<'a> {
+struct EvalContext<'a, 'b> {
     node: NodeId,
     position: usize,
     size: usize,
-    doc: &'a Document,
+    doc: &'a Document<'b>,
     namespaces: &'a HashMap<String, String>,
 }
 
@@ -1012,10 +1016,9 @@ fn evaluate_expr(expr: &Expr, ctx: &EvalContext) -> XmlResult<XPathValue> {
 }
 
 /// XPath equality comparison (handles node-set vs string/number/boolean).
-fn xpath_equal(left: &XPathValue, right: &XPathValue, doc: &Document) -> bool {
+fn xpath_equal(left: &XPathValue, right: &XPathValue, doc: &Document<'_>) -> bool {
     match (left, right) {
         (XPathValue::NodeSet(ls), XPathValue::NodeSet(rs)) => {
-            // Two node-sets: true if any pair of string-values are equal
             for &l in ls {
                 let lv = string_value_of_node(doc, l);
                 for &r in rs {
@@ -1108,7 +1111,7 @@ fn apply_predicate(pred: &Expr, nodes: &[NodeId], ctx: &EvalContext) -> XmlResul
     Ok(result)
 }
 
-fn select_axis(axis: &Axis, node: NodeId, doc: &Document) -> Vec<NodeId> {
+fn select_axis(axis: &Axis, node: NodeId, doc: &Document<'_>) -> Vec<NodeId> {
     match axis {
         Axis::Child => doc.children(node),
         Axis::Descendant => doc.descendants(node),
@@ -1144,37 +1147,30 @@ fn select_axis(axis: &Axis, node: NodeId, doc: &Document) -> Vec<NodeId> {
             result
         }
         Axis::Following => {
-            // All nodes after this node in document order
             collect_following(doc, node)
         }
         Axis::Preceding => {
-            // All nodes before this node in document order
             collect_preceding(doc, node)
         }
         Axis::Attribute => {
-            // Return pre-allocated virtual attribute nodes for this element.
             doc.get_attribute_nodes(node).to_vec()
         }
         Axis::Namespace => {
-            // Namespace nodes are virtual; return empty.
             Vec::new()
         }
     }
 }
 
-fn collect_following(doc: &Document, node: NodeId) -> Vec<NodeId> {
+fn collect_following(doc: &Document<'_>, node: NodeId) -> Vec<NodeId> {
     let mut result = Vec::new();
-    // Go to next sibling or ancestor's next sibling
     let mut current = node;
     loop {
         if let Some(next) = doc.next_sibling(current) {
             result.push(next);
             result.extend(doc.descendants(next));
             current = next;
-            // Continue to get more siblings
             continue;
         }
-        // No more siblings, go up
         if let Some(parent) = doc.parent(current) {
             current = parent;
         } else {
@@ -1184,12 +1180,11 @@ fn collect_following(doc: &Document, node: NodeId) -> Vec<NodeId> {
     result
 }
 
-fn collect_preceding(doc: &Document, node: NodeId) -> Vec<NodeId> {
+fn collect_preceding(doc: &Document<'_>, node: NodeId) -> Vec<NodeId> {
     let mut result = Vec::new();
     let mut current = node;
     loop {
         if let Some(prev) = doc.previous_sibling(current) {
-            // Add descendants in reverse, then the sibling itself
             let descs = doc.descendants(prev);
             for d in descs.into_iter().rev() {
                 result.push(d);
@@ -1200,7 +1195,6 @@ fn collect_preceding(doc: &Document, node: NodeId) -> Vec<NodeId> {
         }
         if let Some(parent) = doc.parent(current) {
             if doc.parent(parent).is_some() {
-                // Don't include ancestors
                 current = parent;
             } else {
                 break;
@@ -1215,7 +1209,7 @@ fn collect_preceding(doc: &Document, node: NodeId) -> Vec<NodeId> {
 fn matches_node_test(
     test: &NodeTest,
     node: NodeId,
-    doc: &Document,
+    doc: &Document<'_>,
     namespaces: &HashMap<String, String>,
 ) -> bool {
     match test {
@@ -1224,26 +1218,26 @@ fn matches_node_test(
             Some(NodeKind::Element(_)) | Some(NodeKind::Attribute(_, _))
         ),
         NodeTest::Name(name) => match doc.node_kind(node) {
-            Some(NodeKind::Element(e)) => e.name.local_name == *name,
-            Some(NodeKind::Attribute(qn, _)) => qn.local_name == *name,
+            Some(NodeKind::Element(e)) => *e.name.local_name == *name,
+            Some(NodeKind::Attribute(qn, _)) => *qn.local_name == *name,
             _ => false,
         },
         NodeTest::PrefixedName(prefix, local) => match doc.node_kind(node) {
             Some(NodeKind::Element(e)) => {
                 if let Some(expected_ns) = namespaces.get(prefix) {
-                    e.name.local_name == *local
+                    *e.name.local_name == *local
                         && e.name.namespace_uri.as_deref() == Some(expected_ns.as_str())
                 } else {
-                    // Fall back to matching by prefix
-                    e.name.prefix.as_deref() == Some(prefix.as_str()) && e.name.local_name == *local
+                    e.name.prefix.as_deref() == Some(prefix.as_str())
+                        && *e.name.local_name == *local
                 }
             }
             Some(NodeKind::Attribute(qn, _)) => {
                 if let Some(expected_ns) = namespaces.get(prefix) {
-                    qn.local_name == *local
+                    *qn.local_name == *local
                         && qn.namespace_uri.as_deref() == Some(expected_ns.as_str())
                 } else {
-                    qn.prefix.as_deref() == Some(prefix.as_str()) && qn.local_name == *local
+                    qn.prefix.as_deref() == Some(prefix.as_str()) && *qn.local_name == *local
                 }
             }
             _ => false,
@@ -1303,9 +1297,9 @@ fn evaluate_function(name: &str, args: &[Expr], ctx: &EvalContext) -> XmlResult<
                 }
             };
             let name = match ctx.doc.node_kind(node) {
-                Some(NodeKind::Element(e)) => e.name.local_name.clone(),
-                Some(NodeKind::Attribute(qn, _)) => qn.local_name.clone(),
-                Some(NodeKind::ProcessingInstruction(pi)) => pi.target.clone(),
+                Some(NodeKind::Element(e)) => e.name.local_name.to_string(),
+                Some(NodeKind::Attribute(qn, _)) => qn.local_name.to_string(),
+                Some(NodeKind::ProcessingInstruction(pi)) => pi.target.to_string(),
                 _ => String::new(),
             };
             Ok(XPathValue::String(name))
@@ -1321,8 +1315,12 @@ fn evaluate_function(name: &str, args: &[Expr], ctx: &EvalContext) -> XmlResult<
                 }
             };
             let uri = match ctx.doc.node_kind(node) {
-                Some(NodeKind::Element(e)) => e.name.namespace_uri.clone().unwrap_or_default(),
-                Some(NodeKind::Attribute(qn, _)) => qn.namespace_uri.clone().unwrap_or_default(),
+                Some(NodeKind::Element(e)) => {
+                    e.name.namespace_uri.as_deref().unwrap_or("").to_string()
+                }
+                Some(NodeKind::Attribute(qn, _)) => {
+                    qn.namespace_uri.as_deref().unwrap_or("").to_string()
+                }
                 _ => String::new(),
             };
             Ok(XPathValue::String(uri))
@@ -1338,9 +1336,9 @@ fn evaluate_function(name: &str, args: &[Expr], ctx: &EvalContext) -> XmlResult<
                 }
             };
             let name = match ctx.doc.node_kind(node) {
-                Some(NodeKind::Element(e)) => e.name.prefixed_name(),
-                Some(NodeKind::Attribute(qn, _)) => qn.prefixed_name(),
-                Some(NodeKind::ProcessingInstruction(pi)) => pi.target.clone(),
+                Some(NodeKind::Element(e)) => e.name.prefixed_name().into_owned(),
+                Some(NodeKind::Attribute(qn, _)) => qn.prefixed_name().into_owned(),
+                Some(NodeKind::ProcessingInstruction(pi)) => pi.target.to_string(),
                 _ => String::new(),
             };
             Ok(XPathValue::String(name))
@@ -1529,7 +1527,6 @@ fn evaluate_function(name: &str, args: &[Expr], ctx: &EvalContext) -> XmlResult<
             Ok(XPathValue::Number(n.round()))
         }
         "id" => {
-            // Simple implementation: find elements with matching ID attributes
             if args.len() != 1 {
                 return Err(XmlError::xpath("id() takes exactly 1 argument"));
             }
@@ -1543,12 +1540,16 @@ fn evaluate_function(name: &str, args: &[Expr], ctx: &EvalContext) -> XmlResult<
     }
 }
 
-fn collect_elements_with_id(doc: &Document, node: NodeId, ids: &[&str], result: &mut Vec<NodeId>) {
+fn collect_elements_with_id(
+    doc: &Document<'_>,
+    node: NodeId,
+    ids: &[&str],
+    result: &mut Vec<NodeId>,
+) {
     if let Some(NodeKind::Element(e)) = doc.node_kind(node) {
-        // Check for "id" or "ID" attribute
         for attr in &e.attributes {
-            if (attr.name.local_name == "id" || attr.name.local_name == "ID")
-                && ids.contains(&attr.value.as_str())
+            if (&*attr.name.local_name == "id" || &*attr.name.local_name == "ID")
+                && ids.contains(&&*attr.value)
             {
                 result.push(node);
                 break;
@@ -1562,7 +1563,6 @@ fn collect_elements_with_id(doc: &Document, node: NodeId, ids: &[&str], result: 
 
 /// Remove duplicate NodeIds and maintain document order.
 fn dedup_document_order(mut nodes: Vec<NodeId>) -> Vec<NodeId> {
-    // NodeId(usize) - document order is by arena index
     nodes.sort_by_key(|n| n.0);
     nodes.dedup();
     nodes

@@ -15,7 +15,7 @@ use super::types::{NamespaceConstraint, ProcessContents};
 /// given namespace (or absence thereof) is allowed by the constraint.
 pub(crate) fn wildcard_allows_namespace(
     constraint: &NamespaceConstraint,
-    ns: &Option<String>,
+    ns: Option<&str>,
 ) -> bool {
     match constraint {
         NamespaceConstraint::Any => true,
@@ -29,7 +29,7 @@ pub(crate) fn wildcard_allows_namespace(
             }
         }
         NamespaceConstraint::Local => ns.is_none(),
-        NamespaceConstraint::TargetNamespace(target_ns) => ns == target_ns,
+        NamespaceConstraint::TargetNamespace(target_ns) => ns == target_ns.as_deref(),
         NamespaceConstraint::List(uris) => match ns {
             None => uris.iter().any(|u| u == "##local"),
             Some(uri) => uris.iter().any(|u| u == uri),

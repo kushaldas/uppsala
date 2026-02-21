@@ -217,7 +217,7 @@ impl XsdValidator {
                     continue;
                 }
 
-                match local.as_str() {
+                match &**local {
                     "element" => {
                         let decl = parse_element_decl(
                             schema_doc,

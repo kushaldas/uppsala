@@ -56,7 +56,7 @@ impl XsdValidator {
                     if match_count > 1 && constraint.kind == IdentityConstraintKind::Key {
                         let elem_name = doc
                             .element(sel_node)
-                            .map(|e| e.name.local_name.as_str())
+                            .map(|e| &*e.name.local_name)
                             .unwrap_or("?");
                         errors.push(ValidationError {
                             message: format!(
@@ -85,7 +85,7 @@ impl XsdValidator {
                     if !all_present {
                         let elem_name = doc
                             .element(sel_node)
-                            .map(|e| e.name.local_name.as_str())
+                            .map(|e| &*e.name.local_name)
                             .unwrap_or("?");
                         errors.push(ValidationError {
                             message: format!(
@@ -450,7 +450,7 @@ fn idc_evaluate_field(
                 if attr.name.local_name == attr_name {
                     count += 1;
                     if value.is_none() {
-                        value = Some(attr.value.clone());
+                        value = Some(attr.value.to_string());
                     }
                 }
             }
@@ -532,8 +532,8 @@ fn idc_resolve_prefix(doc: &Document, node: NodeId, prefix: &str) -> Option<Stri
     let mut current = Some(node);
     while let Some(n) = current {
         if let Some(elem) = doc.element(n) {
-            if let Some(uri) = elem.namespace_declarations.get(prefix) {
-                return Some(uri.clone());
+            if let Some((_, uri)) = elem.namespace_declarations.iter().find(|(p, _)| &**p == prefix) {
+                return Some(uri.to_string());
             }
         }
         current = doc.parent(n);

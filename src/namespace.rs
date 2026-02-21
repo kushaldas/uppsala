@@ -6,6 +6,8 @@
 //! `xmlns` declarations a new scope is pushed, and when the element closes
 //! the scope is popped.
 
+use std::borrow::Cow;
+
 use crate::dom::{Document, NodeId, NodeKind};
 
 /// Well-known namespace URIs.
@@ -14,12 +16,12 @@ pub const XMLNS_NAMESPACE: &str = "http://www.w3.org/2000/xmlns/";
 
 /// A single namespace scope that maps prefixes to namespace URIs.
 #[derive(Debug, Clone)]
-struct NamespaceScope {
+struct NamespaceScope<'a> {
     /// Maps prefix (empty string for default namespace) to namespace URI.
-    bindings: Vec<(String, String)>,
+    bindings: Vec<(Cow<'a, str>, Cow<'a, str>)>,
 }
 
-impl NamespaceScope {
+impl<'a> NamespaceScope<'a> {
     fn new() -> Self {
         NamespaceScope {
             bindings: Vec::new(),
@@ -33,20 +35,20 @@ impl NamespaceScope {
 /// `http://www.w3.org/XML/1998/namespace` and the `xmlns` prefix bound to
 /// `http://www.w3.org/2000/xmlns/`.
 #[derive(Debug, Clone)]
-pub struct NamespaceResolver {
-    scopes: Vec<NamespaceScope>,
+pub struct NamespaceResolver<'a> {
+    scopes: Vec<NamespaceScope<'a>>,
 }
 
-impl NamespaceResolver {
+impl<'a> NamespaceResolver<'a> {
     /// Create a new resolver with the built-in `xml` and `xmlns` bindings.
     pub fn new() -> Self {
         let mut root_scope = NamespaceScope::new();
         root_scope
             .bindings
-            .push(("xml".to_string(), XML_NAMESPACE.to_string()));
+            .push((Cow::Borrowed("xml"), Cow::Borrowed(XML_NAMESPACE)));
         root_scope
             .bindings
-            .push(("xmlns".to_string(), XMLNS_NAMESPACE.to_string()));
+            .push((Cow::Borrowed("xmlns"), Cow::Borrowed(XMLNS_NAMESPACE)));
         NamespaceResolver {
             scopes: vec![root_scope],
         }
@@ -67,7 +69,7 @@ impl NamespaceResolver {
     /// Declare a namespace binding in the current scope.
     ///
     /// `prefix` is the empty string for a default namespace declaration.
-    pub fn declare(&mut self, prefix: String, uri: String) {
+    pub fn declare(&mut self, prefix: Cow<'a, str>, uri: Cow<'a, str>) {
         if let Some(scope) = self.scopes.last_mut() {
             scope.bindings.push((prefix, uri));
         }
@@ -76,11 +78,12 @@ impl NamespaceResolver {
     /// Resolve a prefixed name to a namespace URI.
     ///
     /// Searches from the innermost scope outward.
-    pub fn resolve(&self, prefix: &str) -> Option<&str> {
+    /// Returns the Cow so callers can clone cheaply if it's borrowed.
+    pub fn resolve(&self, prefix: &str) -> Option<&Cow<'a, str>> {
         for scope in self.scopes.iter().rev() {
             for (p, uri) in scope.bindings.iter().rev() {
-                if p == prefix {
-                    return Some(uri.as_str());
+                if **p == *prefix {
+                    return Some(uri);
                 }
             }
         }
@@ -88,14 +91,14 @@ impl NamespaceResolver {
     }
 
     /// Resolve the default namespace (empty prefix).
-    pub fn resolve_default(&self) -> Option<&str> {
+    pub fn resolve_default(&self) -> Option<&Cow<'a, str>> {
         for scope in self.scopes.iter().rev() {
             for (p, uri) in scope.bindings.iter().rev() {
                 if p.is_empty() {
                     if uri.is_empty() {
                         return None; // xmlns="" undeclares the default namespace
                     }
-                    return Some(uri.as_str());
+                    return Some(uri);
                 }
             }
         }
@@ -108,8 +111,8 @@ impl NamespaceResolver {
         let mut seen_prefixes = std::collections::HashSet::new();
         for scope in self.scopes.iter().rev() {
             for (p, uri) in scope.bindings.iter().rev() {
-                if seen_prefixes.insert(p.as_str()) {
-                    result.push((p.as_str(), uri.as_str()));
+                if seen_prefixes.insert(&**p) {
+                    result.push((&**p, &**uri));
                 }
             }
         }
@@ -122,7 +125,7 @@ impl NamespaceResolver {
     }
 }
 
-impl Default for NamespaceResolver {
+impl<'a> Default for NamespaceResolver<'a> {
     fn default() -> Self {
         Self::new()
     }
@@ -130,7 +133,7 @@ impl Default for NamespaceResolver {
 
 /// Build a `NamespaceResolver` from a document by walking from a node up to
 /// the root, collecting all in-scope namespace declarations.
-pub fn build_resolver_for_node(doc: &Document, node_id: NodeId) -> NamespaceResolver {
+pub fn build_resolver_for_node<'a>(doc: &'a Document<'a>, node_id: NodeId) -> NamespaceResolver<'a> {
     let mut resolver = NamespaceResolver::new();
 
     // Collect ancestor chain (from root down to the node)
@@ -164,11 +167,11 @@ mod tests {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
         resolver.declare(
-            "soap".to_string(),
-            "http://www.w3.org/2003/05/soap-envelope".to_string(),
+            Cow::Owned("soap".to_string()),
+            Cow::Owned("http://www.w3.org/2003/05/soap-envelope".to_string()),
         );
         assert_eq!(
-            resolver.resolve("soap"),
+            resolver.resolve("soap").map(|c| &**c),
             Some("http://www.w3.org/2003/05/soap-envelope")
         );
     }
@@ -177,9 +180,9 @@ mod tests {
     fn test_resolve_default_namespace() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare(String::new(), "http://example.com/default".to_string());
+        resolver.declare(Cow::Owned(String::new()), Cow::Owned("http://example.com/default".to_string()));
         assert_eq!(
-            resolver.resolve_default(),
+            resolver.resolve_default().map(|c| &**c),
             Some("http://example.com/default")
         );
     }
@@ -188,26 +191,26 @@ mod tests {
     fn test_scope_shadowing() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare("ns".to_string(), "http://first.com".to_string());
-        assert_eq!(resolver.resolve("ns"), Some("http://first.com"));
+        resolver.declare(Cow::Owned("ns".to_string()), Cow::Owned("http://first.com".to_string()));
+        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://first.com"));
 
         resolver.push_scope();
-        resolver.declare("ns".to_string(), "http://second.com".to_string());
-        assert_eq!(resolver.resolve("ns"), Some("http://second.com"));
+        resolver.declare(Cow::Owned("ns".to_string()), Cow::Owned("http://second.com".to_string()));
+        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://second.com"));
 
         resolver.pop_scope();
-        assert_eq!(resolver.resolve("ns"), Some("http://first.com"));
+        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://first.com"));
     }
 
     #[test]
     fn test_undeclare_default_namespace() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare(String::new(), "http://example.com".to_string());
-        assert_eq!(resolver.resolve_default(), Some("http://example.com"));
+        resolver.declare(Cow::Owned(String::new()), Cow::Owned("http://example.com".to_string()));
+        assert_eq!(resolver.resolve_default().map(|c| &**c), Some("http://example.com"));
 
         resolver.push_scope();
-        resolver.declare(String::new(), String::new());
+        resolver.declare(Cow::Owned(String::new()), Cow::Owned(String::new()));
         assert_eq!(resolver.resolve_default(), None);
     }
 
@@ -215,7 +218,7 @@ mod tests {
     fn test_builtin_xml_prefix() {
         let resolver = NamespaceResolver::new();
         assert_eq!(
-            resolver.resolve("xml"),
+            resolver.resolve("xml").map(|c| &**c),
             Some("http://www.w3.org/XML/1998/namespace")
         );
     }

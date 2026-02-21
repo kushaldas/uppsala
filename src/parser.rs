@@ -4,6 +4,7 @@
 //! and builds a [`Document`] tree. It enforces the well-formedness constraints
 //! defined in the XML 1.0 specification.
 
+use std::borrow::Cow;
 use std::collections::HashMap;
 
 use crate::dom::{
@@ -14,6 +15,10 @@ use crate::namespace::NamespaceResolver;
 
 /// A map of general entity names to their replacement text.
 type EntityMap = HashMap<String, String>;
+
+/// Cache of already-validated entity expansion results.
+/// Key: entity name, Value: expanded text.
+type EntityCache = HashMap<String, String>;
 
 /// The XML 1.0 parser.
 pub struct Parser {
@@ -35,15 +40,22 @@ impl Parser {
     }
 
     /// Parse an XML string into a [`Document`].
-    pub fn parse(&self, input: &str) -> XmlResult<Document> {
+    pub fn parse<'a>(&self, input: &'a str) -> XmlResult<Document<'a>> {
         let mut cursor = Cursor::new(input);
         let mut doc = Document::new();
+        doc.input = input;
+
+        // Pre-allocate based on input size estimates
+        let bytes = input.as_bytes();
+        let node_estimate = bytes.iter().filter(|&&b| b == b'<').count();
+        doc.nodes.reserve(node_estimate);
         let mut ns_resolver = if self.namespace_aware {
             Some(NamespaceResolver::new())
         } else {
             None
         };
         let mut entities = EntityMap::new();
+        let mut entity_cache = EntityCache::new();
 
         // Skip BOM if present
         cursor.skip_bom();
@@ -71,32 +83,28 @@ impl Parser {
             }
             if cursor.starts_with("<!--") {
                 let comment = parse_comment(&mut cursor)?;
-                let id = doc.alloc_node(NodeKind::Comment(comment), cursor.line, cursor.column);
-                doc.append_child(root_id, id);
+                let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+                doc.append_child_unchecked(root_id, id);
             } else if cursor.starts_with("<?") {
                 let pi = parse_pi(&mut cursor)?;
-                let id = doc.alloc_node(
-                    NodeKind::ProcessingInstruction(pi),
-                    cursor.line,
-                    cursor.column,
-                );
-                doc.append_child(root_id, id);
+                let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+                doc.append_child_unchecked(root_id, id);
             } else if cursor.starts_with("<") {
                 if found_root {
                     return Err(XmlError::well_formedness(
                         "Only one root element is allowed",
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
-                parse_element(&mut cursor, &mut doc, root_id, &mut ns_resolver, &entities)?;
+                parse_element(&mut cursor, &mut doc, root_id, &mut ns_resolver, &entities, &mut entity_cache)?;
                 found_root = true;
             } else {
                 // Non-whitespace text outside root element
                 return Err(XmlError::well_formedness(
                     "Content found outside of root element",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
         }
@@ -121,12 +129,12 @@ impl Default for Parser {
 
 // ─── Cursor ─────────────────────────────────────────────
 
-/// A cursor over the input string that tracks position (line/column).
+/// A cursor over the input string that tracks byte position.
+/// Line/column are computed lazily from the byte position when needed
+/// (error reporting, node creation) to avoid scanning every byte for newlines.
 struct Cursor<'a> {
     input: &'a str,
     pos: usize,
-    line: usize,
-    column: usize,
 }
 
 impl<'a> Cursor<'a> {
@@ -134,8 +142,23 @@ impl<'a> Cursor<'a> {
         Cursor {
             input,
             pos: 0,
-            line: 1,
-            column: 1,
+        }
+    }
+
+    /// Compute line number (1-based) from current byte position.
+    /// Only called in error paths and node allocation, not in the hot parse loop.
+    #[inline(never)]
+    fn line(&self) -> usize {
+        self.input.as_bytes()[..self.pos].iter().filter(|&&b| b == b'\n').count() + 1
+    }
+
+    /// Compute column number (1-based) from current byte position.
+    #[inline(never)]
+    fn column(&self) -> usize {
+        let bytes = &self.input.as_bytes()[..self.pos];
+        match bytes.iter().rposition(|&b| b == b'\n') {
+            Some(nl_pos) => self.pos - nl_pos,
+            None => self.pos + 1,
         }
     }
 
@@ -151,61 +174,86 @@ impl<'a> Cursor<'a> {
         self.remaining().chars().next()
     }
 
+    /// Peek at the current byte without creating a char iterator.
+    /// Much faster than peek() for ASCII-dominated XML content.
+    #[inline(always)]
+    fn peek_byte(&self) -> Option<u8> {
+        self.input.as_bytes().get(self.pos).copied()
+    }
+
     fn starts_with(&self, prefix: &str) -> bool {
         self.remaining().starts_with(prefix)
     }
 
+    /// Advance by n bytes.
+    #[inline(always)]
     fn advance(&mut self, n: usize) {
-        let bytes = &self.input.as_bytes()[self.pos..self.pos + n];
-        for &b in bytes {
-            if b == b'\n' {
-                self.line += 1;
-                self.column = 1;
-            } else {
-                self.column += 1;
-            }
-        }
+        self.pos += n;
+    }
+
+    /// Advance by n bytes (alias for advance, kept for compatibility).
+    #[inline(always)]
+    fn advance_no_newlines(&mut self, n: usize) {
         self.pos += n;
     }
 
     fn advance_char(&mut self) -> Option<char> {
         let c = self.peek()?;
-        self.advance(c.len_utf8());
+        self.pos += c.len_utf8();
         Some(c)
     }
 
     fn skip_bom(&mut self) {
         if self.remaining().starts_with('\u{FEFF}') {
-            self.advance('\u{FEFF}'.len_utf8());
+            self.pos += '\u{FEFF}'.len_utf8();
         }
     }
 
     fn skip_whitespace(&mut self) {
-        while let Some(c) = self.peek() {
-            if is_xml_whitespace(c) {
-                self.advance_char();
-            } else {
-                break;
+        let bytes = &self.input.as_bytes()[self.pos..];
+        let mut i = 0;
+        while i < bytes.len() {
+            match bytes[i] {
+                b' ' | b'\t' | b'\n' | b'\r' => i += 1,
+                _ => break,
             }
         }
+        self.pos += i;
     }
 
     fn expect(&mut self, expected: &str) -> XmlResult<()> {
         if self.starts_with(expected) {
-            self.advance(expected.len());
+            // Most expected strings are short ASCII with no newlines (e.g. "<", ">", "/>", "=")
+            self.advance_no_newlines(expected.len());
             Ok(())
         } else {
             Err(XmlError::parse(
                 format!("Expected '{}'", expected),
-                self.line,
-                self.column,
+                self.line(),
+                self.column(),
             ))
         }
     }
 
-    /// Read until the given delimiter is found. Returns the text before the delimiter.
-    /// The delimiter is consumed.
-    fn read_until(&mut self, delimiter: &str) -> XmlResult<String> {
+    /// Read until the given delimiter is found. Returns the text before the delimiter
+    /// as a borrowed slice. The delimiter is consumed.
+    fn read_until(&mut self, delimiter: &str) -> XmlResult<Cow<'a, str>> {
+        if let Some(idx) = self.remaining().find(delimiter) {
+            let text = &self.input[self.pos..self.pos + idx];
+            self.advance(idx + delimiter.len());
+            Ok(Cow::Borrowed(text))
+        } else {
+            Err(XmlError::parse(
+                format!("Expected '{}'", delimiter),
+                self.line(),
+                self.column(),
+            ))
+        }
+    }
+
+    /// Read until the given delimiter is found. Returns owned String.
+    /// Used for DTD parsing where we don't need zero-copy.
+    fn read_until_owned(&mut self, delimiter: &str) -> XmlResult<String> {
         if let Some(idx) = self.remaining().find(delimiter) {
             let text = self.remaining()[..idx].to_string();
             self.advance(idx + delimiter.len());
@@ -213,8 +261,8 @@ impl<'a> Cursor<'a> {
         } else {
             Err(XmlError::parse(
                 format!("Expected '{}'", delimiter),
-                self.line,
-                self.column,
+                self.line(),
+                self.column(),
             ))
         }
     }
@@ -260,31 +308,86 @@ fn is_xml_char(c: char) -> bool {
 
 // ─── Parsing functions ──────────────────────────────────
 
-/// Parse an XML Name.
-fn parse_name(cursor: &mut Cursor) -> XmlResult<String> {
-    let mut name = String::new();
-    match cursor.peek() {
-        Some(c) if is_name_start_char(c) => {
-            cursor.advance_char();
-            name.push(c);
-        }
-        _ => {
+/// Check if a byte is a valid ASCII XML name start character.
+#[inline(always)]
+fn is_ascii_name_start(b: u8) -> bool {
+    matches!(b, b'A'..=b'Z' | b'a'..=b'z' | b'_' | b':')
+}
+
+/// Check if a byte is a valid ASCII XML name character.
+#[inline(always)]
+fn is_ascii_name_char(b: u8) -> bool {
+    matches!(b, b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'_' | b':' | b'-' | b'.')
+}
+
+/// Parse an XML Name. Returns a borrowed slice (names never contain entities).
+/// Uses fast ASCII byte scanning with fallback to Unicode for non-ASCII.
+fn parse_name<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
+    let start = cursor.pos;
+    let bytes = cursor.input.as_bytes();
+
+    // Validate first character
+    let &first = bytes.get(start).ok_or_else(|| {
+        XmlError::parse("Expected XML name", cursor.line(), cursor.column())
+    })?;
+
+    let mut pos = if first < 0x80 {
+        if !is_ascii_name_start(first) {
             return Err(XmlError::parse(
                 "Expected XML name",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
-    }
-    while let Some(c) = cursor.peek() {
-        if is_name_char(c) {
-            cursor.advance_char();
-            name.push(c);
+        start + 1
+    } else {
+        let c = cursor.input[start..].chars().next().unwrap();
+        if !is_name_start_char(c) {
+            return Err(XmlError::parse(
+                "Expected XML name",
+                cursor.line(),
+                cursor.column(),
+            ));
+        }
+        start + c.len_utf8()
+    };
+
+    // Scan remaining characters (ASCII fast path)
+    while pos < bytes.len() {
+        let b = bytes[pos];
+        if b < 0x80 {
+            if is_ascii_name_char(b) {
+                pos += 1;
+            } else {
+                break;
+            }
         } else {
-            break;
+            let c = cursor.input[pos..].chars().next().unwrap();
+            if is_name_char(c) {
+                pos += c.len_utf8();
+            } else {
+                break;
+            }
         }
     }
-    Ok(name)
+
+    // Names are almost always ASCII, so no newlines — use advance_no_newlines
+    cursor.advance_no_newlines(pos - start);
+    Ok(Cow::Borrowed(&cursor.input[start..pos]))
+}
+
+/// Convert a substring slice of a Cow into a Cow.
+/// If the source is Borrowed, the result is Borrowed; otherwise Owned.
+#[inline]
+fn borrow_from_cow<'a>(source: &Cow<'a, str>, slice: &str) -> Cow<'a, str> {
+    match source {
+        Cow::Borrowed(s) => {
+            // slice is a sub-slice of s, so we can compute the offset
+            let start = slice.as_ptr() as usize - s.as_ptr() as usize;
+            Cow::Borrowed(&s[start..start + slice.len()])
+        }
+        Cow::Owned(_) => Cow::Owned(slice.to_string()),
+    }
 }
 
 /// Split a name into prefix and local parts.
@@ -304,15 +407,15 @@ fn split_qname(name: &str) -> (Option<&str>, &str) {
 }
 
 /// Parse an XML declaration (`<?xml ... ?>`).
-fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
+fn parse_xml_declaration<'a>(cursor: &mut Cursor<'a>) -> XmlResult<XmlDeclaration<'a>> {
     cursor.expect("<?xml")?;
 
     // Must have whitespace after "<?xml"
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::parse(
             "Expected whitespace after '<?xml'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
@@ -325,11 +428,11 @@ fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
     let version = parse_quoted_value(cursor)?;
 
     // Validate version: must be "1.0" or "1.1" (XML 1.0 §2.8 production [26])
-    if version != "1.0" && version != "1.1" {
+    if &*version != "1.0" && &*version != "1.1" {
         return Err(XmlError::well_formedness(
             format!("Invalid XML version: '{}'", version),
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
 
@@ -343,8 +446,8 @@ fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
         if !has_ws_after_version {
             return Err(XmlError::parse(
                 "Expected whitespace before 'encoding'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.expect("encoding")?;
@@ -356,8 +459,8 @@ fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
         if !is_valid_encoding_name(&enc) {
             return Err(XmlError::well_formedness(
                 format!("Invalid encoding name: '{}'", enc),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         encoding = Some(enc);
@@ -368,8 +471,8 @@ fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
             if !has_ws_after_encoding {
                 return Err(XmlError::parse(
                     "Expected whitespace before 'standalone'",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             let val = parse_standalone(cursor)?;
@@ -379,8 +482,8 @@ fn parse_xml_declaration(cursor: &mut Cursor) -> XmlResult<XmlDeclaration> {
         if !has_ws_after_version {
             return Err(XmlError::parse(
                 "Expected whitespace before 'standalone'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         let val = parse_standalone(cursor)?;
@@ -423,109 +526,190 @@ fn parse_standalone(cursor: &mut Cursor) -> XmlResult<bool> {
     cursor.expect("=")?;
     cursor.skip_whitespace();
     let val = parse_quoted_value(cursor)?;
-    if val != "yes" && val != "no" {
+    if &*val != "yes" && &*val != "no" {
         return Err(XmlError::well_formedness(
             format!(
                 "Invalid standalone value: '{}' (must be 'yes' or 'no')",
                 val
             ),
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
-    Ok(val == "yes")
+    Ok(&*val == "yes")
 }
 
 /// Parse a quoted attribute value (handles both `"` and `'`).
-fn parse_quoted_value(cursor: &mut Cursor) -> XmlResult<String> {
-    parse_quoted_value_with_entities(cursor, &HashMap::new())
+/// Uses lazy allocation: returns Borrowed if no entities/special chars found.
+fn parse_quoted_value<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
+    parse_quoted_value_with_entities(cursor, &HashMap::new(), &mut EntityCache::new())
 }
 
 /// Parse a quoted attribute value with entity resolution.
-fn parse_quoted_value_with_entities(
-    cursor: &mut Cursor,
+/// Returns Cow::Borrowed when no entity/char references are encountered,
+/// Cow::Owned when allocation is needed.
+fn parse_quoted_value_with_entities<'a>(
+    cursor: &mut Cursor<'a>,
     entities: &EntityMap,
-) -> XmlResult<String> {
+    entity_cache: &mut EntityCache,
+) -> XmlResult<Cow<'a, str>> {
     let quote = match cursor.peek() {
         Some('"') => '"',
         Some('\'') => '\'',
         _ => {
             return Err(XmlError::parse(
                 "Expected quote character",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
     cursor.advance_char();
 
-    let mut value = String::new();
+    let start = cursor.pos;
+    // Fast path: scan ahead for the closing quote without encountering '&' or '<'
+    let mut fast_end = cursor.pos;
+    let bytes = cursor.input.as_bytes();
+    let qb = quote as u8;
+    let mut has_non_ascii_or_control = false;
+    while fast_end < bytes.len() {
+        let b = bytes[fast_end];
+        if b == qb {
+            // Clean: no entities, return borrowed slice
+            let text = &cursor.input[start..fast_end];
+            // Validate XML characters if we saw non-ASCII or control bytes
+            if has_non_ascii_or_control {
+                for c in text.chars() {
+                    if !is_xml_char(c) {
+                        return Err(XmlError::well_formedness(
+                            format!("Invalid XML character U+{:04X}", c as u32),
+                            cursor.line(),
+                            cursor.column(),
+                        ));
+                    }
+                }
+            }
+            cursor.pos = fast_end + 1; // +1 for closing quote
+            return Ok(Cow::Borrowed(text));
+        }
+        if b == b'&' || b == b'<' {
+            break; // Need slow path
+        }
+        // Track non-ASCII bytes (could contain U+FFFE/U+FFFF) and invalid control chars
+        if b >= 0x80 || (b < 0x20 && b != 0x09 && b != 0x0A && b != 0x0D) {
+            has_non_ascii_or_control = true;
+        }
+        fast_end += 1;
+    }
+    if fast_end >= bytes.len() {
+        return Err(XmlError::UnexpectedEof);
+    }
+
+    // Slow path: copy what we have so far, then use bulk scanning between specials
+    let mut value = String::from(&cursor.input[start..fast_end]);
+    cursor.advance(fast_end - cursor.pos);
+
     loop {
-        match cursor.peek() {
-            None => return Err(XmlError::UnexpectedEof),
-            Some(c) if c == quote => {
-                cursor.advance_char();
+        // Bulk scan for next special character in the slow path
+        let bytes = cursor.input.as_bytes();
+        let scan_start = cursor.pos;
+        let mut scan_pos = scan_start;
+        while scan_pos < bytes.len() {
+            let b = bytes[scan_pos];
+            if b == qb || b == b'&' || b == b'<' {
                 break;
             }
-            Some('&') => {
-                let resolved = parse_reference_with_entities(cursor, entities)?;
-                value.push_str(&resolved);
-            }
-            Some('<') => {
-                return Err(XmlError::well_formedness(
-                    "'<' not allowed in attribute values",
-                    cursor.line,
-                    cursor.column,
-                ));
-            }
-            Some(c) => {
+            scan_pos += 1;
+        }
+        if scan_pos > scan_start {
+            // Validate and copy clean characters in bulk
+            let chunk = &cursor.input[scan_start..scan_pos];
+            for c in chunk.chars() {
                 if !is_xml_char(c) {
                     return Err(XmlError::well_formedness(
                         format!("Invalid XML character U+{:04X}", c as u32),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
-                cursor.advance_char();
-                value.push(c);
             }
+            value.push_str(chunk);
+            cursor.advance(scan_pos - scan_start);
+        }
+
+        match cursor.peek_byte() {
+            None => return Err(XmlError::UnexpectedEof),
+            Some(b) if b == qb => {
+                cursor.advance_no_newlines(1);
+                break;
+            }
+            Some(b'&') => {
+                let resolved = parse_reference_with_entities(cursor, entities, entity_cache)?;
+                value.push_str(&resolved);
+            }
+            Some(b'<') => {
+                return Err(XmlError::well_formedness(
+                    "'<' not allowed in attribute values",
+                    cursor.line(),
+                    cursor.column(),
+                ));
+            }
+            Some(_) => unreachable!(),
         }
     }
-    Ok(value)
+    Ok(Cow::Owned(value))
 }
 
 /// Parse a character or entity reference (`&amp;`, `&#x41;`, etc.).
 fn parse_reference(cursor: &mut Cursor) -> XmlResult<String> {
-    parse_reference_with_entities(cursor, &HashMap::new())
+    parse_reference_with_entities(cursor, &HashMap::new(), &mut EntityCache::new())
 }
 
 /// Parse a character or entity reference with custom entity resolution.
-fn parse_reference_with_entities(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<String> {
+fn parse_reference_with_entities(cursor: &mut Cursor, entities: &EntityMap, entity_cache: &mut EntityCache) -> XmlResult<String> {
     cursor.expect("&")?;
-    if cursor.starts_with("#x") {
-        // Hexadecimal character reference (must be lowercase 'x' per XML 1.0 [66])
-        cursor.advance(2);
-        let mut hex = String::new();
-        while let Some(c) = cursor.peek() {
-            if c == ';' {
-                cursor.advance_char();
-                break;
-            }
-            cursor.advance_char();
-            hex.push(c);
+    let after_amp = cursor.peek_byte();
+    if after_amp == Some(b'#') {
+        cursor.advance_no_newlines(1); // skip '#'
+        let is_hex = cursor.peek_byte() == Some(b'x');
+        if is_hex {
+            cursor.advance_no_newlines(1); // skip 'x'
         }
-        let code = u32::from_str_radix(&hex, 16).map_err(|_| {
-            XmlError::parse(
-                format!("Invalid hex character reference: {}", hex),
-                cursor.line,
-                cursor.column,
-            )
-        })?;
+        // Scan digits until ';' using byte scanning
+        let start = cursor.pos;
+        let bytes = cursor.input.as_bytes();
+        let mut end = start;
+        while end < bytes.len() && bytes[end] != b';' {
+            end += 1;
+        }
+        if end >= bytes.len() {
+            return Err(XmlError::UnexpectedEof);
+        }
+        let digits = &cursor.input[start..end];
+        cursor.advance_no_newlines(end - start + 1); // +1 for ';'
+
+        let code = if is_hex {
+            u32::from_str_radix(digits, 16).map_err(|_| {
+                XmlError::parse(
+                    format!("Invalid hex character reference: {}", digits),
+                    cursor.line(),
+                    cursor.column(),
+                )
+            })?
+        } else {
+            digits.parse::<u32>().map_err(|_| {
+                XmlError::parse(
+                    format!("Invalid decimal character reference: {}", digits),
+                    cursor.line(),
+                    cursor.column(),
+                )
+            })?
+        };
         let c = char::from_u32(code).ok_or_else(|| {
             XmlError::parse(
                 format!("Invalid character reference: U+{:04X}", code),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             )
         })?;
         if !is_xml_char(c) {
@@ -534,45 +718,8 @@ fn parse_reference_with_entities(cursor: &mut Cursor, entities: &EntityMap) -> X
                     "Character reference U+{:04X} is not a valid XML character",
                     code
                 ),
-                cursor.line,
-                cursor.column,
-            ));
-        }
-        Ok(c.to_string())
-    } else if cursor.starts_with("#") {
-        // Decimal character reference
-        cursor.advance(1);
-        let mut dec = String::new();
-        while let Some(c) = cursor.peek() {
-            if c == ';' {
-                cursor.advance_char();
-                break;
-            }
-            cursor.advance_char();
-            dec.push(c);
-        }
-        let code: u32 = dec.parse().map_err(|_| {
-            XmlError::parse(
-                format!("Invalid decimal character reference: {}", dec),
-                cursor.line,
-                cursor.column,
-            )
-        })?;
-        let c = char::from_u32(code).ok_or_else(|| {
-            XmlError::parse(
-                format!("Invalid character reference: U+{:04X}", code),
-                cursor.line,
-                cursor.column,
-            )
-        })?;
-        if !is_xml_char(c) {
-            return Err(XmlError::well_formedness(
-                format!(
-                    "Character reference U+{:04X} is not a valid XML character",
-                    code
-                ),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         Ok(c.to_string())
@@ -580,49 +727,48 @@ fn parse_reference_with_entities(cursor: &mut Cursor, entities: &EntityMap) -> X
         // Named entity reference
         let name = parse_name(cursor)?;
         cursor.expect(";")?;
-        match name.as_str() {
+        match &*name {
             "lt" => Ok("<".to_string()),
             "gt" => Ok(">".to_string()),
             "amp" => Ok("&".to_string()),
             "apos" => Ok("'".to_string()),
             "quot" => Ok("\"".to_string()),
             _ => {
-                if let Some(value) = entities.get(&name) {
+                // Check cache first to avoid re-expansion and re-validation
+                if let Some(cached) = entity_cache.get(&*name) {
+                    return Ok(cached.clone());
+                }
+                if let Some(value) = entities.get(&*name) {
                     // Fully expand the entity value, resolving nested entity refs.
                     let expanded = expand_entity_value(
                         value,
                         entities,
-                        &mut vec![name.clone()],
-                        cursor.line,
-                        cursor.column,
+                        &mut vec![name.to_string()],
+                        cursor.line(),
+                        cursor.column(),
                     )?;
                     // Validate well-formedness of the entity replacement text.
-                    // We use expand_entity_value_no_builtins which:
-                    // - Resolves user-defined entity references (e.g. &e2; → v)
-                    // - Keeps built-in entity references as-is (&lt; stays &lt;)
-                    // This means:
-                    // - Bare '&' from &#38; stays as bare '&' → caught as malformed
-                    // - '&lt;' stays as '&lt;' → fine, it's a valid entity reference
-                    // - '<' from &#60; stays as '<' → caught as markup, validated
                     let validation_text = expand_entity_value_no_builtins(
                         value,
                         entities,
-                        &mut vec![name.clone()],
-                        cursor.line,
-                        cursor.column,
+                        &mut vec![name.to_string()],
+                        cursor.line(),
+                        cursor.column(),
                     )?;
                     validate_entity_as_content(
                         &validation_text,
                         entities,
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     )?;
+                    // Cache the result for subsequent references
+                    entity_cache.insert(name.to_string(), expanded.clone());
                     Ok(expanded)
                 } else {
                     Err(XmlError::well_formedness(
                         format!("Unknown entity reference: &{};", name),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ))
                 }
             }
@@ -727,8 +873,6 @@ fn expand_entity_value(
 }
 
 /// Like expand_entity_value but does NOT resolve built-in entities (&lt; &gt; &amp; &apos; &quot;).
-/// This is used to check if the expanded text contains literal '<' from entity values
-/// (which is markup) vs '<' from &lt; (which is text).
 fn expand_entity_value_no_builtins(
     value: &str,
     entities: &EntityMap,
@@ -805,7 +949,6 @@ fn expand_entity_value_no_builtins(
 }
 
 /// Validate that an expanded entity value is well-formed when included as content.
-/// The entity replacement text must parse as valid content (elements, CDATA, PIs, etc.).
 fn validate_entity_as_content(
     text: &str,
     _entities: &EntityMap,
@@ -814,7 +957,6 @@ fn validate_entity_as_content(
 ) -> XmlResult<()> {
     // Wrap in a temporary element and try to parse the whole thing
     let wrapped = format!("<__entity_wrapper__>{}</__entity_wrapper__>", text);
-    // We use a basic namespace-unaware parse just to check well-formedness
     let test_parser = Parser::with_namespace_aware(false);
     match test_parser.parse(&wrapped) {
         Ok(_) => Ok(()),
@@ -827,23 +969,23 @@ fn validate_entity_as_content(
 }
 
 /// Parse a comment (`<!-- ... -->`).
-fn parse_comment(cursor: &mut Cursor) -> XmlResult<String> {
+fn parse_comment<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
     cursor.expect("<!--")?;
     let content = cursor.read_until("-->")?;
     // Well-formedness: comments must not contain "--"
     if content.contains("--") {
         return Err(XmlError::well_formedness(
             "Comments must not contain '--'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     // Well-formedness: comment must not end with '-' (i.e. "--->" is invalid)
     if content.ends_with('-') {
         return Err(XmlError::well_formedness(
             "Comments must not end with '-'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     // Validate all characters are valid XML chars
@@ -851,8 +993,8 @@ fn parse_comment(cursor: &mut Cursor) -> XmlResult<String> {
         if !is_xml_char(c) {
             return Err(XmlError::well_formedness(
                 format!("Invalid XML character U+{:04X} in comment", c as u32),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     }
@@ -860,15 +1002,15 @@ fn parse_comment(cursor: &mut Cursor) -> XmlResult<String> {
 }
 
 /// Parse a processing instruction (`<?target data?>`).
-fn parse_pi(cursor: &mut Cursor) -> XmlResult<ProcessingInstruction> {
+fn parse_pi<'a>(cursor: &mut Cursor<'a>) -> XmlResult<ProcessingInstruction<'a>> {
     cursor.expect("<?")?;
     let target = parse_name(cursor)?;
     // Well-formedness: target must not be "xml" (case-insensitive)
     if target.eq_ignore_ascii_case("xml") {
         return Err(XmlError::well_formedness(
             "Processing instruction target must not be 'xml'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     if cursor.starts_with("?>") {
@@ -879,8 +1021,8 @@ fn parse_pi(cursor: &mut Cursor) -> XmlResult<ProcessingInstruction> {
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::parse(
             "Expected whitespace after PI target",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
@@ -893,8 +1035,8 @@ fn parse_pi(cursor: &mut Cursor) -> XmlResult<ProcessingInstruction> {
                     "Invalid XML character U+{:04X} in processing instruction",
                     c as u32
                 ),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     }
@@ -905,9 +1047,9 @@ fn parse_pi(cursor: &mut Cursor) -> XmlResult<ProcessingInstruction> {
 }
 
 /// Parse prolog miscellaneous content (comments, PIs, whitespace, DOCTYPE).
-fn parse_misc(
-    cursor: &mut Cursor,
-    doc: &mut Document,
+fn parse_misc<'a>(
+    cursor: &mut Cursor<'a>,
+    doc: &mut Document<'a>,
     parent: NodeId,
     entities: &mut EntityMap,
 ) -> XmlResult<()> {
@@ -918,16 +1060,12 @@ fn parse_misc(
         }
         if cursor.starts_with("<!--") {
             let comment = parse_comment(cursor)?;
-            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.line, cursor.column);
-            doc.append_child(parent, id);
+            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+            doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<?") {
             let pi = parse_pi(cursor)?;
-            let id = doc.alloc_node(
-                NodeKind::ProcessingInstruction(pi),
-                cursor.line,
-                cursor.column,
-            );
-            doc.append_child(parent, id);
+            let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+            doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<!DOCTYPE") {
             parse_doctype(cursor, doc, entities)?;
         } else {
@@ -938,11 +1076,9 @@ fn parse_misc(
 }
 
 /// Parse a DOCTYPE declaration, including internal subset.
-/// Collects general entity declarations for use in document content.
-/// Stores the raw DOCTYPE text in the document for round-trip fidelity.
-fn parse_doctype(
-    cursor: &mut Cursor,
-    doc: &mut Document,
+fn parse_doctype<'a>(
+    cursor: &mut Cursor<'a>,
+    doc: &mut Document<'a>,
     entities: &mut EntityMap,
 ) -> XmlResult<()> {
     let start_pos = cursor.pos;
@@ -952,8 +1088,8 @@ fn parse_doctype(
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after '<!DOCTYPE'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
@@ -968,8 +1104,8 @@ fn parse_doctype(
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after 'SYSTEM'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -980,8 +1116,8 @@ fn parse_doctype(
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after 'PUBLIC'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -989,8 +1125,8 @@ fn parse_doctype(
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace between public and system literal",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -1008,8 +1144,8 @@ fn parse_doctype(
 
     // Must end with >
     cursor.expect(">")?;
-    // Capture the raw DOCTYPE text for round-trip serialization
-    doc.doctype = Some(cursor.input[start_pos..cursor.pos].to_string());
+    // Capture the raw DOCTYPE text for round-trip serialization (borrowed from input)
+    doc.doctype = Some(Cow::Borrowed(&cursor.input[start_pos..cursor.pos]));
     Ok(())
 }
 
@@ -1021,8 +1157,8 @@ fn parse_system_literal(cursor: &mut Cursor) -> XmlResult<String> {
         _ => {
             return Err(XmlError::parse(
                 "Expected quote for system literal",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1052,8 +1188,8 @@ fn parse_pubid_literal(cursor: &mut Cursor) -> XmlResult<String> {
         _ => {
             return Err(XmlError::parse(
                 "Expected quote for public ID literal",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1070,8 +1206,8 @@ fn parse_pubid_literal(cursor: &mut Cursor) -> XmlResult<String> {
                 if !is_pubid_char(c) {
                     return Err(XmlError::well_formedness(
                         format!("Invalid character in public ID: U+{:04X}", c as u32),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
                 cursor.advance_char();
@@ -1120,8 +1256,8 @@ fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlRe
             // Conditional sections not allowed in internal subset without PE
             return Err(XmlError::well_formedness(
                 "Conditional sections not allowed in internal subset",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         } else if cursor.starts_with("%") {
             // Parameter entity reference in internal subset
@@ -1132,8 +1268,8 @@ fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlRe
                     "Unexpected character '{}' in internal subset",
                     cursor.peek().unwrap_or('\0')
                 ),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     }
@@ -1146,8 +1282,8 @@ fn parse_pi_in_dtd(cursor: &mut Cursor) -> XmlResult<()> {
     if target.eq_ignore_ascii_case("xml") {
         return Err(XmlError::well_formedness(
             "Processing instruction target must not be 'xml'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     if cursor.starts_with("?>") {
@@ -1157,12 +1293,12 @@ fn parse_pi_in_dtd(cursor: &mut Cursor) -> XmlResult<()> {
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::parse(
             "Expected whitespace after PI target",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
-    cursor.read_until("?>")?;
+    cursor.read_until_owned("?>")?;
     Ok(())
 }
 
@@ -1172,18 +1308,15 @@ fn parse_pe_reference(cursor: &mut Cursor) -> XmlResult<String> {
     let name = parse_name(cursor)?;
     cursor.expect(";")?;
     // We don't resolve PE references, but we validate the syntax
-    Ok(name)
+    Ok(name.into_owned())
 }
 
 /// Reject a PE reference inside a markup declaration in the internal subset.
-/// Per XML 1.0 §2.8 WFC: PEs in Internal Subset:
-/// "In the internal DTD subset, parameter-entity references MUST NOT
-///  occur within markup declarations"
 fn reject_pe_in_markup_decl(cursor: &Cursor) -> XmlResult<()> {
     Err(XmlError::well_formedness(
         "Parameter entity reference not allowed within markup declaration in internal subset",
-        cursor.line,
-        cursor.column,
+        cursor.line(),
+        cursor.column(),
     ))
 }
 
@@ -1195,8 +1328,8 @@ fn parse_element_decl(cursor: &mut Cursor) -> XmlResult<()> {
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after '<!ELEMENT'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
@@ -1208,8 +1341,8 @@ fn parse_element_decl(cursor: &mut Cursor) -> XmlResult<()> {
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after element name in ELEMENT declaration",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
@@ -1233,14 +1366,13 @@ fn parse_content_spec(cursor: &mut Cursor) -> XmlResult<()> {
     } else if cursor.peek() == Some('(') {
         parse_content_model(cursor)
     } else if cursor.starts_with("%") {
-        // PE reference inside element declaration — reject per WFC
         reject_pe_in_markup_decl(cursor)?;
         Ok(())
     } else {
         Err(XmlError::well_formedness(
             "Expected content specification (EMPTY, ANY, or content model)",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ))
     }
 }
@@ -1254,26 +1386,22 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
     if cursor.starts_with("#PCDATA") {
         cursor.advance(7);
         cursor.skip_whitespace();
-        // Mixed: (#PCDATA) or (#PCDATA | name1 | name2)*
         if cursor.peek() == Some(')') {
             cursor.advance_char();
-            // (#PCDATA) may have optional '*' but nothing else
             if cursor.peek() == Some('*') {
                 cursor.advance_char();
             }
             return Ok(());
         }
-        // Must be (#PCDATA | name1 | name2 ...)*
         loop {
             cursor.skip_whitespace();
             if cursor.peek() == Some(')') {
                 cursor.advance_char();
-                // Mixed content with alternatives MUST end with )*
                 if cursor.peek() != Some('*') {
                     return Err(XmlError::well_formedness(
                         "Mixed content model with alternatives must end with ')*'",
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
                 cursor.advance_char();
@@ -1284,15 +1412,13 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
             if cursor.starts_with("%") {
                 reject_pe_in_markup_decl(cursor)?;
             } else {
-                // Must be a Name, and must NOT be wrapped in parens
                 if cursor.peek() == Some('(') {
                     return Err(XmlError::well_formedness(
                         "Parenthesized group not allowed in Mixed content model",
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
-                // #PCDATA alternatives cannot have occurrence indicators
                 parse_name(cursor)?;
                 cursor.skip_whitespace();
                 if cursor.peek() == Some('*')
@@ -1301,37 +1427,34 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
                 {
                     return Err(XmlError::well_formedness(
                         "Occurrence indicator not allowed on elements in Mixed content model",
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
             }
         }
     }
 
-    // children content model: cp ((',' cp)* | ('|' cp)*)
+    // children content model
     parse_cp(cursor)?;
     cursor.skip_whitespace();
 
-    // Empty group () is not allowed
     if cursor.peek() == Some(')') {
         cursor.advance_char();
-        // Optional occurrence indicator
         if matches!(cursor.peek(), Some('*') | Some('+') | Some('?')) {
             cursor.advance_char();
         }
         return Ok(());
     }
 
-    // Determine separator: ',' for seq, '|' for choice
     let sep = match cursor.peek() {
         Some(',') => ',',
         Some('|') => '|',
         _ => {
             return Err(XmlError::well_formedness(
                 "Expected ',' or '|' or ')' in content model",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1340,7 +1463,6 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
         cursor.skip_whitespace();
         if cursor.peek() == Some(')') {
             cursor.advance_char();
-            // Optional occurrence indicator (must be directly attached)
             if matches!(cursor.peek(), Some('*') | Some('+') | Some('?')) {
                 cursor.advance_char();
             }
@@ -1349,17 +1471,16 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
         if cursor.peek() == Some(sep) {
             cursor.advance_char();
         } else if cursor.peek() == Some(',') || cursor.peek() == Some('|') {
-            // Mixing separators is not allowed
             return Err(XmlError::well_formedness(
                 "Cannot mix ',' and '|' in content model group",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         } else {
             return Err(XmlError::well_formedness(
                 format!("Expected '{}' or ')' in content model", sep),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -1367,16 +1488,14 @@ fn parse_content_model(cursor: &mut Cursor) -> XmlResult<()> {
     }
 }
 
-/// Parse a content particle (Name or nested group, with optional occurrence indicator).
+/// Parse a content particle.
 fn parse_cp(cursor: &mut Cursor) -> XmlResult<()> {
     if cursor.peek() == Some('(') {
-        // Nested group — cannot contain #PCDATA (Mixed content is only at top level)
         parse_children_group(cursor)?;
     } else if cursor.starts_with("%") {
         reject_pe_in_markup_decl(cursor)?;
     } else {
         parse_name(cursor)?;
-        // Optional occurrence indicator directly after name (no space)
         if matches!(cursor.peek(), Some('*') | Some('+') | Some('?')) {
             cursor.advance_char();
         }
@@ -1384,18 +1503,16 @@ fn parse_cp(cursor: &mut Cursor) -> XmlResult<()> {
     Ok(())
 }
 
-/// Parse a children group (content model without Mixed content).
-/// This is used for nested groups inside content particles.
+/// Parse a children group.
 fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
     cursor.expect("(")?;
     cursor.skip_whitespace();
 
-    // #PCDATA not allowed in nested groups
     if cursor.starts_with("#PCDATA") {
         return Err(XmlError::well_formedness(
             "#PCDATA not allowed in nested content model group",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
 
@@ -1416,8 +1533,8 @@ fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
         _ => {
             return Err(XmlError::well_formedness(
                 "Expected ',' or '|' or ')' in content model",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1436,14 +1553,14 @@ fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
         } else if cursor.peek() == Some(',') || cursor.peek() == Some('|') {
             return Err(XmlError::well_formedness(
                 "Cannot mix ',' and '|' in content model group",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         } else {
             return Err(XmlError::well_formedness(
                 format!("Expected '{}' or ')' in content model", sep),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -1451,23 +1568,21 @@ fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
     }
 }
 
-/// Parse an ATTLIST declaration (`<!ATTLIST name attdef* >`).
+/// Parse an ATTLIST declaration.
 fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
     cursor.expect("<!ATTLIST")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after '<!ATTLIST'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // Element name
     parse_name(cursor)?;
 
-    // Parse attribute definitions until >
     loop {
         cursor.skip_whitespace();
         if cursor.is_eof() {
@@ -1487,39 +1602,34 @@ fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
 
 /// Parse a single attribute definition within an ATTLIST.
 fn parse_att_def(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
-    // Attribute name
     parse_name(cursor)?;
 
-    // Must have whitespace
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after attribute name",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // Attribute type
     parse_att_type(cursor)?;
 
-    // Must have whitespace
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after attribute type",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // Default declaration
     parse_default_decl(cursor, entities)?;
 
     Ok(())
 }
 
-/// Parse an attribute type (CDATA, ID, IDREF, etc., or enumeration).
+/// Parse an attribute type.
 fn parse_att_type(cursor: &mut Cursor) -> XmlResult<()> {
     if cursor.starts_with("CDATA") {
         cursor.advance(5);
@@ -1539,37 +1649,34 @@ fn parse_att_type(cursor: &mut Cursor) -> XmlResult<()> {
         cursor.advance(7);
     } else if cursor.starts_with("NOTATION") {
         cursor.advance(8);
-        // Must have whitespace then '(' enumeration ')'
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after 'NOTATION'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
         parse_enumeration(cursor)?;
     } else if cursor.peek() == Some('(') {
-        // Enumeration
         parse_enumeration(cursor)?;
     } else if cursor.starts_with("%") {
         reject_pe_in_markup_decl(cursor)?;
     } else {
         return Err(XmlError::well_formedness(
             "Expected attribute type (CDATA, ID, IDREF, etc.)",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     Ok(())
 }
 
-/// Parse an enumeration (`(value1 | value2 | ...)`).
+/// Parse an enumeration.
 fn parse_enumeration(cursor: &mut Cursor) -> XmlResult<()> {
     cursor.expect("(")?;
     cursor.skip_whitespace();
 
-    // Parse first value (Nmtoken for enumeration, Name for NOTATION)
     parse_nmtoken(cursor)?;
 
     loop {
@@ -1584,7 +1691,7 @@ fn parse_enumeration(cursor: &mut Cursor) -> XmlResult<()> {
     }
 }
 
-/// Parse an Nmtoken (one or more NameChars).
+/// Parse an Nmtoken.
 fn parse_nmtoken(cursor: &mut Cursor) -> XmlResult<String> {
     let mut token = String::new();
     while let Some(c) = cursor.peek() {
@@ -1598,14 +1705,14 @@ fn parse_nmtoken(cursor: &mut Cursor) -> XmlResult<String> {
     if token.is_empty() {
         return Err(XmlError::parse(
             "Expected Nmtoken",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     Ok(token)
 }
 
-/// Parse a default declaration (#REQUIRED, #IMPLIED, #FIXED, or a default value).
+/// Parse a default declaration.
 fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
     if cursor.starts_with("#REQUIRED") {
         cursor.advance(9);
@@ -1616,8 +1723,8 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after '#FIXED'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -1627,15 +1734,14 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
     } else {
         return Err(XmlError::well_formedness(
             "Expected default declaration (#REQUIRED, #IMPLIED, #FIXED, or default value)",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     Ok(())
 }
 
 /// Parse an attribute value inside a DTD declaration.
-/// Entity references in DTD attribute defaults must refer to defined entities.
 fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<String> {
     let quote = match cursor.peek() {
         Some('"') => '"',
@@ -1643,8 +1749,8 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
         _ => {
             return Err(XmlError::parse(
                 "Expected quote character for attribute value",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1658,22 +1764,22 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
                 break;
             }
             Some('&') => {
-                let resolved = parse_reference_with_entities(cursor, entities)?;
+                let resolved = parse_reference_with_entities(cursor, entities, &mut EntityCache::new())?;
                 value.push_str(&resolved);
             }
             Some('<') => {
                 return Err(XmlError::well_formedness(
                     "'<' not allowed in attribute value",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             Some(c) => {
                 if !is_xml_char(c) {
                     return Err(XmlError::well_formedness(
                         format!("Invalid XML character U+{:04X} in DTD", c as u32),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
                 cursor.advance_char();
@@ -1684,76 +1790,69 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
     Ok(value)
 }
 
-/// Parse an ENTITY declaration (`<!ENTITY name "value">` etc.).
+/// Parse an ENTITY declaration.
 fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()> {
     cursor.expect("<!ENTITY")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after '<!ENTITY'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // Check for parameter entity (% name)
     let is_pe = cursor.peek() == Some('%');
     if is_pe {
         cursor.advance_char();
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after '%' in parameter entity declaration",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
     }
 
-    // Entity name
     let name = parse_name(cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after entity name",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // EntityDef: EntityValue | (ExternalID NDataDecl?)
     if cursor.peek() == Some('"') || cursor.peek() == Some('\'') {
-        // EntityValue - a quoted string that may contain PE references and char references
         let value = parse_entity_value(cursor)?;
         cursor.skip_whitespace();
 
-        // PE should not have NDATA
         if !is_pe {
-            // Store the general entity
-            entities.entry(name).or_insert(value);
+            entities.entry(name.into_owned()).or_insert(value);
         }
     } else if cursor.starts_with("SYSTEM") || cursor.starts_with("PUBLIC") {
-        // External entity
         if cursor.starts_with("SYSTEM") {
             cursor.advance(6);
             if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace after 'SYSTEM'",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             cursor.skip_whitespace();
             parse_system_literal(cursor)?;
         } else {
-            cursor.advance(6); // PUBLIC
+            cursor.advance(6);
             if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace after 'PUBLIC'",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             cursor.skip_whitespace();
@@ -1761,8 +1860,8 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
             if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace between public and system literal",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             cursor.skip_whitespace();
@@ -1771,21 +1870,20 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
         let has_ws_before_ndata = cursor.peek().map(is_xml_whitespace).unwrap_or(false);
         cursor.skip_whitespace();
 
-        // Optional NDATA for general entities (not PE)
         if !is_pe && cursor.starts_with("NDATA") {
             if !has_ws_before_ndata {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace before 'NDATA'",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             cursor.advance(5);
             if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace after 'NDATA'",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             cursor.skip_whitespace();
@@ -1794,19 +1892,18 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
         } else if is_pe && cursor.starts_with("NDATA") {
             return Err(XmlError::well_formedness(
                 "NDATA not allowed on parameter entity declarations",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     } else if cursor.starts_with("%") {
-        // PE reference inside entity declaration — reject per WFC
         reject_pe_in_markup_decl(cursor)?;
         cursor.skip_whitespace();
     } else {
         return Err(XmlError::well_formedness(
             "Expected entity value or external ID in ENTITY declaration",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
 
@@ -1815,8 +1912,7 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
     Ok(())
 }
 
-/// Parse an EntityValue (a quoted string that may contain PE references, char references,
-/// and bypassed entity references).
+/// Parse an EntityValue.
 fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
     let quote = match cursor.peek() {
         Some('"') => '"',
@@ -1824,8 +1920,8 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
         _ => {
             return Err(XmlError::parse(
                 "Expected quote for entity value",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     };
@@ -1840,13 +1936,10 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
             }
             Some('&') => {
                 if cursor.starts_with("&#x") || cursor.starts_with("&#") {
-                    // Character reference - resolve it
                     let resolved = parse_reference(cursor)?;
                     value.push_str(&resolved);
                 } else {
-                    // Entity reference - bypass it (keep as-is for later resolution)
-                    // But still validate it's well-formed
-                    cursor.advance(1); // skip &
+                    cursor.advance(1);
                     let name = parse_name(cursor)?;
                     cursor.expect(";")?;
                     value.push('&');
@@ -1855,22 +1948,18 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
                 }
             }
             Some('%') => {
-                // PE reference in entity value inside internal subset violates
-                // the "PEs in Internal Subset" WFC (XML 1.0 §2.8):
-                // "In the internal DTD subset, parameter-entity references
-                //  MUST NOT occur within markup declarations"
                 return Err(XmlError::well_formedness(
                     "Parameter entity reference not allowed within markup declaration in internal subset",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
             Some(c) => {
                 if !is_xml_char(c) {
                     return Err(XmlError::well_formedness(
                         format!("Invalid XML character U+{:04X} in entity value", c as u32),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     ));
                 }
                 cursor.advance_char();
@@ -1881,39 +1970,37 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
     Ok(value)
 }
 
-/// Parse a NOTATION declaration (`<!NOTATION name ExternalID>`).
+/// Parse a NOTATION declaration.
 fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
     cursor.expect("<!NOTATION")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after '<!NOTATION'",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // Notation name
     parse_name(cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
             "Expected whitespace after notation name",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
     cursor.skip_whitespace();
 
-    // ExternalID or PublicID
     if cursor.starts_with("SYSTEM") {
         cursor.advance(6);
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after 'SYSTEM'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
@@ -1923,22 +2010,21 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
         if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
             return Err(XmlError::well_formedness(
                 "Expected whitespace after 'PUBLIC'",
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
         cursor.skip_whitespace();
         parse_pubid_literal(cursor)?;
         cursor.skip_whitespace();
-        // Optional system literal for NOTATION PUBLIC
         if cursor.peek() == Some('"') || cursor.peek() == Some('\'') {
             parse_system_literal(cursor)?;
         }
     } else {
         return Err(XmlError::well_formedness(
             "Expected 'SYSTEM' or 'PUBLIC' in NOTATION declaration",
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
 
@@ -1948,77 +2034,95 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
 }
 
 /// Parse an element and its content recursively.
-fn parse_element(
-    cursor: &mut Cursor,
-    doc: &mut Document,
+fn parse_element<'a>(
+    cursor: &mut Cursor<'a>,
+    doc: &mut Document<'a>,
     parent: NodeId,
-    ns_resolver: &mut Option<NamespaceResolver>,
+    ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
+    entity_cache: &mut EntityCache,
 ) -> XmlResult<NodeId> {
-    let start_line = cursor.line;
-    let start_col = cursor.column;
+    let start_pos = cursor.pos;
 
     cursor.expect("<")?;
     let tag_name = parse_name(cursor)?;
 
     // Parse attributes
-    let mut raw_attrs: Vec<(String, String)> = Vec::new();
-    let mut ns_decls: HashMap<String, String> = HashMap::new();
+    let mut raw_attrs: Vec<(Cow<'a, str>, Cow<'a, str>)> = Vec::with_capacity(8);
+    let mut ns_decls: Vec<(Cow<'a, str>, Cow<'a, str>)> = Vec::new();
 
     loop {
         cursor.skip_whitespace();
         if cursor.is_eof() {
             return Err(XmlError::UnexpectedEof);
         }
-        if cursor.starts_with("/>") || cursor.starts_with(">") {
+        if matches!(cursor.peek_byte(), Some(b'>') | Some(b'/')) {
             break;
         }
         let attr_name = parse_name(cursor)?;
         cursor.skip_whitespace();
         cursor.expect("=")?;
         cursor.skip_whitespace();
-        let attr_value = parse_quoted_value_with_entities(cursor, entities)?;
+        let attr_value = parse_quoted_value_with_entities(cursor, entities, entity_cache)?;
 
-        // Check for duplicate attributes
-        if raw_attrs.iter().any(|(n, _)| n == &attr_name) {
-            return Err(XmlError::well_formedness(
-                format!("Duplicate attribute: {}", attr_name),
-                cursor.line,
-                cursor.column,
-            ));
-        }
-
-        // Separate namespace declarations from regular attributes
-        if attr_name == "xmlns" {
-            ns_decls.insert(String::new(), attr_value.clone());
-        } else if let Some(prefix) = attr_name.strip_prefix("xmlns:") {
+        // Separate namespace declarations from regular attributes.
+        // xmlns attrs go only into ns_decls (not raw_attrs) to avoid cloning.
+        if &*attr_name == "xmlns" {
+            if ns_decls.iter().any(|(p, _)| p.is_empty()) {
+                return Err(XmlError::well_formedness(
+                    format!("Duplicate attribute: {}", attr_name),
+                    cursor.line(),
+                    cursor.column(),
+                ));
+            }
+            ns_decls.push((Cow::Borrowed(""), attr_value));
+        } else if attr_name.starts_with("xmlns:") {
+            let prefix = &attr_name[6..];
             if prefix == "xmlns" {
                 return Err(XmlError::namespace(
                     "The prefix 'xmlns' must not be declared",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
-            if prefix == "xml" && attr_value != "http://www.w3.org/XML/1998/namespace" {
+            if prefix == "xml" && &*attr_value != "http://www.w3.org/XML/1998/namespace" {
                 return Err(XmlError::namespace(
                     "The prefix 'xml' must not be bound to any other namespace",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
-            ns_decls.insert(prefix.to_string(), attr_value.clone());
+            if ns_decls.iter().any(|(p, _)| &**p == prefix) {
+                return Err(XmlError::well_formedness(
+                    format!("Duplicate attribute: {}", attr_name),
+                    cursor.line(),
+                    cursor.column(),
+                ));
+            }
+            let prefix_cow: Cow<'a, str> = match &attr_name {
+                Cow::Borrowed(s) => Cow::Borrowed(&s[6..]),
+                Cow::Owned(s) => Cow::Owned(s[6..].to_string()),
+            };
+            ns_decls.push((prefix_cow, attr_value));
+        } else {
+            // Regular attribute — check for duplicates among regular attrs only
+            if raw_attrs.iter().any(|(n, _)| *n == *attr_name) {
+                return Err(XmlError::well_formedness(
+                    format!("Duplicate attribute: {}", attr_name),
+                    cursor.line(),
+                    cursor.column(),
+                ));
+            }
+            raw_attrs.push((attr_name, attr_value));
         }
 
-        raw_attrs.push((attr_name, attr_value));
-
         // After an attribute value, must have whitespace, '>', or '/>'
-        // Missing whitespace between attributes is a well-formedness error
-        if let Some(c) = cursor.peek() {
-            if c != '>' && c != '/' && !is_xml_whitespace(c) {
+        if let Some(b) = cursor.peek_byte() {
+            if b != b'>' && b != b'/' && b != b' ' && b != b'\t' && b != b'\n' && b != b'\r' {
                 return Err(XmlError::well_formedness(
                     "Expected whitespace between attributes",
-                    cursor.line,
-                    cursor.column,
+                    cursor.line(),
+                    cursor.column(),
                 ));
             }
         }
@@ -2033,66 +2137,58 @@ fn parse_element(
     }
 
     // Resolve the element QName
+    // tag_name from parse_name is always Cow::Borrowed, so we can sub-borrow safely
     let (prefix, local_name) = split_qname(&tag_name);
     let qname = if let Some(resolver) = ns_resolver.as_ref() {
-        let ns_uri = if let Some(p) = prefix {
-            resolver.resolve(p).map(|s| s.to_string()).ok_or_else(|| {
+        let ns: Option<Cow<'a, str>> = if let Some(p) = prefix {
+            let uri = resolver.resolve(p).ok_or_else(|| {
                 XmlError::namespace(
                     format!("Undeclared namespace prefix: {}", p),
-                    start_line,
-                    start_col,
+                    cursor.line(),
+                    cursor.column(),
                 )
-            })?
+            })?;
+            Some(uri.clone())
         } else {
-            // Default namespace
-            resolver.resolve_default().unwrap_or("").to_string()
+            resolver.resolve_default().map(|uri| uri.clone())
         };
-        let ns = if ns_uri.is_empty() {
-            None
-        } else {
-            Some(ns_uri)
-        };
+        // prefix and local_name are slices of tag_name which is Cow::Borrowed from input
         QName {
             namespace_uri: ns,
-            prefix: prefix.map(|s| s.to_string()),
-            local_name: local_name.to_string(),
+            prefix: prefix.map(|s| borrow_from_cow(&tag_name, s)),
+            local_name: borrow_from_cow(&tag_name, local_name),
         }
     } else {
         QName::local(tag_name.clone())
     };
 
-    // Resolve attribute QNames
-    let mut resolved_attrs = Vec::new();
-    for (attr_name, attr_value) in &raw_attrs {
-        // Skip xmlns declarations from the attribute list
-        if attr_name == "xmlns" || attr_name.starts_with("xmlns:") {
-            continue;
-        }
-        let (a_prefix, a_local) = split_qname(attr_name);
+    // Resolve attribute QNames — consume raw_attrs (xmlns already separated out)
+    let mut resolved_attrs = Vec::with_capacity(raw_attrs.len());
+    for (attr_name, attr_value) in raw_attrs {
+        let (a_prefix, a_local) = split_qname(&attr_name);
         let a_qname = if let Some(resolver) = ns_resolver.as_ref() {
             if let Some(p) = a_prefix {
-                let ns_uri = resolver.resolve(p).map(|s| s.to_string()).ok_or_else(|| {
+                let ns_uri = resolver.resolve(p).ok_or_else(|| {
                     XmlError::namespace(
                         format!("Undeclared namespace prefix: {}", p),
-                        cursor.line,
-                        cursor.column,
+                        cursor.line(),
+                        cursor.column(),
                     )
                 })?;
                 QName {
-                    namespace_uri: Some(ns_uri),
-                    prefix: Some(p.to_string()),
-                    local_name: a_local.to_string(),
+                    namespace_uri: Some(ns_uri.clone()),
+                    prefix: Some(borrow_from_cow(&attr_name, p)),
+                    local_name: borrow_from_cow(&attr_name, a_local),
                 }
             } else {
-                // Unprefixed attributes are NOT in any namespace (per Namespaces spec)
-                QName::local(a_local.to_string())
+                QName::local(borrow_from_cow(&attr_name, a_local))
             }
         } else {
-            QName::local(attr_name.clone())
+            QName::local(attr_name)
         };
         resolved_attrs.push(Attribute {
             name: a_qname,
-            value: attr_value.clone(),
+            value: attr_value,
         });
     }
 
@@ -2102,12 +2198,11 @@ fn parse_element(
         attributes: resolved_attrs,
         namespace_declarations: ns_decls,
     };
-    let elem_id = doc.alloc_node(NodeKind::Element(elem), start_line, start_col);
-    doc.build_attribute_nodes(elem_id);
-    doc.append_child(parent, elem_id);
+    let elem_id = doc.alloc_node(NodeKind::Element(elem), start_pos);
+    doc.append_child_unchecked(parent, elem_id);
 
     // Self-closing?
-    if cursor.starts_with("/>") {
+    if cursor.peek_byte() == Some(b'/') {
         cursor.expect("/>")?;
         if let Some(resolver) = ns_resolver.as_mut() {
             resolver.pop_scope();
@@ -2118,7 +2213,7 @@ fn parse_element(
     cursor.expect(">")?;
 
     // Parse element content
-    parse_content(cursor, doc, elem_id, ns_resolver, entities)?;
+    parse_content(cursor, doc, elem_id, ns_resolver, entities, entity_cache)?;
 
     // Parse end tag
     cursor.expect("</")?;
@@ -2126,14 +2221,14 @@ fn parse_element(
     cursor.skip_whitespace();
     cursor.expect(">")?;
 
-    if end_tag_name != tag_name {
+    if *end_tag_name != *tag_name {
         return Err(XmlError::well_formedness(
             format!(
                 "Mismatched end tag: expected </{}>, found </{}>",
                 tag_name, end_tag_name
             ),
-            cursor.line,
-            cursor.column,
+            cursor.line(),
+            cursor.column(),
         ));
     }
 
@@ -2145,125 +2240,218 @@ fn parse_element(
 }
 
 /// Parse element content (text, child elements, CDATA, comments, PIs).
-fn parse_content(
-    cursor: &mut Cursor,
-    doc: &mut Document,
+/// Uses lazy allocation: text content is borrowed from input when possible.
+fn parse_content<'a>(
+    cursor: &mut Cursor<'a>,
+    doc: &mut Document<'a>,
     parent: NodeId,
-    ns_resolver: &mut Option<NamespaceResolver>,
+    ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
+    entity_cache: &mut EntityCache,
 ) -> XmlResult<()> {
-    let mut text_buf = String::new();
-    let text_start_line = cursor.line;
-    let text_start_col = cursor.column;
+    // Lazy text buffer: tracks start position for borrowing, switches to owned on entity/\r
+    enum TextBuf {
+        Empty,
+        Borrowed { start: usize },
+        Owned(String),
+    }
+
+    impl TextBuf {
+        fn flush<'a>(self, input: &'a str, doc: &mut Document<'a>, parent: NodeId, byte_pos: usize, end_pos: usize) {
+            match self {
+                TextBuf::Empty => {}
+                TextBuf::Borrowed { start } => {
+                    if start < end_pos {
+                        let text = Cow::Borrowed(&input[start..end_pos]);
+                        let id = doc.alloc_node(NodeKind::Text(text), byte_pos);
+                        doc.append_child_unchecked(parent, id);
+                    }
+                }
+                TextBuf::Owned(s) => {
+                    if !s.is_empty() {
+                        let id = doc.alloc_node(NodeKind::Text(Cow::Owned(s)), byte_pos);
+                        doc.append_child_unchecked(parent, id);
+                    }
+                }
+            }
+        }
+
+        fn switch_to_owned<'a>(&mut self, input: &'a str, end_pos: usize) {
+            match self {
+                TextBuf::Empty => {
+                    *self = TextBuf::Owned(String::new());
+                }
+                TextBuf::Borrowed { start } => {
+                    let s = input[*start..end_pos].to_string();
+                    *self = TextBuf::Owned(s);
+                }
+                TextBuf::Owned(_) => {} // already owned
+            }
+        }
+
+        fn push_str(&mut self, input: &str, end_pos: usize, s: &str) {
+            self.switch_to_owned(input, end_pos);
+            if let TextBuf::Owned(ref mut buf) = self {
+                buf.push_str(s);
+            }
+        }
+
+        fn push_char(&mut self, input: &str, end_pos: usize, c: char) {
+            self.switch_to_owned(input, end_pos);
+            if let TextBuf::Owned(ref mut buf) = self {
+                buf.push(c);
+            }
+        }
+    }
+
+    let text_start_pos = cursor.pos;
+    let mut text_buf: TextBuf = TextBuf::Empty;
 
     loop {
-        if cursor.is_eof() {
+        if cursor.pos >= cursor.input.len() {
             return Err(XmlError::UnexpectedEof);
         }
 
-        if cursor.starts_with("</") {
-            // End tag - flush text and return
-            if !text_buf.is_empty() {
-                let id = doc.alloc_node(
-                    NodeKind::Text(text_buf.clone()),
-                    text_start_line,
-                    text_start_col,
-                );
-                doc.append_child(parent, id);
-                text_buf.clear();
+        // Batch scan: find the next interesting byte (<, &, \r, ])
+        let bytes = cursor.input.as_bytes();
+        let scan_start = cursor.pos;
+        let mut i = scan_start;
+        let mut has_non_ascii_or_control = false;
+        while i < bytes.len() {
+            let b = bytes[i];
+            match b {
+                b'<' | b'&' | b'\r' | b']' => break,
+                _ => {
+                    if b >= 0x80 || (b < 0x20 && b != 0x09 && b != 0x0A) {
+                        has_non_ascii_or_control = true;
+                    }
+                    i += 1;
+                }
             }
-            return Ok(());
         }
 
-        if cursor.starts_with("<![CDATA[") {
-            // Flush text
-            if !text_buf.is_empty() {
-                let id = doc.alloc_node(
-                    NodeKind::Text(text_buf.clone()),
-                    text_start_line,
-                    text_start_col,
-                );
-                doc.append_child(parent, id);
-                text_buf.clear();
-            }
-            let cdata = parse_cdata(cursor)?;
-            let id = doc.alloc_node(NodeKind::CData(cdata), cursor.line, cursor.column);
-            doc.append_child(parent, id);
-        } else if cursor.starts_with("<!--") {
-            if !text_buf.is_empty() {
-                let id = doc.alloc_node(
-                    NodeKind::Text(text_buf.clone()),
-                    text_start_line,
-                    text_start_col,
-                );
-                doc.append_child(parent, id);
-                text_buf.clear();
-            }
-            let comment = parse_comment(cursor)?;
-            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.line, cursor.column);
-            doc.append_child(parent, id);
-        } else if cursor.starts_with("<?") {
-            if !text_buf.is_empty() {
-                let id = doc.alloc_node(
-                    NodeKind::Text(text_buf.clone()),
-                    text_start_line,
-                    text_start_col,
-                );
-                doc.append_child(parent, id);
-                text_buf.clear();
-            }
-            let pi = parse_pi(cursor)?;
-            let id = doc.alloc_node(
-                NodeKind::ProcessingInstruction(pi),
-                cursor.line,
-                cursor.column,
-            );
-            doc.append_child(parent, id);
-        } else if cursor.starts_with("<") {
-            if !text_buf.is_empty() {
-                let id = doc.alloc_node(
-                    NodeKind::Text(text_buf.clone()),
-                    text_start_line,
-                    text_start_col,
-                );
-                doc.append_child(parent, id);
-                text_buf.clear();
-            }
-            parse_element(cursor, doc, parent, ns_resolver, entities)?;
-        } else if cursor.starts_with("&") {
-            let resolved = parse_reference_with_entities(cursor, entities)?;
-            text_buf.push_str(&resolved);
-        } else if cursor.starts_with("]]>") {
-            return Err(XmlError::well_formedness(
-                "']]>' not allowed in element content",
-                cursor.line,
-                cursor.column,
-            ));
-        } else {
-            // Regular text character
-            let c = cursor.advance_char().unwrap();
-            if !is_xml_char(c) {
-                return Err(XmlError::well_formedness(
-                    format!("Invalid XML character U+{:04X}", c as u32),
-                    cursor.line,
-                    cursor.column,
-                ));
-            }
-            // Normalize \r\n and standalone \r to \n (XML 1.0 section 2.11)
-            if c == '\r' {
-                if cursor.peek() == Some('\n') {
-                    cursor.advance_char();
+        // Accumulate clean bytes in bulk
+        if i > scan_start {
+            // Only validate XML chars if we saw non-ASCII or control bytes
+            if has_non_ascii_or_control {
+                let chunk = &cursor.input[scan_start..i];
+                for c in chunk.chars() {
+                    if !is_xml_char(c) {
+                        return Err(XmlError::well_formedness(
+                            format!("Invalid XML character U+{:04X}", c as u32),
+                            cursor.line(),
+                            cursor.column(),
+                        ));
+                    }
                 }
-                text_buf.push('\n');
-            } else {
-                text_buf.push(c);
             }
+            match &mut text_buf {
+                TextBuf::Empty => {
+                    text_buf = TextBuf::Borrowed { start: scan_start };
+                }
+                TextBuf::Borrowed { .. } => {
+                    // Just extend the borrowed range
+                }
+                TextBuf::Owned(ref mut buf) => {
+                    buf.push_str(&cursor.input[scan_start..i]);
+                }
+            }
+            cursor.pos = i;
+        }
+
+        if cursor.pos >= cursor.input.len() {
+            return Err(XmlError::UnexpectedEof);
+        }
+
+        // Dispatch on the found byte
+        match bytes[cursor.pos] {
+            b'<' => {
+                // Peek at next byte to determine what kind of markup
+                match bytes.get(cursor.pos + 1) {
+                    Some(b'/') => {
+                        // End tag - flush text and return
+                        text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
+                        return Ok(());
+                    }
+                    Some(b'!') => {
+                        text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
+                        text_buf = TextBuf::Empty;
+                        if cursor.starts_with("<![CDATA[") {
+                            let cdata = parse_cdata(cursor)?;
+                            let id = doc.alloc_node(NodeKind::CData(cdata), cursor.pos);
+                            doc.append_child_unchecked(parent, id);
+                        } else if cursor.starts_with("<!--") {
+                            let comment = parse_comment(cursor)?;
+                            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+                            doc.append_child_unchecked(parent, id);
+                        } else {
+                            return Err(XmlError::well_formedness(
+                                "Invalid markup in element content",
+                                cursor.line(),
+                                cursor.column(),
+                            ));
+                        }
+                    }
+                    Some(b'?') => {
+                        text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
+                        text_buf = TextBuf::Empty;
+                        let pi = parse_pi(cursor)?;
+                        let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+                        doc.append_child_unchecked(parent, id);
+                    }
+                    _ => {
+                        // Child element
+                        text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
+                        text_buf = TextBuf::Empty;
+                        parse_element(cursor, doc, parent, ns_resolver, entities, entity_cache)?;
+                    }
+                }
+            }
+            b'&' => {
+                let before_pos = cursor.pos;
+                let resolved = parse_reference_with_entities(cursor, entities, entity_cache)?;
+                text_buf.push_str(cursor.input, before_pos, &resolved);
+            }
+            b'\r' => {
+                // Normalize \r\n and standalone \r to \n (XML 1.0 section 2.11)
+                let before_pos = cursor.pos;
+                cursor.pos += 1; // skip the \r
+                if cursor.peek_byte() == Some(b'\n') {
+                    cursor.pos += 1; // skip the \n
+                }
+                text_buf.push_char(cursor.input, before_pos, '\n');
+            }
+            b']' => {
+                // Check for illegal ]]> in content
+                if cursor.starts_with("]]>") {
+                    return Err(XmlError::well_formedness(
+                        "']]>' not allowed in element content",
+                        cursor.line(),
+                        cursor.column(),
+                    ));
+                }
+                // Just a regular ] character
+                match &mut text_buf {
+                    TextBuf::Empty => {
+                        text_buf = TextBuf::Borrowed { start: cursor.pos };
+                        cursor.advance_no_newlines(1);
+                    }
+                    TextBuf::Borrowed { .. } => {
+                        cursor.advance_no_newlines(1);
+                    }
+                    TextBuf::Owned(ref mut buf) => {
+                        buf.push(']');
+                        cursor.advance_no_newlines(1);
+                    }
+                }
+            }
+            _ => unreachable!(),
         }
     }
 }
 
-/// Parse a CDATA section.
-fn parse_cdata(cursor: &mut Cursor) -> XmlResult<String> {
+/// Parse a CDATA section. Returns borrowed slice (CDATA never has entity expansion).
+fn parse_cdata<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
     cursor.expect("<![CDATA[")?;
     let content = cursor.read_until("]]>")?;
     // Validate all characters are valid XML chars
@@ -2271,8 +2459,8 @@ fn parse_cdata(cursor: &mut Cursor) -> XmlResult<String> {
         if !is_xml_char(c) {
             return Err(XmlError::well_formedness(
                 format!("Invalid XML character U+{:04X} in CDATA section", c as u32),
-                cursor.line,
-                cursor.column,
+                cursor.line(),
+                cursor.column(),
             ));
         }
     }
@@ -2288,7 +2476,7 @@ mod tests {
         let doc = Parser::new().parse("<root/>").unwrap();
         let root = doc.document_element().unwrap();
         let elem = doc.element(root).unwrap();
-        assert_eq!(elem.name.local_name, "root");
+        assert_eq!(&*elem.name.local_name, "root");
     }
 
     #[test]
@@ -2344,7 +2532,7 @@ mod tests {
             .parse(r#"<?xml version="1.0" encoding="UTF-8"?><root/>"#)
             .unwrap();
         let decl = doc.xml_declaration.as_ref().unwrap();
-        assert_eq!(decl.version, "1.0");
+        assert_eq!(&*decl.version, "1.0");
         assert_eq!(decl.encoding.as_deref(), Some("UTF-8"));
     }
 
@@ -2381,5 +2569,32 @@ mod tests {
     fn test_two_root_elements() {
         let result = Parser::new().parse("<a/><b/>");
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_zero_copy_text() {
+        // Verify that simple text content borrows from input
+        let input = "<root>hello</root>";
+        let doc = Parser::new().parse(input).unwrap();
+        let root = doc.document_element().unwrap();
+        let children = doc.children(root);
+        if let Some(NodeKind::Text(t)) = doc.node_kind(children[0]) {
+            assert!(matches!(t, Cow::Borrowed(_)), "Expected borrowed text");
+        }
+    }
+
+    #[test]
+    fn test_zero_copy_name() {
+        // Verify that element names borrow from input
+        let input = "<root/>";
+        let doc = Parser::new().parse(input).unwrap();
+        let root = doc.document_element().unwrap();
+        let elem = doc.element(root).unwrap();
+        // With namespace resolution the name gets owned, but without:
+        let doc2 = Parser::with_namespace_aware(false).parse(input).unwrap();
+        let root2 = doc2.document_element().unwrap();
+        let elem2 = doc2.element(root2).unwrap();
+        assert!(matches!(elem2.name.local_name, Cow::Borrowed(_)), "Expected borrowed name");
+        let _ = elem; // suppress unused warning
     }
 }

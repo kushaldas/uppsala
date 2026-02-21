@@ -64,7 +64,8 @@ mod tests {
         let schema = parse(schema_xml).unwrap();
 
         for val in &["true", "false", "1", "0"] {
-            let doc = parse(&format!("<flag>{}</flag>", val)).unwrap();
+            let input = format!("<flag>{}</flag>", val);
+            let doc = parse(&input).unwrap();
             let validator = XsdValidator::from_schema(&schema).unwrap();
             assert!(validator.validate(&doc).is_empty(), "Failed for {}", val);
         }

@@ -56,7 +56,7 @@ pub(super) fn process_schema_composition(
                 continue;
             }
 
-            match elem.name.local_name.as_str() {
+            match elem.name.local_name.as_ref() {
                 "include" | "redefine" => {
                     let is_redefine = elem.name.local_name == "redefine";
                     let schema_location = match elem.get_attribute("schemaLocation") {
@@ -314,7 +314,7 @@ fn process_redefine_children(
                 continue;
             }
 
-            match child_elem.name.local_name.as_str() {
+            match child_elem.name.local_name.as_ref() {
                 "simpleType" => {
                     let type_def = parse_simple_type(doc, child)?;
                     if let TypeDef::Simple(ref st) = type_def {

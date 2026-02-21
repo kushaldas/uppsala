@@ -47,7 +47,7 @@ fn multiple_children() {
     assert_eq!(children.len(), 3);
     let names: Vec<_> = children
         .iter()
-        .filter_map(|&id| doc.element(id).map(|e| e.name.local_name.as_str()))
+        .filter_map(|&id| doc.element(id).map(|e| &*e.name.local_name))
         .collect();
     assert_eq!(names, vec!["a", "b", "c"]);
 }

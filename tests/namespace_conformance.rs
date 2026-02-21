@@ -190,12 +190,12 @@ fn namespace_declarations_map() {
     let root = doc.document_element().unwrap();
     let elem = doc.element(root).unwrap();
     assert_eq!(
-        elem.namespace_declarations.get(""),
-        Some(&"http://default.com".to_string())
+        elem.namespace_declarations.iter().find(|(p, _)| p.is_empty()).map(|(_, u)| &**u),
+        Some("http://default.com")
     );
     assert_eq!(
-        elem.namespace_declarations.get("ns"),
-        Some(&"http://ns.com".to_string())
+        elem.namespace_declarations.iter().find(|(p, _)| &**p == "ns").map(|(_, u)| &**u),
+        Some("http://ns.com")
     );
 }
 

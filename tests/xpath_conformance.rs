@@ -7,14 +7,16 @@ use uppsala::dom::{NodeId, NodeKind, QName};
 use uppsala::xpath::XPathValue;
 
 fn parse_and_eval(xml: &str, xpath: &str) -> XPathValue {
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     eval.evaluate(&doc, root, xpath).unwrap()
 }
 
 fn parse_and_select(xml: &str, xpath: &str) -> Vec<NodeId> {
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     eval.select_nodes(&doc, root, xpath).unwrap()
@@ -25,7 +27,8 @@ fn parse_and_select(xml: &str, xpath: &str) -> Vec<NodeId> {
 #[test]
 fn attribute_axis_simple() {
     let xml = r#"<root attr="hello"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let result = eval.evaluate(&doc, root, "@attr").unwrap();
@@ -35,7 +38,8 @@ fn attribute_axis_simple() {
 #[test]
 fn attribute_axis_multiple() {
     let xml = r#"<root a="1" b="2" c="3"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
 
@@ -62,7 +66,8 @@ fn attribute_axis_multiple() {
 #[test]
 fn attribute_axis_wildcard() {
     let xml = r#"<root a="1" b="2" c="3"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "@*").unwrap();
@@ -72,7 +77,8 @@ fn attribute_axis_wildcard() {
 #[test]
 fn attribute_axis_nonexistent() {
     let xml = r#"<root attr="hello"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let result = eval.evaluate(&doc, root, "@nonexistent").unwrap();
@@ -83,7 +89,8 @@ fn attribute_axis_nonexistent() {
 #[test]
 fn attribute_axis_in_predicate() {
     let xml = r#"<root><item id="a">first</item><item id="b">second</item><item id="c">third</item></root>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "item[@id='b']").unwrap();
@@ -94,7 +101,8 @@ fn attribute_axis_in_predicate() {
 #[test]
 fn attribute_axis_string_value() {
     let xml = r#"<root attr="world"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let result = eval
@@ -106,7 +114,8 @@ fn attribute_axis_string_value() {
 #[test]
 fn attribute_axis_on_child_element() {
     let xml = r#"<root><child attr="val"/></root>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let result = eval.evaluate(&doc, root, "child/@attr").unwrap();
@@ -116,7 +125,8 @@ fn attribute_axis_on_child_element() {
 #[test]
 fn attribute_axis_unabbreviated() {
     let xml = r#"<root attr="hello"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let result = eval.evaluate(&doc, root, "attribute::attr").unwrap();
@@ -187,7 +197,8 @@ fn parent_axis() {
 #[test]
 fn self_axis() {
     let xml = "<root/>";
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "self::*").unwrap();
@@ -198,7 +209,8 @@ fn self_axis() {
 #[test]
 fn self_axis_name_match() {
     let xml = "<root/>";
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "self::root").unwrap();
@@ -271,7 +283,8 @@ fn predicate_boolean() {
 #[test]
 fn predicate_nested() {
     let xml = r#"<root><item id="1"><sub/></item><item id="2"/><item id="3"><sub/></item></root>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "item[sub]").unwrap();
@@ -394,7 +407,8 @@ fn operator_mod() {
 #[test]
 fn operator_union() {
     let xml = "<root><a/><b/><c/></root>";
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, "a | c").unwrap();
@@ -597,7 +611,8 @@ fn function_boolean_coercion() {
 #[test]
 fn function_local_name() {
     let xml = r#"<ns:root xmlns:ns="http://example.com"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let val = eval.evaluate(&doc, root, "local-name()").unwrap();
@@ -610,7 +625,8 @@ fn function_local_name() {
 #[test]
 fn function_name() {
     let xml = r#"<ns:root xmlns:ns="http://example.com"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let val = eval.evaluate(&doc, root, "name()").unwrap();
@@ -623,7 +639,8 @@ fn function_name() {
 #[test]
 fn function_namespace_uri() {
     let xml = r#"<ns:root xmlns:ns="http://example.com"/>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let val = eval.evaluate(&doc, root, "namespace-uri()").unwrap();
@@ -642,7 +659,8 @@ fn complex_path_with_predicates_and_attributes() {
   <book id="2" genre="science"><title>Book B</title></book>
   <book id="3" genre="fiction"><title>Book C</title></book>
 </library>"#;
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
 
@@ -667,7 +685,8 @@ fn complex_path_with_predicates_and_attributes() {
 #[test]
 fn xpath_on_deeply_nested() {
     let xml = "<a><b><c><d><e>deep</e></d></c></b></a>";
-    let doc = uppsala::parse(xml).unwrap();
+    let mut doc = uppsala::parse(xml).unwrap();
+    doc.prepare_xpath();
     let root = doc.document_element().unwrap();
     let eval = uppsala::XPathEvaluator::new();
     let nodes = eval.select_nodes(&doc, root, ".//e").unwrap();

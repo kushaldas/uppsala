@@ -169,7 +169,7 @@ pub(crate) struct AttributeWildcard {
 
 impl AttributeWildcard {
     /// Check if an attribute with the given namespace is allowed by this wildcard.
-    pub(super) fn allows_namespace(&self, attr_ns: &Option<String>) -> bool {
+    pub(super) fn allows_namespace(&self, attr_ns: Option<&str>) -> bool {
         match &self.namespace_constraint {
             NamespaceConstraint::Any => true,
             NamespaceConstraint::Other(target_ns) => {
@@ -190,7 +190,7 @@ impl AttributeWildcard {
             }
             NamespaceConstraint::TargetNamespace(target_ns) => {
                 // ##targetNamespace: only attributes in the target namespace
-                attr_ns == target_ns
+                attr_ns == target_ns.as_deref()
             }
             NamespaceConstraint::List(uris) => match attr_ns {
                 None => uris.iter().any(|u| u == "##local"),
