@@ -31,6 +31,7 @@
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use std::path::Path;
 
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::{ValidationError, XmlError, XmlResult};
@@ -183,6 +184,8 @@ pub struct XsdValidator {
     global_attributes: HashMap<(Option<String>, String), AttributeDecl>,
     /// Attribute group definitions: (namespace_uri, local_name) -> AttributeGroupDef
     attribute_groups: HashMap<(Option<String>, String), AttributeGroupDef>,
+    /// Model group definitions: (namespace_uri, local_name) -> ModelGroupDef
+    model_groups: HashMap<(Option<String>, String), ModelGroupDef>,
     /// Target namespace of the schema.
     target_namespace: Option<String>,
     /// Schema-level blockDefault for extension.
@@ -203,6 +206,9 @@ struct ElementDecl {
     /// Block constraint on this element (blocks xsi:type substitution).
     block_extension: bool,
     block_restriction: bool,
+    /// True if this element was created from an `<element ref="..."/>` reference.
+    /// At validation time, the actual type is resolved from the global element map.
+    is_ref: bool,
 }
 
 /// Reference to a type - either a named type or an anonymous inline type.
@@ -462,6 +468,13 @@ struct AttributeGroupDef {
     wildcard: Option<AttributeWildcard>,
 }
 
+/// A model group definition (for resolving xs:group refs).
+#[derive(Debug, Clone)]
+struct ModelGroupDef {
+    /// The content model compositor (sequence, choice, or all) with its particles.
+    content: ContentModel,
+}
+
 /// A complex type definition.
 #[derive(Debug, Clone)]
 struct ComplexTypeDef {
@@ -477,6 +490,12 @@ struct ComplexTypeDef {
     /// Block constraint: blocks xsi:type substitution by these derivation methods.
     block_extension: bool,
     block_restriction: bool,
+    /// Unresolved model group reference (namespace, local_name) from xs:group ref.
+    /// Used to re-resolve after xs:redefine updates the group definition.
+    group_ref: Option<(Option<String>, String)>,
+    /// Unresolved attribute group references (namespace, local_name) from xs:attributeGroup ref.
+    /// Used to re-resolve after xs:redefine updates the attribute group definition.
+    attribute_group_refs: Vec<(Option<String>, String)>,
 }
 
 /// Content model for a complex type.
@@ -511,7 +530,7 @@ enum ParticleKind {
     },
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 enum MaxOccurs {
     Bounded(u64),
     Unbounded,
@@ -623,11 +642,21 @@ enum WhiteSpaceHandling {
 impl XsdValidator {
     /// Build a validator from a parsed XSD schema document.
     pub fn from_schema(schema_doc: &Document) -> XmlResult<Self> {
+        Self::from_schema_with_base_path(schema_doc, None)
+    }
+
+    /// Build a validator from a parsed XSD schema document, with a base path
+    /// for resolving `schemaLocation` attributes in `xs:include` and `xs:redefine`.
+    pub fn from_schema_with_base_path(
+        schema_doc: &Document,
+        base_path: Option<&Path>,
+    ) -> XmlResult<Self> {
         let mut validator = XsdValidator {
             elements: HashMap::new(),
             types: HashMap::new(),
             global_attributes: HashMap::new(),
             attribute_groups: HashMap::new(),
+            model_groups: HashMap::new(),
             target_namespace: None,
             block_default_extension: false,
             block_default_restriction: false,
@@ -667,7 +696,60 @@ impl XsdValidator {
             None
         };
 
-        // Pass 1: Parse attribute group definitions (needed by complexType parsing)
+        // Pass 0: Process xs:include and xs:redefine to merge external schema declarations
+        if base_path.is_some() {
+            process_schema_composition(schema_doc, schema_elem, &mut validator, base_path)?;
+        }
+
+        // Pass 0.5: Parse global attribute declarations first, since attributeGroup
+        // definitions may reference them via <attribute ref="..."/>.
+        for child in schema_doc.children(schema_elem) {
+            if let Some(NodeKind::Element(elem)) = schema_doc.node_kind(child) {
+                let is_xs = elem.name.namespace_uri.as_deref() == Some(XS_NAMESPACE)
+                    || elem.name.prefix.as_deref() == Some("xs")
+                    || elem.name.prefix.as_deref() == Some("xsd");
+                if !is_xs {
+                    continue;
+                }
+                if elem.name.local_name == "attribute" {
+                    if let Some(attr_elem) = schema_doc.element(child) {
+                        if let Some(name) = attr_elem.get_attribute("name") {
+                            let type_ref = if let Some(type_attr) = attr_elem.get_attribute("type")
+                            {
+                                resolve_type_name(type_attr, &validator.target_namespace)
+                            } else {
+                                // Check for inline simpleType child
+                                let mut inline_type = None;
+                                for gc in schema_doc.children(child) {
+                                    if let Some(NodeKind::Element(ge)) = schema_doc.node_kind(gc) {
+                                        if ge.name.local_name == "simpleType" {
+                                            if let Ok(td) = parse_simple_type(schema_doc, gc) {
+                                                inline_type = Some(TypeRef::Inline(Box::new(td)));
+                                            }
+                                        }
+                                    }
+                                }
+                                inline_type.unwrap_or(TypeRef::BuiltIn(BuiltInType::String))
+                            };
+                            let required = attr_elem.get_attribute("use") == Some("required");
+                            let default = attr_elem.get_attribute("default").map(|s| s.to_string());
+                            let decl = AttributeDecl {
+                                name: name.to_string(),
+                                type_ref,
+                                required,
+                                default,
+                                prohibited: false,
+                            };
+                            let key = (validator.target_namespace.clone(), name.to_string());
+                            validator.global_attributes.insert(key, decl);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Pass 1: Parse attribute group and model group definitions
+        // (both needed by complexType parsing in Pass 2)
         for child in schema_doc.children(schema_elem) {
             if let Some(NodeKind::Element(elem)) = schema_doc.node_kind(child) {
                 let is_xs = elem.name.namespace_uri.as_deref() == Some(XS_NAMESPACE)
@@ -683,9 +765,29 @@ impl XsdValidator {
                                 schema_doc,
                                 child,
                                 &validator.target_namespace,
+                                &validator.global_attributes,
+                                &validator.attribute_groups,
                             )?;
                             let key = (validator.target_namespace.clone(), name.to_string());
                             validator.attribute_groups.insert(key, ag_def);
+                        }
+                    }
+                }
+                if elem.name.local_name == "group" {
+                    if let Some(g_elem) = schema_doc.element(child) {
+                        if let Some(name) = g_elem.get_attribute("name") {
+                            let mg_def = parse_model_group_def(
+                                schema_doc,
+                                child,
+                                &local_elem_ns,
+                                &validator.target_namespace,
+                                &validator.attribute_groups,
+                                &validator.model_groups,
+                                validator.block_default_extension,
+                                validator.block_default_restriction,
+                            )?;
+                            let key = (validator.target_namespace.clone(), name.to_string());
+                            validator.model_groups.insert(key, mg_def);
                         }
                     }
                 }
@@ -713,6 +815,7 @@ impl XsdValidator {
                             &local_elem_ns,
                             &validator.target_namespace,
                             &validator.attribute_groups,
+                            &validator.model_groups,
                             validator.block_default_extension,
                             validator.block_default_restriction,
                         )?;
@@ -727,6 +830,7 @@ impl XsdValidator {
                             &validator.target_namespace,
                             &validator.target_namespace,
                             &validator.attribute_groups,
+                            &validator.model_groups,
                             validator.block_default_extension,
                             validator.block_default_restriction,
                         )?;
@@ -1070,17 +1174,24 @@ impl XsdValidator {
 
     /// Check if xsi:type substitution is blocked.
     /// Returns Some(error_message) if blocked, None if allowed.
+    ///
+    /// Per XSD §3.4.4.2 "Type Derivation OK (Complex)", blocking is checked against:
+    /// 1. The element declaration's block (decl_block_ext/decl_block_rst) — blocks any
+    ///    derivation step in the entire chain that uses the blocked method.
+    /// 2. The declared type's block (decl_type_block_ext/decl_type_block_rst) — same rule,
+    ///    applied to the type that the element declaration refers to.
+    ///
+    /// Intermediate types' block constraints do NOT affect xsi:type substitution checking.
     fn check_type_substitution_blocked(
         &self,
         xsi_type: &TypeDef,
         decl_block_ext: bool,
         decl_block_rst: bool,
+        decl_type_block_ext: bool,
+        decl_type_block_rst: bool,
     ) -> Option<String> {
         // Walk up the derivation chain of the xsi:type type.
         // Track which derivation methods appear in the chain.
-        // At each ancestor, if that ancestor's block set intersects with the
-        // derivation methods used in the chain from xsi:type to that ancestor, block it.
-        // Also, the element's block applies to the entire chain.
         let mut has_extension_in_chain = false;
         let mut has_restriction_in_chain = false;
         let mut current = xsi_type;
@@ -1105,33 +1216,31 @@ impl XsdValidator {
 
             // Check element-level block against accumulated chain
             if has_extension_in_chain && decl_block_ext {
-                return Some(format!(
-                    "Type substitution blocked: derivation chain includes extension, which is blocked by element declaration",
-                ));
+                return Some(
+                    "Type substitution blocked: derivation chain includes extension, which is blocked by element declaration".to_string(),
+                );
             }
             if has_restriction_in_chain && decl_block_rst {
-                return Some(format!(
-                    "Type substitution blocked: derivation chain includes restriction, which is blocked by element declaration",
-                ));
+                return Some(
+                    "Type substitution blocked: derivation chain includes restriction, which is blocked by element declaration".to_string(),
+                );
             }
 
-            // Check the base type's block constraint against accumulated chain
+            // Check the declared type's block against accumulated chain
+            if has_extension_in_chain && decl_type_block_ext {
+                return Some(
+                    "Type substitution blocked: derivation chain includes extension, which is blocked by the declared type".to_string(),
+                );
+            }
+            if has_restriction_in_chain && decl_type_block_rst {
+                return Some(
+                    "Type substitution blocked: derivation chain includes restriction, which is blocked by the declared type".to_string(),
+                );
+            }
+
+            // Move up to base type
             if let Some(ref base_key) = ct.base_type {
                 if let Some(base_td) = self.types.get(base_key) {
-                    if let TypeDef::Complex(base_ct) = base_td {
-                        if has_extension_in_chain && base_ct.block_extension {
-                            return Some(format!(
-                                "Type substitution blocked: type '{}' blocks extension",
-                                base_ct.name.as_deref().unwrap_or("anonymous")
-                            ));
-                        }
-                        if has_restriction_in_chain && base_ct.block_restriction {
-                            return Some(format!(
-                                "Type substitution blocked: type '{}' blocks restriction",
-                                base_ct.name.as_deref().unwrap_or("anonymous")
-                            ));
-                        }
-                    }
                     current = base_td;
                 } else {
                     break;
@@ -1401,6 +1510,52 @@ impl XsdValidator {
         decl: &ElementDecl,
         errors: &mut Vec<ValidationError>,
     ) {
+        // If this is an element reference, resolve the actual declaration from the
+        // global elements map to get the real type_ref, nillable, block constraints, etc.
+        if decl.is_ref {
+            let key = (decl.namespace.clone(), decl.name.clone());
+            if let Some(global_decl) = self.elements.get(&key) {
+                let resolved = global_decl.clone();
+                self.validate_element(doc, node, &resolved, errors);
+                return;
+            }
+            // Fall through with the ref decl's AnyType if global not found
+        }
+
+        // Check for xsi:nil="true"
+        if let Some(elem) = doc.element(node) {
+            let xsi_nil_value = elem.get_attribute_ns(XSI_NAMESPACE, "nil").or_else(|| {
+                elem.attributes
+                    .iter()
+                    .find(|a| a.name.local_name == "nil" && a.name.prefix.as_deref() == Some("xsi"))
+                    .map(|a| a.value.as_str())
+            });
+            if xsi_nil_value == Some("true") || xsi_nil_value == Some("1") {
+                if !decl.nillable {
+                    errors.push(ValidationError {
+                        message: "xsi:nil='true' on non-nillable element".to_string(),
+                        line: Some(doc.node_line(node)),
+                        column: Some(doc.node_column(node)),
+                    });
+                    return;
+                }
+                // Nillable element with xsi:nil="true": must be empty
+                // (no child elements and no non-whitespace text content)
+                let has_children = self.element_has_child_elements(doc, node);
+                let text = doc.text_content_deep(node);
+                let has_text = !text.trim().is_empty();
+                if has_children || has_text {
+                    errors.push(ValidationError {
+                        message: "Element with xsi:nil='true' must have no content".to_string(),
+                        line: Some(doc.node_line(node)),
+                        column: Some(doc.node_column(node)),
+                    });
+                }
+                // Skip all further content validation — nilled element is valid if empty
+                return;
+            }
+        }
+
         // Check for xsi:type override
         if let Some(xsi_type_ref) = self.resolve_xsi_type(doc, node) {
             match xsi_type_ref {
@@ -1453,10 +1608,24 @@ impl XsdValidator {
                         return;
                     }
                     // Check block constraints
+                    // Get the declared type's block constraints
+                    let (decl_type_block_ext, decl_type_block_rst) = match &decl.type_ref {
+                        TypeRef::Named(ns, name) => {
+                            let key = (ns.clone(), name.clone());
+                            if let Some(TypeDef::Complex(ct)) = self.types.get(&key) {
+                                (ct.block_extension, ct.block_restriction)
+                            } else {
+                                (false, false)
+                            }
+                        }
+                        _ => (false, false),
+                    };
                     if let Some(block_msg) = self.check_type_substitution_blocked(
                         &td,
                         decl.block_extension,
                         decl.block_restriction,
+                        decl_type_block_ext,
+                        decl_type_block_rst,
                     ) {
                         errors.push(ValidationError {
                             message: block_msg,
@@ -1600,12 +1769,20 @@ impl XsdValidator {
 
             // Validate attribute values against their declared types
             for attr_decl in &effective_attrs {
+                eprintln!(
+                    "DEBUG: effective_attr name={} type_ref={:?}",
+                    attr_decl.name, attr_decl.type_ref
+                );
                 if let Some(attr) = elem
                     .attributes
                     .iter()
                     .find(|a| a.name.local_name == attr_decl.name)
                 {
                     let value = &attr.value;
+                    eprintln!(
+                        "DEBUG: validating attr {}={} against {:?}",
+                        attr_decl.name, value, attr_decl.type_ref
+                    );
                     self.validate_attribute_value(value, &attr_decl.type_ref, doc, node, errors);
                 }
             }
@@ -1764,7 +1941,7 @@ impl XsdValidator {
 
         // For extension types, merge base type's particles with extension's particles
         if let Some(merged_particles) = self.compute_effective_particles(ct) {
-            self.validate_sequence(
+            let consumed = self.validate_sequence(
                 doc,
                 &child_elements,
                 &merged_particles,
@@ -1773,6 +1950,19 @@ impl XsdValidator {
                 node,
                 errors,
             );
+            // Report remaining children as unexpected
+            for &remaining in &child_elements[consumed..] {
+                if let Some(elem) = doc.element(remaining) {
+                    errors.push(ValidationError {
+                        message: format!(
+                            "Unexpected element '{}' in sequence",
+                            elem.name.local_name
+                        ),
+                        line: Some(doc.node_line(remaining)),
+                        column: Some(doc.node_column(remaining)),
+                    });
+                }
+            }
             return;
         }
 
@@ -1800,7 +1990,7 @@ impl XsdValidator {
                 }
             }
             ContentModel::Sequence(particles, min_occurs, max_occurs) => {
-                self.validate_sequence(
+                let consumed = self.validate_sequence(
                     doc,
                     &child_elements,
                     particles,
@@ -1809,9 +1999,22 @@ impl XsdValidator {
                     node,
                     errors,
                 );
+                // Report remaining children as unexpected
+                for &remaining in &child_elements[consumed..] {
+                    if let Some(elem) = doc.element(remaining) {
+                        errors.push(ValidationError {
+                            message: format!(
+                                "Unexpected element '{}' in sequence",
+                                elem.name.local_name
+                            ),
+                            line: Some(doc.node_line(remaining)),
+                            column: Some(doc.node_column(remaining)),
+                        });
+                    }
+                }
             }
             ContentModel::Choice(particles, min_occurs, max_occurs) => {
-                self.validate_choice(
+                let consumed = self.validate_choice(
                     doc,
                     &child_elements,
                     particles,
@@ -1820,6 +2023,19 @@ impl XsdValidator {
                     node,
                     errors,
                 );
+                // Report remaining children as unexpected
+                for &remaining in &child_elements[consumed..] {
+                    if let Some(elem) = doc.element(remaining) {
+                        errors.push(ValidationError {
+                            message: format!(
+                                "Unexpected element '{}' after choice",
+                                elem.name.local_name
+                            ),
+                            line: Some(doc.node_line(remaining)),
+                            column: Some(doc.node_column(remaining)),
+                        });
+                    }
+                }
             }
             ContentModel::All(particles) => {
                 self.validate_all(doc, &child_elements, particles, node, errors);
@@ -1872,7 +2088,7 @@ impl XsdValidator {
         compositor_max: &MaxOccurs,
         parent: NodeId,
         errors: &mut Vec<ValidationError>,
-    ) {
+    ) -> usize {
         let max_reps = match compositor_max {
             MaxOccurs::Bounded(n) => *n,
             MaxOccurs::Unbounded => u64::MAX,
@@ -1940,7 +2156,7 @@ impl XsdValidator {
                         let sub_min = particle.min_occurs;
                         let sub_max = &particle.max_occurs;
                         let before = errors.len();
-                        self.validate_sequence(
+                        let consumed = self.validate_sequence(
                             doc,
                             &children[child_idx..],
                             sub_particles,
@@ -1949,8 +2165,7 @@ impl XsdValidator {
                             parent,
                             errors,
                         );
-                        // Advance past consumed children (approximate)
-                        child_idx = children.len();
+                        child_idx += consumed;
                         if errors.len() > before {
                             break 'outer;
                         }
@@ -1958,7 +2173,7 @@ impl XsdValidator {
                     ParticleKind::Choice(sub_particles) => {
                         let sub_min = particle.min_occurs;
                         let sub_max = &particle.max_occurs;
-                        self.validate_choice(
+                        let consumed = self.validate_choice(
                             doc,
                             &children[child_idx..],
                             sub_particles,
@@ -1967,7 +2182,7 @@ impl XsdValidator {
                             parent,
                             errors,
                         );
-                        child_idx = children.len();
+                        child_idx += consumed;
                     }
                     ParticleKind::Any {
                         namespace_constraint,
@@ -2076,16 +2291,7 @@ impl XsdValidator {
             });
         }
 
-        // Remaining children are unexpected
-        for &remaining in &children[child_idx..] {
-            if let Some(elem) = doc.element(remaining) {
-                errors.push(ValidationError {
-                    message: format!("Unexpected element '{}' in sequence", elem.name.local_name),
-                    line: Some(doc.node_line(remaining)),
-                    column: Some(doc.node_column(remaining)),
-                });
-            }
-        }
+        child_idx
     }
 
     fn validate_choice(
@@ -2093,127 +2299,258 @@ impl XsdValidator {
         doc: &Document,
         children: &[NodeId],
         particles: &[Particle],
-        _compositor_min: u64,
-        _compositor_max: &MaxOccurs,
+        compositor_min: u64,
+        compositor_max: &MaxOccurs,
         parent: NodeId,
         errors: &mut Vec<ValidationError>,
-    ) {
+    ) -> usize {
+        let max_reps = match compositor_max {
+            MaxOccurs::Bounded(n) => *n,
+            MaxOccurs::Unbounded => u64::MAX,
+        };
+
         if children.is_empty() {
-            // Check if any particle allows 0 occurrences
-            let all_optional = particles.iter().any(|p| p.min_occurs == 0);
-            if !all_optional && !particles.is_empty() {
-                errors.push(ValidationError {
-                    message: "Expected one of the choice alternatives".to_string(),
-                    line: Some(doc.node_line(parent)),
-                    column: Some(doc.node_column(parent)),
-                });
+            if compositor_min > 0 {
+                // Check if any particle allows 0 occurrences
+                let any_optional = particles.iter().any(|p| p.min_occurs == 0);
+                if !any_optional && !particles.is_empty() {
+                    errors.push(ValidationError {
+                        message: "Expected one of the choice alternatives".to_string(),
+                        line: Some(doc.node_line(parent)),
+                        column: Some(doc.node_column(parent)),
+                    });
+                }
             }
-            return;
+            return 0;
         }
 
-        // Try to match the first child against one of the choice alternatives
-        let first_child = children[0];
-        if let Some(elem) = doc.element(first_child) {
-            let matched = particles.iter().any(|p| match &p.kind {
-                ParticleKind::Element(decl) => {
-                    decl.name == elem.name.local_name
-                        && match (&elem.name.namespace_uri, &decl.namespace) {
+        let mut child_idx = 0;
+        let mut choice_reps = 0u64;
+
+        // Outer loop: repeat the choice up to max_reps times.
+        // Each iteration picks one alternative and consumes matching children for it.
+        while choice_reps < max_reps && child_idx < children.len() {
+            let current_child = children[child_idx];
+            let elem = match doc.element(current_child) {
+                Some(e) => e,
+                None => break,
+            };
+
+            // Try to match the current child against one of the choice alternatives
+            let mut matched_any = false;
+
+            for p in particles {
+                match &p.kind {
+                    ParticleKind::Element(decl) => {
+                        let name_matches = decl.name == elem.name.local_name;
+                        let ns_matches = match (&elem.name.namespace_uri, &decl.namespace) {
                             (Some(a), Some(b)) => a == b,
                             (None, None) => true,
                             (Some(_), None) => false,
                             (None, Some(_)) => false,
-                        }
-                }
-                ParticleKind::Any {
-                    namespace_constraint,
-                    ..
-                } => wildcard_allows_namespace(namespace_constraint, &elem.name.namespace_uri),
-                _ => false,
-            });
-            if !matched {
-                errors.push(ValidationError {
-                    message: format!(
-                        "Element '{}' does not match any choice alternative",
-                        elem.name.local_name
-                    ),
-                    line: Some(doc.node_line(first_child)),
-                    column: Some(doc.node_column(first_child)),
-                });
-            } else {
-                // Validate the matched element
-                let mut validated = false;
-                for p in particles {
-                    match &p.kind {
-                        ParticleKind::Element(decl) => {
-                            let name_matches = decl.name == elem.name.local_name;
-                            let ns_matches = match (&elem.name.namespace_uri, &decl.namespace) {
-                                (Some(a), Some(b)) => a == b,
-                                (None, None) => true,
-                                (Some(_), None) => false,
-                                (None, Some(_)) => false,
+                        };
+                        if name_matches && ns_matches {
+                            // Consume as many consecutive same-named elements as allowed by max_occurs
+                            let max = match p.max_occurs {
+                                MaxOccurs::Bounded(n) => n as usize,
+                                MaxOccurs::Unbounded => usize::MAX,
                             };
-                            if name_matches && ns_matches {
-                                self.validate_element(doc, first_child, decl, errors);
-                                validated = true;
-                                break;
-                            }
-                        }
-                        ParticleKind::Any {
-                            namespace_constraint,
-                            process_contents,
-                        } => {
-                            if wildcard_allows_namespace(
-                                namespace_constraint,
-                                &elem.name.namespace_uri,
-                            ) {
-                                match process_contents {
-                                    ProcessContents::Skip => {}
-                                    ProcessContents::Lax => {
-                                        if let Some(global_decl) = self.find_global_element(
-                                            &elem.name.local_name,
-                                            &elem.name.namespace_uri,
-                                        ) {
-                                            self.validate_element(
-                                                doc,
-                                                first_child,
-                                                &global_decl,
-                                                errors,
-                                            );
-                                        }
+                            let mut count = 0usize;
+                            while child_idx < children.len() && count < max {
+                                let child = children[child_idx];
+                                if let Some(child_elem) = doc.element(child) {
+                                    let cn_matches = child_elem.name.local_name == decl.name;
+                                    let cns_matches =
+                                        match (&child_elem.name.namespace_uri, &decl.namespace) {
+                                            (Some(a), Some(b)) => a == b,
+                                            (None, None) => true,
+                                            _ => false,
+                                        };
+                                    if cn_matches && cns_matches {
+                                        self.validate_element(doc, child, decl, errors);
+                                        child_idx += 1;
+                                        count += 1;
+                                    } else {
+                                        break;
                                     }
-                                    ProcessContents::Strict => {
-                                        if let Some(global_decl) = self.find_global_element(
-                                            &elem.name.local_name,
-                                            &elem.name.namespace_uri,
-                                        ) {
-                                            self.validate_element(
-                                                doc,
-                                                first_child,
-                                                &global_decl,
-                                                errors,
-                                            );
-                                        } else {
-                                            errors.push(ValidationError {
-                                                message: format!(
-                                                    "No global element declaration found for '{}' (strict wildcard)",
-                                                    elem.name.local_name
-                                                ),
-                                                line: Some(doc.node_line(first_child)),
-                                                column: Some(doc.node_column(first_child)),
-                                            });
-                                        }
-                                    }
+                                } else {
+                                    break;
                                 }
-                                validated = true;
+                            }
+                            if count < p.min_occurs as usize {
+                                errors.push(ValidationError {
+                                    message: format!(
+                                        "Expected at least {} occurrence(s) of element '{}' in choice, found {}",
+                                        p.min_occurs, decl.name, count
+                                    ),
+                                    line: Some(doc.node_line(current_child)),
+                                    column: Some(doc.node_column(current_child)),
+                                });
+                            }
+                            matched_any = true;
+                            break;
+                        }
+                    }
+                    ParticleKind::Sequence(sub_particles) => {
+                        let sub_min = p.min_occurs;
+                        let sub_max = &p.max_occurs;
+                        let before_errors = errors.len();
+                        let consumed = self.validate_sequence(
+                            doc,
+                            &children[child_idx..],
+                            sub_particles,
+                            sub_min,
+                            sub_max,
+                            parent,
+                            errors,
+                        );
+                        if consumed > 0 {
+                            child_idx += consumed;
+                            matched_any = true;
+                            // If the nested sequence produced errors, we still consumed
+                            // elements — but we should stop the choice loop
+                            if errors.len() > before_errors {
+                                choice_reps += 1;
+                                break;
+                            }
+                            break;
+                        } else if errors.len() > before_errors {
+                            // Sequence matched nothing but produced errors — try next alternative
+                            // Roll back errors from this failed attempt
+                            errors.truncate(before_errors);
+                        }
+                        // If consumed == 0 and no errors, this alternative didn't match; try next
+                    }
+                    ParticleKind::Choice(sub_particles) => {
+                        let sub_min = p.min_occurs;
+                        let sub_max = &p.max_occurs;
+                        let before_errors = errors.len();
+                        let consumed = self.validate_choice(
+                            doc,
+                            &children[child_idx..],
+                            sub_particles,
+                            sub_min,
+                            sub_max,
+                            parent,
+                            errors,
+                        );
+                        if consumed > 0 {
+                            child_idx += consumed;
+                            matched_any = true;
+                            break;
+                        } else if errors.len() > before_errors {
+                            // Sub-choice matched nothing but produced errors — try next alternative
+                            errors.truncate(before_errors);
+                        }
+                    }
+                    ParticleKind::Any {
+                        namespace_constraint,
+                        process_contents,
+                    } => {
+                        if wildcard_allows_namespace(namespace_constraint, &elem.name.namespace_uri)
+                        {
+                            // Consume as many wildcard-matching elements as allowed
+                            let max = match p.max_occurs {
+                                MaxOccurs::Bounded(n) => n as usize,
+                                MaxOccurs::Unbounded => usize::MAX,
+                            };
+                            let mut count = 0usize;
+                            while child_idx < children.len() && count < max {
+                                let child = children[child_idx];
+                                if let Some(child_elem) = doc.element(child) {
+                                    if wildcard_allows_namespace(
+                                        namespace_constraint,
+                                        &child_elem.name.namespace_uri,
+                                    ) {
+                                        match process_contents {
+                                            ProcessContents::Skip => {}
+                                            ProcessContents::Lax => {
+                                                if let Some(global_decl) = self.find_global_element(
+                                                    &child_elem.name.local_name,
+                                                    &child_elem.name.namespace_uri,
+                                                ) {
+                                                    self.validate_element(
+                                                        doc,
+                                                        child,
+                                                        &global_decl,
+                                                        errors,
+                                                    );
+                                                }
+                                            }
+                                            ProcessContents::Strict => {
+                                                if let Some(global_decl) = self.find_global_element(
+                                                    &child_elem.name.local_name,
+                                                    &child_elem.name.namespace_uri,
+                                                ) {
+                                                    self.validate_element(
+                                                        doc,
+                                                        child,
+                                                        &global_decl,
+                                                        errors,
+                                                    );
+                                                } else {
+                                                    errors.push(ValidationError {
+                                                        message: format!(
+                                                            "No global element declaration found for '{}' (strict wildcard)",
+                                                            child_elem.name.local_name
+                                                        ),
+                                                        line: Some(doc.node_line(child)),
+                                                        column: Some(doc.node_column(child)),
+                                                    });
+                                                }
+                                            }
+                                        }
+                                        child_idx += 1;
+                                        count += 1;
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
+                            matched_any = count > 0;
+                            if matched_any {
                                 break;
                             }
                         }
-                        _ => {}
                     }
                 }
-                let _ = validated;
+            }
+
+            if !matched_any {
+                // Current child doesn't match any alternative
+                if choice_reps < compositor_min {
+                    errors.push(ValidationError {
+                        message: format!(
+                            "Element '{}' does not match any choice alternative",
+                            elem.name.local_name
+                        ),
+                        line: Some(doc.node_line(current_child)),
+                        column: Some(doc.node_column(current_child)),
+                    });
+                }
+                break;
+            }
+
+            choice_reps += 1;
+        }
+
+        if choice_reps < compositor_min {
+            if child_idx == 0 && errors.is_empty() {
+                // No children matched and no error was emitted yet
+                let any_optional = particles.iter().any(|p| p.min_occurs == 0);
+                if !any_optional && !particles.is_empty() {
+                    errors.push(ValidationError {
+                        message: "Expected one of the choice alternatives".to_string(),
+                        line: Some(doc.node_line(parent)),
+                        column: Some(doc.node_column(parent)),
+                    });
+                }
             }
         }
+
+        child_idx
     }
 
     fn validate_all(
@@ -2416,7 +2753,16 @@ impl XsdValidator {
             TypeRef::Named(ns, name) => {
                 // Try to resolve the named type
                 let key = (ns.clone(), name.clone());
+                eprintln!(
+                    "DEBUG: validate_attribute_value Named key={:?} found={}",
+                    key,
+                    self.types.contains_key(&key)
+                );
                 if let Some(TypeDef::Simple(st)) = self.types.get(&key) {
+                    eprintln!(
+                        "DEBUG: SimpleTypeDef base={:?} facets={:?}",
+                        st.base, st.facets
+                    );
                     if st.is_list {
                         let items: Vec<&str> = value.split_whitespace().collect();
                         if let Some(ref item_bt) = st.item_type {
@@ -2449,6 +2795,408 @@ impl XsdValidator {
 
 // ─── Schema parsing helpers ─────────────────────────────
 
+/// Process xs:include and xs:redefine elements in a schema document,
+/// loading external schemas and merging their declarations into the validator.
+fn process_schema_composition(
+    schema_doc: &Document,
+    schema_elem: NodeId,
+    validator: &mut XsdValidator,
+    base_path: Option<&Path>,
+) -> XmlResult<()> {
+    let base_dir = base_path.and_then(|p| p.parent());
+
+    for child in schema_doc.children(schema_elem) {
+        if let Some(NodeKind::Element(elem)) = schema_doc.node_kind(child) {
+            let is_xs = elem.name.namespace_uri.as_deref() == Some(XS_NAMESPACE)
+                || elem.name.prefix.as_deref() == Some("xs")
+                || elem.name.prefix.as_deref() == Some("xsd");
+            if !is_xs {
+                continue;
+            }
+
+            match elem.name.local_name.as_str() {
+                "include" | "redefine" => {
+                    let is_redefine = elem.name.local_name == "redefine";
+                    let schema_location = match elem.get_attribute("schemaLocation") {
+                        Some(loc) => loc,
+                        None => continue, // No schemaLocation, skip
+                    };
+
+                    // Resolve the schema location relative to the base directory
+                    let resolved_path = match base_dir {
+                        Some(dir) => dir.join(schema_location),
+                        None => std::path::PathBuf::from(schema_location),
+                    };
+
+                    // Load and parse the external schema
+                    let ext_str = match std::fs::read_to_string(&resolved_path) {
+                        Ok(s) => s,
+                        Err(_) => continue, // Can't load — skip silently
+                    };
+                    let ext_doc = match crate::parse(&ext_str) {
+                        Ok(d) => d,
+                        Err(_) => continue, // Can't parse — skip silently
+                    };
+
+                    // Build a sub-validator from the external schema
+                    let ext_base_path = resolved_path.as_path();
+                    eprintln!("    DEBUG: Loading external schema: {:?}", resolved_path);
+                    let ext_validator =
+                        XsdValidator::from_schema_with_base_path(&ext_doc, Some(ext_base_path))?;
+                    eprintln!("    DEBUG: Loaded external schema OK");
+
+                    // Determine the effective namespace for included declarations.
+                    // "Chameleon include": if the external schema has no targetNamespace
+                    // but the including schema does, the included declarations adopt
+                    // the including schema's targetNamespace.
+                    let chameleon = ext_validator.target_namespace.is_none()
+                        && validator.target_namespace.is_some();
+
+                    // Merge declarations from external schema into our validator
+                    merge_external_declarations(validator, &ext_validator, chameleon);
+                    eprintln!("    DEBUG: Merged external declarations");
+
+                    // For xs:redefine, process inline redefinition children
+                    if is_redefine {
+                        eprintln!("    DEBUG: Processing redefine children...");
+                        process_redefine_children(schema_doc, child, validator)?;
+                        eprintln!("    DEBUG: Redefine children processed OK");
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+
+    Ok(())
+}
+
+/// Merge declarations from an external (included) schema validator into the main validator.
+/// If `chameleon` is true, re-key declarations from None namespace to the main validator's
+/// target namespace (chameleon include behavior).
+fn merge_external_declarations(validator: &mut XsdValidator, ext: &XsdValidator, chameleon: bool) {
+    let target_ns = validator.target_namespace.clone();
+
+    // Helper to re-key a (namespace, name) pair for chameleon includes
+    let rekey = |key: &(Option<String>, String)| -> (Option<String>, String) {
+        if chameleon && key.0.is_none() {
+            (target_ns.clone(), key.1.clone())
+        } else {
+            key.clone()
+        }
+    };
+
+    for (key, decl) in &ext.elements {
+        let new_key = rekey(key);
+        let mut new_decl = decl.clone();
+        if chameleon && new_decl.namespace.is_none() {
+            new_decl.namespace = target_ns.clone();
+        }
+        // Chameleon: also re-namespace elements inside content models
+        if chameleon {
+            chameleon_fixup_element_decl(&mut new_decl, &target_ns);
+        }
+        validator.elements.entry(new_key).or_insert(new_decl);
+    }
+
+    for (key, type_def) in &ext.types {
+        let new_key = rekey(key);
+        let mut new_td = type_def.clone();
+        if chameleon {
+            chameleon_fixup_type_def(&mut new_td, &target_ns);
+        }
+        validator.types.entry(new_key).or_insert(new_td);
+    }
+
+    for (key, attr) in &ext.global_attributes {
+        let new_key = rekey(key);
+        validator
+            .global_attributes
+            .entry(new_key)
+            .or_insert(attr.clone());
+    }
+
+    for (key, ag) in &ext.attribute_groups {
+        let new_key = rekey(key);
+        validator
+            .attribute_groups
+            .entry(new_key)
+            .or_insert(ag.clone());
+    }
+
+    for (key, mg) in &ext.model_groups {
+        let new_key = rekey(key);
+        let mut new_mg = mg.clone();
+        if chameleon {
+            chameleon_fixup_content_model(&mut new_mg.content, &target_ns);
+        }
+        validator.model_groups.entry(new_key).or_insert(new_mg);
+    }
+}
+
+/// Fix up an element declaration's namespace for chameleon include:
+/// Set the element's namespace and recursively fix up inline type defs.
+fn chameleon_fixup_element_decl(decl: &mut ElementDecl, target_ns: &Option<String>) {
+    if decl.namespace.is_none() {
+        decl.namespace = target_ns.clone();
+    }
+    chameleon_fixup_type_ref(&mut decl.type_ref, target_ns);
+}
+
+/// Fix up a type reference for chameleon include.
+fn chameleon_fixup_type_ref(type_ref: &mut TypeRef, target_ns: &Option<String>) {
+    match type_ref {
+        TypeRef::Named(ref mut ns, _) => {
+            if ns.is_none() {
+                *ns = target_ns.clone();
+            }
+        }
+        TypeRef::Inline(ref mut td) => {
+            chameleon_fixup_type_def(td, target_ns);
+        }
+        _ => {}
+    }
+}
+
+/// Fix up a type definition for chameleon include.
+fn chameleon_fixup_type_def(td: &mut TypeDef, target_ns: &Option<String>) {
+    match td {
+        TypeDef::Complex(ref mut ct) => {
+            // Fix base_type reference
+            if let Some((ref mut ns, _)) = ct.base_type {
+                if ns.is_none() {
+                    *ns = target_ns.clone();
+                }
+            }
+            chameleon_fixup_content_model(&mut ct.content, target_ns);
+        }
+        TypeDef::Simple(_) => {
+            // Simple types don't reference namespaced components that need fixing
+        }
+    }
+}
+
+/// Fix up a content model for chameleon include.
+fn chameleon_fixup_content_model(content: &mut ContentModel, target_ns: &Option<String>) {
+    match content {
+        ContentModel::Sequence(ref mut particles, _, _)
+        | ContentModel::Choice(ref mut particles, _, _) => {
+            chameleon_fixup_particles(particles, target_ns);
+        }
+        ContentModel::All(ref mut particles) => {
+            chameleon_fixup_particles(particles, target_ns);
+        }
+        ContentModel::SimpleContent(ref mut type_ref) => {
+            chameleon_fixup_type_ref(type_ref, target_ns);
+        }
+        _ => {}
+    }
+}
+
+/// Fix up particles for chameleon include.
+fn chameleon_fixup_particles(particles: &mut [Particle], target_ns: &Option<String>) {
+    for particle in particles {
+        match &mut particle.kind {
+            ParticleKind::Element(ref mut decl) => {
+                chameleon_fixup_element_decl(decl, target_ns);
+            }
+            ParticleKind::Sequence(ref mut sub) | ParticleKind::Choice(ref mut sub) => {
+                chameleon_fixup_particles(sub, target_ns);
+            }
+            ParticleKind::Any { .. } => {}
+        }
+    }
+}
+
+/// Process inline redefinition children within an xs:redefine element.
+/// This handles simpleType, complexType, group, and attributeGroup redefinitions.
+fn process_redefine_children(
+    doc: &Document,
+    redefine_node: NodeId,
+    validator: &mut XsdValidator,
+) -> XmlResult<()> {
+    let target_ns = validator.target_namespace.clone();
+
+    for child in doc.children(redefine_node) {
+        if let Some(NodeKind::Element(child_elem)) = doc.node_kind(child) {
+            let is_xs = child_elem.name.namespace_uri.as_deref() == Some(XS_NAMESPACE)
+                || child_elem.name.prefix.as_deref() == Some("xs")
+                || child_elem.name.prefix.as_deref() == Some("xsd");
+            if !is_xs {
+                continue;
+            }
+
+            match child_elem.name.local_name.as_str() {
+                "simpleType" => {
+                    let type_def = parse_simple_type(doc, child)?;
+                    if let TypeDef::Simple(ref st) = type_def {
+                        if let Some(name) = &st.name {
+                            let key = (target_ns.clone(), name.clone());
+                            validator.types.insert(key, type_def);
+                        }
+                    }
+                }
+                "complexType" => {
+                    // For redefine, self-references (base="X" where X is the name
+                    // being redefined) should resolve to the OLD definition.
+                    // We rename the old definition to a unique key and update the
+                    // new definition's base_type to reference the renamed key.
+                    let local_elem_ns = target_ns.clone(); // qualified by default in redefined types
+                    let type_def = parse_complex_type(
+                        doc,
+                        child,
+                        &local_elem_ns,
+                        &target_ns,
+                        &target_ns,
+                        &validator.attribute_groups,
+                        &validator.model_groups,
+                        validator.block_default_extension,
+                        validator.block_default_restriction,
+                    )?;
+                    if let TypeDef::Complex(ref ct) = type_def {
+                        if let Some(name) = &ct.name {
+                            let key = (target_ns.clone(), name.clone());
+                            // If the base_type references itself (same name), it's a
+                            // self-referencing redefine: save old def under a unique key.
+                            if let Some(ref base) = ct.base_type {
+                                if base.1 == *name && base.0 == target_ns {
+                                    let old_key =
+                                        (target_ns.clone(), format!("__redefine_base_{}", name));
+                                    if let Some(old_td) = validator.types.get(&key).cloned() {
+                                        validator.types.insert(old_key.clone(), old_td);
+                                    }
+                                    // Update the new definition's base_type to point to the renamed old def
+                                    let mut new_td = type_def.clone();
+                                    if let TypeDef::Complex(ref mut new_ct) = new_td {
+                                        new_ct.base_type =
+                                            Some((old_key.0.clone(), old_key.1.clone()));
+                                    }
+                                    validator.types.insert(key, new_td);
+                                } else {
+                                    validator.types.insert(key, type_def);
+                                }
+                            } else {
+                                validator.types.insert(key, type_def);
+                            }
+                        }
+                    }
+                }
+                "group" => {
+                    // Redefine a model group: the self-reference inside should
+                    // resolve to the OLD group definition.
+                    if let Some(g_elem) = doc.element(child) {
+                        if let Some(name) = g_elem.get_attribute("name") {
+                            // Save the old definition before overwriting
+                            let key = (target_ns.clone(), name.to_string());
+                            let old_mg = validator.model_groups.get(&key).cloned();
+
+                            // Parse with a temporary model_groups that has the old
+                            // definition available for self-reference resolution.
+                            // (The current model_groups already has it from the merge.)
+                            let local_elem_ns = target_ns.clone();
+                            let mg_def = parse_model_group_def(
+                                doc,
+                                child,
+                                &local_elem_ns,
+                                &target_ns,
+                                &validator.attribute_groups,
+                                &validator.model_groups,
+                                validator.block_default_extension,
+                                validator.block_default_restriction,
+                            )?;
+                            let _ = old_mg; // suppress unused warning
+                            validator.model_groups.insert(key, mg_def);
+                        }
+                    }
+                }
+                "attributeGroup" => {
+                    if let Some(ag_elem) = doc.element(child) {
+                        if let Some(name) = ag_elem.get_attribute("name") {
+                            let ag_def = parse_attribute_group_def(
+                                doc,
+                                child,
+                                &target_ns,
+                                &validator.global_attributes,
+                                &validator.attribute_groups,
+                            )?;
+                            let key = (target_ns.clone(), name.to_string());
+                            validator.attribute_groups.insert(key, ag_def);
+                        }
+                    }
+                }
+                _ => {} // annotation, etc.
+            }
+        }
+    }
+
+    // After all redefine children are processed, re-resolve complex types
+    // that reference the (possibly updated) model groups and attribute groups.
+    reresolve_types_after_redefine(validator);
+
+    Ok(())
+}
+
+/// After xs:redefine processing, re-resolve any complex types whose group or
+/// attributeGroup references may have been updated by the redefinitions.
+/// This is necessary because the external schema's types were parsed with the
+/// OLD group/attributeGroup definitions eagerly inlined; after redefine replaces
+/// those definitions, we need to update the types to reflect the new definitions.
+fn reresolve_types_after_redefine(validator: &mut XsdValidator) {
+    // Collect keys that need re-resolution to avoid borrow issues
+    let keys_to_update: Vec<(Option<String>, String)> = validator
+        .types
+        .iter()
+        .filter_map(|(key, td)| {
+            if let TypeDef::Complex(ct) = td {
+                if ct.group_ref.is_some() || !ct.attribute_group_refs.is_empty() {
+                    return Some(key.clone());
+                }
+            }
+            None
+        })
+        .collect();
+
+    for key in keys_to_update {
+        let td = match validator.types.get(&key) {
+            Some(td) => td.clone(),
+            None => continue,
+        };
+        if let TypeDef::Complex(mut ct) = td {
+            // Re-resolve model group reference
+            if let Some(ref mg_key) = ct.group_ref {
+                if let Some(mg) = validator.model_groups.get(mg_key) {
+                    ct.content = mg.content.clone();
+                }
+            }
+            // Re-resolve attribute group references
+            if !ct.attribute_group_refs.is_empty() {
+                // Rebuild attributes: start with non-attributeGroup attributes
+                // For simplicity, we re-derive all attributes from the attribute
+                // group refs. Any directly declared attributes on the complexType
+                // that aren't from group refs would need to be preserved, but
+                // in practice the external schema complexTypes only get attributes
+                // from attributeGroup refs (which are what we're re-resolving).
+                let mut new_attrs = Vec::new();
+                let mut new_wildcard = ct.attribute_wildcard.clone();
+                for ag_key in &ct.attribute_group_refs {
+                    if let Some(ag) = validator.attribute_groups.get(ag_key) {
+                        new_attrs.extend(ag.attributes.iter().cloned());
+                        if let Some(ref ag_wc) = ag.wildcard {
+                            new_wildcard = match new_wildcard {
+                                Some(existing_wc) => existing_wc.intersect(ag_wc),
+                                None => Some(ag_wc.clone()),
+                            };
+                        }
+                    }
+                }
+                ct.attributes = new_attrs;
+                ct.attribute_wildcard = new_wildcard;
+            }
+            validator.types.insert(key, TypeDef::Complex(ct));
+        }
+    }
+}
+
 fn parse_element_decl(
     doc: &Document,
     node: NodeId,
@@ -2456,6 +3204,7 @@ fn parse_element_decl(
     local_elem_ns: &Option<String>,
     schema_target_ns: &Option<String>,
     attribute_groups: &HashMap<(Option<String>, String), AttributeGroupDef>,
+    model_groups: &HashMap<(Option<String>, String), ModelGroupDef>,
     block_default_ext: bool,
     block_default_rst: bool,
 ) -> XmlResult<ElementDecl> {
@@ -2526,6 +3275,7 @@ fn parse_element_decl(
                         target_ns,
                         schema_target_ns,
                         attribute_groups,
+                        model_groups,
                         block_default_ext,
                         block_default_rst,
                     )?));
@@ -2546,6 +3296,7 @@ fn parse_element_decl(
         nillable,
         block_extension: block_ext,
         block_restriction: block_rst,
+        is_ref: false,
     })
 }
 
@@ -2645,6 +3396,7 @@ fn parse_complex_type(
     target_ns: &Option<String>,
     schema_target_ns: &Option<String>,
     attribute_groups: &HashMap<(Option<String>, String), AttributeGroupDef>,
+    model_groups: &HashMap<(Option<String>, String), ModelGroupDef>,
     block_default_ext: bool,
     block_default_rst: bool,
 ) -> XmlResult<TypeDef> {
@@ -2680,6 +3432,8 @@ fn parse_complex_type(
     let mut attribute_wildcard: Option<AttributeWildcard> = None;
     let mut base_type: Option<(Option<String>, String)> = None;
     let mut derived_by_extension: Option<bool> = None;
+    let mut group_ref: Option<(Option<String>, String)> = None;
+    let mut attribute_group_refs: Vec<(Option<String>, String)> = Vec::new();
 
     for child in doc.children(node) {
         if let Some(NodeKind::Element(child_elem)) = doc.node_kind(child) {
@@ -2709,6 +3463,7 @@ fn parse_complex_type(
                             local_elem_ns,
                             schema_target_ns,
                             attribute_groups,
+                            model_groups,
                             block_default_ext,
                             block_default_rst,
                         )?,
@@ -2733,6 +3488,7 @@ fn parse_complex_type(
                             local_elem_ns,
                             schema_target_ns,
                             attribute_groups,
+                            model_groups,
                             block_default_ext,
                             block_default_rst,
                         )?,
@@ -2747,9 +3503,22 @@ fn parse_complex_type(
                         local_elem_ns,
                         schema_target_ns,
                         attribute_groups,
+                        model_groups,
                         block_default_ext,
                         block_default_rst,
                     )?);
+                }
+                "group" => {
+                    // Resolve xs:group ref to set content model
+                    if let Some(ref_name) = child_elem.get_attribute("ref") {
+                        let local_name = strip_prefix(ref_name);
+                        let key = (schema_target_ns.clone(), local_name.to_string());
+                        // Track the unresolved reference for potential re-resolution after redefine
+                        group_ref = Some(key.clone());
+                        if let Some(mg) = model_groups.get(&key) {
+                            content = mg.content.clone();
+                        }
+                    }
                 }
                 "attribute" => {
                     attributes.push(parse_attribute_decl(doc, child)?);
@@ -2767,6 +3536,8 @@ fn parse_complex_type(
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
                         let key = (target_ns.clone(), local_name.to_string());
+                        // Track the unresolved reference for potential re-resolution after redefine
+                        attribute_group_refs.push(key.clone());
                         if let Some(ag) = attribute_groups.get(&key) {
                             attributes.extend(ag.attributes.iter().cloned());
                             // Merge wildcard: intersect if both have one
@@ -2854,6 +3625,7 @@ fn parse_complex_type(
                                                             local_elem_ns,
                                                             schema_target_ns,
                                                             attribute_groups,
+                                                            model_groups,
                                                             block_default_ext,
                                                             block_default_rst,
                                                         )?,
@@ -2882,6 +3654,7 @@ fn parse_complex_type(
                                                             local_elem_ns,
                                                             schema_target_ns,
                                                             attribute_groups,
+                                                            model_groups,
                                                             block_default_ext,
                                                             block_default_rst,
                                                         )?,
@@ -2954,6 +3727,8 @@ fn parse_complex_type(
         derived_by_extension,
         block_extension: block_ext,
         block_restriction: block_rst,
+        group_ref,
+        attribute_group_refs,
     }))
 }
 
@@ -3003,6 +3778,8 @@ fn parse_attribute_group_def(
     doc: &Document,
     node: NodeId,
     target_ns: &Option<String>,
+    global_attributes: &HashMap<(Option<String>, String), AttributeDecl>,
+    attribute_groups: &HashMap<(Option<String>, String), AttributeGroupDef>,
 ) -> XmlResult<AttributeGroupDef> {
     let mut attributes = Vec::new();
     let mut wildcard: Option<AttributeWildcard> = None;
@@ -3017,7 +3794,56 @@ fn parse_attribute_group_def(
             }
             match child_elem.name.local_name.as_str() {
                 "attribute" => {
-                    attributes.push(parse_attribute_decl(doc, child)?);
+                    // Check if this is an attribute reference
+                    if let Some(ref_name) = child_elem.get_attribute("ref") {
+                        let local_name = strip_prefix(ref_name);
+                        let ref_ns = if ref_name.contains(':') {
+                            target_ns.clone()
+                        } else {
+                            target_ns.clone()
+                        };
+                        let key = (ref_ns, local_name.to_string());
+                        if let Some(global_attr) = global_attributes.get(&key) {
+                            // Use the global attribute declaration but allow
+                            // local overrides for use/required
+                            let mut attr = global_attr.clone();
+                            if child_elem.get_attribute("use") == Some("required") {
+                                attr.required = true;
+                            } else if child_elem.get_attribute("use") == Some("prohibited") {
+                                attr.prohibited = true;
+                            }
+                            attributes.push(attr);
+                        } else {
+                            // Global attribute not found; create a placeholder
+                            let required = child_elem.get_attribute("use") == Some("required");
+                            let prohibited = child_elem.get_attribute("use") == Some("prohibited");
+                            attributes.push(AttributeDecl {
+                                name: local_name.to_string(),
+                                type_ref: TypeRef::BuiltIn(BuiltInType::String),
+                                required,
+                                default: None,
+                                prohibited,
+                            });
+                        }
+                    } else {
+                        attributes.push(parse_attribute_decl(doc, child)?);
+                    }
+                }
+                "attributeGroup" => {
+                    // Resolve attributeGroup ref (used in redefine self-references)
+                    if let Some(ref_name) = child_elem.get_attribute("ref") {
+                        let local_name = strip_prefix(ref_name);
+                        let key = (target_ns.clone(), local_name.to_string());
+                        if let Some(ag) = attribute_groups.get(&key) {
+                            attributes.extend(ag.attributes.iter().cloned());
+                            if let Some(ref ag_wc) = ag.wildcard {
+                                wildcard = match wildcard {
+                                    Some(existing_wc) => existing_wc.intersect(ag_wc),
+                                    None => Some(ag_wc.clone()),
+                                };
+                            }
+                        }
+                    }
                 }
                 "anyAttribute" => {
                     wildcard = Some(parse_any_attribute(child_elem, target_ns));
@@ -3031,6 +3857,99 @@ fn parse_attribute_group_def(
         attributes,
         wildcard,
     })
+}
+
+/// Parse a top-level xs:group definition (model group definition).
+fn parse_model_group_def(
+    doc: &Document,
+    node: NodeId,
+    local_elem_ns: &Option<String>,
+    schema_target_ns: &Option<String>,
+    attribute_groups: &HashMap<(Option<String>, String), AttributeGroupDef>,
+    model_groups: &HashMap<(Option<String>, String), ModelGroupDef>,
+    block_default_ext: bool,
+    block_default_rst: bool,
+) -> XmlResult<ModelGroupDef> {
+    // A model group definition contains exactly one compositor child: sequence, choice, or all
+    let mut content = ContentModel::Empty;
+
+    for child in doc.children(node) {
+        if let Some(NodeKind::Element(child_elem)) = doc.node_kind(child) {
+            let is_xs = child_elem.name.namespace_uri.as_deref() == Some(XS_NAMESPACE)
+                || child_elem.name.prefix.as_deref() == Some("xs")
+                || child_elem.name.prefix.as_deref() == Some("xsd");
+            if !is_xs {
+                continue;
+            }
+            match child_elem.name.local_name.as_str() {
+                "sequence" => {
+                    let min_occ = child_elem
+                        .get_attribute("minOccurs")
+                        .and_then(|s| s.parse().ok())
+                        .unwrap_or(1);
+                    let max_occ = match child_elem.get_attribute("maxOccurs") {
+                        Some("unbounded") => MaxOccurs::Unbounded,
+                        Some(s) => MaxOccurs::Bounded(s.parse().unwrap_or(1)),
+                        None => MaxOccurs::Bounded(1),
+                    };
+                    content = ContentModel::Sequence(
+                        parse_particles(
+                            doc,
+                            child,
+                            local_elem_ns,
+                            schema_target_ns,
+                            attribute_groups,
+                            model_groups,
+                            block_default_ext,
+                            block_default_rst,
+                        )?,
+                        min_occ,
+                        max_occ,
+                    );
+                }
+                "choice" => {
+                    let min_occ = child_elem
+                        .get_attribute("minOccurs")
+                        .and_then(|s| s.parse().ok())
+                        .unwrap_or(1);
+                    let max_occ = match child_elem.get_attribute("maxOccurs") {
+                        Some("unbounded") => MaxOccurs::Unbounded,
+                        Some(s) => MaxOccurs::Bounded(s.parse().unwrap_or(1)),
+                        None => MaxOccurs::Bounded(1),
+                    };
+                    content = ContentModel::Choice(
+                        parse_particles(
+                            doc,
+                            child,
+                            local_elem_ns,
+                            schema_target_ns,
+                            attribute_groups,
+                            model_groups,
+                            block_default_ext,
+                            block_default_rst,
+                        )?,
+                        min_occ,
+                        max_occ,
+                    );
+                }
+                "all" => {
+                    content = ContentModel::All(parse_particles(
+                        doc,
+                        child,
+                        local_elem_ns,
+                        schema_target_ns,
+                        attribute_groups,
+                        model_groups,
+                        block_default_ext,
+                        block_default_rst,
+                    )?);
+                }
+                _ => {}
+            }
+        }
+    }
+
+    Ok(ModelGroupDef { content })
 }
 
 /// Strip namespace prefix from a QName (e.g., "xs:string" -> "string").
@@ -3047,6 +3966,7 @@ fn parse_particles(
     local_elem_ns: &Option<String>,
     schema_target_ns: &Option<String>,
     attribute_groups: &HashMap<(Option<String>, String), AttributeGroupDef>,
+    model_groups: &HashMap<(Option<String>, String), ModelGroupDef>,
     block_default_ext: bool,
     block_default_rst: bool,
 ) -> XmlResult<Vec<Particle>> {
@@ -3075,21 +3995,50 @@ fn parse_particles(
 
             match child_elem.name.local_name.as_str() {
                 "element" => {
-                    let decl = parse_element_decl(
-                        doc,
-                        child,
-                        local_elem_ns,
-                        local_elem_ns,
-                        schema_target_ns,
-                        attribute_groups,
-                        block_default_ext,
-                        block_default_rst,
-                    )?;
-                    particles.push(Particle {
-                        kind: ParticleKind::Element(decl),
-                        min_occurs,
-                        max_occurs,
-                    });
+                    // Check if this is an element reference (<element ref="..."/>)
+                    if let Some(ref_name) = child_elem.get_attribute("ref") {
+                        let local_name = strip_prefix(ref_name);
+                        // Resolve namespace from prefix if present
+                        let ref_ns = if ref_name.contains(':') {
+                            // Prefixed ref — use schema target namespace
+                            schema_target_ns.clone()
+                        } else {
+                            // Unprefixed ref — use schema target namespace for qualified schemas
+                            schema_target_ns.clone()
+                        };
+                        particles.push(Particle {
+                            kind: ParticleKind::Element(ElementDecl {
+                                name: local_name.to_string(),
+                                namespace: ref_ns,
+                                type_ref: TypeRef::BuiltIn(BuiltInType::AnyType),
+                                min_occurs,
+                                max_occurs,
+                                nillable: false,
+                                block_extension: block_default_ext,
+                                block_restriction: block_default_rst,
+                                is_ref: true,
+                            }),
+                            min_occurs,
+                            max_occurs,
+                        });
+                    } else {
+                        let decl = parse_element_decl(
+                            doc,
+                            child,
+                            local_elem_ns,
+                            local_elem_ns,
+                            schema_target_ns,
+                            attribute_groups,
+                            model_groups,
+                            block_default_ext,
+                            block_default_rst,
+                        )?;
+                        particles.push(Particle {
+                            kind: ParticleKind::Element(decl),
+                            min_occurs,
+                            max_occurs,
+                        });
+                    }
                 }
                 "sequence" => {
                     let sub = parse_particles(
@@ -3098,6 +4047,7 @@ fn parse_particles(
                         local_elem_ns,
                         schema_target_ns,
                         attribute_groups,
+                        model_groups,
                         block_default_ext,
                         block_default_rst,
                     )?;
@@ -3114,6 +4064,7 @@ fn parse_particles(
                         local_elem_ns,
                         schema_target_ns,
                         attribute_groups,
+                        model_groups,
                         block_default_ext,
                         block_default_rst,
                     )?;
@@ -3122,6 +4073,41 @@ fn parse_particles(
                         min_occurs,
                         max_occurs,
                     });
+                }
+                "group" => {
+                    // Resolve xs:group ref
+                    if let Some(ref_name) = child_elem.get_attribute("ref") {
+                        let local_name = strip_prefix(ref_name);
+                        let key = (schema_target_ns.clone(), local_name.to_string());
+                        if let Some(mg) = model_groups.get(&key) {
+                            // Inline the model group's content as a particle
+                            match &mg.content {
+                                ContentModel::Sequence(ps, _, _) => {
+                                    particles.push(Particle {
+                                        kind: ParticleKind::Sequence(ps.clone()),
+                                        min_occurs,
+                                        max_occurs,
+                                    });
+                                }
+                                ContentModel::Choice(ps, _, _) => {
+                                    particles.push(Particle {
+                                        kind: ParticleKind::Choice(ps.clone()),
+                                        min_occurs,
+                                        max_occurs,
+                                    });
+                                }
+                                ContentModel::All(ps) => {
+                                    // All groups are wrapped as a sequence for inlining
+                                    particles.push(Particle {
+                                        kind: ParticleKind::Sequence(ps.clone()),
+                                        min_occurs,
+                                        max_occurs,
+                                    });
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
                 }
                 "any" => {
                     // Parse xs:any element wildcard — reuse same namespace/processContents
@@ -3149,10 +4135,16 @@ fn parse_attribute_decl(doc: &Document, node: NodeId) -> XmlResult<AttributeDecl
         .element(node)
         .ok_or_else(|| XmlError::validation("Expected element node for attribute declaration"))?;
 
-    let name = elem
-        .get_attribute("name")
-        .ok_or_else(|| XmlError::validation("Attribute declaration missing 'name'"))?
-        .to_string();
+    // Handle <attribute ref="..."/> — create a placeholder decl with the ref name
+    let name = if let Some(n) = elem.get_attribute("name") {
+        n.to_string()
+    } else if let Some(ref_name) = elem.get_attribute("ref") {
+        strip_prefix(ref_name).to_string()
+    } else {
+        return Err(XmlError::validation(
+            "Attribute declaration missing 'name' or 'ref' attribute",
+        ));
+    };
 
     let type_ref = if let Some(type_name) = elem.get_attribute("type") {
         resolve_type_name(type_name, &None)
@@ -3225,8 +4217,8 @@ fn parse_simple_type(doc: &Document, node: NodeId) -> XmlResult<TypeDef> {
                     } else {
                         ("", base_name)
                     };
-                    if prefix == "xs" || prefix == "xsd" || prefix.is_empty() {
-                        // Check for built-in list types (NMTOKENS, IDREFS, ENTITIES)
+                    if prefix == "xs" || prefix == "xsd" {
+                        // Explicitly XSD-prefixed: always a built-in type
                         if matches!(local, "NMTOKENS" | "IDREFS" | "ENTITIES") {
                             is_list = true;
                             item_type = match local {
@@ -3237,9 +4229,47 @@ fn parse_simple_type(doc: &Document, node: NodeId) -> XmlResult<TypeDef> {
                             };
                         }
                         base = parse_builtin_type(local).unwrap_or(BuiltInType::String);
+                    } else if prefix.is_empty() {
+                        // Unprefixed: try built-in first, fall back to user-defined
+                        if matches!(local, "NMTOKENS" | "IDREFS" | "ENTITIES") {
+                            is_list = true;
+                            item_type = match local {
+                                "NMTOKENS" => Some(BuiltInType::NMTOKEN),
+                                "IDREFS" => Some(BuiltInType::IDREF),
+                                "ENTITIES" => Some(BuiltInType::ENTITY),
+                                _ => None,
+                            };
+                            base = parse_builtin_type(local).unwrap_or(BuiltInType::String);
+                        } else if let Some(bt) = parse_builtin_type(local) {
+                            base = bt;
+                        } else {
+                            // Not a built-in type — user-defined type
+                            base_type_local = Some(local.to_string());
+                        }
                     } else {
                         // Non-builtin base type — store for later resolution
                         base_type_local = Some(local.to_string());
+                    }
+                } else {
+                    // No base attribute — check for inline <simpleType> child as base type
+                    for inner_child in doc.children(child) {
+                        if let Some(NodeKind::Element(inner_elem)) = doc.node_kind(inner_child) {
+                            let inner_is_xs = inner_elem.name.namespace_uri.as_deref()
+                                == Some(XS_NAMESPACE)
+                                || inner_elem.name.prefix.as_deref() == Some("xs")
+                                || inner_elem.name.prefix.as_deref() == Some("xsd");
+                            if inner_is_xs && inner_elem.name.local_name == "simpleType" {
+                                if let Ok(TypeDef::Simple(inner_st)) =
+                                    parse_simple_type(doc, inner_child)
+                                {
+                                    base = inner_st.base;
+                                    is_list = inner_st.is_list;
+                                    item_type = inner_st.item_type;
+                                    item_type_local = inner_st._item_type_local.clone();
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
 

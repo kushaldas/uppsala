@@ -219,16 +219,27 @@ fn run_xsts_instance_tests(test_set_path: &Path) -> (usize, usize, usize, Vec<St
             }
         };
 
-        let validator = match XsdValidator::from_schema(&schema_doc) {
-            Ok(v) => v,
-            Err(_) => {
-                // Can't compile the schema — skip these tests
-                skipped += group.instance_tests.len();
-                continue;
-            }
-        };
+        eprintln!("  DEBUG: Compiling schema for group '{}'...", group.name);
+        let validator =
+            match XsdValidator::from_schema_with_base_path(&schema_doc, Some(schema_path)) {
+                Ok(v) => v,
+                Err(e) => {
+                    // Can't compile the schema — skip these tests
+                    if !group.instance_tests.is_empty() {
+                        eprintln!(
+                            "  SKIP group '{}' ({} tests): schema error: {}",
+                            group.name,
+                            group.instance_tests.len(),
+                            e
+                        );
+                    }
+                    skipped += group.instance_tests.len();
+                    continue;
+                }
+            };
 
         for inst_test in &group.instance_tests {
+            eprintln!("    DEBUG: Validating instance '{}'", inst_test.name);
             let inst_str = match fs::read_to_string(&inst_test.path) {
                 Ok(s) => s,
                 Err(_) => {
