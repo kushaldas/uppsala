@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-language-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-language-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-language-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-language-enumeration-2,
+      which is derived by restriction of a list with itemType language
+      by facet enumeration with values of:
+          TH TI TK TL TN TO TR TS TT
+          AM AR AS AY AZ BA
+          SG SH SI SK SL SM SN
+          LN LO LT LV MG
+          FI FJ FO FR FY GA GD GL GN
+          CY DA DE DZ EL
+          SS ST SU SV SW TA TE TG
+          IA IE IK IN IS IT IW JA JI
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-language-enumeration-2" type="NISTSchema-SV-IV-list-language-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOflanguage">
+    <xs:list itemType="xs:language"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-language-enumeration-2-Type">
+    <xs:restriction base="listOflanguage">
+          <xs:enumeration value="TH TI TK TL TN TO TR TS TT"/>
+          <xs:enumeration value="AM AR AS AY AZ BA"/>
+          <xs:enumeration value="SG SH SI SK SL SM SN"/>
+          <xs:enumeration value="LN LO LT LV MG"/>
+          <xs:enumeration value="FI FJ FO FR FY GA GD GL GN"/>
+          <xs:enumeration value="CY DA DE DZ EL"/>
+          <xs:enumeration value="SS ST SU SV SW TA TE TG"/>
+          <xs:enumeration value="IA IE IK IN IS IT IW JA JI"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd006.n11.xml	1.3 02/12/25
+
+-->
+
+<root xmlns="foo">
+	
+	<item3to7>
+		<x/><x/><x/><x/><x/><x/><x/><x/>
+	</item3to7>
+	
+</root>

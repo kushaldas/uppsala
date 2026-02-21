@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)psContents00201m1_p.xml
+   generated from: @(#)psContents00201m.jmpp	1.6 04/01/14
+
+-->
+
+<test:a
+    xmlns:test="psContents"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="psContents psContents00201m1.xsd">
+<date>2002-04-29</date>
+</test:a>

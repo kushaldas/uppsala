@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<testSet name="IdConstrDefs"
+      xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      contributor="SUN">
+
+    <testGroup name="annotation00101m1">
+        <annotation>
+            <documentation>
+                <Title>human-targeted  annotation for an Identity-constraint Definition (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for an Identity-constraint Definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m2">
+        <annotation>
+            <documentation>
+                <Title>human-targeted misplaced annotation for an Identity-constraint Definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for an Identity-constraint Definition.
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m3">
+        <annotation>
+            <documentation>
+                <Title>human-targeted double annotation for an Identity-constraint Definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for an Identity-constraint Definition.
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m3">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m3.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m4">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted  annotation for an Identity-constraint Definition (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for an Identity-constraint Definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m4">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m5">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted misplaced annotation for an Identity-constraint Definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for an Identity-constraint Definition.
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m5">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m5.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m6">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted double annotation for an Identity-constraint Definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for an Identity-constraint Definition.
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="annotation00101m6">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/annotation/annotation00101m/annotation00101m6.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="fields00101m1">
+        <annotation>
+            <documentation>
+                <Title>fields may have different types (valid schema)</Title>
+                <Description>Define a uniqueness constraint with fields of different types.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00101m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00101m/fields00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00101m/fields00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00201m1">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+type is decimal, values are 3.0 and -3 (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields of type decimal have values 3.0 and 
+                             -3.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00201m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00201m2">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+type is decimal, values are 3.0 and 3 (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields of type decimal have values 3.0 and 
+                             3.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00201m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00201m3">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+type is decimal, values are 3.0 and 3.0 (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields of type decimal have values 3.0 and 
+                             3.0.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00201m3">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m3_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00201m4">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+type is string, values are 3.0 and 3 (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields of type string have values 3.0 and 
+                             3.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00201m4">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00201m5">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+type is string, values are 3.0 and 3.0 (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields of type string have values 3.0 and 
+                             3.0.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00201m5">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m5.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00201m/fields00201m5_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00202m1">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with decimal(-3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the first field of type string has value "3.0". The
+                             second field of type decimal has value "-3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00202m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00202m2">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with decimal(3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the first field of type string has value "3.0". The
+                             second field of type decimal has value "3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00202m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00202m3">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with decimal(3.0) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the first field of type string has value "3.0". The
+                             second field of type decimal has value "3.0".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00202m3">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m3_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00202m4">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with string(3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the first field of type string has value "3.0". The
+                             second field of type string has value "3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00202m4">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00202m5">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with string(3.0) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the first field of type string has value "3.0". The
+                             second field of type string has value "3.0".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00202m5">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m5.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00202m/fields00202m5_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00203m1">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+decimal(3.0) compares with decimal(-3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields have local type decimal and
+                             values "3.0" and "-3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00203m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00203m2">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+decimal(3.0) compares with decimal(3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields have local type decimal and
+                             values "3.0" and "3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00203m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00203m3">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+decimal(3.0) compares with decimal(3.0) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields have local type decimal and
+                             values "3.0" and "3.0".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00203m3">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m3_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00203m4">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with string(3) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields have local type string and
+                             values "3.0" and "3".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00203m4">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="fields00203m5">
+        <annotation>
+            <documentation>
+                <Title>values of the fields are checked for equality: 
+string(3.0) compares with string(3.0) (valid schema)</Title>
+                <Description>The equality and inequality conditions appealed to in checking these 
+                             constraints apply to the value of the fields selected, so that for example 
+                             3.0 and 3 would be conflicting keys if they were both number, but 
+                             non-conflicting if they were both strings, or one was a string and 
+                             one a number.
+                              In the test the fields have local type string and
+                             values "3.0" and "3.0".</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="fields00203m5">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m5.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/fields/fields00203m/fields00203m5_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="name00101m1">
+        <annotation>
+            <documentation>
+                <Title>In one namespace Identity-constraint definition names must be unique: 
+the names are KEY0 and KEY1  (valid schema)</Title>
+                <Description>Declare an element. Define a key identity constraint. 
+                             Define another key identity constraint with 
+                             another name.
+                             Check that the schema is valid.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="name00101m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/name/name00101m/name00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/name/name00101m/name00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="name00101m2">
+        <annotation>
+            <documentation>
+                <Title>In one namespace Identity-constraint definition names must be unique: 
+the names are KEY1 and KEY1  (invalid schema)</Title>
+                <Description>Declare an element. Define a key identity constraint. 
+                             Define another key identity constraint with 
+                             the same name.
+                             Check that the schema is invalid.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="name00101m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/name/name00101m/name00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="name00201m1">
+        <annotation>
+            <documentation>
+                <Title>constraints have separate symbol space (valid schema)</Title>
+                <Description>With the same name declare a global element, a local element, an attribute, define a type 
+                             and a constraint. Check that there is no name clash.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="name00201m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/name/name00201m/name00201m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/name/name00201m/name00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="targetns00101m1">
+        <annotation>
+            <documentation>
+                <Title>Identity-constraint definition identities must be unique: different namespaces  (valid schema)</Title>
+                <Description>Declare an element. Define a key identity constraint and a keyref to that key inside the
+                             element declaration. Declare another element with the same key and keyref.
+                             Check that if the second element declaration is in the same namespace,
+                             that the schema is invalid, otherwise it is valid.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="targetNS00101m1">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/targetNS/targetNS00101m/targetNS00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/IdConstrDefs/targetNS/targetNS00101m/targetNS00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="targetns00101m2">
+        <annotation>
+            <documentation>
+                <Title>Identity-constraint definition identities must be unique: the same namespace  (invalid schema)</Title>
+                <Description>Declare an element. Define a key identity constraint and a keyref to that key inside the
+                             element declaration. Declare another element with the same key and keyref.
+                             Check that if the second element declaration is in the same namespace,
+                             that the schema is invalid, otherwise it is valid.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cIdentity-constraint_Definitions"/>
+        <schemaTest name="targetNS00101m2">
+            <schemaDocument xlink:href="../sunData/IdConstrDefs/targetNS/targetNS00101m/targetNS00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+</testSet>

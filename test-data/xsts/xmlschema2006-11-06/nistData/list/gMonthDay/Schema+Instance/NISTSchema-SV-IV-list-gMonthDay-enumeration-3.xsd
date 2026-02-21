@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-gMonthDay-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gMonthDay-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gMonthDay-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gMonthDay-enumeration-3,
+      which is derived by restriction of a list with itemType gMonthDay
+      by facet enumeration with values of:
+          --10-27 --08-13 --07-15 --02-01 --01-16 --06-17 --10-05 --01-21
+          --11-15 --12-29 --10-05 --05-21 --03-08 --05-29
+          --06-29 --01-23 --07-14 --09-22 --02-24 --01-05
+          --04-08 --03-18 --05-15 --08-27 --04-28 --01-27 --11-13 --08-28
+          --09-13 --06-20 --03-06 --09-19 --04-02 --11-23
+          --06-11 --11-05 --08-18 --09-11 --05-29 --08-21 --09-10 --10-14
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-gMonthDay-enumeration-3" type="NISTSchema-SV-IV-list-gMonthDay-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfgMonthDay">
+    <xs:list itemType="xs:gMonthDay"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-gMonthDay-enumeration-3-Type">
+    <xs:restriction base="listOfgMonthDay">
+          <xs:enumeration value="--10-27 --08-13 --07-15 --02-01 --01-16 --06-17 --10-05 --01-21"/>
+          <xs:enumeration value="--11-15 --12-29 --10-05 --05-21 --03-08 --05-29"/>
+          <xs:enumeration value="--06-29 --01-23 --07-14 --09-22 --02-24 --01-05"/>
+          <xs:enumeration value="--04-08 --03-18 --05-15 --08-27 --04-28 --01-27 --11-13 --08-28"/>
+          <xs:enumeration value="--09-13 --06-20 --03-06 --09-19 --04-02 --11-23"/>
+          <xs:enumeration value="--06-11 --11-05 --08-18 --09-11 --05-29 --08-21 --09-10 --10-14"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

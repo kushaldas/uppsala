@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2,
+      which is derived by restriction of built-in type unsignedLong
+      by facet enumeration with values of:
+          840115845
+          2874238170314
+          355386265673274248
+          37531498438491484
+          92597973
+          320
+          9340658324154
+          224645440232296156
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2" type="NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-unsignedLong-enumeration-2-Type">
+    <xs:restriction base="xs:unsignedLong">
+          <xs:enumeration value="840115845"/>
+          <xs:enumeration value="2874238170314"/>
+          <xs:enumeration value="355386265673274248"/>
+          <xs:enumeration value="37531498438491484"/>
+          <xs:enumeration value="92597973"/>
+          <xs:enumeration value="320"/>
+          <xs:enumeration value="9340658324154"/>
+          <xs:enumeration value="224645440232296156"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

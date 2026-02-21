@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NCName-maxLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NCName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NCName-maxLength-5
+    xmlns="NISTSchema-SV-II-list-NCName-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NCName-maxLength-5-NS NISTSchema-SV-II-list-NCName-maxLength-5.xsd">sthe.will.as_well_issues-versions_precise_the_lan icertain_tools_measure.of.and.logic.needs.process dstandardization_we_of_and-file-systems-being_we_ eg.must_ensure_software.will-has.operating_and.as kof_the_pervasive-asking_to_by-filter_and-to_incl ya-and_business-oriented_this_and_prototypes_inte pto.data-browsers.and-the_supply-methods_products wthese_hampered.time-can.g_transmit_than_with-spe eled.the-the-to.involved.led_choices-building-imp ayears.libraries_exchange_four.of.conformance-the qmaintained.of-designed.provides-its.this.and.tra afor-these-can_information-primary.networking-mar _including.language-industry.the.among_the-object rwithin.and-visibly.vocabularies-the-and-access-t wthese_these-methods_result.for_software-correctn _the.the.intuitive-create-manipulate-for-fed_crea _degree.a.for.process_entire-project_tremendous_s pretrieval.would_business-a.be-technical.to.permi</NISTSchema-SV-II-list-NCName-maxLength-5>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_targetNS00101m.xsd
+   generated from: @(#)AD_targetNS00101m.jmpp	1.5 02/12/26
+
+-->
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:tn="AttrDecl/targetNS"
+	targetNamespace="AttrDecl/targetNS">
+
+	<element name="root">
+	  <complexType>
+	    <sequence>
+	      <element ref="tn:elementWithAttr"/>
+	    </sequence>
+          </complexType>
+        </element>
+
+	<element name="elementWithAttr">
+	  <complexType>
+	    <attribute name="number" type="integer"/>
+	    <attribute name="price" type="decimal" form="qualified"/>
+	  </complexType>
+	</element>
+</schema>
+

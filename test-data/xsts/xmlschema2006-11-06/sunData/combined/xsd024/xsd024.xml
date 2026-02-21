@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd024.xml	1.3 02/12/25
+
+-->
+
+<!--
+	added to check validity of xsd024.xsd
+-->
+<test:root xmlns:test="http://foo.com" test:att="yes"/>

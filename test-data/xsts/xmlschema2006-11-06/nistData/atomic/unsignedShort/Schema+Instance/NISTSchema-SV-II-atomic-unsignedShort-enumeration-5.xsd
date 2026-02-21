@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-unsignedShort-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-unsignedShort-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-unsignedShort-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-unsignedShort-enumeration-5,
+      which is derived by restriction of built-in type unsignedShort
+      by facet enumeration with values of:
+          199
+          534
+          4255
+          81
+          6560
+          13
+          3451
+          388
+          5311
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-unsignedShort-enumeration-5" type="NISTSchema-SV-II-atomic-unsignedShort-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-unsignedShort-enumeration-5-Type">
+    <xs:restriction base="xs:unsignedShort">
+          <xs:enumeration value="199"/>
+          <xs:enumeration value="534"/>
+          <xs:enumeration value="4255"/>
+          <xs:enumeration value="81"/>
+          <xs:enumeration value="6560"/>
+          <xs:enumeration value="13"/>
+          <xs:enumeration value="3451"/>
+          <xs:enumeration value="388"/>
+          <xs:enumeration value="5311"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

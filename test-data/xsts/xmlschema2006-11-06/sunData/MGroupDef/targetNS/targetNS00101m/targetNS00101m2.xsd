@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m2.xsd
+   generated from: @(#)targetNS00101m.jmpp	1.2 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="targetNS1"
+  targetNamespace="targetNS1"
+  xmlns:test="targetNS0">
+
+     <xsd:import namespace="targetNS0" schemaLocation="targetNS00101m1.xsd"/>
+
+     <xsd:complexType name="A">
+          <xsd:group ref="test:G1"/>
+     </xsd:complexType>
+
+     <xsd:element name="a" type="A" />
+</xsd:schema>
+

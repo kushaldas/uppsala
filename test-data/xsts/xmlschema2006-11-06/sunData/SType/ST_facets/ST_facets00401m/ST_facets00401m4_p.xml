@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m4_p.xml
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00401m4.xsd">
+    <value>ϐ00</value>
+    <value>ϓ-0</value>
+    <value>ϖa0</value>
+    <value>Ϣ01</value>
+    <value>ϩ-1</value>
+    <value>ϱa1</value>
+    <value>Ё02</value>
+    <value>І-2</value>
+    <value>Ќa2</value>
+    <value>Ў03</value>
+    <value>Ю-3</value>
+    <value>яa3</value>
+    <value>ё04</value>
+    <value>і-4</value>
+    <value>ќa4</value>
+    <value>ў05</value>
+    <value>ѯ-5</value>
+    <value>ҁa5</value>
+    <value>Ґ06</value>
+    <value>ҧ-6</value>
+    <value>ҿa6</value>
+    <value>Ӂ07</value>
+    <value>ӂ-7</value>
+    <value>ӄa7</value>
+    <value>Ӈ08</value>
+    <value>Ӈ-8</value>
+    <value>ӈa8</value>
+    <value>Ӌ09</value>
+    <value>Ӌ-9</value>
+    <value>ӌa9</value>
+</test:root>

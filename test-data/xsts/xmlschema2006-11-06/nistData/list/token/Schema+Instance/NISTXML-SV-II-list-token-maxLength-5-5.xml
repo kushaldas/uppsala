@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-5
+    xmlns="NISTSchema-SV-II-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-5-NS NISTSchema-SV-II-list-token-maxLength-5.xsd">45_Business_Graphical_Of_Street_Electronic_And_,_TN_14732 3246_From_And_Of_Street_Tune_An_,_OR_14732 1_Designed_In_Conformance_Street_Is_Repository_,_WA_14732 56_Who_Academia_Architectural_Street_For_Further_,_WA_14732 8688_User_Ways_Model_Street_Future_Documents_,_RI_14732 75_This_Be_Outfitting_Street_Intelligent_Internet_,_CT_14732 72217_And_Discovery_Files_Street_We_Test_,_IA_14732 57_To_Implementation_Model_Street_Will_Additionally_,_ND_14732 2382_Shift_Prominent_Document_Street_Become_In_,_ND_14732 43_Government_Discover_And_Street_Extensible_Ensure_,_IN_14732 392_Work_Is_Are_Street_Computer_The_,_ID_14732 836_The_Of_Addressing_Street_Of_For_,_CO_14732 369_Objective_The_Xml_Street_Nsrl_To_,_MI_14732 54735_Defining_Aid_Understanding_Street_Including_Conformance_,_DC_14732</NISTSchema-SV-II-list-token-maxLength-5>

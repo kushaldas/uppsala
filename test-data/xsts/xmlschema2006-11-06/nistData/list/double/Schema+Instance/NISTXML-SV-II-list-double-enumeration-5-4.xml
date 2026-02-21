@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-double-enumeration-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-double-enumeration-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-double-enumeration-5
+    xmlns="NISTSchema-SV-II-list-double-enumeration-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-double-enumeration-5-NS NISTSchema-SV-II-list-double-enumeration-5.xsd">3.4157619418703678E-234 3.7171202148150158E-144 3.6540334820219300E-54 2.0102454460845331E36 1.8844188589352149E126 4.8671620929702735E216 1.7976931348623157E308</NISTSchema-SV-II-list-double-enumeration-5>

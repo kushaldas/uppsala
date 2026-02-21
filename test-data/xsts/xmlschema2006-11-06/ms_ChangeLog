@@ -1,0 +1,996 @@
+Removed
+	 ./data/Additional/test72921.xsd
+	 ./data/IdentityConstraint/idZ009a.xsd
+	 ./data/IdentityConstraint/idZ009b.xsd
+
+per request from Zafar Abbas because of legacy copyright statements
+
+Changed all links to data from controlFiles to
+	a) use / instead of \
+	b) begin with ../
+   > sed '/xlink:href=.data/s/\\/\//g;/xlink:href=.data/s/href="/href="..\//' \
+	-i *.xml
+
+Moved all data directories to initial l.c. version:
+ > while read u l; do for d in $u*; do mv $d $l${d#$u*}; done; done
+A a
+C c
+D d
+E e
+G g
+I i
+M m
+N n
+P p
+R r
+S s
+W w
+
+Moved all ...z00... data files to ...Z00... 
+ > for f in ../data/*/*z0* ; do mv $f ${f%*z*}Z${f#*z*}; done
+
+Moved some ..c0.. files to ..C0..:
+ > for f in ../data/additional/*c0* ; do mv $f ${f%*c*}C${f#*c*}; done
+	
+Changed initial case of many links to data from control files:
+ > while read p u l; do sed "/href=.*data/s/data\/$u/data\/$l/" -i ${p}_w3c.xml; done
+Annotations A a
+AttributeGroup A a
+Attribute A a
+Element E e
+Notations N n
+SimpleType S s
+Wildcards W w
+
+A few more ad-hoc moves:
+ > mv ../data/additional/adhocAddCAddc001.xml ../data/additional/adhocAddC001.xml
+ > mv ../data/datatypes/FACETS  ../data/datatypes/Facets
+ > for f in ../data/datatypes/id* ; do mv $f ${f%*id*}ID${f#*id*}; done
+ > mv ../data/errata10/errf001.xml ../data/errata10/errF001.xml
+ > mv ../data/particles/particlesIK026.xml ../data/particles/particlesIk026.xml
+ > mv ../data/regex/rei80.xml ../data/regex/reI80.xml
+ > mv ../data/simpleType/stc034.xml ../data/simpleType/stC034.xml
+ > sed 's/wildCards/wildcards/' -i Wildcards_w3c.xml
+ > for f in ../data/additional/adhocAddCAddc* ; do mv $f ${f%*Addc*}${f#*Addc*}; done
+ > mv ../data/attributeGroup/attGB005.xsd ../data/attributeGroup/attgB005.xsd
+ > for f in ../data/modelGroups/mga0??.xsd ; do mv $f ${f%*a0*}A0${f#*a0*}; done
+ > sed 's/mga0/mgA0/' -i ModelGroups_w3c.xml
+ > for f in ../data/modelGroups/mgb0??.xsd ; do mv $f ${f%*b0*}B0${f#*b0*}; done
+ > for f in ../data/modelGroups/mgc0??.xsd ; do mv $f ${f%*c0*}C0${f#*c0*}; done
+ > sed 's/mgc0/mgC0/' -i ModelGroups_w3c.xml
+ > mv ../data/modelGroups/mgd001.xsd ../data/modelGroups/mgD001.xsd
+ > for f in ../data/modelGroups/mge0??.xsd ; do mv $f ${f%*e0*}E0${f#*e0*}; done
+ > for f in ../data/schema/schg*.xsd ; do mv $f ${f%*g*}G${f#*g*}; done
+ > for f in ../data/schema/schm*.xsd ; do mv $f ${f%*hm*}hM${f#*hm*}; done
+ > for f in ../data/schema/schn*.xsd ; do mv $f ${f%*hn*}hN${f#*hn*}; done
+ > sed 's/SCHZ/schZ/' -i Schema_w3c.xml 
+ > sed 's/schZ012_C.XSD/schZ012_c.xsd/' -i Schema_w3c.xml 
+ > for f in ../data/simpleType/stc*.xsd ; do mv $f ${f%*tc*}tC${f#*tc*}; done
+ > mv ../data/simpleType/ste012.xsd ../data/simpleType/stE012.xsd
+ > sed 's/ste110.xsd/stE110.xsd/' -i SimpleType_w3c.xml 
+ > mv ../data/wildcards/wildg033a.xsd ../data/wildcards/wildG033a.xsd
+ > mv ../data/wildcards/WildZ008.xsd ../data/wildcards/wildZ008.xsd
+	
+Checked all data references (thus the above moves):
+ > for f in *.xml; do lxprintf -e instanceDocument '%s\n' '@xlink:href' $f | while read r; do if [ \! -s $r ]; then echo $f x $r; fi ; done ; done
+ > for f in *.xml; do lxprintf -e schemaDocument '%s\n' '@xlink:href' $f | while read r; do if [ \! -s $r ]; then echo $f x $r; fi ; done ; done
+
+Discovered that there were a number of illformed docs, some not used,
+moved them all:
+
+> for d in *; do (cd $d; mkdir illformed; for f in *; do if rxp -s $f 2>/dev/null; then : ;else mv $f illformed; fi; done ) ; done
+
+Oops -- that moved the Facets and Infoset subdirs of datatypes to illformed!
+Moved back, ran above again one level down, found nothing
+	
+and re-checked for missing data references -- none!
+
+Detected all UTF-16 byte-order marks and converted to UTF-8:
+> find . -type f | xargs perl -nle 'print $ARGV if /^\377\376/;' | while read f; do echo $f; rxp -c utf-8 $f > tmp; mv tmp $f; done
+
+./annotations/annotZ002.xsd
+./datatypes/ID_test70681.xml
+./datatypes/illformed/Facets/anyURI/anyURI_a001.xml
+./datatypes/illformed/Facets/anyURI/anyURI_a001.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_a002.xml
+./datatypes/illformed/Facets/anyURI/anyURI_a002.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_a003.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_a004.xml
+./datatypes/illformed/Facets/anyURI/anyURI_a004.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_a005.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_b001.xml
+./datatypes/illformed/Facets/anyURI/anyURI_b001.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_b002.xml
+./datatypes/illformed/Facets/anyURI/anyURI_b002.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_b004.xml
+./datatypes/illformed/Facets/anyURI/anyURI_b004.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_b005.xml
+./datatypes/illformed/Facets/anyURI/anyURI_b005.xsd
+./datatypes/illformed/Facets/anyURI/anyURI_b006.xml
+./datatypes/illformed/Facets/anyURI/anyURI_b006.xsd
+./datatypes/test107447.xsd
+./datatypes/test107447_a.xsd
+./element/elemU004.xml
+./element/elemZ017.xml
+./element/elemZ028b.xsd
+./element/elemZ028c.xsd
+./element/elemZ028d.xsd
+./element/elemZ028e.xsd
+./element/elemZ028f.xsd
+./element/elemZ028f3.xml
+./additional/enum1.xsd
+./additional/enum2.xsd
+./additional/fixed1.xsd
+./additional/fixed2.xsd
+./additional/maxLength.xsd
+./additional/minLength.xsd
+./additional/ns.xsd
+./additional/test102850_1.xsd
+./additional/test102850_2.xsd
+./additional/test71818.xml
+./additional/test74834.xml
+./additional/test93490_1.xsd
+./additional/test93490_2.xsd
+./additional/test93490_3.xsd
+./additional/test93490_4.xsd
+./additional/test93490_5.xsd
+./additional/test93490_6.xsd
+
+Checked all cross-doc references
+ > for d in *; do (cd $d; for f in *.xsd; do lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do if [ \! -s $r ]; then echo $d/$f x $r; fi ; done  ; done ) ; done
+
+additional/test65699.xsd x http://www.w3.org/2001/xml.xsd [OK]
+additional/test67764.xsd x test67764.imp [moved back from ill-formed -- intentional]
+additional/test69855.xsd x redefinebug.red [OK]
+additional/test74789_a1.xsd x test74789_b1.xsd [Queried]
+additional/test74789_a1.xsd x test74789_c1.xsd [Queried]
+additional/test74789_a.xsd x test74789_b.xsd [Queried]
+additional/test74789_a.xsd x test74789_c.xsd [Queried]
+Error: Namespace declaration for f has empty URI
+ in unnamed entity at line 7 char 2 of file:///disk/scratch/ts/ms/data/additional/test84002_a.xsd [Intentional]
+Error: Namespace declaration for f has empty URI
+ in unnamed entity at line 4 char 2 of file:///disk/scratch/ts/ms/data/additional/test84002_b.xsd [Intentional]
+annotations/annotA013.xsd x _annotA013.xsd [Queried]
+annotations/annotA014.xsd x _annotA014.xsd [Queried]
+annotations/annotB019.xsd x _annotA013.xsd [Queried]
+annotations/annotB020.xsd x _annotA014.xsd [Queried]
+annotations/annotB025.xsd x foo.xsd [Queried]
+datatypes/discovery.xsd x addressing.xsd [unused, deleted]
+datatypes/Facets/anyURI/anyURI_a001.xsd x 0 [Intentional]
+datatypes/Facets/anyURI/anyURI_a001.xsd x 123 [Intentional]
+datatypes/Facets/anyURI/anyURI_a001.xsd x 123 [Intentional]
+datatypes/Facets/anyURI/anyURI_a002.xsd x ????URI [Intentional]
+datatypes/Facets/anyURI/anyURI_a002.xsd x ????URI [Intentional]
+datatypes/Facets/anyURI/anyURI_a002.xsd x ????URI [Intentional]
+datatypes/Facets/anyURI/anyURI_a004.xsd x ftp://ftp.is.co.za/rfc/rfc1808.txt [Intentional]
+datatypes/Facets/anyURI/anyURI_a004.xsd x gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles [Intentional]
+datatypes/Facets/anyURI/anyURI_a004.xsd x mailto:mduerst@ifi.unizh.ch [Intentional]
+datatypes/Facets/anyURI/anyURI_a006.xsd x foo'bar [Intentional]
+datatypes/Facets/anyURI/anyURI_a008.xsd x foo'bar [Intentional]
+datatypes/Facets/anyURI/anyURI_a009.xsd x foo'bar [Intentional]
+element/test115044_3.xsd x test115044_inc.xsd [Queried]
+element/test115044_4.xsd x test115044_imp.xsd [Queried]
+modelGroups/mgO020.xsd x foo [Intentional]
+modelGroups/mgP041.xsd x foo [Intentional]
+modelGroups/mgP050.xsd x foo [Intentional]
+notations/notatF055.xsd x foo [Intentional]
+particles/particlesJk006.xsd x particlesJk006.imp [illformed, moved back and fixed]
+particles/particlesK008.xsd x particlesK008.imp [mv particlesk008.imp particlesK008.imp]
+schema/schB4_a.xsd x schB4_b.xsd [illformed, intentional, moved back]
+schema/schB6.xsd x http://webxtest/managedShadow/managed_RTM/testdata/xsd/schema/simpleSchema.asp [Queried--Deleted]
+schema/schB8.xsd x http://foo/foo [Intentional]
+schema/schD7_a.xsd x not-exist.xsd [Intentional]
+schema/schD8.xsd x file:// [Intentional]
+schema/schE5.xsd x schE5_b.xsd [illformed, intentional, moved back]
+schema/schE7.xsd x http://webxtest/managedShadow/managed_rtm/testdata/xsd/schema/simpleSchema.asp [Querie--Deletedd]
+schema/schE9.xsd x http://foo/foo [Intentional]
+schema/schG8_a.xsd x not-exist [Intentional]
+schema/schH5.xsd x not-wf.xsd [Queried]
+schema/schH6.xsd x not-schema.xsd [Queried]
+schema/schH7.xsd x http://webxtest/managedShadow/managed_rtm/testdata/xsd/schema/simpleSchema.asp [Queried--Deleted]
+schema/schH9.xsd x not-exist [Intentional]
+schema/schL3_a.xsd x schL2_b.xsd [Typo, corrected to L3_b]
+schema/schM8_b.xsd x schM7_c.xsd [Queried]
+schema/schN10_a.xsd x schN2_b.xsd [Queried]
+schema/schQ4_a.xsd x schQ4_d.xsd [Typo, corrected to Q4_c]
+schema/schZ006_b.xsd x dataset.xsd [Queried]
+schema/schZ012_a.xsd x schZ012_A.xsd [Intentional (but broken!)]
+schema/schZ012_b2.xsd x Schz012_b.xsd [Intentional (but broken!)]
+schema/schZ012_c2.xsd x Schz012_C.xsd [Intentional (but broken!)]
+wildcards/wildZ011a.xsd x wildZ011b.xsd [Queried]
+wildcards/wildZ011a.xsd x wildZ011c.xsd [Queried]
+
+
+Sigh.  Need to check xsi:schemaLoc etc.
+>  find * -type d | egrep -v illformed | while read d; do (cd $d; for f in *.xml; do lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:noNamespaceSchemaLocation]' '%s\n' '@xsi:noNamespaceSchemaLocation' $f | while read r; do if [ \! -s $r ]; then echo $d/$f x $r; fi ; done  ; done ) ; done
+
+additional/test79253.xml x test79253.xsd [illformed, intentional, moved back]
+additional/test93160.xml x bug93160.xsd [typo, corrected]
+attribute/attJ001v.xml x attj001v.xsd [typo, corrected]
+complexType/ctZ009_c.xml x t.xsd [typo, corrected]
+datatypes/date001i.xml x datev.xsd [not referenced, deleted]
+datatypes/date002v.xml x datev.xsd
+datatypes/date003i.xml x datev.xsd
+datatypes/date004i.xml x datev.xsd
+datatypes/date005v.xml x datev.xsd
+datatypes/date006i.xml x datev.xsd
+datatypes/date009v.xml x datev.xsd
+datatypes/date010v.xml x datev.xsd
+datatypes/date011i.xml x datev.xsd
+datatypes/date012v.xml x datev.xsd
+datatypes/date013v.xml x datev.xsd
+datatypes/date014v.xml x datev.xsd
+datatypes/date015i.xml x datev.xsd
+datatypes/date016i.xml x datev.xsd
+datatypes/date017i.xml x datev.xsd
+datatypes/date018i.xml x datev.xsd
+datatypes/date019i.xml x datev.xsd
+datatypes/date020v.xml x datev.xsd
+datatypes/int001i.xml x intv.xsd
+datatypes/int002v.xml x intv.xsd
+datatypes/int003v.xml x intv.xsd
+datatypes/int004v.xml x intv.xsd
+datatypes/int005v.xml x intv.xsd
+datatypes/int006i.xml x intv.xsd
+datatypes/int007v.xml x intv.xsd
+datatypes/int008i.xml x intv.xsd
+
+So it turns out there are lots of these, plus even more ...e.xml or
+e.xsd which use leftover 2000/10 namespaces. . .
+
+modelGroups/mgA014.xml x mga014.xsd
+modelGroups/mgA016.xml x mga016.xsd
+modelGroups/mgA017.xml x mga017.xsd
+modelGroups/mgC001.xml x mgc001.xsd
+modelGroups/mgC003.xml x mgc003.xsd
+modelGroups/mgC005.xml x mgc005.xsd
+modelGroups/mgC006.xml x mgc006.xsd
+modelGroups/mgC007.xml x mgc007.xsd
+modelGroups/mgC010.xml x mgc010.xsd
+modelGroups/mgC011.xml x mgc011.xsd
+modelGroups/mgC012.xml x mgc012.xsd
+regex/RegexTest_100.xml x RegexTest_100.xsd
+regex/RegexTest_101.xml x RegexTest_101.xsd
+regex/RegexTest_102.xml x RegexTest_102.xsd
+regex/RegexTest_103.xml x RegexTest_103.xsd
+regex/RegexTest_105.xml x RegexTest_105.xsd
+regex/RegexTest_106.xml x RegexTest_106.xsd
+regex/RegexTest_107.xml x RegexTest_107.xsd
+regex/RegexTest_109.xml x RegexTest_109.xsd
+regex/RegexTest_110.xml x RegexTest_110.xsd
+regex/RegexTest_111.xml x RegexTest_111.xsd
+regex/RegexTest_112.xml x RegexTest_112.xsd
+regex/RegexTest_115.xml x RegexTest_115.xsd
+regex/RegexTest_122.xml x RegexTest_122.xsd
+regex/RegexTest_123.xml x RegexTest_123.xsd
+regex/RegexTest_125.xml x RegexTest_125.xsd
+regex/RegexTest_126.xml x RegexTest_126.xsd
+regex/RegexTest_127.xml x RegexTest_127.xsd
+regex/RegexTest_129.xml x RegexTest_129.xsd
+regex/RegexTest_130.xml x RegexTest_130.xsd
+regex/RegexTest_131.xml x RegexTest_131.xsd
+regex/RegexTest_132.xml x RegexTest_132.xsd
+regex/RegexTest_133.xml x RegexTest_133.xsd
+regex/RegexTest_135.xml x RegexTest_135.xsd
+regex/RegexTest_136.xml x RegexTest_136.xsd
+regex/RegexTest_137.xml x RegexTest_137.xsd
+regex/RegexTest_139.xml x RegexTest_139.xsd
+regex/RegexTest_140.xml x RegexTest_140.xsd
+regex/RegexTest_159.xml x RegexTest_159.xsd
+regex/RegexTest_160.xml x RegexTest_160.xsd
+regex/RegexTest_161.xml x RegexTest_161.xsd
+regex/RegexTest_162.xml x RegexTest_162.xsd
+regex/RegexTest_179.xml x RegexTest_179.xsd
+regex/RegexTest_241.xml x RegexTest_241.xsd
+regex/RegexTest_249.xml x RegexTest_249.xsd
+regex/RegexTest_31.xml x RegexTest_31.xsd
+regex/RegexTest_321.xml x RegexTest_321.xsd
+regex/RegexTest_32.xml x RegexTest_32.xsd
+regex/RegexTest_428.xml x RegexTest_428.xsd
+regex/RegexTest_435.xml x RegexTest_435.xsd
+regex/RegexTest_485.xml x RegexTest_485.xsd
+regex/RegexTest_490.xml x RegexTest_490.xsd
+regex/RegexTest_509.xml x RegexTest_509.xsd
+regex/RegexTest_510.xml x RegexTest_510.xsd
+regex/RegexTest_511.xml x RegexTest_511.xsd
+regex/RegexTest_82.xml x RegexTest_82.xsd
+regex/RegexTest_83.xml x RegexTest_83.xsd
+regex/RegexTest_84.xml x RegexTest_84.xsd
+regex/RegexTest_85.xml x RegexTest_85.xsd
+regex/RegexTest_86.xml x RegexTest_86.xsd
+regex/RegexTest_87.xml x RegexTest_87.xsd
+regex/RegexTest_88.xml x RegexTest_88.xsd
+regex/RegexTest_89.xml x RegexTest_89.xsd
+simpleType/stC034.xml x stc034.xsd
+
+Time to go top down -- compile list of all files ref'd from the
+testSet docs, then all docs ref'ed from _them_, and see what's _not_
+on that list!
+
+> for f in controlFiles/*.xml; do lxprintf -e instanceDocument '%s\n' '@xlink:href' $f | sed 's/\.\.\///' |addToDB.py reffed.db i; done
+> for f in controlFiles/*.xml; do lxprintf -e schemaDocument '%s\n' '@xlink:href' $f | sed 's/\.\.\///' |addToDB.py reffed.db s; done
+> dumpDB.py reffed.db | egrep 'i$' | while read f i; do lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:noNamespaceSchemaLocation]' "${f%/*}/%s\n" '@xsi:noNamespaceSchemaLocation' $f ; done | addToDB.py reffed.db nnsls
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+
+schemaLoc is trickier:
+
+> dumpDB.py reffed.db | egrep 'i$' | while read f i; do p=${f%/*} ; lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:schemaLocation]' "%s\n" '@xsi:schemaLocation' $f | tr -s ' ' '\012' |  while read n; do read s; echo "$p/$s"; done; done > /tmp/sl
+
+This uncovered two errors:
+
+> dumpDB.py reffed.db | egrep 'i$' | while read f i; do p=${f%/*} ; lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:schemaLocation]' "%s\n" '@xsi:schemaLocation' $f | tr -s ' ' '\012' |  while read n; do read s; if [ "$s" = "" ]; then echo "$f"; fi;done; done 
+data/additional/test72702.xml [Queried]
+data/additional/test73986_2.xml [Queried]
+
+> egrep -v '/$' /tmp/sl | addToDB.py reffed.db sls
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+
+> dumpDB.py reffed.db | egrep 's$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/ss 2>/tmp/sse
+
+Three possible errors:
+
+> egrep '/$' /tmp/ss
+
+data/additional/ [from data/additional/addB194.xsd, inside
+                   xs:annotation, ignore]
+data/schema/file:// [from data/schema/schD8.xsd, intentional]
+data/schema/ [from data/schema/schZ015.xsd, intentional]
+
+removed by hand, then
+
+> wc /tmp/ss
+ 1549  1549 53381 /tmp/ss
+> addToDB.py reffed.db ss < /tmp/ss
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+    437 ss
+
+And we iterate, just in case
+
+> dumpDB.py reffed.db | egrep 'ss$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/sss 2>/tmp/ssse &
+> wc /tmp/sss
+  51   51 1314 /tmp/sss
+> addToDB.py reffed.db sss < /tmp/sss
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+    437 ss
+     37 sss
+
+> dumpDB.py reffed.db | egrep 'sss$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/ssss 2>/tmp/sssse &
+> wc /tmp/ssss
+ 10  10 244 /tmp/ssss
+> addToDB.py reffed.db ssss < /tmp/ssss
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+    437 ss
+     37 sss
+      4 ssss
+
+> dumpDB.py reffed.db | egrep 'ssss$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/sssss 2>/tmp/ssssse &
+> wc /tmp/sssss
+ 3  3 76 /tmp/sssss
+> addToDB.py reffed.db sssss < /tmp/sssss
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+    437 ss
+     37 sss
+      4 ssss
+      3 sssss
+
+> dumpDB.py reffed.db | egrep 'sssss$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/ssssss 2>/tmp/sssssse &
+>  wc /tmp/ssssss
+ 4  4 96 /tmp/ssssss
+
+And so on, up to /tmp/sssssssss which was finally empty, and we have
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     29 nnsls
+   9311 s
+     46 sls
+    437 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+Then, finally, we can check every file to see if it's needed:
+
+> find data -type f | while read f; do echo $f | lookupDB.py reffed.db ; done 2>/tmp/xf >/dev/null
+> wc /tmp/xf
+  3225  12900 186371 /tmp/xf
+
+...v.x{sd,ml} seem to be duplicate commented versions of valid test cases
+...e.x{sd,ml} seem to be duplicate commented versions of invalid test cases
+...i.xml seem to reference ...v.xsd 
+...i.xsd seem to be duplicate commented versions of ??? test cases
+
+Checked that they aren't siblings of something that's a test case:
+>  egrep '[eiv]\.xml' /tmp/xf | cut -d ' ' -f 1 | while read f; do x=${f##*/}; egrep ${x%.xml} controlFiles/*.xml; done
+
+So can all be deleted:
+> egrep '[eiv]\.' /tmp/xf | cut -d ' ' -f 1 | xargs -n 100 rm
+
+> egrep -v '[eiv]\.' /tmp/xf | egrep -v illformed | wc
+    221     884    8743
+
+Oops -- a few ~ left
+
+> egrep '~' /tmp/xf | cut -d ' ' -f 1 | xargs rm
+
+> egrep -v '[eiv]\.' /tmp/xf | egrep -v illformed | egrep -v '~' | wc
+    219     876    8661
+
+Some at least of the .xml in this appear to just be missing from the
+testSet files.  Not sure about the .xsd or .imp ???
+
+> egrep -v '[eiv]\.' /tmp/xf | egrep -v illformed | egrep -v '~' | cut -d ' ' -f 1 | cut -d '.' -f 2 | sort | uniq -c
+      4 imp
+      2 red
+      1 xdr
+    144 xml
+     68 xsd
+
+Wow!  The .xdr is a real holdover!
+
+Queried all these, not sure what the right answer is.
+
+Zafar's response:
+-----XYZZY-------
+
+All of the files below can be deleted with the exception of ones below:
+
+data/complexType/ctZ013c.xml
+data/complexType/ctZ013d.xml
+
+These two files should be added as a test group under ComplexType.xml. 
+Both of these should be marked as 'invalid' instances according to the
+schema ctz013.xsd. The new test groups to be added would be:
+
+--------------------------------------
+<testGroup name="ctZ013c">
+    <annotation>
+      <documentation>TEST :Syntax Checking for top level complexType
+Declaration : fixed value on mixed type element (3)</documentation>
+    </annotation>
+    <documentationReference
+xlink:href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/#Complex_
+Type_Definitions" />
+    <schemaTest name="ctZ013c">
+      <schemaDocument xlink:href="data\complexType\ctZ013.xsd" />
+      <expected validity="valid" />
+      <current status="accepted" date="2006-07-16" />
+    </schemaTest>
+    <instanceTest name="ctZ013c.i">
+      <instanceDocument xlink:href="data\complexType\ctZ013c.xml" />
+      <expected validity="invalid" />
+      <current status="accepted" date="2006-07-16" />
+    </instanceTest>
+  </testGroup>
+<testGroup name="ctZ013d">
+    <annotation>
+      <documentation>TEST :Syntax Checking for top level complexType
+Declaration : fixed value on mixed type element (4)</documentation>
+    </annotation>
+    <documentationReference
+xlink:href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/#Complex_
+Type_Definitions" />
+    <schemaTest name="ctZ013d">
+      <schemaDocument xlink:href="data\complexType\ctZ013.xsd" />
+      <expected validity="valid" />
+      <current status="accepted" date="2006-07-16" />
+    </schemaTest>
+    <instanceTest name="ctZ013d.i">
+      <instanceDocument xlink:href="data\complexType\ctZ013d.xml" />
+      <expected validity="invalid" />
+      <current status="accepted" date="2006-07-16" />
+    </instanceTest>
+  </testGroup>
+
+---------------------------------------
+
+data/particles/particlesZ040.xml
+
+Please add this as valid instance data under the test group name
+particlesZ040 in Particles.xml
+------XYZZY------
+
+To actually run stuff, three cases:
+
+ 1) Schema, no instance
+
+ > lxprintf -e 'testGroup[schemaTest and not(instanceTest)]' '%s\n' schemaTest/schemaDocument/@xlink:href Attribute_w3c.xml | while read s; do xsvDev -i $s  ; done
+
+ 2) Schema and instance
+
+ > lxprintf -e 'testGroup[schemaTest and instanceTest]' '%s %s\n' instanceTest/instanceDocument/@xlink:href schemaTest/schemaDocument/@xlink:href Attribute_w3c.xml | while read i s; do xsvDev $i $s  ; done
+
+ 3) Instance, no schema
+
+ > lxprintf -e 'testGroup[not(schemaTest) and instanceTest]' '%s\n' instanceTest/instanceDocument/@xlink:href Attribute_w3c.xml | while read i; do xsvDev $i  ; done
+
+Whoops, should have checked that every file in db exists!
+
+> dumpDB.py reffed.db | cut -d ' ' -f 1 | while read f; do if [ \! -f $f ]; then echo $f; fi; done | sort -u > /tmp/xxf
+
+This differs a bit from the original list above (yyf):
+
+> sed 's/data\/[^\/]*\///;s/Facets\/[^\/]*\///' /tmp/xxf | sort -u | diff -bw /tmp/yyf -
+
+3d2
+< addressing.xsd
+5a5
+> btest78000b.xsd
+7,8d6
+< declaration
+< file://
+16d13
+< http://webxtest/managedShadow/managed_RTM/testdata/xsd/schema/simpleSchema.asp
+17a15
+> idz008.xsd
+18a17,26
+> mga014.xsd
+> mga017.xsd
+> mgc001.xsd
+> mgc003.xsd
+> mgc005.xsd
+> mgc006.xsd
+> mgc007.xsd
+> mgc010.xsd
+> mgc011.xsd
+> mgc012.xsd
+23,24d30
+< particlesJk006.imp
+< particlesK008.imp
+26,28c32,34
+< schB4_b.xsd
+< schE5_b.xsd
+< schL2_b.xsd
+---
+> schB6.xsd
+> schE7.xsd
+> schH7.xsd
+31d36
+< schQ4_d.xsd
+34a40
+> stc034.xsd
+37d42
+< test67764.imp
+42,43d46
+< unnamed
+< ????URI
+45a49
+> ????URI
+
+Good news is that none of the < ones were queried.
+What about the new ones:
+btest78000b.xsd [bug in instance, fixed, queried, removed from DB]
+idz008.xsd [typo in instance, fixed, removed from DB]
+mga014.xsd [typo in instance, fixed, removed from DB]
+mga017.xsd [typo in instance, fixed, removed from DB]
+mgc001.xsd [typo in instance, fixed, removed from DB]
+mgc003.xsd [typo in instance, fixed, removed from DB]
+mgc005.xsd [typo in instance, fixed, removed from DB]
+mgc006.xsd [typo in instance, fixed, removed from DB]
+mgc007.xsd [typo in instance, fixed, removed from DB]
+mgc010.xsd [typo in instance, fixed, removed from DB]
+mgc011.xsd [typo in instance, fixed, removed from DB]
+mgc012.xsd [typo in instance, fixed, removed from DB]
+schB6.xsd [deleted on instructions from ZA, now also deleted from testSet and DB]
+schE7.xsd [ditto]
+schH7.xsd [ditto]
+stc034.xsd [typo in instance, fixed, removed from DB]
+
+> egrep -l 'mga0' *.xml | xargs -n 1 sed 's/mga0/mgA0/' -i
+> egrep -l 'mgc0' *.xml | xargs -n 1 sed 's/mgc0/mgC0/' -i
+
+other three by hand
+
+Revised DB contents:
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     18 nnsls
+   9308 s
+     44 sls
+    436 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+data/additional/test72702.xml [Queried, fixed by hand]
+data/additional/test73986_2.xml [Queried, fixed by hand]
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4927 i
+     18 nnsls
+   9308 s
+     45 sls
+    436 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+Implemented Zafar's suggestions wrt surplus files [see XYZZY above]:
+with data\ -> data/, etc.
+
+Done, thereby adding 3 instances:
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4930 i
+     18 nnsls
+   9308 s
+     45 sls
+    436 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+Consistency check:
+> find data -type f | lookupDB.py reffed.db -p 2>&1 >/dev/null | egrep -v illformed | egrep -v '~' | cut -d ' ' -f 1 > /tmp/nxf	
+> egrep -v '[eiv]\.' /tmp/xf | egrep -v illformed | egrep -v '~' | cut -d ' ' -f 1 | diff -bw - /tmp/nxf
+
+9,10d8
+< data/complexType/ctZ013c.xml
+< data/complexType/ctZ013d.xml
+52d49
+< data/particles/particlesZ040.xml
+
+> wc /tmp/nxf
+ 216  216 6380 /tmp/nxf
+
+So then delete all those.
+> xargs rm < /tmp/nxf
+
+Time to get rid of illformed:
+> find data -type d -name illformed | xargs rm -rf
+
+Now no superfluous files:
+> find data -type f | lookupDB.py reffed.db -p 2>&1 >/dev/null  | cut -d ' ' -f 1  | wc
+      0       0       0
+
+Turning to missing files, Zafar says:
+
+------
+I am attaching a zip file containing missing files. Some of the ones not
+included are:
+
+annotations/annotA013.xsd x _annotA013.xsd
+annotations/annotA014.xsd x _annotA014.xsd
+annotations/annotB019.xsd x _annotA013.xsd
+annotations/annotB020.xsd x _annotA014.xsd
+annotations/annotB025.xsd x foo.xsd
+-------------------------------------
+These can stay missing. This is testing location of annotations at
+different locations in the document. Schema Location in this case can
+continue to fail to resolve.
+
+schema/schZ006_b.xsd x dataset.xsd
+----------------------------------
+You can delete this file: schema/schZ006_b.xsd, It is not referenced in
+a test group.
+------
+
+Zip file contains:
+
+data/additional/test74789_b1.xsd
+data/additional/test74789_b.xsd
+data/additional/test74789_c1.xsd
+data/additional/test74789_c.xsd
+data/element/test115044_imp.xsd
+data/element/test115044_inc.xsd
+data/schema/not-schema.xsd
+data/schema/not-wf.xsd
+data/schema/schm7_c.xsd -> schM7_c.xsd
+data/schema/schN2_b.xsd
+data/wildcards/wildZ011b.xsd
+data/wildcards/wildZ011c.xsd
+
+Recovered one intentionally ill-formed doc which had been deleted:
+
+data/additional/test72702.imp
+
+Unilaterally edited schemaZ006_b.xsd to point to schemaZ006.xsd, per
+description in testSet:
+
+ TEST :schema collection and schema location : test redefine with
+ schemaLocation pointing to itself
+
+Could be it should point literally to itself, asked Zafar.
+
+Left with only _one_ suspicious missing file, all the rest look
+intentional or, per Zafar, harmless (_annot... ones):
+
+> dumpDB.py reffed.db | cut -d ' ' -f 1 | while read f; do if [ \! -f $f ]; then echo $f; fi; done | sort -u
+data/additional/http://www.w3.org/2001/xml.xsd
+data/additional/redefinebug.red
+data/annotations/_annotA013.xsd
+data/annotations/_annotA014.xsd
+data/annotations/foo.xsd
+data/datatypes/Facets/anyURI/0
+data/datatypes/Facets/anyURI/123
+data/datatypes/Facets/anyURI/foo'bar
+data/datatypes/Facets/anyURI/ftp://ftp.is.co.za/rfc/rfc1808.txt
+data/datatypes/Facets/anyURI/gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles
+data/datatypes/Facets/anyURI/mailto:mduerst@ifi.unizh.ch
+data/datatypes/Facets/anyURI/????URI
+data/modelGroups/foo
+data/notations/foo
+data/schema/http://foo/foo
+data/schema/http://webxtest/managedShadow/managed_rtm/testdata/xsd/schema/simpleSchema.asp
+data/schema/not-exist
+data/schema/not-exist.xsd
+data/schema/schN2_c.xsd
+data/schema/schZ012_A.xsd
+data/schema/Schz012_b.xsd
+data/schema/Schz012_C.xsd
+
+data/schema/schN2_c.xsd supplied by Zafar, we're complete now
+
+>  dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+   4930 i
+     18 nnsls
+   9308 s
+     45 sls
+    436 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+So that's 14788 DB entries, of which 21 are missing, so 14767 files.
+
+> find data -type f | wc
+  14767   14767  496076
+
+Ready to ship (XSV still not perfect, but acceptable:
+
+> /bin/ls *.xml | while read f; do lxviewport -q testGroup ../../bin/runTest.sh $f > /tmp/zp/${f%_w3c.xml}.xml; done &
+
+> egrep -c crash= /tmp/zp/*
+/tmp/zp/Additional.xml:2
+/tmp/zp/Annotations.xml:0
+/tmp/zp/AttributeGroup.xml:4
+/tmp/zp/Attribute.xml:0
+/tmp/zp/ComplexType.xml:0
+/tmp/zp/DataTypes.xml:0
+/tmp/zp/Element.xml:0
+/tmp/zp/Errata10.xml:0
+/tmp/zp/Group.xml:13
+/tmp/zp/IdentityConstraint.xml:0
+/tmp/zp/ModelGroups.xml:0
+/tmp/zp/Notations.xml:0
+/tmp/zp/Particles.xml:0
+/tmp/zp/Regex.xml:1
+/tmp/zp/Schema.xml:0
+/tmp/zp/SimpleType.xml:0
+/tmp/zp/Wildcards.xml:0
+)
+
+Built testSuite file:  Microsoft_2006.xml, including copyright W3C 
+Changed 'Copyright' with 'Copyleft' in "Copyright 2000
+Example.com. All rights reserved." in
+  data/additional/ipo.xsd
+  data/additional/ipo_address.xsd
+  data/additional/ipo_s1.xsd
+  data/additional/ipo_s1_address.xsd
+  data/additional/po.xsd
+  data/additional/po1.xsd
+  data/identityConstraint/idZ003.xml
+
+============================================================================
+Now considering comments from public-xml-schema-testsuite
+
+I'm taking the old reports, checking them against the new contribution
+to see if the relevant test is still there and the complained-of
+aspect hasn't changed, and if it is and it hasn't, running XSV as a
+quick sanity check:
+
+http://lists.w3.org/Archives/Public/public-xml-schema-testsuite/2005Jun/0000.html
+attKb018 - schema - expected: invalid
+  result: valid
+  reason: 'attributeFormDefault' is not set, thus the value of the
+          targetNamespace is 'absent'.
+  XSV: valid
+
+attKc18 - schema - expected: invalid 
+  result: valid
+  reason: 'attributeFormDefault' is not set, thus the value of
+          the targetNamespace is 'absent'.
+  XSV: valid
+
+attO025 - schema - expected: valid
+  result: invalid
+  reason: violates au-props-correct.2
+	  Element '{http://www.w3.org/2001/XMLSchema}attribute': The
+          'fixed' value constraint of the attribute use must match the
+          attribute declaration's value constraint '123'.
+
+Shows as expected: invalid in new contribution
+  
+attP009.v - instance - expected: valid
+  result: invalid  
+  reason: '{http://xsdtesting}elem': The attribute
+          '{http://xsdtesting}att' is required but missing. 
+
+Shows as expected: invalid in new contribution
+
+http://lists.w3.org/Archives/Public/public-xml-schema-testsuite/2005Jun/0002.html
+stA003, stC007, stD003, stE003 - all schemata - expected: invalid
+  result: valid
+  reason: Duplicate IDs in separated schema documents are not
+          violating the ID constraint.
+  
+All show as expected: valid in new contribution
+
+stC003 - schema - expected: valid
+  result: invalid
+  reason: A simpleType tries to restrict the type 'xs:anyType'. 
+          "simple type 'fooType': The base type
+          '{http://www.w3.org/2001/XMLSchema}anyType' is not a
+          simple type."
+   
+Shows as expected: valid in new contribution
+
+http://lists.w3.org/Archives/Public/public-xml-schema-testsuite/2005Jun/0004.html
+ctA014, ctA015, ctA023, ctA024 (all schemata)
+  expected: invalid
+  result  : valid
+  reason  : duplicate values in the attributes 'block' and 'final'
+            are not ruled out
+
+All show as expected: valid in new contribution
+
+ctA029, ctC003, ctF003 (all schemata)
+  expected: invalid
+  result  : valid
+  reason  : Duplicate IDs in separated schema documents are not
+            violating the ID constraint.
+
+All show as expected: valid in new contribution
+
+ctF006 (schema)
+  expected: valid
+  result  : invalid
+  reason  : violates derivation-ok-restriction (5.4.1.2);
+            "complex type 'fooType': If the content type is
+            'mixed', then the content type of the base type must
+            also be 'mixed'."
+
+Shows as expected: invalid in new contribution
+
+http://lists.w3.org/Archives/Public/public-xml-schema-testsuite/2005Jun/0005.html
+elemJ001:
+  expected: valid
+  result  : invalid
+  reason  : violates p-props-correct (2.2)
+  "Element '{http://www.w3.org/2001/XMLSchema}element',
+  attribute 'maxOccurs': The value must be greater than
+  or equal to 1."
+This test has been removed, as far as I can tell.
+
+elemQ019:
+  expected: invalid
+  result  : valid
+  reason  : refers probably to cvc-elt (5.1.2), but
+  a "fixed" value constraint, does not disallow an empty
+  value in the instance.
+Shows as expected: valid in new contribution
+
+elemT014.v
+  expected: valid
+  result  : invalid
+  reason  : violates cvc-elt (4.3)
+  "Element 'fooTest',
+   attribute '{http://www.w3.org/2001/XMLSchema-instance}type':
+  The type definition 'myUnion', specified by xsi:type, is
+  blocked or not validly derived from the type definition of
+  the element declaration."
+Target schema is changed to be anyType, so xsi:type is allowed.
+
+http://lists.w3.org/Archives/Public/public-xml-schema-testsuite/2006Jul/0000.html
+MSXMLSchema1-0-20020116.testSet
+---------------------------------
+ line 41904: idZ003, no files specified
+fixed in new contribution
+
+SunXMLSchema1-0-20020116.testSet
+--------------------------------
+ idc001.nogen.n00 should be valid or idc001.nogen.v01 should be
+invalid depending on whether BookCatalogue.xsd is supposed to be there
+or not... Probably all refs should be idc001.nogen.xsd instead
+Indeed, fixed in the new contribution 
+
+xsd003b.xsd - Should be invalid as:
+			there is no xsd:number type.
+			src-attribute_group.3 Circular reference to
+                        attribute group definition 'attGroup'
+Changed to xsd:decimal in new contribution
+
+--------------------------
+So the net-net is that we have only two cases where I think there's a
+live issue which the new contribution hasn't fixed:
+
+attKb018 - schema - expected: invalid
+  result: valid
+  reason: 'attributeFormDefault' is not set, thus the value of the
+          targetNamespace is 'absent'.
+  XSV: valid
+
+attKc018 - schema - expected: invalid 
+  result: valid
+  reason: 'attributeFormDefault' is not set, thus the value of
+          the targetNamespace is 'absent'.
+  XSV: valid
+
+Queried ms, Zafar replied:
+
+  These schemas are marked invalid since the targetNamespace is set to
+  http://www.w3.org/2001/XMLSchema-instance which is a known namespace
+  containing the xsi components. So the Microsoft schema processors
+  treat such schemas as invalid.
+
+I disagree, and have
+ a) flipped the expected to 'valid' for those two tests;
+ b) added two further tests, attKb018a and attKc018a, with copies of
+    the respective schemas changed to have
+    attributeFormDefault and form, respectively, set to 'qualified', and
+    expected 'invalid'
+
+So, final totals are
+   4930 i
+     18 nnsls
+   9310 s
+     45 sls
+    436 ss
+     37 sss
+      4 ssss
+      3 sssss
+      4 ssssss
+      1 sssssss
+      1 ssssssss
+      1 sssssssss
+
+Created reverse index of test names -> files (Unique for MS tests) in
+msLocate.db
+
+	for f in *.xml; do lxprintf -xmlns:x='http://www.w3.org/XML/2004/xml-schema-test-suite/' -e '//x:instanceTest|//x:schemaTest' "%s $f\n" '@name' $f |  addToDB.py ../msLocate.db -i; done
+

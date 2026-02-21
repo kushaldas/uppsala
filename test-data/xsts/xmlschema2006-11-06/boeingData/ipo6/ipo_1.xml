@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<purchaseOrder orderDate="2002-10-20"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.example.com/IPO ipo.xsd"
+ xmlns="http://www.example.com/IPO"
+ xmlns:add="http://www.example.com/add"
+>
+  <add:salutation>Ms.</add:salutation>
+  <shipTo xsi:type="USAddress">
+    <name>Alice Smith</name>
+    <street>123 Maple Street</street>
+    <city>Mill Valley</city>
+    <state>CA</state>
+    <zip>90952</zip>
+  </shipTo>
+
+  <billTo xsi:type="USAddress">
+    <name>Robert Smith</name>
+    <street>8 Oak Avenue</street>
+    <city>Old Town</city>
+    <state>PA</state>
+    <zip>95819</zip>
+  </billTo>
+
+  <shipComment>Hurry, my sister loves Boeing!</shipComment>
+
+  <items>
+    <item partNum="777-BA" weightKg="4.5" shipBy="air">
+      <productName>777 Model</productName>
+      <quantity>1</quantity>
+      <USPrice>99.95</USPrice>
+      <shipComment> Use gold wrap if possible </shipComment>
+      <customerComment> Want this for the holidays! </customerComment>
+      <shipDate>1999-12-05</shipDate>
+    </item>
+
+    <item partNum="833-AA">
+      <productName>833 Model</productName>
+      <quantity>2</quantity>
+      <USPrice>199.95</USPrice>
+      <shipDate>2000-02-28</shipDate>
+    </item>
+  </items>
+
+</purchaseOrder>

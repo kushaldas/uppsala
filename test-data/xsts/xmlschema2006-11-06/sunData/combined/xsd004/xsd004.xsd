@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd004.xsd	1.3 02/12/25
+
+-->
+
+<!-- highlight of this test
+
+	use of three different type of any element,
+	with different @namespace.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<xsd:import namespace="bar" schemaLocation="xsd004a.xsdmod" />
+	<xsd:import namespace="zot" schemaLocation="xsd004b.xsdmod" />
+	
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="skipAny">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="skip" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="laxAny">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="lax" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="strictAny">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="strict" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				
+				
+				<xsd:element name="skipOther">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="skip" namespace="##other" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="laxLocal">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="lax" namespace="##local" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="strictTarget">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="strict" namespace="##targetNamespace" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="skipBar">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any maxOccurs="unbounded" processContents="skip" namespace="bar" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

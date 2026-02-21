@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)disallowedSubst00106m1_p.xml
+   generated from: @(#)disallowedSubst00106m.jmpp	1.3 02/08/22
+
+-->
+
+<root
+  xmlns="ElemDecl/disallowedSubst"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/disallowedSubst disallowedSubst00106m1.xsd">
+    
+    <Head><Ear/><Eye/></Head>
+    <Member3><Ear/><Eye/><Nose/></Member3>
+
+</root>

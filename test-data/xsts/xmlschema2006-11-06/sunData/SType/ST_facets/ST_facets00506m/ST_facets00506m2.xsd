@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00506m2.xsd
+   generated from: @(#)ST_facets00506m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="SType/ST_facets"
+    targetNamespace="SType/ST_facets">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+                <xsd:element name="value" type="S"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="S">
+        <xsd:restriction base="xsd:NCName">
+            <xsd:enumeration value="a00ー"/>
+            <xsd:enumeration value="a0-ヽ"/>
+            <xsd:enumeration value="a0Aヾ"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

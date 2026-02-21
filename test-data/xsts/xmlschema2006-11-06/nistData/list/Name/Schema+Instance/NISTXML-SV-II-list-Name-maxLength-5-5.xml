@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-Name-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-Name-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-Name-maxLength-5
+    xmlns="NISTSchema-SV-II-list-Name-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-Name-maxLength-5-NS NISTSchema-SV-II-list-Name-maxLength-5.xsd">gan_digital.in-house.and.tasks::specifications.the_and_de :partnerships_discussions.for.know.many_registry:industry :set:and.retrieve_to.to.define-computer.to.software.which pareas-forensics-rigorous.a_performance-solutions_mechani bof.systems_basis.software:contains-transforming.manual_l _registries_daily_success.tools.investigation:forum.test. _particularly:of:be_been:conformance-those-adoption_adven vis.leadership-implementation-defines:ability_testing.of_ linto_lacking.transforming.chains:must.will-filter-review gestablish.entire-information.is:the:for-involved_used-a- :do:of.embedded.called-and:including.environment_for-appr las-chains.collaborate.with_processes.retrieve.will:has.a xheterogeneous-the_browsers-standards_the-repository:repo uprecise_development.data:complex:and-open-discussions:im _and_concepts-applications.particularly:to.transmit.5:all gdiscussions.logic.widespread.libraries:context-rich-for: jover-diagnostic_other.of_this:systems_lack-and:business:</NISTSchema-SV-II-list-Name-maxLength-5>

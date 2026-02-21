@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-IV-list-gYearMonth-length-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gYearMonth-length-1-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gYearMonth-length-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gYearMonth-length-1,
+      which is derived by restriction of a list with item type gYearMonth
+      by facet length with a value of: 5
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-IV-list-gYearMonth-length-1" type="nist:NISTSchema-SV-IV-list-gYearMonth-length-1-Type"/>
+
+  <simpleType name="listOfgYearMonth">
+    <list itemType="gYearMonth"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-IV-list-gYearMonth-length-1-Type">
+    <restriction base="nist:listOfgYearMonth">
+      <length value="5"/>
+    </restriction>
+  </simpleType>
+
+</schema>

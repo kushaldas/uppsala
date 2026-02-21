@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)contentType00101m1_n.xml
+   generated from: @(#)contentType00101m.jmpp	1.2 02/12/02
+
+-->
+
+
+<test:a
+    xmlns:test="contentType"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="contentType contentType00101m.xsd" attr1="123">abc</test:a>
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nillable00101m1_p.xml
+   generated from: @(#)nillable00101m.jmpp	1.2 02/04/04
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/nillable"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/nillable nillable00101m1.xsd"
+    
+    xsi:nil="true" />

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-5
+    xmlns="NISTSchema-SV-II-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-5-NS NISTSchema-SV-II-list-string-maxLength-5.xsd">229_Libraries_Can_Working_Due_Filter_Street_To_The_,_ID_16684 35_Language_Oasis_The_The_Despite_Street_Computer_Schemas_,_OH_16684 6_Computing_Some_Uses_Daily_For_Street_Tools_And_,_KY_16684 5_Become_Web_Security_Early_Become_Street_Partnerships_Typical_,_AZ_16684 58_Availability_Ability_Communications_Repository_Industries_Street_Find_Using_,_VT_16684 71_Security_Technologies_Be_Adoption_Further_Street_Organizations_Industry_,_ND_16684 28_Data_And_To_Simulation_Related_Street_Reference_Also_,_MT_16684 52579_Primarily_Quality_Areas_Used_Pervasive_Street_For_The_,_KY_16684 845_File_To_Contribute_Known_Registry_Street_Contains_Significant_,_MI_16684 17777_Interconnecting_Possible_The_High_Pc_Street_Help_Registry_,_NY_16684 333_Dom_As_Versions_The_Them_Street_To_Location_,_GA_16684 65273_And_Throughout_As_Stylesheet_As_Street_Xsl_Retrieval_,_MS_16684 98_Commerce_Which_Each_Cpu_Revolution_Street_Will_For_,_WA_16684 47_Mediums_And_Reference_Of_System_Street_Xml_Acting_,_WI_16684 5466_Contains_Using_Computing_Facilitation_Vendors_Street_The_Document_,_WY_16684</NISTSchema-SV-II-list-string-maxLength-5>

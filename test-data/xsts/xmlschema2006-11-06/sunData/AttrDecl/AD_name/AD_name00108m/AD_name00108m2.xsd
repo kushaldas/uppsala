@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m2.xsd
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00AŊ" type="xsd:string"/>
+            <xsd:attribute name="str10-Ť" type="xsd:string"/>
+            <xsd:attribute name="str20ž" type="xsd:string"/>
+            <xsd:attribute name="str01Aƀ" type="xsd:string"/>
+            <xsd:attribute name="str11-Ɗ" type="xsd:string"/>
+            <xsd:attribute name="str21Ɣ" type="xsd:string"/>
+            <xsd:attribute name="str02AƖ" type="xsd:string"/>
+            <xsd:attribute name="str12-Ɲ" type="xsd:string"/>
+            <xsd:attribute name="str22ƥ" type="xsd:string"/>
+            <xsd:attribute name="str03AƧ" type="xsd:string"/>
+            <xsd:attribute name="str13-ƨ" type="xsd:string"/>
+            <xsd:attribute name="str23Ʃ" type="xsd:string"/>
+            <xsd:attribute name="str04Aƫ" type="xsd:string"/>
+            <xsd:attribute name="str14-ƴ" type="xsd:string"/>
+            <xsd:attribute name="str24ƽ" type="xsd:string"/>
+            <xsd:attribute name="str05Aǀ" type="xsd:string"/>
+            <xsd:attribute name="str15-ǁ" type="xsd:string"/>
+            <xsd:attribute name="str25ǃ" type="xsd:string"/>
+            <xsd:attribute name="str06AǍ" type="xsd:string"/>
+            <xsd:attribute name="str16-Ǟ" type="xsd:string"/>
+            <xsd:attribute name="str26ǯ" type="xsd:string"/>
+            <xsd:attribute name="str07AǴ" type="xsd:string"/>
+            <xsd:attribute name="str17-Ǵ" type="xsd:string"/>
+            <xsd:attribute name="str27ǵ" type="xsd:string"/>
+            <xsd:attribute name="str08AǺ" type="xsd:string"/>
+            <xsd:attribute name="str18-Ȉ" type="xsd:string"/>
+            <xsd:attribute name="str28ȗ" type="xsd:string"/>
+            <xsd:attribute name="str09Aɐ" type="xsd:string"/>
+            <xsd:attribute name="str19-ɢ" type="xsd:string"/>
+            <xsd:attribute name="str29ɴ" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

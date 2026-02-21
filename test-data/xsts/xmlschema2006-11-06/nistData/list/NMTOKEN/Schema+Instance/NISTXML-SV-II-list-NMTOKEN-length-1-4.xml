@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NMTOKEN-length-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NMTOKEN-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NMTOKEN-length-1
+    xmlns="NISTSchema-SV-II-list-NMTOKEN-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NMTOKEN-length-1-NS NISTSchema-SV-II-list-NMTOKEN-length-1.xsd">Technical.web-will.revolution.the-products.on_NIST_that-t The_as-and-and-retrieval_new_participating_documents-the_ Software_to-wireless-documents.software-forensics-full-an specifications:HTML.signatures:the.partners:a.effectively provide-with-of:The:the.known.manipulate:and-computing-po in-will-via_the-its-conformant-projector:industry.good-te are.systems:effectively.testing:provide-XML.A_is.NSRL.is-</NISTSchema-SV-II-list-NMTOKEN-length-1>

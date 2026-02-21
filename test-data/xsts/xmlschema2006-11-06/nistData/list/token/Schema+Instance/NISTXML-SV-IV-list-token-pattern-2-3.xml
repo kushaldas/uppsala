@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-pattern-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-pattern-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-pattern-2
+    xmlns="NISTSchema-SV-IV-list-token-pattern-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-pattern-2-NS NISTSchema-SV-IV-list-token-pattern-2.xsd">34_Memory_Dependability_As_Street_File_Prototype_,_ME_13797-1926 83_Virtually_For_And_Networking_Them_Street_Xsl_Prominent_The_,_GA_13549-1185 72_Effort_Intelligent_In_Industries_Street_Registry_Community_,_DC_11867 77459_Define_Testability_Technologies_To_Street_For_,_NM_13558-1548 5671_Create_Included_Street_Results_,_CT_10722-1701 45_Role_Of_Which_Street_Of_To_Being_,_ND_14892 4_Defining_Street_And_Emerging_,_CO_15901-1354 179_Language_Tool_And_Specifications_Process_Street_Are_Are_,_CT_12361 167_Build_Will_To_Street_Measure_,_IN_13151-1383</NISTSchema-SV-IV-list-token-pattern-2>

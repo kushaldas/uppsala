@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-3
+    xmlns="NISTSchema-SV-II-list-string-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-3-NS NISTSchema-SV-II-list-string-maxLength-3.xsd">962_Widespread_By_That_The_Xml_Street_Of_And_,_KS_19168-1172 494_Including_Computing_The_And_Filter_Street_As_And_,_AZ_19168-1172 43522_Specifications_Profile_Systems_Draft_Pervasive_Street_Delaware_Using_,_NC_19168-1172 155_And_Debug_Have_Ad_Forensics_Street_And_Such_,_DE_19168-1172 3585_In_Large_Reference_Used_The_Street_Automating_Target_,_OH_19168-1172 84974_Standards_Displaying_Diagnostic_Large_To_Street_Law_Computer_,_VT_19168-1172 64_Than_And_Therefore_And_Find_Street_Simulation_The_,_MN_19168-1172 3654_Web_Although_Web_By_Specifications_Street_Standards_Four_,_OK_19168-1172 227_Is_Signature_Who_Apis_Industry_Street_Computing_Particular_,_NH_19168-1172</NISTSchema-SV-II-list-string-maxLength-3>

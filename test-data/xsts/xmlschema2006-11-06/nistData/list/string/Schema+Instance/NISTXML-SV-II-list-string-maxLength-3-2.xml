@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-3
+    xmlns="NISTSchema-SV-II-list-string-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-3-NS NISTSchema-SV-II-list-string-maxLength-3.xsd">3364_Of_More_Street_Of_And_,_NY_14464 26_Frameworks_And_Street_All_Draft_,_PA_14464 9873_Benefits_Virtually_Street_Set_Are_,_NJ_14464 65943_Using_Time_Street_Discovery_Apis_,_ME_14464 4562_Distributed_To_Street_Are_Are_,_ND_14464 36679_And_Assuring_Street_Measure_Those_,_CO_14464 33847_Of_The_Street_And_Newcomers_,_NY_14464 4_Commerce_Complete_Street_Provide_Hardware_,_WV_14464 8_Including_The_Street_For_Filter_,_AZ_14464</NISTSchema-SV-II-list-string-maxLength-3>

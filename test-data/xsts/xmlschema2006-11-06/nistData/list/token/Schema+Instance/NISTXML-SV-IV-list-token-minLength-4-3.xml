@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-minLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-minLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-minLength-4
+    xmlns="NISTSchema-SV-IV-list-token-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-minLength-4-NS NISTSchema-SV-IV-list-token-minLength-4.xsd">37479_Define_Means_Street_And_And_,_PA_11446 645_Ability_Ability_Street_Domains_The_,_AZ_11446 8535_Displaying_Including_Street_Transactional_Five_,_NE_11446 6752_To_Graphical_Street_And_Related_,_OK_11446 75_And_Xml_Street_Building_Be_,_MI_11446 777_Using_Has_Street_Partner_That_,_CA_11446 223_The_Applications_Street_Vertical_Through_,_FL_11446 426_Future_Maintained_Street_Exercise_Of_,_AR_11446 15_Images_Full_Street_Review_Stakeholders_,_TX_11446 5_Discovery_Including_Street_Markup_Data_,_AZ_11446</NISTSchema-SV-IV-list-token-minLength-4>

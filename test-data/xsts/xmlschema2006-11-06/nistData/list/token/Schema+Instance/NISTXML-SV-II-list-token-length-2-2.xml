@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-2-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-2
+    xmlns="NISTSchema-SV-II-list-token-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-2-NS NISTSchema-SV-II-list-token-length-2.xsd">8326_Networks_Accomplish_Street_Browsers_The_Effort_,_DC_16924 5_And_And_Street_Electronic_Organization_Recognition_,_HI_16924 9285_Issues_Voiced_Street_Following_Process_Accessible_,_RI_16924 168_Computing_Clean_Street_Today_Opportunity_Use_,_IL_16924 89_Stylesheet_Are_Street_Quality_Ensure_Measurement_,_NH_16924 6661_Fed_Work_Street_Browsers_Describes_Dependability_,_MN_16924 2_Creation_Microsystems_Street_Help_Test_To_,_OH_16924 9412_Suite_And_Street_File_Use_Those_,_CA_16924 87276_Wireless_The_Street_Manage_Industry_Partnerships_,_MD_16924 825_Provided_Targeted_Street_The_Distributed_Web_,_NJ_16924</NISTSchema-SV-II-list-token-length-2>

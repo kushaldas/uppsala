@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-hexBinary-minLength-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-hexBinary-minLength-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-hexBinary-minLength-1
+    xmlns="NISTSchema-SV-IV-list-hexBinary-minLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-hexBinary-minLength-1-NS NISTSchema-SV-IV-list-hexBinary-minLength-1.xsd">676A716C7475746B706D6E62667674746B777475657374766A 6370656C7773696574646B6A7171646174777779626D757772 6E6E786578716667756865746B70786A777378626865766B62 6162686C7769647779696E7861796C79677665796F71756762 6B65706B627363716C66636379636777786468656F6861646C 68656A68726F69657278736F7370717072636E676D746D6769 68616A75706E69697873766B677371696465776770636C6C75 627377626F6C6F73756E716372786170686F6D766D6F796168</NISTSchema-SV-IV-list-hexBinary-minLength-1>

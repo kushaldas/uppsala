@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-4
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-4-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:wcooperation_com="http://www.nist.gov/xsdNS"
+    xmlns:vorganizations-them_="http://www.nist.gov/xsdNS"
+    xmlns:pand-choices.the-certain.any_="http://www.nist.gov/xsdNS"
+    xmlns:xthe.methods.the-elim="http://www.nist.gov/xsdNS"
+    xmlns:_do.of="http://www.nist.gov/xsdNS"
+    xmlns:_quali="http://www.nist.gov/xsdNS"
+    xmlns:bto_simulation-is-debug_adoptio="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-4-NS NISTSchema-SV-II-list-QName-maxLength-4.xsd">_heterogeneous_and.discover_data.this-w wcooperation_com:bearly-the_creation-the_the_set-be-of-i vorganizations-them_:_and.collaborate-this-most-infrastructu pand-choices.the-certain.any_:uand_the_as-tools.based_and-information xthe.methods.the-elim:winternational-domains.chair.meet.perva _do.of:lmodels-built.community-display-impleme _quali:mcomponent-advent_technical-for.chains- bto_simulation-is-debug_adoptio:xwill_the-revolution_the_them_cost.file psignature.creation-and_and_of_diagnost</nist:NISTSchema-SV-II-list-QName-maxLength-4>

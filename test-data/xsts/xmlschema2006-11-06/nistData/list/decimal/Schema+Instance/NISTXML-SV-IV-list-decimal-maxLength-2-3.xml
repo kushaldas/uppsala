@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-decimal-maxLength-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-decimal-maxLength-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-decimal-maxLength-2
+    xmlns="NISTSchema-SV-IV-list-decimal-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-decimal-maxLength-2-NS NISTSchema-SV-IV-list-decimal-maxLength-2.xsd">43.5161585588407276 45.0647635127343548 63.6624942389558700 22.3216215738358441 66.4801457828054285</NISTSchema-SV-IV-list-decimal-maxLength-2>

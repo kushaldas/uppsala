@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-1
+    xmlns="NISTSchema-SV-II-list-token-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-1-NS NISTSchema-SV-II-list-token-maxLength-1.xsd">1_Being_Ad_Accessible_And_Within_Street_Permitting_,_NH_17469-1236 3189_And_That_Many_Project_Test_Street_To_,_VA_17469-1236 733_Of_Aid_As_Application_Tests_Street_These_,_FL_17469-1236 6638_By_Accomplish_Signatures_In_Computing_Street_As_,_ND_17469-1236 14447_Of_And_Industries_System_Repository_Street_Chairs_,_AR_17469-1236 94_Soc_To_Heterogeneous_Working_Software_Street_Be_,_WA_17469-1236 6_As_Analysis_Creation_Software_Discover_Street_Areas_,_TN_17469-1236 7272_Dom_Primarily_Software_Cpu_Creation_Street_Capabilities_,_MO_17469-1236</NISTSchema-SV-II-list-token-maxLength-1>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-2
+    xmlns="NISTSchema-SV-II-list-string-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-2-NS NISTSchema-SV-II-list-string-maxLength-2.xsd">47_These_The_Xml_Street_Technical_,_CO_16604-1418 6_All_Further_Series_Street_Of_,_PA_16604-1418 58_Used_The_As_Street_Filter_,_ND_16604-1418 3469_The_Development_Products_Street_Popular_,_IL_16604-1418 6688_These_Groups_Allow_Street_Defines_,_CO_16604-1418 65_Organizations_The_Will_Street_Will_,_SD_16604-1418 468_Methods_Computing_These_Street_Industry_,_IN_16604-1418 4_Computing_Devices_The_Street_Tools_,_UT_16604-1418 65_And_To_Xml_Street_With_,_MN_16604-1418 65_From_Nsrl_Of_Street_Additionally_,_MT_16604-1418</NISTSchema-SV-II-list-string-maxLength-2>

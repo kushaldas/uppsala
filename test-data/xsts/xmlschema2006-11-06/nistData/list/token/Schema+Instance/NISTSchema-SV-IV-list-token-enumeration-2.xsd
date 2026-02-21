@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-token-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-token-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-token-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-token-enumeration-2,
+      which is derived by restriction of a list with itemType token
+      by facet enumeration with values of:
+          investigations the NIST/ITL industry effectively for To and XML
+          and focusing into completion objective
+          medium-sized testing Investigation choices foster
+          specification for 000 business investigation first-generation the specifications be
+          the for known performance library complex file ability semantics
+          business XSL-FO all development issues XML to also
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-token-enumeration-2" type="NISTSchema-SV-IV-list-token-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOftoken">
+    <xs:list itemType="xs:token"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-token-enumeration-2-Type">
+    <xs:restriction base="listOftoken">
+          <xs:enumeration value="investigations the NIST/ITL industry effectively for To and XML"/>
+          <xs:enumeration value="and focusing into completion objective"/>
+          <xs:enumeration value="medium-sized testing Investigation choices foster"/>
+          <xs:enumeration value="specification for 000 business investigation first-generation the specifications be"/>
+          <xs:enumeration value="the for known performance library complex file ability semantics"/>
+          <xs:enumeration value="business XSL-FO all development issues XML to also"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

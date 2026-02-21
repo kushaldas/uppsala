@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-union-anyURI-float-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-union-anyURI-float-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-union-anyURI-float-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-union-anyURI-float-enumeration-2,
+      which is derived by restriction of a union of built-in types 
+      anyURI and float
+      by facet enumeration with values of:
+          news://theandindus.ryestablis.permitting.sofin.org
+          1.5462377E-25
+          news://ar.org
+          ftp://matchdispla.NISTourthe.sfileak.org
+          1.7554835E-36
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-union-anyURI-float-enumeration-2" type="NISTSchema-SV-IV-union-anyURI-float-enumeration-2-Type"/>
+
+  <xs:simpleType name="unionOf-anyURI-float">
+    <xs:union memberTypes="xs:anyURI xs:float"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-union-anyURI-float-enumeration-2-Type">
+    <xs:restriction base="unionOf-anyURI-float">
+          <xs:enumeration value="news://theandindus.ryestablis.permitting.sofin.org"/>
+          <xs:enumeration value="1.5462377E-25"/>
+          <xs:enumeration value="news://ar.org"/>
+          <xs:enumeration value="ftp://matchdispla.NISTourthe.sfileak.org"/>
+          <xs:enumeration value="1.7554835E-36"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

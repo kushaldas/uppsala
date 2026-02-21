@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-Name-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-Name-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-Name-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-Name-enumeration-5,
+      which is derived by restriction of a list with itemType Name
+      by facet enumeration with values of:
+          jsoftware.these_create-that:provide:b rfor-abilit dregistry-systems.to-signatures: ware_of:organizations-recent.can.metrology_related-and_lies_ band:the:to_origi
+          thardware.software:used_be.system:at-devices:tools.define lthese_ad lfor:our.reference:user.including.a:create:an cas.computer:to.suite:to:images-solve.to:forum.m sconsisten iknown-rich_among-to_and.signature:dy hprovidin iof.and_the:widespread:the.engine
+          xthus.and:of_cooperation fsyntax:organizatio vthe-these_computer-development.to vdefines-hardware_testable.must.re aand.popular.files:effective.logic-and-widely_find.access :are_led_we
+          dof_is:build-this_each-ensure jthat-popu vnetworks_be_tool_be_of.for:by:of_and:the:retrieval:communi oof.creation-indus qprovide_and-has_robust:these.relationsh aadvent.test-built_a:include_the:joint-the.it.as_for_and- bindustry:key.infr emust:dependability:standards-supply.of-are.wireless:to-f
+          kfor:can:prog vability-vocabularies-with_automated_incorpora _without-be :meets-enforcement:.building.chair_as-we-of-accomplish-i pprimary_products.result-ad-industry-tools:in_versions. wc
+          :the_profiles-unde xfour.filt :ability:a-blocks.documents.reputation_also.resides-su fand:other_we.regard:tools. :of_to_pervasive-and-of_and.among_ ie-describes
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-Name-enumeration-5" type="NISTSchema-SV-IV-list-Name-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfName">
+    <xs:list itemType="xs:Name"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-Name-enumeration-5-Type">
+    <xs:restriction base="listOfName">
+          <xs:enumeration value="jsoftware.these_create-that:provide:b rfor-abilit dregistry-systems.to-signatures: ware_of:organizations-recent.can.metrology_related-and_lies_ band:the:to_origi"/>
+          <xs:enumeration value="thardware.software:used_be.system:at-devices:tools.define lthese_ad lfor:our.reference:user.including.a:create:an cas.computer:to.suite:to:images-solve.to:forum.m sconsisten iknown-rich_among-to_and.signature:dy hprovidin iof.and_the:widespread:the.engine"/>
+          <xs:enumeration value="xthus.and:of_cooperation fsyntax:organizatio vthe-these_computer-development.to vdefines-hardware_testable.must.re aand.popular.files:effective.logic-and-widely_find.access :are_led_we"/>
+          <xs:enumeration value="dof_is:build-this_each-ensure jthat-popu vnetworks_be_tool_be_of.for:by:of_and:the:retrieval:communi oof.creation-indus qprovide_and-has_robust:these.relationsh aadvent.test-built_a:include_the:joint-the.it.as_for_and- bindustry:key.infr emust:dependability:standards-supply.of-are.wireless:to-f"/>
+          <xs:enumeration value="kfor:can:prog vability-vocabularies-with_automated_incorpora _without-be :meets-enforcement:.building.chair_as-we-of-accomplish-i pprimary_products.result-ad-industry-tools:in_versions. wc"/>
+          <xs:enumeration value=":the_profiles-unde xfour.filt :ability:a-blocks.documents.reputation_also.resides-su fand:other_we.regard:tools. :of_to_pervasive-and-of_and.among_ ie-describes"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

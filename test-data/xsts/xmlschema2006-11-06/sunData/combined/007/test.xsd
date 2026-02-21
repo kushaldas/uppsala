@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.xsd	1.2 02/12/25
+
+-->
+
+				<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:foo" xmlns:a="urn:a" xmlns:b="urn:b" xmlns:c="urn:c" elementFormDefault="qualified" targetNamespace="urn:foo">
+					
+					<!-- intersection of two wildcards will be empty -->
+					<xs:element name="emptywc">
+						<xs:complexType>
+							<xs:attributeGroup ref="skip_A"/>
+							<xs:attributeGroup ref="lax_B"/>
+						</xs:complexType>
+					</xs:element>
+					
+					<!-- intersection of two wildcards will be just urn:a -->
+					<xs:element name="justA">
+						<xs:complexType>
+							<xs:attributeGroup ref="skip_A"/>
+							<xs:anyAttribute processContents="skip" namespace="urn:a urn:b urn:c"/>
+						</xs:complexType>
+					</xs:element>
+					
+					<xs:attributeGroup name="skip_A">
+						<xs:anyAttribute processContents="skip" namespace="urn:a"/>
+					</xs:attributeGroup>
+					
+					<xs:attributeGroup name="lax_B">
+						<xs:anyAttribute processContents="lax" namespace="urn:b"/>
+					</xs:attributeGroup>
+				</xs:schema>

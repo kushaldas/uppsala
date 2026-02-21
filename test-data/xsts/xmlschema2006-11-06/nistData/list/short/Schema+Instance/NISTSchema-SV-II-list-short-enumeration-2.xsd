@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-short-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-short-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-short-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-short-enumeration-2,
+      which is derived by restriction of a list with itemType short
+      by facet enumeration with values of:
+          -13 15308 -9816 -829 -680 -186
+          -310 -32768 522 86 -86 3761 -294 -28
+          -803 75 657 2 28 -521
+          -7851 6630 32767 -913 283 552 -949
+          404 -317 -681 -86 -481 857 -79 9136 9282 917
+          51 892 -24 32767 -960
+          -87 3 16 353 2352 540 10 -5
+          183 -81 45 -1 -364 -8010 -257 305 -3087 -816
+          -12 799 29 -51 -2802 -32768 -331 -5453 -20357 -26
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-short-enumeration-2" type="NISTSchema-SV-II-list-short-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfshort">
+    <xs:list itemType="xs:short"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-short-enumeration-2-Type">
+    <xs:restriction base="listOfshort">
+          <xs:enumeration value="-13 15308 -9816 -829 -680 -186"/>
+          <xs:enumeration value="-310 -32768 522 86 -86 3761 -294 -28"/>
+          <xs:enumeration value="-803 75 657 2 28 -521"/>
+          <xs:enumeration value="-7851 6630 32767 -913 283 552 -949"/>
+          <xs:enumeration value="404 -317 -681 -86 -481 857 -79 9136 9282 917"/>
+          <xs:enumeration value="51 892 -24 32767 -960"/>
+          <xs:enumeration value="-87 3 16 353 2352 540 10 -5"/>
+          <xs:enumeration value="183 -81 45 -1 -364 -8010 -257 305 -3087 -816"/>
+          <xs:enumeration value="-12 799 29 -51 -2802 -32768 -331 -5453 -20357 -26"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

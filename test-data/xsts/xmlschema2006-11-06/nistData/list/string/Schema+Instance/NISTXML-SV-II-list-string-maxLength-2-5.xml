@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-2
+    xmlns="NISTSchema-SV-II-list-string-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-2-NS NISTSchema-SV-II-list-string-maxLength-2.xsd">87375_Is_Pervasive_To_In_Implementations_Street_Pervasive_The_,_IA_12746 77_Target_Consortium_The_That_Are_Street_Standards_Original_,_WV_12746 457_Are_Semantics_These_In_Such_Street_This_Pervasive_,_MS_12746 5535_Via_Well_Of_With_Formed_Street_As_Each_,_IA_12746 63231_Around_Problems_Processes_Data_Advanced_Street_Xml_And_,_MA_12746 295_Upon_Tools_To_Publishing_Software_Street_The_Computing_,_AL_12746 76749_Build_Signatures_The_As_The_Street_Nations_An_,_IN_12746 7584_Prototypes_Asking_Including_Java_Areas_Street_Project_Built_,_NV_12746 5497_Delaware_Process_Of_Heterogeneous_By_Street_Work_Of_,_RI_12746 4_Is_Choices_The_Must_Reference_Street_Versions_Groups_,_CO_12746</NISTSchema-SV-II-list-string-maxLength-2>

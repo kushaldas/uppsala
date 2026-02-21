@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-minLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-minLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-minLength-5-NS"
+    xmlns:fsuch-the_compu="http://www.nist.gov/xsdNS"
+    xmlns:lknow="http://www.nist.gov/xsdNS"
+    xmlns:_t="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:apervasive-the_the_techniq="http://www.nist.gov/xsdNS"
+    xmlns:_le="http://www.nist.gov/xsdNS"
+    xmlns:sthrough-="http://www.nist.gov/xsdNS"
+    xmlns:iand-a="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-minLength-5-NS NISTSchema-SV-II-list-QName-minLength-5.xsd">fsuch-the_compu:_complex_to.cost_interacting_heterogeneous-is.effect lknow:sbe-those.government_tools-has-and-stimulus-will-the _t:bs_is-applications_been_must-that_used-large_tools.d sapplication_computer-files.a_of_provides.repository klandscape_by-the-includes.users_address.a_process.m apervasive-the_the_techniq:wand-and_industry_ensure-diagnostic.coupled_discussi _le:_are_impact.and-ability.to-industry-versions-by-aski sthrough-:isupport-suite.and.ways-to_and.them_the-prominent-in iand-a:hto_to.lack.screen_created_e-for.security-solutions.</nist:NISTSchema-SV-II-list-QName-minLength-5>

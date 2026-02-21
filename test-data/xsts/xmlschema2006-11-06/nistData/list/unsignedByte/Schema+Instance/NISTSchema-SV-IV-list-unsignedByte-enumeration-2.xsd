@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-unsignedByte-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-unsignedByte-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-unsignedByte-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-unsignedByte-enumeration-2,
+      which is derived by restriction of a list with itemType unsignedByte
+      by facet enumeration with values of:
+          255 40 95 70 30 41
+          2 3 1 52 84 98
+          68 3 255 29 7 48 28 66
+          14 28 184 73 42 255 97 80 17
+          13 79 255 40 6 95 197 48
+          255 8 3 59 49 62
+          134 71 5 52 8 255 18 24
+          10 255 3 59 47 19 126 45
+          255 3 87 4 82 248
+          10 3 255 81 140 92 22 83
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-unsignedByte-enumeration-2" type="NISTSchema-SV-IV-list-unsignedByte-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfunsignedByte">
+    <xs:list itemType="xs:unsignedByte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-unsignedByte-enumeration-2-Type">
+    <xs:restriction base="listOfunsignedByte">
+          <xs:enumeration value="255 40 95 70 30 41"/>
+          <xs:enumeration value="2 3 1 52 84 98"/>
+          <xs:enumeration value="68 3 255 29 7 48 28 66"/>
+          <xs:enumeration value="14 28 184 73 42 255 97 80 17"/>
+          <xs:enumeration value="13 79 255 40 6 95 197 48"/>
+          <xs:enumeration value="255 8 3 59 49 62"/>
+          <xs:enumeration value="134 71 5 52 8 255 18 24"/>
+          <xs:enumeration value="10 255 3 59 47 19 126 45"/>
+          <xs:enumeration value="255 3 87 4 82 248"/>
+          <xs:enumeration value="10 3 255 81 140 92 22 83"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

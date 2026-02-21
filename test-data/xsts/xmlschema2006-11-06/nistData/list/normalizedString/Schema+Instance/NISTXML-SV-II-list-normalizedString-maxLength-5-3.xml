@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-5
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd">8362_From_Must_Of_The_Street_Industry_,_DE_16359-1858 2375_That_Into_Known_Address_Street_Graphics_,_AL_16359-1858 27_Domains_Devices_Collaborating_Information_Street_Build_,_KY_16359-1858 876_And_Efforts_Are_These_Street_Business_,_PA_16359-1858 33_Some_The_Appropriate_Prominent_Street_Requesting_,_ND_16359-1858 87_Quality_Simulation_And_Computed_Street_Opportunity_,_FL_16359-1858 5482_Electronic_Through_Filter_Model_Street_Therefore_,_IL_16359-1858 53_Academia_And_Ec_Test_Street_Its_,_CA_16359-1858 1_Four_Computers_Of_Access_Street_As_,_VT_16359-1858 377_Partners_Consistency_Raised_Of_Street_Advanced_,_NV_16359-1858 9371_By_Using_In_Fed_Street_Library_,_WV_16359-1858 88_Networks_Software_Manipulate_Of_Street_In_,_WI_16359-1858 92_Standards_Industries_Industry_To_Street_Investigation_,_SD_16359-1858 466_Such_That_The_Xsl_Street_Among_,_MS_16359-1858 245_Conduct_Unbiased_For_Are_Street_Hardware_,_LA_16359-1858 44754_By_Suites_Ensure_To_Street_Involved_,_NH_16359-1858</NISTSchema-SV-II-list-normalizedString-maxLength-5>

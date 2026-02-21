@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-dateTime-enumeration-1-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-dateTime-enumeration-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-dateTime-enumeration-1
+    xmlns="NISTSchema-SV-IV-list-dateTime-enumeration-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-dateTime-enumeration-1-NS NISTSchema-SV-IV-list-dateTime-enumeration-1.xsd">2018-08-26T11:38:43 1997-06-13T21:34:43 1985-07-18T11:18:55 1987-04-25T00:36:18 2025-08-15T04:44:31 2019-06-19T04:12:22 1988-01-15T01:49:40 1984-08-29T23:52:09</NISTSchema-SV-IV-list-dateTime-enumeration-1>

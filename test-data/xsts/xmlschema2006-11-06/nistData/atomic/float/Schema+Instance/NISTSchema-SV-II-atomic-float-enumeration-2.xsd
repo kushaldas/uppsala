@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-float-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-float-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-float-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-float-enumeration-2,
+      which is derived by restriction of built-in type float
+      by facet enumeration with values of:
+          1.4E-45
+          1.8901718E-32
+          2.9213084E-19
+          3.0553629E-6
+          2.9919429E7
+          1.6963260E20
+          3.4028235E38
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-float-enumeration-2" type="NISTSchema-SV-II-atomic-float-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-float-enumeration-2-Type">
+    <xs:restriction base="xs:float">
+          <xs:enumeration value="1.4E-45"/>
+          <xs:enumeration value="1.8901718E-32"/>
+          <xs:enumeration value="2.9213084E-19"/>
+          <xs:enumeration value="3.0553629E-6"/>
+          <xs:enumeration value="2.9919429E7"/>
+          <xs:enumeration value="1.6963260E20"/>
+          <xs:enumeration value="3.4028235E38"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

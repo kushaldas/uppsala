@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NMTOKEN-maxLength-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NMTOKEN-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NMTOKEN-maxLength-4
+    xmlns="NISTSchema-SV-II-list-NMTOKEN-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NMTOKEN-maxLength-4-NS NISTSchema-SV-II-list-NMTOKEN-maxLength-4.xsd">in.Object_EC_tools.implementations:the-promises-vocabulary_int prototype:describes.used_primary-enforcement.discussions_can_d certain:older.for-the-access.and-has-ensure.Subcommittees.a_in tools-measurement_system-XSL-FO.Recommendation:define.that.pro as-in:manipulation.all:repository_a.exchange.EXiST.provides:pa supply:standardization.reference.prototypes_reference-registry data-can-related:tools-and-law-computing.ability_as:and:OASIS. to:success.included-and.software_exchange:issues_by.XML_newcom the-ensure-Groups-for:a:be.to:the_profiles:the-law:a_an-a-alik defining-business-data.directions.from_specifications.enabling</NISTSchema-SV-II-list-NMTOKEN-maxLength-4>

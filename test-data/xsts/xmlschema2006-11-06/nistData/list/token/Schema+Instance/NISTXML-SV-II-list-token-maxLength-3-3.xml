@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-3-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-3
+    xmlns="NISTSchema-SV-II-list-token-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-3-NS NISTSchema-SV-II-list-token-maxLength-3.xsd">3557_Communications_Are_Xml_Schema_Xml_Street_Our_,_ME_11325-1180 7316_Xml_Base_The_File_This_Street_Applications_,_HI_11325-1180 7788_Must_Quality_Object_Xsl_Manufacturers_Street_And_,_NH_11325-1180 51_In_Vocabularies_And_Role_Eliminated_Street_The_,_MO_11325-1180 16886_And_These_Conferences_Technology_In_Street_Fed_,_NV_11325-1180 6269_Working_Will_Software_Xml_Effectively_Street_Dom_,_DE_11325-1180 644_From_Screen_And_Of_As_Street_Software_,_CA_11325-1180 33_Software_Be_Can_Partnership_Good_Street_Involved_,_AZ_11325-1180 254_Conduct_And_Standards_Create_In_Street_Early_,_DE_11325-1180</NISTSchema-SV-II-list-token-maxLength-3>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-ID-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-ID-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-ID-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-ID-enumeration-2,
+      which is derived by restriction of built-in type ID
+      by facet enumeration with values of:
+          jrequesting-methods-in
+          pdata_technologies-will-that_their-at_me
+          tresult-a-of-methods-as.of-networks_and.specifica
+          mindustry.designed_match.and.influence_to_those.will
+          jmethods-wide.utilize-known-data-organizatio
+          _of_of_a-conferences_prominent-organizations-as_recent_te
+          svisibly.registry_is_support_for-will.industry-in_provide.and
+          lrigorous-be-pr
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-ID-enumeration-2" type="NISTSchema-SV-IV-atomic-ID-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-ID-enumeration-2-Type">
+    <xs:restriction base="xs:ID">
+          <xs:enumeration value="jrequesting-methods-in"/>
+          <xs:enumeration value="pdata_technologies-will-that_their-at_me"/>
+          <xs:enumeration value="tresult-a-of-methods-as.of-networks_and.specifica"/>
+          <xs:enumeration value="mindustry.designed_match.and.influence_to_those.will"/>
+          <xs:enumeration value="jmethods-wide.utilize-known-data-organizatio"/>
+          <xs:enumeration value="_of_of_a-conferences_prominent-organizations-as_recent_te"/>
+          <xs:enumeration value="svisibly.registry_is_support_for-will.industry-in_provide.and"/>
+          <xs:enumeration value="lrigorous-be-pr"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

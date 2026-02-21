@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-minLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-minLength-5
+    xmlns="NISTSchema-SV-II-list-token-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-minLength-5-NS NISTSchema-SV-II-list-token-minLength-5.xsd">22_Information_Work_Helping_Street_Requires_Building_,_MD_11676-1196 99_Test_The_Partnerships_Street_Oasis_Xml_,_MI_11676-1196 82842_Following_And_Processes_Street_Xml_Different_,_CA_11676-1196 377_That_Software_To_Street_Most_And_,_GA_11676-1196 45_In_And_Resources_Street_Stimulus_To_,_AZ_11676-1196 52_Quality_Ability_The_Street_Participate_Unbiased_,_CT_11676-1196 2_For_Computing_System_Street_All_Facilitates_,_OR_11676-1196 4_The_These_Divisions_Street_Set_For_,_AK_11676-1196 47777_And_Addressing_And_Street_And_Hampered_,_TX_11676-1196</NISTSchema-SV-II-list-token-minLength-5>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-minLength-4-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-minLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-minLength-4
+    xmlns="NISTSchema-SV-II-list-token-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-minLength-4-NS NISTSchema-SV-II-list-token-minLength-4.xsd">6342_The_Xml_Facilitates_Robust_Be_Street_Of_Through_Software_,_NH_12127-1330 3513_Vertical_The_Is_Challenges_Partners_Street_Tools_Base_Industry_,_MA_12127-1330 5629_Used_Be_The_Of_Visibly_Street_Result_Retrieves_Years_,_FL_12127-1330 177_Specifications_Degree_Be_Electronic_Testable_Street_The_Developers_Location_,_AL_12127-1330 767_Consistency_Software_Discover_Regard_Engineering_Street_Specification_The_Files_,_CT_12127-1330 444_For_The_Testing_Technology_Specifications_Street_As_The_Models_,_VA_12127-1330</NISTSchema-SV-II-list-token-minLength-4>

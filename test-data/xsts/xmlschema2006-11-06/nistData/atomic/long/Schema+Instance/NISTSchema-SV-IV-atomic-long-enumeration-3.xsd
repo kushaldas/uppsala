@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-long-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-long-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-long-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-long-enumeration-3,
+      which is derived by restriction of built-in type long
+      by facet enumeration with values of:
+          43
+          -2032980968765
+          34853718286
+          -368
+          80579055795489529
+          282076
+          -4722
+          -12200
+          4812
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-long-enumeration-3" type="NISTSchema-SV-IV-atomic-long-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-long-enumeration-3-Type">
+    <xs:restriction base="xs:long">
+          <xs:enumeration value="43"/>
+          <xs:enumeration value="-2032980968765"/>
+          <xs:enumeration value="34853718286"/>
+          <xs:enumeration value="-368"/>
+          <xs:enumeration value="80579055795489529"/>
+          <xs:enumeration value="282076"/>
+          <xs:enumeration value="-4722"/>
+          <xs:enumeration value="-12200"/>
+          <xs:enumeration value="4812"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

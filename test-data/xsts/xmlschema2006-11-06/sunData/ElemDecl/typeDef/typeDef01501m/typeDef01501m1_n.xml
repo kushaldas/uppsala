@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01501m1_n.xml
+   generated from: @(#)typeDef01501m.jmpp	1.1 02/04/10
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef01501m1.xsd"
+    ID="a1">
+XML Schema: Structures specifies the XML Schema definition language, 
+which offers facilities for describing the structure and constraining 
+the contents of XML 1.0 documents, including those which exploit the 
+XML Namespace facility
+<!-- Positive variant begin - -
+<dot/>
+ - - Positive variant end   -->
+<!-- Negative variant begin -->
+<dot>.</dot>
+<!-- Negative variant end   -->
+The schema language, which is itself represented in XML 1.0 and uses 
+namespaces, substantially reconstructs and considerably extends the 
+capabilities found in XML 1.0 document type definitions (DTDs) ...
+</test:root>

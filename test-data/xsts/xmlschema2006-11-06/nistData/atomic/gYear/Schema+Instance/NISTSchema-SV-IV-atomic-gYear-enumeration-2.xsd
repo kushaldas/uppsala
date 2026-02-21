@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-gYear-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-gYear-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-gYear-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-gYear-enumeration-2,
+      which is derived by restriction of built-in type gYear
+      by facet enumeration with values of:
+          2007
+          2020
+          1999
+          2011
+          1976
+          1984
+          1972
+          1992
+          2018
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-gYear-enumeration-2" type="NISTSchema-SV-IV-atomic-gYear-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-gYear-enumeration-2-Type">
+    <xs:restriction base="xs:gYear">
+          <xs:enumeration value="2007"/>
+          <xs:enumeration value="2020"/>
+          <xs:enumeration value="1999"/>
+          <xs:enumeration value="2011"/>
+          <xs:enumeration value="1976"/>
+          <xs:enumeration value="1984"/>
+          <xs:enumeration value="1972"/>
+          <xs:enumeration value="1992"/>
+          <xs:enumeration value="2018"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

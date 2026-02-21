@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-duration-pattern-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-duration-pattern-2-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-duration-pattern-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-duration-pattern-2,
+      which is derived by restriction of a list with item type duration
+      by facet pattern with a value of: P\d\d52Y\d2M\d7DT\d2H5\dM5\dS P19\d\dY\d9M0\dDT1\dH\d3M0\dS P\d\d47Y1\dM1\dDT\d6H3\dM\d7S P17\d\dY\d2M1\dDT1\dH\d4M2\dS P\d\d37Y0\dM\d8DT1\dH3\dM5\dS P19\d\dY\d2M\d3DT\d0H\d7M\d0S P\d\d68Y\d0M\d6DT\d3H1\dM0\dS
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-duration-pattern-2" type="nist:NISTSchema-SV-II-list-duration-pattern-2-Type"/>
+
+  <simpleType name="listOfduration">
+    <list itemType="duration"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-duration-pattern-2-Type">
+    <restriction base="nist:listOfduration">
+      <pattern value="P\d\d52Y\d2M\d7DT\d2H5\dM5\dS P19\d\dY\d9M0\dDT1\dH\d3M0\dS P\d\d47Y1\dM1\dDT\d6H3\dM\d7S P17\d\dY\d2M1\dDT1\dH\d4M2\dS P\d\d37Y0\dM\d8DT1\dH3\dM5\dS P19\d\dY\d2M\d3DT\d0H\d7M\d0S P\d\d68Y\d0M\d6DT\d3H1\dM0\dS"/>
+    </restriction>
+  </simpleType>
+
+</schema>

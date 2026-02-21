@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)particles00301m1.xsd
+   generated from: @(#)particles00301m.jmpp	1.1 02/04/28
+
+-->
+
+
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="particles"
+    targetNamespace="particles">
+
+  <xsd:group name="G1">
+    <xsd:sequence>
+      <xsd:element name="id" type="xsd:integer"/>
+      <xsd:element name="name" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:element name="a">
+    <xsd:complexType>
+      <xsd:group ref="G1"/>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>
+

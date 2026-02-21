@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NMTOKENS-maxLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NMTOKENS-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NMTOKENS-maxLength-4
+    xmlns="NISTSchema-SV-II-list-NMTOKENS-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NMTOKENS-maxLength-4-NS NISTSchema-SV-II-list-NMTOKENS-maxLength-4.xsd">of-know_is_projector-to: for.popular:OASIS_modeli with_contains.to-be-disc can-XML_define.engineeri and.and_for.challenges_r developers.Pervasive-int be.made:rich_in-that-ref to.and:all:The:Naval_dev on-to_EC:related_partner significant.Working_reco</NISTSchema-SV-II-list-NMTOKENS-maxLength-4>

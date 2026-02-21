@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-unsignedInt-length-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-unsignedInt-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-unsignedInt-length-1
+    xmlns="NISTSchema-SV-II-list-unsignedInt-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-unsignedInt-length-1-NS NISTSchema-SV-II-list-unsignedInt-length-1.xsd">4163434112 4153521163 4122224121 4132254173 4152725173 4172635111 4133434162 4171531162 4132323183 4142651132</NISTSchema-SV-II-list-unsignedInt-length-1>

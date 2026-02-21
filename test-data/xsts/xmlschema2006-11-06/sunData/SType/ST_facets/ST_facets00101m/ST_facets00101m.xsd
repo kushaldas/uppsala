@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00101m.xsd
+   generated from: @(#)ST_facets00101m.jmpp	1.1 02/02/28
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_facets"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_facets">
+     <xsd:element name="test" type="Test"/>
+
+    <xsd:simpleType name="Test">
+        <xsd:restriction>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="1*"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:minLength value="1"/>
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
+
+

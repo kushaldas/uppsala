@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)particles00105m1.xsd
+   generated from: @(#)particles00105m.jmpp	1.3 03/10/10
+
+-->
+
+
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="particles"
+    targetNamespace="particles">
+
+  <xsd:group name="G1">
+    <xsd:all>
+      <xsd:choice/>
+    </xsd:all>
+  </xsd:group>
+
+  <xsd:element name="a" type="xsd:string"/>
+
+</xsd:schema>
+

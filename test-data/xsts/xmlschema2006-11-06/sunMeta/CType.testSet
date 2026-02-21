@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<testSet name="CType"
+      xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      contributor="SUN">
+
+    <testGroup name="abstract00101m1">
+        <annotation>
+            <documentation>
+                <Title>abstract type extension (valid schema)</Title>
+                <Description>Abstract complex types can be used as {base type definition}s.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="abstract00101m1">
+            <schemaDocument xlink:href="../sunData/CType/abstract/abstract00101m/abstract00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/abstract/abstract00101m/abstract00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/abstract/abstract00101m/abstract00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="abstract00101m2">
+        <annotation>
+            <documentation>
+                <Title>declaration of element of abstract type (valid schema)</Title>
+                <Description>Complex types for which {abstract} is true must not be used as the
+                              {type definition} for the *validation* of element information items.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="abstract00101m2">
+            <schemaDocument xlink:href="../sunData/CType/abstract/abstract00101m/abstract00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/abstract/abstract00101m/abstract00101m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m1">
+        <annotation>
+            <documentation>
+                <Title>human-targeted annotation  for complex type definition (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted annotations of schema components.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="annotation00101m1">
+            <schemaDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m2">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted annotation  for complex type definition (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted annotations of schema components.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="annotation00101m2">
+            <schemaDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m3">
+        <annotation>
+            <documentation>
+                <Title>human-targeted annotation misplaced  for complex type definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted annotations of schema components.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="annotation00101m3">
+            <schemaDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m3.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m4">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted annotation misplaced  for complex type definition (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted annotations of schema components.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="annotation00101m4">
+            <schemaDocument xlink:href="../sunData/CType/annotation/annotation00101m/annotation00101m4.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="attrwildcard00101m1">
+        <annotation>
+            <documentation>
+                <Title>type definition with any attributes (valid schema)</Title>
+                <Description>any: [attributes] can include attributes with any qualified or unqualified name.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="attrWildcard00101m1">
+            <schemaDocument xlink:href="../sunData/CType/attrWildcard/attrWildcard00101m/attrWildcard00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/attrWildcard/attrWildcard00101m/attrWildcard00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="attributeuses00101m1">
+        <annotation>
+            <documentation>
+                <Title>&lt;attribute&gt; [children] (valid schema)</Title>
+                <Description>The set of attribute uses corresponding to the &lt;attribute&gt; [children].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="attributeUses00101m1">
+            <schemaDocument xlink:href="../sunData/CType/attributeUses/attributeUses00101m/attributeUses00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/attributeUses/attributeUses00101m/attributeUses00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/attributeUses/attributeUses00101m/attributeUses00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="basetd00101m1">
+        <annotation>
+            <documentation>
+                <Title>restriction of simple content (valid schema)</Title>
+                <Description>The type definition resolved to by the actual value of the base [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="baseTD00101m1">
+            <schemaDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="basetd00101m2">
+        <annotation>
+            <documentation>
+                <Title>extention of simple content (valid schema)</Title>
+                <Description>The type definition resolved to by the actual value of the base [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="baseTD00101m2">
+            <schemaDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="basetd00101m3">
+        <annotation>
+            <documentation>
+                <Title>extention of complex content (valid schema)</Title>
+                <Description>The type definition resolved to by the actual value of the base [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="baseTD00101m3">
+            <schemaDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m3_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m3_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="basetd00101m4">
+        <annotation>
+            <documentation>
+                <Title>restriction of complex content (valid schema)</Title>
+                <Description>The type definition resolved to by the actual value of the base [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="baseTD00101m4">
+            <schemaDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/baseTD/baseTD00101m/baseTD00101m4_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="contenttype00101m">
+        <annotation>
+            <documentation>
+                <Title>An empty content type (valid schema)</Title>
+                <Description>A {content type} with the distinguished value empty *validates* elements with
+                              no character or element information item [children].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="contentType00101m">
+            <schemaDocument xlink:href="../sunData/CType/contentType/contentType00101m/contentType00101m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="contentType00101m1_p">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00101m/contentType00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="contentType00101m1_n">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00101m/contentType00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="contenttype00201m">
+        <annotation>
+            <documentation>
+                <Title>A simple content type (valid schema)</Title>
+                <Description>A {content type} which is a Simple Type Definition (2.2.1.2) *validates*
+                              elements with character-only [children].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="contentType00201m">
+            <schemaDocument xlink:href="../sunData/CType/contentType/contentType00201m/contentType00201m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="contentType00201m1_p">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00201m/contentType00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="contentType00201m1_n">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00201m/contentType00201m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="contenttype00301m">
+        <annotation>
+            <documentation>
+                <Title>An element-only content type (valid schema)</Title>
+                <Description>An element-only {content type} *validates* elements with [children] that
+                              conform to the supplied *content model*.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="contentType00301m">
+            <schemaDocument xlink:href="../sunData/CType/contentType/contentType00301m/contentType00301m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="contentType00301m1_p">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00301m/contentType00301m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="contentType00301m1_n">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00301m/contentType00301m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="contenttype00401m">
+        <annotation>
+            <documentation>
+                <Title>An mixed content type (valid schema)</Title>
+                <Description>A mixed {content type} *validates* elements whose element [children]
+                              (i.e. specifically ignoring other [children] such as character information
+                               items) conform to the supplied *content model*.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="contentType00401m">
+            <schemaDocument xlink:href="../sunData/CType/contentType/contentType00401m/contentType00401m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="contentType00401m1_p">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00401m/contentType00401m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="contentType00401m1_n">
+            <instanceDocument xlink:href="../sunData/CType/contentType/contentType00401m/contentType00401m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="derivationmethod00101m1">
+        <annotation>
+            <documentation>
+                <Title>items: 1.1, 1.2, 1.3, 1.4.1 (valid schema)</Title>
+                <Description>Schema Component Constraint: Derivation Valid (Extension).
+                             The {base type definition} is a complex type definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="derivationMethod00101m1">
+            <schemaDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="derivationmethod00101m2">
+        <annotation>
+            <documentation>
+                <Title>items: 1.1, 1.2, 1.3, 1.4.2.1, 1.4.2.2.1 (valid schema)</Title>
+                <Description>Schema Component Constraint: Derivation Valid (Extension).
+                             The {base type definition} is a complex type definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="derivationMethod00101m2">
+            <schemaDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00101m/derivationMethod00101m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="derivationmethod00102m1">
+        <annotation>
+            <documentation>
+                <Title>extension of the type int (valid schema)</Title>
+                <Description>Schema Component Constraint: Derivation Valid (Extension).
+                             If the {base type definition} is a simple type definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="derivationMethod00102m1">
+            <schemaDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="derivationmethod00102m2">
+        <annotation>
+            <documentation>
+                <Title>extension of the type int by adding the attribute 't' of the type int (valid schema)</Title>
+                <Description>Schema Component Constraint: Derivation Valid (Extension).
+                             If the {base type definition} is a simple type definition.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="derivationMethod00102m2">
+            <schemaDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/derivationMethod/derivationMethod00102m/derivationMethod00102m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="final00101m2">
+        <annotation>
+            <documentation>
+                <Title>the value is extension (invalid schema)</Title>
+                <Description>The explicit values extension, and restriction prevent further derivations by
+                              extension and restriction respectively. If all values are specified, then 
+                              the complex type is said to be final, because no further derivations are possible.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="final00101m2">
+            <schemaDocument xlink:href="../sunData/CType/final/final00101m/final00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="final00101m3">
+        <annotation>
+            <documentation>
+                <Title>the value is restriction (valid schema)</Title>
+                <Description>The explicit values extension, and restriction prevent further derivations by
+                              extension and restriction respectively. If all values are specified, then 
+                              the complex type is said to be final, because no further derivations are possible.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="final00101m3">
+            <schemaDocument xlink:href="../sunData/CType/final/final00101m/final00101m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/CType/final/final00101m/final00101m3_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/CType/final/final00101m/final00101m3_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="final00101m4">
+        <annotation>
+            <documentation>
+                <Title>the value is restriction (invalid schema)</Title>
+                <Description>The explicit values extension, and restriction prevent further derivations by
+                              extension and restriction respectively. If all values are specified, then 
+                              the complex type is said to be final, because no further derivations are possible.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="final00101m4">
+            <schemaDocument xlink:href="../sunData/CType/final/final00101m/final00101m4.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="final00101m5">
+        <annotation>
+            <documentation>
+                <Title>the value is #all (invalid schema)</Title>
+                <Description>The explicit values extension, and restriction prevent further derivations by
+                              extension and restriction respectively. If all values are specified, then 
+                              the complex type is said to be final, because no further derivations are possible.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="final00101m5">
+            <schemaDocument xlink:href="../sunData/CType/final/final00101m/final00101m5.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="final00101m6">
+        <annotation>
+            <documentation>
+                <Title>the value is #all (invalid schema)</Title>
+                <Description>The explicit values extension, and restriction prevent further derivations by
+                              extension and restriction respectively. If all values are specified, then 
+                              the complex type is said to be final, because no further derivations are possible.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="final00101m6">
+            <schemaDocument xlink:href="../sunData/CType/final/final00101m/final00101m6.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="name00101m">
+        <annotation>
+            <documentation>
+                <Title>Simple types are identified by their {name} and {target namespace}. (valid schema)</Title>
+                <Description>Simple types are identified by their {name} and {target namespace}.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="name00101m">
+            <schemaDocument xlink:href="../sunData/CType/name/name00101m/name00101m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="name00101m1_p">
+            <instanceDocument xlink:href="../sunData/CType/name/name00101m/name00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="name00101m1_n">
+            <instanceDocument xlink:href="../sunData/CType/name/name00101m/name00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="psubstitutions00101m">
+        <annotation>
+            <documentation>
+                <Title>{prohibited substitutions} is empty (valid schema)</Title>
+                <Description>If {prohibited substitutions} is empty, then all substitutions are allowed.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="pSubstitutions00101m">
+            <schemaDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00101m/pSubstitutions00101m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="pSubstitutions00101m1_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00101m/pSubstitutions00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00101m1_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00101m/pSubstitutions00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00101m2_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00101m/pSubstitutions00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00101m2_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00101m/pSubstitutions00101m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="psubstitutions00102m">
+        <annotation>
+            <documentation>
+                <Title>{prohibited substitutions} is extension (valid schema)</Title>
+                <Description>{prohibited substitutions} determine whether an element declaration appearing
+                              in a *content model* is prevented from additionally *validating*
+                              element items with an xsi:type (p.2.6.1) attribute.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="pSubstitutions00102m">
+            <schemaDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00102m/pSubstitutions00102m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="pSubstitutions00102m1_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00102m/pSubstitutions00102m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00102m1_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00102m/pSubstitutions00102m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00102m2_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00102m/pSubstitutions00102m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00102m2_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00102m/pSubstitutions00102m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="psubstitutions00103m">
+        <annotation>
+            <documentation>
+                <Title>{prohibited substitutions} is restriction (valid schema)</Title>
+                <Description>{prohibited substitutions} determine whether an element declaration appearing
+                              in a *content model* is prevented from additionally *validating*
+                              element items with an xsi:type (p.2.6.1) attribute.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="pSubstitutions00103m">
+            <schemaDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00103m/pSubstitutions00103m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="pSubstitutions00103m1_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00103m/pSubstitutions00103m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00103m1_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00103m/pSubstitutions00103m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00103m2_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00103m/pSubstitutions00103m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00103m2_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00103m/pSubstitutions00103m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="psubstitutions00104m">
+        <annotation>
+            <documentation>
+                <Title>{prohibited substitutions} is #all (valid schema)</Title>
+                <Description>{prohibited substitutions} determine whether an element declaration appearing
+                              in a *content model* is prevented from additionally *validating*
+                              element items with an xsi:type (p.2.6.1) attribute.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="pSubstitutions00104m">
+            <schemaDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00104m/pSubstitutions00104m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="pSubstitutions00104m1_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00104m/pSubstitutions00104m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00104m1_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00104m/pSubstitutions00104m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00104m2_p">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00104m/pSubstitutions00104m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="pSubstitutions00104m2_n">
+            <instanceDocument xlink:href="../sunData/CType/pSubstitutions/pSubstitutions00104m/pSubstitutions00104m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="targetns00101m">
+        <annotation>
+            <documentation>
+                <Title>Simple types are identified by their {name} and {target namespace}. (valid schema)</Title>
+                <Description>Simple types are identified by their {name} and {target namespace}.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Complex_Type_Definitions"/>
+        <schemaTest name="targetNS00101m">
+            <schemaDocument xlink:href="../sunData/CType/targetNS/targetNS00101m/targetNS00101m.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="targetNS00101m1_p">
+            <instanceDocument xlink:href="../sunData/CType/targetNS/targetNS00101m/targetNS00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="targetNS00101m1_n">
+            <instanceDocument xlink:href="../sunData/CType/targetNS/targetNS00101m/targetNS00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+</testSet>

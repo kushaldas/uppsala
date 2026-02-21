@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-2-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-2
+    xmlns="NISTSchema-SV-II-list-string-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-2-NS NISTSchema-SV-II-list-string-maxLength-2.xsd">2318_And_To_Language_Able_The_Street_Oasis_Draft_,_KY_18457-1327 2495_Accessible_Languages_These_Of_Called_Street_Including_Prominent_,_WA_18457-1327 6417_Web_Interconnected_And_Issues_The_Street_Interoperability_For_,_SC_18457-1327 2_Of_Such_And_The_And_Street_To_Language_,_WI_18457-1327 8_Developers_Following_Role_Among_Known_Street_The_Computing_,_CA_18457-1327 4568_Future_Oasis_Used_Process_The_Street_Into_Internet_,_IL_18457-1327 28_The_Furthermore_New_Partners_Screen_Street_To_Of_,_PA_18457-1327 7333_Specify_Related_Shift_The_Throughout_Street_Information_Advent_,_MI_18457-1327 19_In_The_Academy_Popular_Is_Street_From_Collaborate_,_FL_18457-1327</NISTSchema-SV-II-list-string-maxLength-2>

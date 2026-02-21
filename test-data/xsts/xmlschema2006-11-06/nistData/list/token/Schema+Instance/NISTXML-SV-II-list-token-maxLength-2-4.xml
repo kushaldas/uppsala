@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-2
+    xmlns="NISTSchema-SV-II-list-token-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-2-NS NISTSchema-SV-II-list-token-maxLength-2.xsd">6855_Would_With_Syntax_Those_Street_That_,_NM_10440-1591 87_Etc_Tools_Fact_Only_Street_Graphical_,_DE_10440-1591 22_For_Oasis_Key_Build_Street_Created_,_CA_10440-1591 758_And_Provided_The_Are_Street_And_,_TN_10440-1591 9_Documents_Regard_Directions_Of_Street_Computer_,_AZ_10440-1591 85645_Partner_Including_And_Are_Street_Newcomer_,_MD_10440-1591 12585_Despite_Has_Interconnected_Consortium_Street_Challenges_,_MS_10440-1591 68_And_For_The_To_Street_And_,_CA_10440-1591 4_Work_Clean_Using_Software_Street_Incorporated_,_MA_10440-1591</NISTSchema-SV-II-list-token-maxLength-2>

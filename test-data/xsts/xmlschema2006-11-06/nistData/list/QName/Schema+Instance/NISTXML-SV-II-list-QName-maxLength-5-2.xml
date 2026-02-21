@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-5-NS"
+    xmlns:obuild_signatures_nu="http://www.nist.gov/xsdNS"
+    xmlns:yfour.d="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:hregistry.to="http://www.nist.gov/xsdNS"
+    xmlns:rand-industry.for.reference-an="http://www.nist.gov/xsdNS"
+    xmlns:_to-="http://www.nist.gov/xsdNS"
+    xmlns:_utilize_as_the.the.these_="http://www.nist.gov/xsdNS"
+    xmlns:ecross-over_shift-pa="http://www.nist.gov/xsdNS"
+    xmlns:ythe_as="http://www.nist.gov/xsdNS"
+    xmlns:savailable.c="http://www.nist.gov/xsdNS"
+    xmlns:lto-registry-e_indust="http://www.nist.gov/xsdNS"
+    xmlns:fcross="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-5-NS NISTSchema-SV-II-list-QName-maxLength-5.xsd">obuild_signatures_nu:bpartners-emerging.lack_the_set-a.development-well_transforming yfour.d:_methods-be-systems-on-a-chip_repository_from_and.is_versions_o iused_technology_system.for-series_it_files-their-information_c hregistry.to:gassociated-documents-simplest_with_business.computing.forensic rand-industry.for.reference-an:gfile-to-software-partnerships-commerce_the_the-of_testable_spe _to-:dengineering_networks_application_in-base.only_diagnostic.the-c _utilize_as_the.the.these_:vcreation_development-review-primarily_object-both_applications ecross-over_shift-pa:lfor_a_is-measurement.the.information.retrieval_exercise_indust ythe_as:mwithout.of_set_capabilities_to_are-possible-and-the.with.as_th savailable.c:_embedded.reference.years-retrieval.vocabularies_compatibility_ lto-registry-e_indust:fpervasive-addressing.versions.chain-e_particular-donate.acting fcross:eautomate-images_of.build_related-the_and_choices_with-a_techno</nist:NISTSchema-SV-II-list-QName-maxLength-5>

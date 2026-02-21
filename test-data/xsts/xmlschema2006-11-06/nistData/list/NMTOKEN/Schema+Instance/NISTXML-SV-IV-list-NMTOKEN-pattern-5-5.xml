@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-NMTOKEN-pattern-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-NMTOKEN-pattern-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-NMTOKEN-pattern-5
+    xmlns="NISTSchema-SV-IV-list-NMTOKEN-pattern-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-NMTOKEN-pattern-5-NS NISTSchema-SV-IV-list-NMTOKEN-pattern-5.xsd">and.standardization:XML-assuring.application_ inclu is_correction_XML.with_and.an:applications:the-means:to_ The_dynamic-a-wireless_and-clean:development. the.data:help-including:that:manu processes:be:of-Internet.of_the_some_ is.of_a:as:registry:and.of.other.having.of_in Using_known.OASIS_OASIS:mechanism_automa</NISTSchema-SV-IV-list-NMTOKEN-pattern-5>

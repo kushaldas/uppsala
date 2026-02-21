@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-3
+    xmlns="NISTSchema-SV-II-list-token-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-3-NS NISTSchema-SV-II-list-token-maxLength-3.xsd">7325_Our_Its_To_Performance_Street_Unambiguous_,_VA_15175-1986 513_Be_Profiles_Files_Portable_Street_Reputation_,_WI_15175-1986 3778_Any_That_In_Simulation_Street_Exchange_,_OR_15175-1986 85_Pervasive_Tests_Over_Its_Street_Smes_,_SC_15175-1986 91_Generation_Data_Which_To_Street_Time_,_DC_15175-1986 7_Can_Discovery_To_Academia_Street_Partners_,_LA_15175-1986 8425_In_Discover_File_Discovery_Street_Provides_,_DC_15175-1986 656_Set_Newcomers_Retrieve_Systems_Street_Operating_,_RI_15175-1986</NISTSchema-SV-II-list-token-maxLength-3>

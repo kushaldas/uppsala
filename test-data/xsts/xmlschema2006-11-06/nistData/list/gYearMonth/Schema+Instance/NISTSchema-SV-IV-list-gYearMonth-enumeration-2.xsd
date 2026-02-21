@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-gYearMonth-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gYearMonth-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gYearMonth-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gYearMonth-enumeration-2,
+      which is derived by restriction of a list with itemType gYearMonth
+      by facet enumeration with values of:
+          2023-01 2029-12 2009-01 1979-06 2009-05
+          1972-06 1970-09 2024-10 2010-10 1978-07 1990-12 1998-10 1979-12
+          1986-10 1982-11 1992-12 2017-08 2002-02 2011-03
+          1974-02 2020-12 1987-08 2021-04 2005-10 1977-04 1975-11 2012-09
+          2027-10 2030-07 1988-10 1980-08 2015-07 1982-04 2000-05 2004-04 2027-07
+          1973-01 2016-08 2028-06 1983-06 2005-03 2012-01 2003-08 1995-12 2002-08
+          2001-11 1971-08 1976-03 1980-12 1982-02 2001-08 2000-01 1977-07 1995-12
+          1991-09 1984-12 1972-12 1985-10 1999-06 1989-12 2027-03 1998-04
+          2008-12 2014-11 1989-03 2014-05 1996-09
+          2019-10 2005-11 1990-12 1974-04 2016-05 1987-05 1980-08
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-gYearMonth-enumeration-2" type="NISTSchema-SV-IV-list-gYearMonth-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfgYearMonth">
+    <xs:list itemType="xs:gYearMonth"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-gYearMonth-enumeration-2-Type">
+    <xs:restriction base="listOfgYearMonth">
+          <xs:enumeration value="2023-01 2029-12 2009-01 1979-06 2009-05"/>
+          <xs:enumeration value="1972-06 1970-09 2024-10 2010-10 1978-07 1990-12 1998-10 1979-12"/>
+          <xs:enumeration value="1986-10 1982-11 1992-12 2017-08 2002-02 2011-03"/>
+          <xs:enumeration value="1974-02 2020-12 1987-08 2021-04 2005-10 1977-04 1975-11 2012-09"/>
+          <xs:enumeration value="2027-10 2030-07 1988-10 1980-08 2015-07 1982-04 2000-05 2004-04 2027-07"/>
+          <xs:enumeration value="1973-01 2016-08 2028-06 1983-06 2005-03 2012-01 2003-08 1995-12 2002-08"/>
+          <xs:enumeration value="2001-11 1971-08 1976-03 1980-12 1982-02 2001-08 2000-01 1977-07 1995-12"/>
+          <xs:enumeration value="1991-09 1984-12 1972-12 1985-10 1999-06 1989-12 2027-03 1998-04"/>
+          <xs:enumeration value="2008-12 2014-11 1989-03 2014-05 1996-09"/>
+          <xs:enumeration value="2019-10 2005-11 1990-12 1974-04 2016-05 1987-05 1980-08"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

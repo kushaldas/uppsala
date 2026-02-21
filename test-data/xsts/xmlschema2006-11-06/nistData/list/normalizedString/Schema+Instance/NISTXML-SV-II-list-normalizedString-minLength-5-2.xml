@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-minLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-minLength-5
+    xmlns="NISTSchema-SV-II-list-normalizedString-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-minLength-5-NS NISTSchema-SV-II-list-normalizedString-minLength-5.xsd">2194_Conduct_Pc_Must_Pages_Street_Made_Of_,_UT_18452 4765_Repository_Virtually_Interoperability_The_Street_Use_Industry_,_IN_18452 3368_The_Markup_Profiles_And_Street_To_Environments_,_ID_18452 54_Working_The_Pervasive_And_Street_Via_Into_,_MI_18452 61_Oasis_For_Chair_Related_Street_Maintained_And_,_WY_18452 28666_Used_Language_With_For_Street_Personal_In_,_MO_18452 8_Extensible_Industry_Profile_From_Street_Database_Any_,_DE_18452 33_Industries_Industries_And_Led_Street_Be_Browsers_,_CO_18452 45_Within_In_For_Throughout_Street_Investigation_By_,_OR_18452</NISTSchema-SV-II-list-normalizedString-minLength-5>

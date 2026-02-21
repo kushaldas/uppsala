@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint00101m1.xsd
+   generated from: @(#)valueConstraint00101m.jmpp	1.4 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root" type="xsd:decimal" default="12"/>
+
+</xsd:schema>

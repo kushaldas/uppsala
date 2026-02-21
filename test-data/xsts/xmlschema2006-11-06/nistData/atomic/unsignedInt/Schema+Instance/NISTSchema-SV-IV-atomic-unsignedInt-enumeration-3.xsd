@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3,
+      which is derived by restriction of built-in type unsignedInt
+      by facet enumeration with values of:
+          47
+          2421249
+          90949193
+          6248
+          70884037
+          959
+          8001
+          9175
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3" type="NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-unsignedInt-enumeration-3-Type">
+    <xs:restriction base="xs:unsignedInt">
+          <xs:enumeration value="47"/>
+          <xs:enumeration value="2421249"/>
+          <xs:enumeration value="90949193"/>
+          <xs:enumeration value="6248"/>
+          <xs:enumeration value="70884037"/>
+          <xs:enumeration value="959"/>
+          <xs:enumeration value="8001"/>
+          <xs:enumeration value="9175"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

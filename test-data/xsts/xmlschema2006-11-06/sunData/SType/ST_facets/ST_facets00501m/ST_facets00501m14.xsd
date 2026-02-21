@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00501m14.xsd
+   generated from: @(#)ST_facets00501m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="SType/ST_facets"
+    targetNamespace="SType/ST_facets">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+                <xsd:element name="value" type="S"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="S">
+        <xsd:restriction base="xsd:NCName">
+            <xsd:enumeration value="a00ງ"/>
+            <xsd:enumeration value="a0-ງ"/>
+            <xsd:enumeration value="a0Aຈ"/>
+            <xsd:enumeration value="a10ຊ"/>
+            <xsd:enumeration value="a20ຍ"/>
+            <xsd:enumeration value="a30ດ"/>
+            <xsd:enumeration value="a3-ຕ"/>
+            <xsd:enumeration value="a3Aທ"/>
+            <xsd:enumeration value="a40ນ"/>
+            <xsd:enumeration value="a4-ຜ"/>
+            <xsd:enumeration value="a4Aຟ"/>
+            <xsd:enumeration value="a50ມ"/>
+            <xsd:enumeration value="a5-ຢ"/>
+            <xsd:enumeration value="a5Aຣ"/>
+            <xsd:enumeration value="a60ລ"/>
+            <xsd:enumeration value="a70ວ"/>
+            <xsd:enumeration value="a80ສ"/>
+            <xsd:enumeration value="a8-ສ"/>
+            <xsd:enumeration value="a8Aຫ"/>
+            <xsd:enumeration value="a90ອ"/>
+            <xsd:enumeration value="a9-ອ"/>
+            <xsd:enumeration value="a9Aຮ"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

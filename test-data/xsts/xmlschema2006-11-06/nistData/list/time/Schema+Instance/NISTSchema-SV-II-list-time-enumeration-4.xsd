@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-time-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-II-list-time-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-time-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-time-enumeration-4,
+      which is derived by restriction of a list with itemType time
+      by facet enumeration with values of:
+          08:57:48 08:58:53 16:59:40 00:23:51 10:34:34 08:59:58 20:57:20 09:48:27
+          01:57:24 04:30:05 06:24:50 14:32:46 15:01:19 15:38:45 17:17:42
+          12:59:40 02:24:43 16:56:34 21:06:04 04:04:44 20:35:28
+          06:38:56 07:29:28 10:40:24 01:25:27 14:24:22 16:18:39 16:35:16 17:03:57
+          16:33:41 04:08:56 15:22:59 22:11:43 06:47:36 20:04:58 21:04:22 22:43:26 17:30:35
+          16:37:21 10:10:28 20:34:35 02:15:22 23:49:09
+          17:18:20 05:34:03 13:43:45 14:20:43 12:13:10 04:53:18 18:11:51 12:32:15 09:32:35 19:28:37
+          09:58:10 03:17:21 19:14:25 22:22:24 16:10:17 09:20:49 23:20:30
+          05:53:30 05:17:33 16:09:20 00:49:15 00:54:42 16:41:52 11:07:48 08:16:17 18:56:24
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-time-enumeration-4" type="NISTSchema-SV-II-list-time-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOftime">
+    <xs:list itemType="xs:time"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-time-enumeration-4-Type">
+    <xs:restriction base="listOftime">
+          <xs:enumeration value="08:57:48 08:58:53 16:59:40 00:23:51 10:34:34 08:59:58 20:57:20 09:48:27"/>
+          <xs:enumeration value="01:57:24 04:30:05 06:24:50 14:32:46 15:01:19 15:38:45 17:17:42"/>
+          <xs:enumeration value="12:59:40 02:24:43 16:56:34 21:06:04 04:04:44 20:35:28"/>
+          <xs:enumeration value="06:38:56 07:29:28 10:40:24 01:25:27 14:24:22 16:18:39 16:35:16 17:03:57"/>
+          <xs:enumeration value="16:33:41 04:08:56 15:22:59 22:11:43 06:47:36 20:04:58 21:04:22 22:43:26 17:30:35"/>
+          <xs:enumeration value="16:37:21 10:10:28 20:34:35 02:15:22 23:49:09"/>
+          <xs:enumeration value="17:18:20 05:34:03 13:43:45 14:20:43 12:13:10 04:53:18 18:11:51 12:32:15 09:32:35 19:28:37"/>
+          <xs:enumeration value="09:58:10 03:17:21 19:14:25 22:22:24 16:10:17 09:20:49 23:20:30"/>
+          <xs:enumeration value="05:53:30 05:17:33 16:09:20 00:49:15 00:54:42 16:41:52 11:07:48 08:16:17 18:56:24"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

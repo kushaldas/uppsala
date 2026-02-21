@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_scope00101m1.xsd
+   generated from: @(#)AD_scope00101m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="AttrDecl/scope"
+	xmlns:tn="AttrDecl/scope">
+
+	<xsd:element name="root"/>
+	    <xsd:attribute name="number" type="xsd:integer"/>
+
+	<xsd:element name="elementWithAttr">
+	  <xsd:complexType>
+	    <xsd:attribute ref="tn:number" use="required"/>
+	    <xsd:attribute name="price"  type="xsd:decimal"/>
+	  </xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+

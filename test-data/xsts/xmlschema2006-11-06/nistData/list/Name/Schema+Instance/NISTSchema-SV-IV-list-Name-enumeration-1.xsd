@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-Name-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-Name-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-Name-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-Name-enumeration-1,
+      which is derived by restriction of a list with itemType Name
+      by facet enumeration with values of:
+          :registries:automatic- wis.frameworks.to:defining_business-oriented :better_is:discuss-following:key.be:of.the-is_the:of:known eefforts:commerc _measurements:devices_at.the-testing-o pstimulus.reach-significant_to-semantics:made _methods:als is-software.repository:available-dev mto-four-the.rigorous.are:specification.related:a
+          fthe:the-personal:simplicity-life-complex-be:be_i stremendous-such-the-and_supply.available-consi tthe:be-retrieve:related_that.tests-domains_the:first _the:and_to-of_g.and-ability-of-working:intuitive.all.a _the:most_directions-compatibility_i fmodeling.both:permitting_assuring_documents:in_
+          gsupport:than-data-for_these-for-indu orecommending.link:simplicity_syntax ginformation _and_repository.the:file.divisions:pic _as.for_dis hand-repository:for-reproduced.discussio kthese:industries.highly:health.improved.on_to:standards-w pof_and-the-for_specific-are_file.body-these_to-specifications_
+          pas:compu kthese_unbiased-that-pages.defining:made-including_known-targe :define.personal-for.of-it:be_inte gare.of.analysis-reproduced-for.eliminated_for_assur nstructured.for:signature icollabora qfind.repositories.and-computing.and.robust.the-to:key_made:addi uof.e:with.and.g_business_software_
+          _within:with_and.early:the.for:the.a ginformation:and.using_the.incorporated:elec lthat-dynamic.repository.wit sused-of-a:frameworks_them_rigorous.requesting.the_implementat :pervasive:of_set:user:newcomers:retrieve_ uwill:between:in-using:kn uof.a:data.full-templates_of_by:and:and-medium-sized_ :standardization.and.methods.define.services-in
+          bprimarily:simplicity.repo ualso-which-a-browsers.de qway.be_will_technology.structur :discovery.systems.as mfor-that_documents-adoption-development: tpervasive.supply-manufacturers_establish.design_by:enabli qled:software_deployed_software_be: gcontribute:via.those-availability_accomplish-to.acces
+          _use iof.embedded_those:automate:who.for_constituent-to_fi :specifications-a_to-completion_and:targeted_ear afiles_indus bdocuments:exchange.of-are:accessible:t qfor-and drevolution_upo
+          cand.and:software-wi :database.interconnecting-is_due.number.simulation:also_t :alike:a_to-retriev sglobal:solutions.web:and.and_provide_the:hampered:set_ dindustry_context-rich-early.newcome ypartners_services:files.a_participate_repo
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-Name-enumeration-1" type="NISTSchema-SV-IV-list-Name-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfName">
+    <xs:list itemType="xs:Name"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-Name-enumeration-1-Type">
+    <xs:restriction base="listOfName">
+          <xs:enumeration value=":registries:automatic- wis.frameworks.to:defining_business-oriented :better_is:discuss-following:key.be:of.the-is_the:of:known eefforts:commerc _measurements:devices_at.the-testing-o pstimulus.reach-significant_to-semantics:made _methods:als is-software.repository:available-dev mto-four-the.rigorous.are:specification.related:a"/>
+          <xs:enumeration value="fthe:the-personal:simplicity-life-complex-be:be_i stremendous-such-the-and_supply.available-consi tthe:be-retrieve:related_that.tests-domains_the:first _the:and_to-of_g.and-ability-of-working:intuitive.all.a _the:most_directions-compatibility_i fmodeling.both:permitting_assuring_documents:in_"/>
+          <xs:enumeration value="gsupport:than-data-for_these-for-indu orecommending.link:simplicity_syntax ginformation _and_repository.the:file.divisions:pic _as.for_dis hand-repository:for-reproduced.discussio kthese:industries.highly:health.improved.on_to:standards-w pof_and-the-for_specific-are_file.body-these_to-specifications_"/>
+          <xs:enumeration value="pas:compu kthese_unbiased-that-pages.defining:made-including_known-targe :define.personal-for.of-it:be_inte gare.of.analysis-reproduced-for.eliminated_for_assur nstructured.for:signature icollabora qfind.repositories.and-computing.and.robust.the-to:key_made:addi uof.e:with.and.g_business_software_"/>
+          <xs:enumeration value="_within:with_and.early:the.for:the.a ginformation:and.using_the.incorporated:elec lthat-dynamic.repository.wit sused-of-a:frameworks_them_rigorous.requesting.the_implementat :pervasive:of_set:user:newcomers:retrieve_ uwill:between:in-using:kn uof.a:data.full-templates_of_by:and:and-medium-sized_ :standardization.and.methods.define.services-in"/>
+          <xs:enumeration value="bprimarily:simplicity.repo ualso-which-a-browsers.de qway.be_will_technology.structur :discovery.systems.as mfor-that_documents-adoption-development: tpervasive.supply-manufacturers_establish.design_by:enabli qled:software_deployed_software_be: gcontribute:via.those-availability_accomplish-to.acces"/>
+          <xs:enumeration value="_use iof.embedded_those:automate:who.for_constituent-to_fi :specifications-a_to-completion_and:targeted_ear afiles_indus bdocuments:exchange.of-are:accessible:t qfor-and drevolution_upo"/>
+          <xs:enumeration value="cand.and:software-wi :database.interconnecting-is_due.number.simulation:also_t :alike:a_to-retriev sglobal:solutions.web:and.and_provide_the:hampered:set_ dindustry_context-rich-early.newcome ypartners_services:files.a_participate_repo"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

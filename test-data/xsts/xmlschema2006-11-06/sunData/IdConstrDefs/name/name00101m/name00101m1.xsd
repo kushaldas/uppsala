@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m1.xsd
+   generated from: @(#)name00101m.jmpp	1.4 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns="IdConstrDefs/name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="IdConstrDefs/name">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="person">
+                  <xsd:complexType>
+                       <xsd:simpleContent>
+                            <xsd:extension base="xsd:string">
+                                 <xsd:attribute name="parent" type="xsd:string" use="optional"/>
+                            </xsd:extension>
+                       </xsd:simpleContent>
+                  </xsd:complexType>
+              </xsd:element>
+          </xsd:sequence>
+      </xsd:complexType>
+      <xsd:key name="KEY1">
+          <xsd:selector xpath="./person"/>
+          <xsd:field xpath="."/>
+      </xsd:key>
+      <xsd:key name="KEY0">
+          <xsd:selector xpath="./person"/>
+          <xsd:field xpath="."/>
+      </xsd:key>
+  </xsd:element>
+
+</xsd:schema>

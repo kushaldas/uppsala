@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd" 
+	contributor="S. Tsao, The Boeing Company + J. Zingoni, University of Bologna" name="BoeingXSDTestCases">
+	<annotation>
+		<documentation>
+			All the following test cases are derived from examples given in the W3C XML Schema
+			Part 0: Primer located at http://www.w3.org/TR/xmlschema-0/ with minor variation in the
+			specific features intended for each test. 
+		</documentation>
+	</annotation>
+	
+	<testGroup name="ipo1">
+		<annotation>
+			<documentation>
+				International Purchase Order 1
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo1">
+			<schemaDocument xlink:href="../boeingData/ipo1/ipo.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo1/ipo_1.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo1/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+	
+	<testGroup name="ipo2">
+		<annotation>
+			<documentation>
+				International Purchase Order 2
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo2">
+			<schemaDocument xlink:href="../boeingData/ipo2/ipo.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo2/address.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo2/ipo_1.xml"/> 
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo2/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+	
+	<testGroup name="ipo3">
+		<annotation>
+			<documentation>
+				International Purchase Order 3
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo3">
+			<schemaDocument xlink:href="../boeingData/ipo3/ipo.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo3/address.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo3/itematt.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo3/ipo_1.xml"/> 
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo3/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+	
+	<testGroup name="ipo4">
+		<annotation>
+			<documentation>
+				International Purchase Order 4
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo4">
+			<schemaDocument xlink:href="../boeingData/ipo4/ipo.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo4/address.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo4/itematt.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo4/ipo_1.xml"/> 
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo4/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+	
+	<testGroup name="ipo5">
+		<annotation>
+			<documentation>
+				International Purchase Order 5
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo5">
+			<schemaDocument xlink:href="../boeingData/ipo5/ipo.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo5/address.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo5/itematt.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo5/ipo_1.xml"/> 
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo5/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+	
+	<testGroup name="ipo6">
+		<annotation>
+			<documentation>
+				International Purchase Order 6
+			</documentation>
+		</annotation>
+		<documentationReference xlink:href="../boeingData/Readme.doc"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#composition-schemaImport"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Schemas"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Model_Groups"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cAttribute_Group_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#cos-equiv-derived-ok-rec"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-2/#derivation-by-restriction"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions"/>
+		<documentationReference xlink:href="http://www.w3.org/TR/xmlschema-1/#layer2"/>
+		<schemaTest name="ipo6">
+			<schemaDocument xlink:href="../boeingData/ipo6/ipo.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo6/address.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo6/itematt.xsd"/>
+			<schemaDocument xlink:href="../boeingData/ipo6/extend.xsd"/>
+			<expected validity="valid"/>
+		</schemaTest>
+		<instanceTest name="ipo_1">
+			<instanceDocument xlink:href="../boeingData/ipo6/ipo_1.xml"/> 
+			<expected validity="valid"/>
+		</instanceTest>
+		<instanceTest name="ipo_2">
+			<instanceDocument xlink:href="../boeingData/ipo6/ipo_2.xml"/>
+			<expected validity="valid"/>
+		</instanceTest>
+	</testGroup>
+</testSet>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)term00101m1_n.xml
+   generated from: @(#)term00101m.jmpp	1.2 02/04/04
+
+-->
+
+<root
+    xmlns="ElemDecl/term"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/term term00101m.xsd">
+
+<!-- Positive variant begin - -
+    <Local>true</Local>
+ - - Positive variant end   -->
+<!-- Negative variant begin -->
+    <Local>Yes</Local>
+<!-- Negative variant end   -->
+
+</root>

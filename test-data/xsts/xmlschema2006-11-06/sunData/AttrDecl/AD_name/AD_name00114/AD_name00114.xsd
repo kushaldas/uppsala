@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00114.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="aaaa" type="xsd:int"/>
+            <xsd:attribute name="bbbB" type="xsd:int"/>
+            <xsd:attribute name="ccCc" type="xsd:int"/>
+            <xsd:attribute name="ddDD" type="xsd:int"/>
+            <xsd:attribute name="eEee" type="xsd:int"/>
+            <xsd:attribute name="fFfF" type="xsd:int"/>
+            <xsd:attribute name="pPPp" type="xsd:int"/>
+            <xsd:attribute name="gGGG" type="xsd:int"/>
+            <xsd:attribute name="Hhhh" type="xsd:int"/>
+            <xsd:attribute name="IiiI" type="xsd:int"/>
+            <xsd:attribute name="JjJj" type="xsd:int"/>
+            <xsd:attribute name="KkKK" type="xsd:int"/>
+            <xsd:attribute name="LLll" type="xsd:int"/>
+            <xsd:attribute name="MMmM" type="xsd:int"/>
+            <xsd:attribute name="NNNn" type="xsd:int"/>
+            <xsd:attribute name="OOOO" type="xsd:int"/>
+
+            <xsd:attribute name="bbb0" type="xsd:int"/>
+            <xsd:attribute name="cc0c" type="xsd:int"/>
+            <xsd:attribute name="dd00" type="xsd:int"/>
+            <xsd:attribute name="e0ee" type="xsd:int"/>
+            <xsd:attribute name="f0f0" type="xsd:int"/>
+            <xsd:attribute name="p00p" type="xsd:int"/>
+            <xsd:attribute name="g000" type="xsd:int"/>
+
+            <xsd:attribute name="bbb_" type="xsd:int"/>
+            <xsd:attribute name="cc_c" type="xsd:int"/>
+            <xsd:attribute name="dd__" type="xsd:int"/>
+            <xsd:attribute name="e_ee" type="xsd:int"/>
+            <xsd:attribute name="f_f_" type="xsd:int"/>
+            <xsd:attribute name="p__p" type="xsd:int"/>
+            <xsd:attribute name="g___" type="xsd:int"/>
+
+            <xsd:attribute name="H111" type="xsd:int"/>
+            <xsd:attribute name="I11I" type="xsd:int"/>
+            <xsd:attribute name="J1J1" type="xsd:int"/>
+            <xsd:attribute name="K1KK" type="xsd:int"/>
+            <xsd:attribute name="LL11" type="xsd:int"/>
+            <xsd:attribute name="MM1M" type="xsd:int"/>
+            <xsd:attribute name="NNN1" type="xsd:int"/>
+
+            <xsd:attribute name="H---" type="xsd:int"/>
+            <xsd:attribute name="I--I" type="xsd:int"/>
+            <xsd:attribute name="J-J-" type="xsd:int"/>
+            <xsd:attribute name="K-KK" type="xsd:int"/>
+            <xsd:attribute name="LL--" type="xsd:int"/>
+            <xsd:attribute name="MM-M" type="xsd:int"/>
+            <xsd:attribute name="NNN-" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

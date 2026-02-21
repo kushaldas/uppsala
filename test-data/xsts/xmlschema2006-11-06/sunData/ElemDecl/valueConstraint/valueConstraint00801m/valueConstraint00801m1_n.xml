@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint00801m1_n.xml
+   generated from: @(#)valueConstraint00801m.jmpp	1.2 02/08/22
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/valueConstraint"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/valueConstraint valueConstraint00801m1.xsd"
+    xsi:type="test:Text"
+    >beta alpha</test:root>

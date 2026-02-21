@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NCName-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NCName-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NCName-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NCName-enumeration-1,
+      which is derived by restriction of a list with itemType NCName
+      by facet enumeration with values of:
+          hthe.management.signatures_implementation_a ofoster. winvesti wg.are.registr schallenges-tools_file_the-and-needs_work_issues.tools-c uchairing-reference-objec
+          hto-and-tests dbeen_development_suite.of-complex.as-origin xensure-test.fro tare-electronic.must-repositories irepository.portable-methods-criteria-way_and-tools_to-the- nand-g-computing.set.is
+          oimplementation-and-object-hetero _th ythe_to.systems-on-a-chip.personal. pregistry.computing-to_discovery-the cadvent_of.are_pervasive_application.and-diagnostic-for-aut vof-meet.competence_discover_ wthe.used-configuration_base_tools-software-of.having_
+          qdeployed-f athe.security_this.partners.today.of.to_primary- _used_manipulate-provides_a-result-filter_of-the pobject.environments.specific.interoperable.woul mtools_and.avai
+          _manipulation_used.repository.heterogeneous.as-constituent screated.will. _chain-of-providing_ kthe_for wspecifications_and_allows_of-chains-pr oresources.in_prototypes.and-process_u brepository-reviewed.in_investigation_and
+          jalso.annual-and_through-supply.the.li _ent dsystems.users-test.test-specifications.and.aspects crepository-requires-is-files. eobtained-by.used_manipulation.is_the_information.syste
+          dindividual_particular_than-computing_s-test-and-them-discove _these.the.made-for_needs.chains.key_and.known-of msoft umodeling.for.permitti _files- rfrom-reputation-cross-over.business-industry.the-be_used.revo ltransactional-challenges-to-object.issues_techniques ytest.industry-software_of_computers_their-
+          kthe-and_addressing-of.are_to.for_using.development-of.s iof_gr wissues-popular_soluti yfor.operating.that.such_of_as_with.a.s_graphics.benefits. isoftware_being cdesktop_as.a_sense-allows_a_of.to-led-000.make-compatibi gfirst_health_addressing_will-these_areas.primarily_manip nconformant
+          othat_recommending.enf ttools-all.achieved.as.to_standardization.a_simplicity_discove nvoiced.provided.investigation_if.and_to-and-made- iresources. _having_four-signatures.by_fo omet hadditionally_documents.be.the-cross-over_a_firs nof.s.all-solutions-t
+          _discovery_vocabularies_the.computing_and_challenges xgain_popular.for-with.participants-signature-files-of _pervasive.in_the_a-th eobject_this.as-those-reso _provided.has sguidelines.include_landscape_generation pad-from.four_conformant.test-reference.s _the_information_focusing.file_reference_related-the-sp
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NCName-enumeration-1" type="NISTSchema-SV-IV-list-NCName-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfNCName">
+    <xs:list itemType="xs:NCName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NCName-enumeration-1-Type">
+    <xs:restriction base="listOfNCName">
+          <xs:enumeration value="hthe.management.signatures_implementation_a ofoster. winvesti wg.are.registr schallenges-tools_file_the-and-needs_work_issues.tools-c uchairing-reference-objec"/>
+          <xs:enumeration value="hto-and-tests dbeen_development_suite.of-complex.as-origin xensure-test.fro tare-electronic.must-repositories irepository.portable-methods-criteria-way_and-tools_to-the- nand-g-computing.set.is"/>
+          <xs:enumeration value="oimplementation-and-object-hetero _th ythe_to.systems-on-a-chip.personal. pregistry.computing-to_discovery-the cadvent_of.are_pervasive_application.and-diagnostic-for-aut vof-meet.competence_discover_ wthe.used-configuration_base_tools-software-of.having_"/>
+          <xs:enumeration value="qdeployed-f athe.security_this.partners.today.of.to_primary- _used_manipulate-provides_a-result-filter_of-the pobject.environments.specific.interoperable.woul mtools_and.avai"/>
+          <xs:enumeration value="_manipulation_used.repository.heterogeneous.as-constituent screated.will. _chain-of-providing_ kthe_for wspecifications_and_allows_of-chains-pr oresources.in_prototypes.and-process_u brepository-reviewed.in_investigation_and"/>
+          <xs:enumeration value="jalso.annual-and_through-supply.the.li _ent dsystems.users-test.test-specifications.and.aspects crepository-requires-is-files. eobtained-by.used_manipulation.is_the_information.syste"/>
+          <xs:enumeration value="dindividual_particular_than-computing_s-test-and-them-discove _these.the.made-for_needs.chains.key_and.known-of msoft umodeling.for.permitti _files- rfrom-reputation-cross-over.business-industry.the-be_used.revo ltransactional-challenges-to-object.issues_techniques ytest.industry-software_of_computers_their-"/>
+          <xs:enumeration value="kthe-and_addressing-of.are_to.for_using.development-of.s iof_gr wissues-popular_soluti yfor.operating.that.such_of_as_with.a.s_graphics.benefits. isoftware_being cdesktop_as.a_sense-allows_a_of.to-led-000.make-compatibi gfirst_health_addressing_will-these_areas.primarily_manip nconformant"/>
+          <xs:enumeration value="othat_recommending.enf ttools-all.achieved.as.to_standardization.a_simplicity_discove nvoiced.provided.investigation_if.and_to-and-made- iresources. _having_four-signatures.by_fo omet hadditionally_documents.be.the-cross-over_a_firs nof.s.all-solutions-t"/>
+          <xs:enumeration value="_discovery_vocabularies_the.computing_and_challenges xgain_popular.for-with.participants-signature-files-of _pervasive.in_the_a-th eobject_this.as-those-reso _provided.has sguidelines.include_landscape_generation pad-from.four_conformant.test-reference.s _the_information_focusing.file_reference_related-the-sp"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

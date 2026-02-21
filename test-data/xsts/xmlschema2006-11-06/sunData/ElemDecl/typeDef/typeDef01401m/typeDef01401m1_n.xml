@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01401m1_n.xml
+   generated from: @(#)typeDef01401m.jmpp	1.1 02/04/10
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef01401m1.xsd"
+    >
+<!-- Positive variant begin - -
+    100
+ - - Positive variant end   -->
+<!-- Negative variant begin -->
+    1e2
+<!-- Negative variant end   -->
+</test:root>

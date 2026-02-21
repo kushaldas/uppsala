@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKEN-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKEN-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKEN-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKEN-enumeration-1,
+      which is derived by restriction of a list with itemType NMTOKEN
+      by facet enumeration with values of:
+          developing.of_Structured:ebXML-bottlenecks.define-NSR automate.in-house-consortium:and_eliminate build-any_are_A.and-thr and_XML-of.applications-computing-is:To:digital_due_ th in-also-pervasive.XML:Control- four-by:One.a_specifications_will_lack_bas
+          was:Organization_digital_individ Standards-Library:of.that-to:wireless.w match-both:blocks XML.information-information:help-impact.XML particularly-prominent_these infr Facilitation.commerce-do-will.this_
+          new-distrib both.implementation.of:the_is.processors_ OASIS-mea Work_A_is:industries_primary_registries- approach_the.the.as:with-designed:as:way.def chosen.perva the.discovery-design.building_asking-these.will. an repository_a_needs:XML.the:of:and.inf
+          we resources_is:pervasive_must_standardization:these-obtained: interoperability-pico-cellular:prominent_of.partner EC-robust.of_criteria:-and:processes-met stimulus_file.and:permitting.of_the. quality_of:to:applications_Although-discuss:support.cr in.To_Work:web_in:University.interoper
+          interoperable:OASIS_EXiST.of.many:standard-today.these.me in-and:particularly.these:the.recognition_manipulation As_provided_in:which_lack:any.information_XML_and:the:must.dis a-to-Computing:Conformanc and_developed. an-create:specific-process-subject:provides.
+          problems.an HTML.browsers.the.is-OASI discover.standards:working.computing:between_lacking.service-pr provide_a and:this_investigation.industries.standards:appl known-and.on
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-1" type="NISTSchema-SV-IV-list-NMTOKEN-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfNMTOKEN">
+    <xs:list itemType="xs:NMTOKEN"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-1-Type">
+    <xs:restriction base="listOfNMTOKEN">
+          <xs:enumeration value="developing.of_Structured:ebXML-bottlenecks.define-NSR automate.in-house-consortium:and_eliminate build-any_are_A.and-thr and_XML-of.applications-computing-is:To:digital_due_ th in-also-pervasive.XML:Control- four-by:One.a_specifications_will_lack_bas"/>
+          <xs:enumeration value="was:Organization_digital_individ Standards-Library:of.that-to:wireless.w match-both:blocks XML.information-information:help-impact.XML particularly-prominent_these infr Facilitation.commerce-do-will.this_"/>
+          <xs:enumeration value="new-distrib both.implementation.of:the_is.processors_ OASIS-mea Work_A_is:industries_primary_registries- approach_the.the.as:with-designed:as:way.def chosen.perva the.discovery-design.building_asking-these.will. an repository_a_needs:XML.the:of:and.inf"/>
+          <xs:enumeration value="we resources_is:pervasive_must_standardization:these-obtained: interoperability-pico-cellular:prominent_of.partner EC-robust.of_criteria:-and:processes-met stimulus_file.and:permitting.of_the. quality_of:to:applications_Although-discuss:support.cr in.To_Work:web_in:University.interoper"/>
+          <xs:enumeration value="interoperable:OASIS_EXiST.of.many:standard-today.these.me in-and:particularly.these:the.recognition_manipulation As_provided_in:which_lack:any.information_XML_and:the:must.dis a-to-Computing:Conformanc and_developed. an-create:specific-process-subject:provides."/>
+          <xs:enumeration value="problems.an HTML.browsers.the.is-OASI discover.standards:working.computing:between_lacking.service-pr provide_a and:this_investigation.industries.standards:appl known-and.on"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

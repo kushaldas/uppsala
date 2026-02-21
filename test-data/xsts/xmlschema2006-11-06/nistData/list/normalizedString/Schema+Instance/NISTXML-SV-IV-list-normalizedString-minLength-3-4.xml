@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-3
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-3-NS NISTSchema-SV-IV-list-normalizedString-minLength-3.xsd">97234_Cooperation_Structured_Standardization_Street_Language_For_,_NE_14166 624_Language_Computing_Conformance_Street_The_Correction_,_PA_14166 51_Smes_Partners_Come_Street_Is_Subject_,_TX_14166 229_Repositories_And_Are_Street_Identify_Ambiguities_,_IL_14166 18834_Necessary_Computed_By_Street_Registry_Technologies_,_AL_14166 8464_Naval_As_In_Street_Heterogeneous_Of_,_IA_14166 37_Formed_From_Of_Street_Was_Prototypes_,_MO_14166 3_Pages_Software_Software_Street_Consortiums_Not_,_MT_14166 5566_The_Of_Computer_Street_Particularly_Models_,_ME_14166</NISTSchema-SV-IV-list-normalizedString-minLength-3>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-minLength-2-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-minLength-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-minLength-2
+    xmlns="NISTSchema-SV-IV-list-token-minLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-minLength-2-NS NISTSchema-SV-IV-list-token-minLength-2.xsd">1_Impact_Enterprises_Defines_Schemas_Processes_Street_As_,_NC_16549 64_Are_Develop_Tools_Industry_With_Street_Or_,_MA_16549 54_Other_Under_As_Then_Additionally_Street_To_,_WV_16549 21845_Included_And_Facilitates_Discovery_Their_Street_Xml_,_WY_16549 55_Dom_And_Industry_For_To_Street_Industry_,_NY_16549 21516_Efforts_Older_Measure_Standards_Commerce_Street_An_,_KS_16549 51_Will_Establish_The_Such_Wide_Street_Will_,_LA_16549 8926_Promises_Industry_Complex_Oasis_Modeling_Street_Specific_,_AK_16549 27671_Indication_Exist_Having_Issues_To_Street_Conferences_,_FL_16549 3661_Of_Industry_Display_Appropriate_File_Street_Use_,_NV_16549</NISTSchema-SV-IV-list-token-minLength-2>

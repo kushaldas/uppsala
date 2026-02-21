@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKENS-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKENS-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKENS-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKENS-enumeration-2,
+      which is derived by restriction of a list with itemType NMTOKENS
+      by facet enumeration with values of:
+          is.to:b print_improved:then_of_is.with.both-specif documents_Conference_Conference-Develop_fact-web-the-and_verti cross-reference-those.Internet-enabled_hardw of.any signature:in:newcomers-reputation-transaction
+          participate_help_supply future_and.containing-software_nature-XSL-F to:understand_service.and-created:define.a-develo without.meets:of-for-will.technologies.of-XML-pico-cellula improved_that-to:systems.address-is.The:efforts filter-c achieved_and:resources:and_la built-a-i_Java:technol
+          we_HTML- of-performance:of:be:further:also:that_their:base.processors.o retri application_EC:being:help: adoption.tools:o A-vocabular a.systems-where:contained-for-Schema-ebXML:highly:processo
+          applications: their_highly:p with.the.applications_must.Inve XML-early_and.profi correctness-subject:files.fo sensors.XML_the-i H depends-using_developed.quality.file.for.comp
+          with-OASIS_r possible_new-include.can-th challenges_services-and:technical-pa co of:S-
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-2" type="NISTSchema-SV-IV-list-NMTOKENS-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-2-Type">
+    <xs:restriction base="xs:NMTOKENS">
+          <xs:enumeration value="is.to:b print_improved:then_of_is.with.both-specif documents_Conference_Conference-Develop_fact-web-the-and_verti cross-reference-those.Internet-enabled_hardw of.any signature:in:newcomers-reputation-transaction"/>
+          <xs:enumeration value="participate_help_supply future_and.containing-software_nature-XSL-F to:understand_service.and-created:define.a-develo without.meets:of-for-will.technologies.of-XML-pico-cellula improved_that-to:systems.address-is.The:efforts filter-c achieved_and:resources:and_la built-a-i_Java:technol"/>
+          <xs:enumeration value="we_HTML- of-performance:of:be:further:also:that_their:base.processors.o retri application_EC:being:help: adoption.tools:o A-vocabular a.systems-where:contained-for-Schema-ebXML:highly:processo"/>
+          <xs:enumeration value="applications: their_highly:p with.the.applications_must.Inve XML-early_and.profi correctness-subject:files.fo sensors.XML_the-i H depends-using_developed.quality.file.for.comp"/>
+          <xs:enumeration value="with-OASIS_r possible_new-include.can-th challenges_services-and:technical-pa co of:S-"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

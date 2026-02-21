@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-2-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-2
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-2-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:ts="http://www.nist.gov/xsdNS"
+    xmlns:morganization_pos="http://www.nist.gov/xsdNS"
+    xmlns:lthese.virtually_="http://www.nist.gov/xsdNS"
+    xmlns:_respect-this-a="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-2-NS NISTSchema-SV-II-list-QName-length-2.xsd">lthese-digital.communications. _and_to-and-capabilities_infor ts:uwill.automate_discovery_can-i jis.capabilities-and_known-ser morganization_pos:eoriginal-technologies.use-to- lthese.virtually_:porganizations-software-known_ _respect-this-a:tof-two-requesting.security.di</nist:NISTSchema-SV-II-list-QName-length-2>

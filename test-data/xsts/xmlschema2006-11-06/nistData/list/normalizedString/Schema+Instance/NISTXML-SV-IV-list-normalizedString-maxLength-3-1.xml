@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-maxLength-3-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-maxLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-maxLength-3
+    xmlns="NISTSchema-SV-IV-list-normalizedString-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-maxLength-3-NS NISTSchema-SV-IV-list-normalizedString-maxLength-3.xsd">42_And_Automate_That_Automated_Street_And_Localized_These_,_OH_17625-1473 45_Do_Naval_These_Accelerate_Street_Through_Law_Know_,_LA_17625-1473 82_Investigation_Provide_Discover_Systems_Street_Xml_Working_Systems_,_OR_17625-1473 86_Apis_In_The_And_Street_Program_Tools_Conduct_,_OH_17625-1473 449_As_The_Filter_Advanced_Street_Issues_That_An_,_UT_17625-1473 5_The_Discovery_Development_Technical_Street_Needs_Chair_Software_,_PA_17625-1473 267_And_Daily_Are_Documents_Street_On_Creation_The_,_TN_17625-1473</NISTSchema-SV-IV-list-normalizedString-maxLength-3>

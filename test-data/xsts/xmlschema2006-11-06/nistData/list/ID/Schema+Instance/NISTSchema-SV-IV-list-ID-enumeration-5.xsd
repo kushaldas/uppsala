@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-ID-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-ID-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-ID-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-ID-enumeration-5,
+      which is derived by restriction of a list with itemType ID
+      by facet enumeration with values of:
+          ais. wbusiness-ha norganizations.that_documents_time_is.and.proce _and-world_these_to-cooperation-community-allow.vocabulari nnewcomers_of-sig
+          cprototype.robust. fcomputer.and-o _base_for.eliminated_pervasive_ dled_2000_only.as_performance.of.to.for_compatibility_retrieve wdiscussions_and.of_of-net mis_efforts_for-st
+          vthe.creation_reference_can ja_tests_profiles-5_the tth kbe_are-program_government.interope vin-over.diagno dgroups-is-user-on-s-individual-an gmanipulate.transforming.its.forum.this.it-and.be.graphical.mu pto-will_for_and
+          ssimplest.for.and_regard.describes-developm _tools.significant.is-beta.digital.paradigm _specifications_of_a-vocabulary_foster_per lretrieve_partne vtestable-memory_meet- vweb.to_aspects. dinto_documents_offer_specifications_th paccelerate.available-software_becom
+          ma_and.into.of-cross-reference_cost_these-its-networks-used- jdevelopment_in_the.retrieval.transacti ais.signatures- _well-can.which-to-creation-available.review.i gbe.and_an xindustry-filter.of-and_rigorous_challenges-of-t
+          ssoftware.applications-signature.also.documents. bone.groups.enforcement-and-conformance_pervasive.comput cin _older_ambiguities_less-completion-file-specifications sthe-accomplish-and-robust.and-proce
+          kthe.the_has ris_use_ve bemerging.robust_of_well_industry.the_a-ab cenabling_templates_lack.partnerships-b hfile_and-include.interconnecting.new.of.testing- _organizations_provided.the_following.numbe ldescribes_performance-organizati cunbiased-hampered.the.development.data-reviewed_efforts_and_
+          band.are_of-and_a-can-groups.of-supply.s.intuitive.time-pro iacting_applications.including_d pother.an _has-as-and-structured-and.has_needs_both.individual_ _and.2001-the-issues-rela xused_business.on.environments.compati wadoption.as-for.availabilit qare-tests-to_modeling-discovery-including
+          ywho.and.commerce_both.well.a_e.cost-and_aro jwith_and_on_chairing-includes.t vind qdefines.to_by-of-business.about-engineering-computing. _care-groups_and_as-one-exercise_prototypes-ar yreference-used_to_standard_benefits-to.t
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-ID-enumeration-5" type="NISTSchema-SV-IV-list-ID-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfID">
+    <xs:list itemType="xs:ID"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-ID-enumeration-5-Type">
+    <xs:restriction base="listOfID">
+          <xs:enumeration value="ais. wbusiness-ha norganizations.that_documents_time_is.and.proce _and-world_these_to-cooperation-community-allow.vocabulari nnewcomers_of-sig"/>
+          <xs:enumeration value="cprototype.robust. fcomputer.and-o _base_for.eliminated_pervasive_ dled_2000_only.as_performance.of.to.for_compatibility_retrieve wdiscussions_and.of_of-net mis_efforts_for-st"/>
+          <xs:enumeration value="vthe.creation_reference_can ja_tests_profiles-5_the tth kbe_are-program_government.interope vin-over.diagno dgroups-is-user-on-s-individual-an gmanipulate.transforming.its.forum.this.it-and.be.graphical.mu pto-will_for_and"/>
+          <xs:enumeration value="ssimplest.for.and_regard.describes-developm _tools.significant.is-beta.digital.paradigm _specifications_of_a-vocabulary_foster_per lretrieve_partne vtestable-memory_meet- vweb.to_aspects. dinto_documents_offer_specifications_th paccelerate.available-software_becom"/>
+          <xs:enumeration value="ma_and.into.of-cross-reference_cost_these-its-networks-used- jdevelopment_in_the.retrieval.transacti ais.signatures- _well-can.which-to-creation-available.review.i gbe.and_an xindustry-filter.of-and_rigorous_challenges-of-t"/>
+          <xs:enumeration value="ssoftware.applications-signature.also.documents. bone.groups.enforcement-and-conformance_pervasive.comput cin _older_ambiguities_less-completion-file-specifications sthe-accomplish-and-robust.and-proce"/>
+          <xs:enumeration value="kthe.the_has ris_use_ve bemerging.robust_of_well_industry.the_a-ab cenabling_templates_lack.partnerships-b hfile_and-include.interconnecting.new.of.testing- _organizations_provided.the_following.numbe ldescribes_performance-organizati cunbiased-hampered.the.development.data-reviewed_efforts_and_"/>
+          <xs:enumeration value="band.are_of-and_a-can-groups.of-supply.s.intuitive.time-pro iacting_applications.including_d pother.an _has-as-and-structured-and.has_needs_both.individual_ _and.2001-the-issues-rela xused_business.on.environments.compati wadoption.as-for.availabilit qare-tests-to_modeling-discovery-including"/>
+          <xs:enumeration value="ywho.and.commerce_both.well.a_e.cost-and_aro jwith_and_on_chairing-includes.t vind qdefines.to_by-of-business.about-engineering-computing. _care-groups_and_as-one-exercise_prototypes-ar yreference-used_to_standard_benefits-to.t"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

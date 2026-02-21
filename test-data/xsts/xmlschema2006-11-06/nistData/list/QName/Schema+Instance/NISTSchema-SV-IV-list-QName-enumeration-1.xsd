@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-QName-enumeration-1-NS"
+        xmlns:pand="http://www.nist.gov/xsdNS"
+        xmlns:imatch.contribute_d="http://www.nist.gov/xsdNS"
+        xmlns:yin.base.of.="http://www.nist.gov/xsdNS"
+        xmlns:anew_specifica="http://www.nist.gov/xsdNS"
+        xmlns:hdiscuss-fo="http://www.nist.gov/xsdNS"
+        xmlns:fas-uses-="http://www.nist.gov/xsdNS"
+        xmlns:hobject-20="http://www.nist.gov/xsdNS"
+        xmlns:gto_more="http://www.nist.gov/xsdNS"
+        xmlns:aof_r="http://www.nist.gov/xsdNS"
+        xmlns:nfor.as="http://www.nist.gov/xsdNS"
+        xmlns:_the.shift-and-o="http://www.nist.gov/xsdNS"
+        xmlns:gimpact="http://www.nist.gov/xsdNS"
+        xmlns:_will_four_t="http://www.nist.gov/xsdNS"
+        xmlns:vinfl="http://www.nist.gov/xsdNS"
+        xmlns:qto.="http://www.nist.gov/xsdNS"
+        xmlns:kfrom_for_="http://www.nist.gov/xsdNS"
+        xmlns:q="http://www.nist.gov/xsdNS"
+        xmlns:_used.the-be_the-="http://www.nist.gov/xsdNS"
+        xmlns:twill_two-and.="http://www.nist.gov/xsdNS"
+        xmlns:ausers="http://www.nist.gov/xsdNS"
+        xmlns:toperating-t="http://www.nist.gov/xsdNS"
+        xmlns:h="http://www.nist.gov/xsdNS"
+        xmlns:gand-operating-com="http://www.nist.gov/xsdNS"
+        xmlns:dwith.="http://www.nist.gov/xsdNS"
+        xmlns:ehaving.same_="http://www.nist.gov/xsdNS"
+        xmlns:mth="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-list-QName-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-QName-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-QName-enumeration-1,
+      which is derived by restriction of a list with itemType QName
+      by facet enumeration with values of:
+          aapproach_information_for-metrology-joint.file-these_i scommerce_through.define.manipulation.groups.of.d pand:wto-approach.utilize.and-develop imatch.contribute_d:mmore-pervasive-the.necessary.and- dthe.of_methods.a gconstituent.has_has.automating.software-technologies-will-an yin.base.of.:ifile-can.for_ xconformance
+          xconformance anew_specifica:uhelp-cross-over-the.is-pervasive-supply_de hdiscuss-fo:wdebug_a-must_ xwhich-is-docum fas-uses-:_software.d _from-an.re hobject-20:qsuccess_and.nature-full-on. _used.f
+          _used.f eprocess_the-newcomer q ito.these-been.utilities.models-data-bottlenecks_to_infor gto_more:yis.not_mult aof_r:khas_virtually-accessible-including.allows_su
+          aof_r:khas_virtually-accessible-including.allows_su nfor.as:ythen_specifications_provided.wit jinternational.information-t _the.shift-and-o:iis-and.of-and_specifications-our gimpact:la.with_for-repository-create.by-appropriate. _will_four_t:ohas_a-back-identify
+          _will_four_t:ohas_a-back-identify vinfl:yfor-the.a-information.and_a wvirtually_devices-contribute_for_partnerships-ensure.ensu vbusiness.and_for.creation_and_information-ai _is-allow.four-as_to-imp missues_e_industry-from_def qto.:_re
+          qto.:_re kfrom_for_:hthat.and_manipulate_organizations_heterogeneous q:_that_for-busines ecan_interoperabilit uregi _used.the-be_the-:sof_system-bandwidth-ultim twill_two-and.:yobject-incorporated.a-and-mu ausers:gspecification_high_to.tools.service-donat
+          ausers:gspecification_high_to.tools.service-donat eboth.manual xregistry-to.computer.the_subject-back_and-these_ toperating-t:tautomate-an band-and-years-20_and.and.havi h:o gand-operating-com:fand-discuss-years-a lenforcement_services-lackin dwith.:vwith-ob
+          dwith.:vwith-ob asolutions_ ehaving.same_:vcan_mechanism mth:nof_and-the_known-by-developers_and aas.the.information.retrieval_only-implementation-tech dwill.if_of.to.the-used.with.looking_t
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="aapproach_information_for-metrology-joint.file-these_i" type="xs:string"/>
+<xs:element name="scommerce_through.define.manipulation.groups.of.d" type="xs:string"/>
+<xs:element name="dthe.of_methods.a" type="xs:string"/>
+<xs:element name="gconstituent.has_has.automating.software-technologies-will-an" type="xs:string"/>
+<xs:element name="xconformance" type="xs:string"/>
+<xs:element name="xwhich-is-docum" type="xs:string"/>
+<xs:element name="_from-an.re" type="xs:string"/>
+<xs:element name="_used.f" type="xs:string"/>
+<xs:element name="eprocess_the-newcomer" type="xs:string"/>
+<xs:element name="q" type="xs:string"/>
+<xs:element name="ito.these-been.utilities.models-data-bottlenecks_to_infor" type="xs:string"/>
+<xs:element name="jinternational.information-t" type="xs:string"/>
+<xs:element name="wvirtually_devices-contribute_for_partnerships-ensure.ensu" type="xs:string"/>
+<xs:element name="vbusiness.and_for.creation_and_information-ai" type="xs:string"/>
+<xs:element name="_is-allow.four-as_to-imp" type="xs:string"/>
+<xs:element name="missues_e_industry-from_def" type="xs:string"/>
+<xs:element name="ecan_interoperabilit" type="xs:string"/>
+<xs:element name="uregi" type="xs:string"/>
+<xs:element name="eboth.manual" type="xs:string"/>
+<xs:element name="xregistry-to.computer.the_subject-back_and-these_" type="xs:string"/>
+<xs:element name="band-and-years-20_and.and.havi" type="xs:string"/>
+<xs:element name="lenforcement_services-lackin" type="xs:string"/>
+<xs:element name="asolutions_" type="xs:string"/>
+<xs:element name="aas.the.information.retrieval_only-implementation-tech" type="xs:string"/>
+<xs:element name="dwill.if_of.to.the-used.with.looking_t" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-list-QName-enumeration-1" type="NISTSchema-SV-IV-list-QName-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfQName">
+    <xs:list itemType="xs:QName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-QName-enumeration-1-Type">
+    <xs:restriction base="listOfQName">
+          <xs:enumeration value="aapproach_information_for-metrology-joint.file-these_i scommerce_through.define.manipulation.groups.of.d pand:wto-approach.utilize.and-develop imatch.contribute_d:mmore-pervasive-the.necessary.and- dthe.of_methods.a gconstituent.has_has.automating.software-technologies-will-an yin.base.of.:ifile-can.for_ xconformance"/>
+          <xs:enumeration value="xconformance anew_specifica:uhelp-cross-over-the.is-pervasive-supply_de hdiscuss-fo:wdebug_a-must_ xwhich-is-docum fas-uses-:_software.d _from-an.re hobject-20:qsuccess_and.nature-full-on. _used.f"/>
+          <xs:enumeration value="_used.f eprocess_the-newcomer q ito.these-been.utilities.models-data-bottlenecks_to_infor gto_more:yis.not_mult aof_r:khas_virtually-accessible-including.allows_su"/>
+          <xs:enumeration value="aof_r:khas_virtually-accessible-including.allows_su nfor.as:ythen_specifications_provided.wit jinternational.information-t _the.shift-and-o:iis-and.of-and_specifications-our gimpact:la.with_for-repository-create.by-appropriate. _will_four_t:ohas_a-back-identify"/>
+          <xs:enumeration value="_will_four_t:ohas_a-back-identify vinfl:yfor-the.a-information.and_a wvirtually_devices-contribute_for_partnerships-ensure.ensu vbusiness.and_for.creation_and_information-ai _is-allow.four-as_to-imp missues_e_industry-from_def qto.:_re"/>
+          <xs:enumeration value="qto.:_re kfrom_for_:hthat.and_manipulate_organizations_heterogeneous q:_that_for-busines ecan_interoperabilit uregi _used.the-be_the-:sof_system-bandwidth-ultim twill_two-and.:yobject-incorporated.a-and-mu ausers:gspecification_high_to.tools.service-donat"/>
+          <xs:enumeration value="ausers:gspecification_high_to.tools.service-donat eboth.manual xregistry-to.computer.the_subject-back_and-these_ toperating-t:tautomate-an band-and-years-20_and.and.havi h:o gand-operating-com:fand-discuss-years-a lenforcement_services-lackin dwith.:vwith-ob"/>
+          <xs:enumeration value="dwith.:vwith-ob asolutions_ ehaving.same_:vcan_mechanism mth:nof_and-the_known-by-developers_and aas.the.information.retrieval_only-implementation-tech dwill.if_of.to.the-used.with.looking_t"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

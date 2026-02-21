@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00604.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="SType/ST_facets"
+    targetNamespace="SType/ST_facets">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="val" type="S" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="S">
+        <xsd:restriction base="xsd:NCName">
+            <xsd:enumeration value="aaaa"/>
+            <xsd:enumeration value="bbbB"/>
+            <xsd:enumeration value="ccCc"/>
+            <xsd:enumeration value="ddDD"/>
+            <xsd:enumeration value="eEee"/>
+            <xsd:enumeration value="fFfF"/>
+            <xsd:enumeration value="pPPp"/>
+            <xsd:enumeration value="gGGG"/>
+            <xsd:enumeration value="Hhhh"/>
+            <xsd:enumeration value="IiiI"/>
+            <xsd:enumeration value="JjJj"/>
+            <xsd:enumeration value="KkKK"/>
+            <xsd:enumeration value="LLll"/>
+            <xsd:enumeration value="MMmM"/>
+            <xsd:enumeration value="NNNn"/>
+            <xsd:enumeration value="OOOO"/>
+
+            <xsd:enumeration value="bbb0"/>
+            <xsd:enumeration value="cc0c"/>
+            <xsd:enumeration value="dd00"/>
+            <xsd:enumeration value="e0ee"/>
+            <xsd:enumeration value="f0f0"/>
+            <xsd:enumeration value="p00p"/>
+            <xsd:enumeration value="g000"/>
+
+            <xsd:enumeration value="bbb_"/>
+            <xsd:enumeration value="cc_c"/>
+            <xsd:enumeration value="dd__"/>
+            <xsd:enumeration value="e_ee"/>
+            <xsd:enumeration value="f_f_"/>
+            <xsd:enumeration value="p__p"/>
+            <xsd:enumeration value="g___"/>
+
+            <xsd:enumeration value="H111"/>
+            <xsd:enumeration value="I11I"/>
+            <xsd:enumeration value="J1J1"/>
+            <xsd:enumeration value="K1KK"/>
+            <xsd:enumeration value="LL11"/>
+            <xsd:enumeration value="MM1M"/>
+            <xsd:enumeration value="NNN1"/>
+
+            <xsd:enumeration value="H---"/>
+            <xsd:enumeration value="I--I"/>
+            <xsd:enumeration value="J-J-"/>
+            <xsd:enumeration value="K-KK"/>
+            <xsd:enumeration value="LL--"/>
+            <xsd:enumeration value="MM-M"/>
+            <xsd:enumeration value="NNN-"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

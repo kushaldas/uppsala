@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-float-pattern-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-float-pattern-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-float-pattern-2
+    xmlns="NISTSchema-SV-II-list-float-pattern-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-float-pattern-2-NS NISTSchema-SV-II-list-float-pattern-2.xsd">6E-3 7473E-24 2874E23 3.43E3 4.745665E1 6.2579E-27 9.6E13</NISTSchema-SV-II-list-float-pattern-2>

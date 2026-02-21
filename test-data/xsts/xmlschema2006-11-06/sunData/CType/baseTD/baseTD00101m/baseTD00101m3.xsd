@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)baseTD00101m3.xsd
+   generated from: @(#)baseTD00101m.jmpp	1.1 02/04/02
+
+-->
+
+
+<xsd:schema
+  xmlns="baseTD"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="baseTD">
+     <xsd:element name="root" type="Test"/>
+
+     <xsd:complexType name="Test">
+          <xsd:complexContent>
+             <xsd:extension base='Test1'/>
+          </xsd:complexContent>
+     </xsd:complexType>
+
+     <xsd:complexType name="Test1">
+          <xsd:sequence>
+               <xsd:element name="abc" type="xsd:string" maxOccurs="2"/>
+          </xsd:sequence>
+     </xsd:complexType>
+
+</xsd:schema>
+

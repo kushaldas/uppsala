@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-dateTime-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-dateTime-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-dateTime-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-dateTime-enumeration-3,
+      which is derived by restriction of a list with itemType dateTime
+      by facet enumeration with values of:
+          2024-05-13T22:49:28 1984-03-12T22:27:23 1976-08-11T21:47:33 1989-02-27T08:28:05 2003-06-20T08:31:19 1994-10-09T16:31:30 1982-02-15T13:22:11 2024-05-19T06:33:07
+          2028-01-21T12:20:58 2025-05-18T09:10:20 1988-12-04T03:26:02 1982-03-11T16:44:15 1982-07-23T06:00:38 2024-06-19T12:09:26
+          2002-07-28T09:49:32 2003-11-06T11:23:15 2024-06-01T15:58:49 1999-01-14T12:34:50 1988-01-04T17:17:45 2021-01-05T03:14:00
+          1976-12-21T19:56:19 2011-03-02T01:14:02 2030-12-15T01:18:09 2013-08-09T19:54:28 1977-01-27T14:21:30 1986-03-20T16:38:36 1986-06-20T00:56:41 1994-10-05T10:26:25 2029-03-01T04:24:28
+          1999-08-04T10:16:47 1981-07-30T16:24:12 2024-09-01T20:39:42 2018-10-05T07:33:42 2020-10-20T06:19:21 2017-12-22T19:19:27
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-dateTime-enumeration-3" type="NISTSchema-SV-II-list-dateTime-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfdateTime">
+    <xs:list itemType="xs:dateTime"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-dateTime-enumeration-3-Type">
+    <xs:restriction base="listOfdateTime">
+          <xs:enumeration value="2024-05-13T22:49:28 1984-03-12T22:27:23 1976-08-11T21:47:33 1989-02-27T08:28:05 2003-06-20T08:31:19 1994-10-09T16:31:30 1982-02-15T13:22:11 2024-05-19T06:33:07"/>
+          <xs:enumeration value="2028-01-21T12:20:58 2025-05-18T09:10:20 1988-12-04T03:26:02 1982-03-11T16:44:15 1982-07-23T06:00:38 2024-06-19T12:09:26"/>
+          <xs:enumeration value="2002-07-28T09:49:32 2003-11-06T11:23:15 2024-06-01T15:58:49 1999-01-14T12:34:50 1988-01-04T17:17:45 2021-01-05T03:14:00"/>
+          <xs:enumeration value="1976-12-21T19:56:19 2011-03-02T01:14:02 2030-12-15T01:18:09 2013-08-09T19:54:28 1977-01-27T14:21:30 1986-03-20T16:38:36 1986-06-20T00:56:41 1994-10-05T10:26:25 2029-03-01T04:24:28"/>
+          <xs:enumeration value="1999-08-04T10:16:47 1981-07-30T16:24:12 2024-09-01T20:39:42 2018-10-05T07:33:42 2020-10-20T06:19:21 2017-12-22T19:19:27"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

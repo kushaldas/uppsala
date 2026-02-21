@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m8_p.xml
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00401m8.xsd">
+    <value>ਓ00</value>
+    <value>ਝ-0</value>
+    <value>ਨa0</value>
+    <value>ਪ01</value>
+    <value>ਭ-1</value>
+    <value>ਰa1</value>
+    <value>ਲ02</value>
+    <value>ਲ-2</value>
+    <value>ਲ਼a2</value>
+    <value>ਵ03</value>
+    <value>ਵ-3</value>
+    <value>ਸ਼a3</value>
+    <value>ਸ04</value>
+    <value>ਸ-4</value>
+    <value>ਹa4</value>
+    <value>ਖ਼05</value>
+    <value>ਗ਼-5</value>
+    <value>ੜa5</value>
+    <value>ਫ਼06</value>
+    <value>ੲ07</value>
+    <value>ੳ-7</value>
+    <value>ੴa7</value>
+    <value>અ08</value>
+    <value>ઈ-8</value>
+    <value>ઋa8</value>
+    <value>ઍ09</value>
+</test:root>

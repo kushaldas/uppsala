@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-gDay-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gDay-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gDay-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gDay-enumeration-5,
+      which is derived by restriction of a list with itemType gDay
+      by facet enumeration with values of:
+          ---25 ---07 ---16 ---11 ---11 ---23 ---19
+          ---26 ---28 ---21 ---11 ---16 ---02 ---03 ---25
+          ---30 ---24 ---06 ---08 ---30 ---23 ---02
+          ---12 ---25 ---26 ---29 ---13 ---24 ---26 ---01 ---26
+          ---24 ---16 ---12 ---07 ---10 ---27 ---18 ---28
+          ---18 ---10 ---19 ---18 ---06 ---21 ---17 ---14 ---17 ---22
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-gDay-enumeration-5" type="NISTSchema-SV-IV-list-gDay-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfgDay">
+    <xs:list itemType="xs:gDay"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-gDay-enumeration-5-Type">
+    <xs:restriction base="listOfgDay">
+          <xs:enumeration value="---25 ---07 ---16 ---11 ---11 ---23 ---19"/>
+          <xs:enumeration value="---26 ---28 ---21 ---11 ---16 ---02 ---03 ---25"/>
+          <xs:enumeration value="---30 ---24 ---06 ---08 ---30 ---23 ---02"/>
+          <xs:enumeration value="---12 ---25 ---26 ---29 ---13 ---24 ---26 ---01 ---26"/>
+          <xs:enumeration value="---24 ---16 ---12 ---07 ---10 ---27 ---18 ---28"/>
+          <xs:enumeration value="---18 ---10 ---19 ---18 ---06 ---21 ---17 ---14 ---17 ---22"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

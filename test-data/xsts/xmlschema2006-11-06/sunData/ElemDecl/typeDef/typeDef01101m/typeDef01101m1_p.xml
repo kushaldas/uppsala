@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01101m1_p.xml
+   generated from: @(#)typeDef01101m.jmpp	1.2 02/08/22
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef01101m1.xsd"
+    xsi:type="test:RealType"
+    />

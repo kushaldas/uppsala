@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00201m.xsd
+   generated from: @(#)idConstrDefs00201m.jmpp	1.3 03/10/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/identityConstraintDefs"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/identityConstraintDefs">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="Account" type="xsd:string"/>
+              <xsd:element name="Name" type="xsd:string"/>
+              <xsd:element name="Manager" type="xsd:string"/>
+          </xsd:sequence>
+      </xsd:complexType>
+      <xsd:unique name="UNIQ">
+          <xsd:selector xpath="./Name"/>
+          <xsd:field xpath="."/>
+      </xsd:unique>
+      <xsd:key name="KEY">
+          <xsd:selector xpath="./Account"/>
+          <xsd:field xpath="."/>
+      </xsd:key>
+      <xsd:keyref name="KEYREF" refer="KEY">
+          <xsd:selector xpath="./Manager"/>
+          <xsd:field xpath="."/>
+      </xsd:keyref>
+
+  </xsd:element>
+
+</xsd:schema>

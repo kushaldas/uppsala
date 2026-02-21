@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-unsignedShort-pattern-4-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedShort-pattern-4-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedShort-pattern-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedShort-pattern-4,
+      which is derived by restriction of a list with item type unsignedShort
+      by facet pattern with a value of: \d{1} \d{2} \d{3} \d{4} \d{5} \d{1}
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-unsignedShort-pattern-4" type="nist:NISTSchema-SV-II-list-unsignedShort-pattern-4-Type"/>
+
+  <simpleType name="listOfunsignedShort">
+    <list itemType="unsignedShort"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-unsignedShort-pattern-4-Type">
+    <restriction base="nist:listOfunsignedShort">
+      <pattern value="\d{1} \d{2} \d{3} \d{4} \d{5} \d{1}"/>
+    </restriction>
+  </simpleType>
+
+</schema>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-ID-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-ID-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-ID-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-ID-enumeration-2,
+      which is derived by restriction of a list with itemType ID
+      by facet enumeration with values of:
+          uli cis-of-embedded-must_recognition.of_widely.files-has achallenges-the-it_filter.and_as.in.provided-build_acting-object xa_manipulate_will-with-stakeho fthe_r mtransactions.manipulate.related-pervasive.further-files.t
+          has-these-chain_obvious.registry_f isoftware-to_to.the_this_in _use_for.opportunity.the-chair_more _particularly.transmit-well-way tby.a.technologies_computing.related_of-the.information-reg
+          sof.under.complex_computing vlife.part rindustries.hardware_the-of.such. nwhich.groups-use.targeted-information.of_and-and-the-from_inve binteroperability-to_data_it.is_documents_as.prominent_ wmeans _and-structure_is.used-would-software.to isupp
+          _technologies_with_ nprocesses-are-to-ma _information.and-d glife.and.an_and-world_sta bregistry.must_within.is-process.in_facil gimages.coupled-can_assur ba_other.of.and_understanding_the.with_requires-technologi
+          ndo-by.with-eliminate_targeted-including_interconnecting_object drespec pobject.and.technology_must-as_meets.and.data.the obe-particularly-database_of.reproduced_wi sand_subject.providing.for.the-performance-for-meas vof_these_and-glo xth vthes oby-of-and.interoperability_fi
+          edata_the.wireless csys _such.define-of.collaborating-vertic hin.discovery_ad-the-issues_information_the_issue dapproach.permitting.de gtwo.chairs-retrieves-opportunity_quality.is. uindustry-and_be-is-this-newco _daily.security_repository_many-a_global_loc
+          msensors-groups-measure_for_simplest_fr nlibraries_the_computing.with-second-gen _objective.the-for_by-language_has.the_conferences.is-in qlocation.the.qu cassuring_is.industry.utiliti von-our-an.versions.of-retrieve-infor ton-systems.assuring_documents-proces jfor_significant_discover.effective.registry.as_divisions-and cr
+          _that.specifications-to.used-informat _that.the_for_registry_wide_ qaround.these_the_asked.to.program.manipulation_an.a-acad _standards-this_mus ccontribute-defines.con slaw-be
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-ID-enumeration-2" type="NISTSchema-SV-IV-list-ID-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfID">
+    <xs:list itemType="xs:ID"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-ID-enumeration-2-Type">
+    <xs:restriction base="listOfID">
+          <xs:enumeration value="uli cis-of-embedded-must_recognition.of_widely.files-has achallenges-the-it_filter.and_as.in.provided-build_acting-object xa_manipulate_will-with-stakeho fthe_r mtransactions.manipulate.related-pervasive.further-files.t"/>
+          <xs:enumeration value="has-these-chain_obvious.registry_f isoftware-to_to.the_this_in _use_for.opportunity.the-chair_more _particularly.transmit-well-way tby.a.technologies_computing.related_of-the.information-reg"/>
+          <xs:enumeration value="sof.under.complex_computing vlife.part rindustries.hardware_the-of.such. nwhich.groups-use.targeted-information.of_and-and-the-from_inve binteroperability-to_data_it.is_documents_as.prominent_ wmeans _and-structure_is.used-would-software.to isupp"/>
+          <xs:enumeration value="_technologies_with_ nprocesses-are-to-ma _information.and-d glife.and.an_and-world_sta bregistry.must_within.is-process.in_facil gimages.coupled-can_assur ba_other.of.and_understanding_the.with_requires-technologi"/>
+          <xs:enumeration value="ndo-by.with-eliminate_targeted-including_interconnecting_object drespec pobject.and.technology_must-as_meets.and.data.the obe-particularly-database_of.reproduced_wi sand_subject.providing.for.the-performance-for-meas vof_these_and-glo xth vthes oby-of-and.interoperability_fi"/>
+          <xs:enumeration value="edata_the.wireless csys _such.define-of.collaborating-vertic hin.discovery_ad-the-issues_information_the_issue dapproach.permitting.de gtwo.chairs-retrieves-opportunity_quality.is. uindustry-and_be-is-this-newco _daily.security_repository_many-a_global_loc"/>
+          <xs:enumeration value="msensors-groups-measure_for_simplest_fr nlibraries_the_computing.with-second-gen _objective.the-for_by-language_has.the_conferences.is-in qlocation.the.qu cassuring_is.industry.utiliti von-our-an.versions.of-retrieve-infor ton-systems.assuring_documents-proces jfor_significant_discover.effective.registry.as_divisions-and cr"/>
+          <xs:enumeration value="_that.specifications-to.used-informat _that.the_for_registry_wide_ qaround.these_the_asked.to.program.manipulation_an.a-acad _standards-this_mus ccontribute-defines.con slaw-be"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

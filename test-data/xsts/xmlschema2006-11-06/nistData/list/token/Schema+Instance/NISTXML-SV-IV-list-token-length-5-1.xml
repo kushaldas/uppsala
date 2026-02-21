@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-length-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-length-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-length-5
+    xmlns="NISTSchema-SV-IV-list-token-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-length-5-NS NISTSchema-SV-IV-list-token-length-5.xsd">222_Browsers_Interoperability_Of_Service_For_Street_The_,_LA_14045 1356_Development_Devices_The_Signature_Reviewed_Street_And_,_IL_14045 173_And_Devices_Dom_Oasis_Oasis_Street_And_,_MS_14045 86_Ebxml_Fine_Industry_Specification_Well_Street_Provides_,_ID_14045 523_Xml_Annual_As_The_Advanced_Street_That_,_VA_14045 2143_Templates_To_The_The_Devices_Street_Forensics_,_NC_14045 54_Of_Also_Information_Review_Many_Street_Will_,_NY_14045 856_Ad_And_Advanced_The_And_Street_The_,_WY_14045 535_As_Development_Wireless_Registries_Organization_Street_No_,_OK_14045 8457_An_Suite_The_These_For_Street_The_,_WA_14045</NISTSchema-SV-IV-list-token-length-5>

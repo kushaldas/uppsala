@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-anyURI-pattern-1-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-anyURI-pattern-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-anyURI-pattern-1
+    xmlns="NISTSchema-SV-II-list-anyURI-pattern-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-anyURI-pattern-1-NS NISTSchema-SV-II-list-anyURI-pattern-1.xsd">ftp://theappropriat.ofmethodsandt.facilitatesa.primarilyConfe.robustaspectsc.com news://bottlenecks.developedbotho.identifyactth.choicescollabo.net telnet://XMLDOMfacilita.processesMod.industryth.XMLforcomput.allaininand.net ftp://themetrolog.dataWorkingsuch.asavailableweb.theseanytest.thendevelopmen.org gopher://isparticip.eachrequiresa.ofanalysis.enablingsimu.servicesweb.gov ftp://andmustsyntax.enablingadditio.withSchemasb.StandardsXMLas.processpage.whooffoster.ledECandtoe.beenalltothe.net gopher://resultofbyr.computingtest.Specifycompone.thattocomme.thisandJiniand.XMLusersfo.workthealr.gov http://InInternetp.areasalarg.competencecomp.SOCpervasiveuse.testsandchairi.fortoappli.betweeninfedd.roleareparti.com telnet://configurati.totoolst.librarya.indus.Therichfiltera.forutil.measur.edu</NISTSchema-SV-II-list-anyURI-pattern-1>

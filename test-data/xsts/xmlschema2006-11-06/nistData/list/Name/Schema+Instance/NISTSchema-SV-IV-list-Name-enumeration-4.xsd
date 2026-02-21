@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-Name-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-Name-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-Name-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-Name-enumeration-4,
+      which is derived by restriction of a list with itemType Name
+      by facet enumeration with values of:
+          mindustry-sensors.reference_ bcomplete:tool:the.for_about-type-proce hcan:data-through-methods_ xsystem.technical.and_cost:future-registry.of.organization.abil xultimate:first:our:el _cost-interoperability_are.participate.make:s:been:cho _each:related_w
+          othe.deployed:in.prominent:industry-and:for-languages_match_furt jwill:-for.describes.of_neutral-int :the:distributed.electronic:tools-language-a-this_i :is:computing:to.and-of.lies.computin _competence-for.the_made-
+          bthese-software:sense.reviewed_build_the:defining_retrieve- minterop pobject:the_organizations-libraries.application:computing oto_communications_software:of.to_memory_measure_software_t papplication:the-to_respect.by.000:achieved:set:a:hardwa :we_requires-same_wide_among-analysis :impact:software.are:standards_must-applications_discussi ythis-provide :of.from_access:g-database:unbiased-our:in.discovery_conforman
+          :reviewed_creating-for-the_a_the-sof afile_basis.international-vo _reference_vocabularies-and.a:testing_rigorous.establish_ oand.it.orga finformation_automate:devices-that-available-four.m
+          uprocess-government:and.pa mt wcomputing.the-g.f nmeets.as.industry_to.r _can.to-o emeet.of.deployed.are_web.of-developme kcomputers_u _be_templates.infrastructure-of.a.res
+          qfilter_particularly.s _environments_participating:well.of_typical.distributed-defi :ad_mai :development_web_standards:that-maintains_supply-the:of.match: bwill:specification.an pto_additionally-emer lfile_and:to_documents_specifications.different.ne
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-Name-enumeration-4" type="NISTSchema-SV-IV-list-Name-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfName">
+    <xs:list itemType="xs:Name"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-Name-enumeration-4-Type">
+    <xs:restriction base="listOfName">
+          <xs:enumeration value="mindustry-sensors.reference_ bcomplete:tool:the.for_about-type-proce hcan:data-through-methods_ xsystem.technical.and_cost:future-registry.of.organization.abil xultimate:first:our:el _cost-interoperability_are.participate.make:s:been:cho _each:related_w"/>
+          <xs:enumeration value="othe.deployed:in.prominent:industry-and:for-languages_match_furt jwill:-for.describes.of_neutral-int :the:distributed.electronic:tools-language-a-this_i :is:computing:to.and-of.lies.computin _competence-for.the_made-"/>
+          <xs:enumeration value="bthese-software:sense.reviewed_build_the:defining_retrieve- minterop pobject:the_organizations-libraries.application:computing oto_communications_software:of.to_memory_measure_software_t papplication:the-to_respect.by.000:achieved:set:a:hardwa :we_requires-same_wide_among-analysis :impact:software.are:standards_must-applications_discussi ythis-provide :of.from_access:g-database:unbiased-our:in.discovery_conforman"/>
+          <xs:enumeration value=":reviewed_creating-for-the_a_the-sof afile_basis.international-vo _reference_vocabularies-and.a:testing_rigorous.establish_ oand.it.orga finformation_automate:devices-that-available-four.m"/>
+          <xs:enumeration value="uprocess-government:and.pa mt wcomputing.the-g.f nmeets.as.industry_to.r _can.to-o emeet.of.deployed.are_web.of-developme kcomputers_u _be_templates.infrastructure-of.a.res"/>
+          <xs:enumeration value="qfilter_particularly.s _environments_participating:well.of_typical.distributed-defi :ad_mai :development_web_standards:that-maintains_supply-the:of.match: bwill:specification.an pto_additionally-emer lfile_and:to_documents_specifications.different.ne"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

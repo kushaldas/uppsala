@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_name00301m.xsd
+   generated from: @(#)ST_name00301m.jmpp	1.2 02/08/22
+
+-->
+
+
+<!--
+    strategy:  Define type with name 'Test' that is a restriction of 
+               the type 'string' with the pattern '1|2|3'.
+               Define another type with the same name.
+               Then declare an element with name 'test' of the type 'Test'.
+-->
+<xsd:schema
+  xmlns="ST_name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_name">
+
+     <xsd:element name="test" type="xsd:string"/>
+
+     <xsd:simpleType name="Test">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="1|2|3" />
+          </xsd:restriction>
+     </xsd:simpleType>
+
+     <xsd:simpleType name="Test">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="5|6|7" />
+          </xsd:restriction>
+     </xsd:simpleType>
+</xsd:schema>
+
+

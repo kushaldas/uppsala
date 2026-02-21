@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-1
+    xmlns="NISTSchema-SV-II-list-token-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-1-NS NISTSchema-SV-II-list-token-maxLength-1.xsd">86455_Program_Information_Naval_Adoption_Street_Thus_Process_,_WA_16910-1807 7495_Software_Tool_Use_Participating_Street_Formed_These_,_HI_16910-1807 166_Has_Clean_Through_If_Street_The_As_,_AZ_16910-1807 2564_Reference_As_Structured_Organizations_Street_Or_Completion_,_OK_16910-1807 6_For_Execution_That_Techniques_Street_Robust_International_,_AK_16910-1807 65346_Library_This_Known_Those_Street_Languages_File_,_AL_16910-1807 5565_Number_Have_Object_Retrieve_Street_Intuitive_Commerce_,_MO_16910-1807</NISTSchema-SV-II-list-token-maxLength-1>

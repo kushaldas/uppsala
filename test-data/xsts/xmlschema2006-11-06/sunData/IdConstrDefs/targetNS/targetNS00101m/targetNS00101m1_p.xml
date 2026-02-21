@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m1_p.xml
+   generated from: @(#)targetNS00101m.jmpp	1.3 02/09/06
+
+-->
+
+<test:root
+  xmlns:test="IdConstrDefs/targetNS"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="IdConstrDefs/targetNS targetNS00101m1.xsd">
+
+  <person>William Smith</person>
+
+</test:root>

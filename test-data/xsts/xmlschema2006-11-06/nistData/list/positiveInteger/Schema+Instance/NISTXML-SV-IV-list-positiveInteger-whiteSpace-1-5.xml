@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-positiveInteger-whiteSpace-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1
+    xmlns="NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1-NS NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1.xsd">1 509919974559447597 772728654115075185 264806720417762986 170810745459825220 853988789382799761 777559419732477773 543125948291698246 116244800581264629 999999999999999999</NISTSchema-SV-IV-list-positiveInteger-whiteSpace-1>

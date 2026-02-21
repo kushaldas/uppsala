@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.1.v.xml	1.2 02/12/25
+
+-->
+
+				<root xmlns="foo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					<item>
+						<foo/>
+					</item>
+					<item xsi:type="B">
+						<foo/>
+					</item>
+					<item xsi:type="Dr">
+						<foo/>
+					</item>
+					<item xsi:type="Drr">
+						<foo/>
+					</item>
+				</root>

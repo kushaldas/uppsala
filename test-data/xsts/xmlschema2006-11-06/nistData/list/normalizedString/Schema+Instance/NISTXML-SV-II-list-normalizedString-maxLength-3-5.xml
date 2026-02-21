@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-3
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-3-NS NISTSchema-SV-II-list-normalizedString-maxLength-3.xsd">478_Xsl_From_Performance_Raised_Includes_Street_Key_,_UT_16403-1748 96784_Outfitting_The_Industry_Create_Are_Street_In_,_WI_16403-1748 35_Models_Requesting_These_For_To_Street_Xml_,_MS_16403-1748 22474_Provide_The_Versions_Reference_Technology_Street_Security_,_NE_16403-1748 16732_In_Associated_Revisions_Benefits_Will_Street_And_,_SD_16403-1748 5827_Has_Interconnecting_And_Number_Specific_Street_Testing_,_NJ_16403-1748 428_Can_The_Filter_Recommendation_Defining_Street_Their_,_GA_16403-1748 8_The_Java_Dom_And_The_Street_Business_,_TX_16403-1748 77_Meet_Provide_Html_Applications_On_Street_Prominent_,_WY_16403-1748</NISTSchema-SV-II-list-normalizedString-maxLength-3>

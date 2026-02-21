@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m5.xsd
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00AӐ" type="xsd:string"/>
+            <xsd:attribute name="str10-ӝ" type="xsd:string"/>
+            <xsd:attribute name="str20ӫ" type="xsd:string"/>
+            <xsd:attribute name="str01AӮ" type="xsd:string"/>
+            <xsd:attribute name="str11-ӱ" type="xsd:string"/>
+            <xsd:attribute name="str21ӵ" type="xsd:string"/>
+            <xsd:attribute name="str02AӸ" type="xsd:string"/>
+            <xsd:attribute name="str12-Ӹ" type="xsd:string"/>
+            <xsd:attribute name="str22ӹ" type="xsd:string"/>
+            <xsd:attribute name="str03AԱ" type="xsd:string"/>
+            <xsd:attribute name="str13-Ճ" type="xsd:string"/>
+            <xsd:attribute name="str23Ֆ" type="xsd:string"/>
+            <xsd:attribute name="str04Aՙ" type="xsd:string"/>
+            <xsd:attribute name="str05Aա" type="xsd:string"/>
+            <xsd:attribute name="str15-ճ" type="xsd:string"/>
+            <xsd:attribute name="str25ֆ" type="xsd:string"/>
+            <xsd:attribute name="str06Aא" type="xsd:string"/>
+            <xsd:attribute name="str16-ם" type="xsd:string"/>
+            <xsd:attribute name="str26ת" type="xsd:string"/>
+            <xsd:attribute name="str07Aװ" type="xsd:string"/>
+            <xsd:attribute name="str17-ױ" type="xsd:string"/>
+            <xsd:attribute name="str27ײ" type="xsd:string"/>
+            <xsd:attribute name="str08Aء" type="xsd:string"/>
+            <xsd:attribute name="str18-ح" type="xsd:string"/>
+            <xsd:attribute name="str28غ" type="xsd:string"/>
+            <xsd:attribute name="str09Aف" type="xsd:string"/>
+            <xsd:attribute name="str19-م" type="xsd:string"/>
+            <xsd:attribute name="str29ي" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

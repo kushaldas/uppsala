@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-3-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-3-NS"
+    xmlns:ycommunication_complex="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:dfor.be_in-simplest-virtually.to="http://www.nist.gov/xsdNS"
+    xmlns:_contributor_discovery_a="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-3-NS NISTSchema-SV-II-list-QName-maxLength-3.xsd">ycommunication_complex:awell_be.this_products-known.that-test_on-at_such.each.f nsupply_many-to-new_an-and.resource.conformance-as_elimi athe-systems-contains-built.infrastructure.and-business_ band.law_requires.service_computing-commerce_today-need. dfor.be_in-simplest-virtually.to:ia_of.web-hardware_virtually-a.additionally_and_be.2001_ tare-implementations.tremendous_own.of-and-reference-rev uwill-information_repository-objective.original-a_would- rprocess_can.manipulate_for-opportunity.intuitive-as.cho _contributor_discovery_a:vconstituent-appropriate-made.tools_commerce_these_for_s</nist:NISTSchema-SV-II-list-QName-maxLength-3>

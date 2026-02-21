@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-ID-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-ID-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-ID-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-ID-enumeration-3,
+      which is derived by restriction of a list with itemType ID
+      by facet enumeration with values of:
+          mleaders ffact_produc fand-memory_that-and.mea _achieved_signature-p tcompatibility_to_about-networking-robust-from_for_th xwhich-of-business_include.these_devices_the
+          va-of-users-the.and.an_to-for-voiced.profile-of_ xthe.possible.success.web.of_including_i ywide_defines.bus _and.small-_bottlenecks.the_fil dof.the-to_wid _led-localized_the.transforming_registries_by- oto-information-g_sensors.a.older.over.industry.provide-enough- _influence_newcom
+          trepository_an.c icomputing_for-as.testing_make.software_of-international nretrieve-sense-to_their_sol xapplications-of.and_the-frameworks_the-specific-s.these_we-ret tsecond-generation.has-to.large.the_them.relat bcan-must ccompatibility_shift.g.as.partner tknown_for.with.system-areas.cho
+          lspecifications-tool_new.wireless.the.are.h cconsistency.to-personal rback_in-of_the-on.as-prototype-provides-in_led-the-provide huser-all.technology-the_must_as-be.profile_for-competen xstructure-uses cused_and_of.is.computing.aspects.those.e nand-be_repository_tests.its cthe-stakeholders.directions.define-of_become_softwa
+          brigorous.that-can.to_cre ccost.of_manipulate_sen kinvolved.organizations-and.issues uwell-devices.has-with-benefits_automatic.most_sta _and_specifications.individual.portable_series.use qand-the_come-the.file_au
+          pled_and_these.among-reputation.full_an _recognition_and-indication.understand-industry-appl yan vcreation_means_tools_on.with_is.the_five_will_h nunbiased-result_from.our.generation-files_allow-r qboth-completion_processors-ri cf qto-embedded.any_effectively_areas_of.
+          mguidelines-for.choices.market.manip uretrieves.the.will_of_cost-fr pl pbetween-to.enforcem vfor.help.with.and-precise-developed-that_in_used.revie
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-ID-enumeration-3" type="NISTSchema-SV-IV-list-ID-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfID">
+    <xs:list itemType="xs:ID"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-ID-enumeration-3-Type">
+    <xs:restriction base="listOfID">
+          <xs:enumeration value="mleaders ffact_produc fand-memory_that-and.mea _achieved_signature-p tcompatibility_to_about-networking-robust-from_for_th xwhich-of-business_include.these_devices_the"/>
+          <xs:enumeration value="va-of-users-the.and.an_to-for-voiced.profile-of_ xthe.possible.success.web.of_including_i ywide_defines.bus _and.small-_bottlenecks.the_fil dof.the-to_wid _led-localized_the.transforming_registries_by- oto-information-g_sensors.a.older.over.industry.provide-enough- _influence_newcom"/>
+          <xs:enumeration value="trepository_an.c icomputing_for-as.testing_make.software_of-international nretrieve-sense-to_their_sol xapplications-of.and_the-frameworks_the-specific-s.these_we-ret tsecond-generation.has-to.large.the_them.relat bcan-must ccompatibility_shift.g.as.partner tknown_for.with.system-areas.cho"/>
+          <xs:enumeration value="lspecifications-tool_new.wireless.the.are.h cconsistency.to-personal rback_in-of_the-on.as-prototype-provides-in_led-the-provide huser-all.technology-the_must_as-be.profile_for-competen xstructure-uses cused_and_of.is.computing.aspects.those.e nand-be_repository_tests.its cthe-stakeholders.directions.define-of_become_softwa"/>
+          <xs:enumeration value="brigorous.that-can.to_cre ccost.of_manipulate_sen kinvolved.organizations-and.issues uwell-devices.has-with-benefits_automatic.most_sta _and_specifications.individual.portable_series.use qand-the_come-the.file_au"/>
+          <xs:enumeration value="pled_and_these.among-reputation.full_an _recognition_and-indication.understand-industry-appl yan vcreation_means_tools_on.with_is.the_five_will_h nunbiased-result_from.our.generation-files_allow-r qboth-completion_processors-ri cf qto-embedded.any_effectively_areas_of."/>
+          <xs:enumeration value="mguidelines-for.choices.market.manip uretrieves.the.will_of_cost-fr pl pbetween-to.enforcem vfor.help.with.and-precise-developed-that_in_used.revie"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

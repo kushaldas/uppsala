@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00111_p.xml	1.2 02/12/25
+
+-->
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00111.xsd"
+
+    a--a="0"
+    b..b="1"
+    c__c="2"
+    d··d="3"
+    e··e="4"
+    f۝۝f="5"
+    g۞۞g="6"
+/>
+

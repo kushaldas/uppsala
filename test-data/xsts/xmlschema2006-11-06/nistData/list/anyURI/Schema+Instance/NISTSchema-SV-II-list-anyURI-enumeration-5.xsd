@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-anyURI-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-anyURI-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-anyURI-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-anyURI-enumeration-5,
+      which is derived by restriction of a list with itemType anyURI
+      by facet enumeration with values of:
+          news://referencero.u.com ftp://ftp.beandrigoro.sspecificX.Ldraftt.edu telnet://newandandma.ntainedcomp.edu mailto:XMLt@thedonatethemmus.org http://hasinformat.onanddevic.sofstoo.gov mailto:forwaysbackd@Provideforanimplemen.edu news://athistoanco.putingSche.astoo.com
+          ftp://ftp.astheapprop.iatecommer.e.edu news://qualityi.gov gopher://arewhodiffe.entbeingar.chainistot.edu gopher://structurest.ndardsthat.ataThefile.Tra.org ftp://Schemasrega.dwithimage.tofor.gov
+          ftp://ftp.forthemanip.lateofc.com mailto:keyglo@syntaxthatDOMha.gov gopher://theusedthes.u.net ftp://guidelinesT.e.com http://www.theistheare.ithTradean.evicesallp.rforma.net telnet://helpmakeori.inalknowns.ftwareofpe.vas.edu gopher://aallowsboth.ofromunde.org
+          telnet://personalind.strysoftwa.ewithch.com telnet://q.edu ftp://fromthisist.stingthere.ourceandsy.temAdditio.al.net gopher://theareforcr.atio.gov ftp://andissuesex.hangeAdvan.ementyears.eferenceth.dat.org http://www.mustNISTIns.nsorsXMLne.ded.net
+          telnet://repositories.gov http://www.createasoft.areadditio.allyfacili.a.org telnet://andpervasiv.businessma.ketAthesew.t.org ftp://ftp.availabilit.fo.gov mailto:doand@andcompo.edu http://www.discoveryde.el.edu ftp://relatedover.roupsandre.at.gov telnet://eac.net news://andInter.gov
+          gopher://XMLth.edu http://www.ensureorcom.unityforis.rovide.edu telnet://computert.org ftp://ftp.providesbee.vironmentf.omsuchofof.nte.com news://o.edu mailto:Er@Languagep.org telnet://lawMarkupco.putingAdva.cementforr.latedeach.org http://www.isthis.gov
+          http://www.EXiSTstanda.dsthe.gov ftp://toalltheofd.scussions.com news://organizatio.stypefor.org telnet://discussions.rganizatio.edu mailto:relatedregistry@conceptsrepositoryinMi.gov gopher://softwareDes.iteandforl.disforspeci.gov news://naturebusin.org gopher://discoveryw.org
+          ftp://ofincluding.n.gov gopher://wireless.com mailto:p@intoalsopa.edu ftp://andledthena.akeyapplic.tionstoolsa.edu telnet://industryspe.ifications.net ftp://ftp.thansoftwar.liesinsoft.aretousedt.DOMr.edu
+          telnet://Coordinatea.dassuring.org mailto:ca@forindu.edu http://thesignatur.stotheonof.net ftp://application.romErrorsa.pli.org gopher://fromusedaro.ndtheofdeg.org gopher://thesewillre.istryisman.a.org news://enforcement.ervasivefi.dandSi.edu ftp://dependsthei.suesfostera.com
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-anyURI-enumeration-5" type="NISTSchema-SV-II-list-anyURI-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfanyURI">
+    <xs:list itemType="xs:anyURI"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-anyURI-enumeration-5-Type">
+    <xs:restriction base="listOfanyURI">
+          <xs:enumeration value="news://referencero.u.com ftp://ftp.beandrigoro.sspecificX.Ldraftt.edu telnet://newandandma.ntainedcomp.edu mailto:XMLt@thedonatethemmus.org http://hasinformat.onanddevic.sofstoo.gov mailto:forwaysbackd@Provideforanimplemen.edu news://athistoanco.putingSche.astoo.com"/>
+          <xs:enumeration value="ftp://ftp.astheapprop.iatecommer.e.edu news://qualityi.gov gopher://arewhodiffe.entbeingar.chainistot.edu gopher://structurest.ndardsthat.ataThefile.Tra.org ftp://Schemasrega.dwithimage.tofor.gov"/>
+          <xs:enumeration value="ftp://ftp.forthemanip.lateofc.com mailto:keyglo@syntaxthatDOMha.gov gopher://theusedthes.u.net ftp://guidelinesT.e.com http://www.theistheare.ithTradean.evicesallp.rforma.net telnet://helpmakeori.inalknowns.ftwareofpe.vas.edu gopher://aallowsboth.ofromunde.org"/>
+          <xs:enumeration value="telnet://personalind.strysoftwa.ewithch.com telnet://q.edu ftp://fromthisist.stingthere.ourceandsy.temAdditio.al.net gopher://theareforcr.atio.gov ftp://andissuesex.hangeAdvan.ementyears.eferenceth.dat.org http://www.mustNISTIns.nsorsXMLne.ded.net"/>
+          <xs:enumeration value="telnet://repositories.gov http://www.createasoft.areadditio.allyfacili.a.org telnet://andpervasiv.businessma.ketAthesew.t.org ftp://ftp.availabilit.fo.gov mailto:doand@andcompo.edu http://www.discoveryde.el.edu ftp://relatedover.roupsandre.at.gov telnet://eac.net news://andInter.gov"/>
+          <xs:enumeration value="gopher://XMLth.edu http://www.ensureorcom.unityforis.rovide.edu telnet://computert.org ftp://ftp.providesbee.vironmentf.omsuchofof.nte.com news://o.edu mailto:Er@Languagep.org telnet://lawMarkupco.putingAdva.cementforr.latedeach.org http://www.isthis.gov"/>
+          <xs:enumeration value="http://www.EXiSTstanda.dsthe.gov ftp://toalltheofd.scussions.com news://organizatio.stypefor.org telnet://discussions.rganizatio.edu mailto:relatedregistry@conceptsrepositoryinMi.gov gopher://softwareDes.iteandforl.disforspeci.gov news://naturebusin.org gopher://discoveryw.org"/>
+          <xs:enumeration value="ftp://ofincluding.n.gov gopher://wireless.com mailto:p@intoalsopa.edu ftp://andledthena.akeyapplic.tionstoolsa.edu telnet://industryspe.ifications.net ftp://ftp.thansoftwar.liesinsoft.aretousedt.DOMr.edu"/>
+          <xs:enumeration value="telnet://Coordinatea.dassuring.org mailto:ca@forindu.edu http://thesignatur.stotheonof.net ftp://application.romErrorsa.pli.org gopher://fromusedaro.ndtheofdeg.org gopher://thesewillre.istryisman.a.org news://enforcement.ervasivefi.dandSi.edu ftp://dependsthei.suesfostera.com"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

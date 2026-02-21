@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-pattern-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-pattern-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-pattern-1
+    xmlns:nist="NISTSchema-SV-IV-list-QName-pattern-1-NS"
+    xmlns:ecomputing-signatures-help.with="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:ueliminated.and.the_to_system="http://www.nist.gov/xsdNS"
+    xmlns:tand.providin="http://www.nist.gov/xsdNS"
+    xmlns:nsec="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-pattern-1-NS NISTSchema-SV-IV-list-QName-pattern-1.xsd">ecomputing-signatures-help.with:tdiscover.implementations-ability.in_specifica ktechnology-the-standards.the_suites_allow-and-be-files-syste ueliminated.and.the_to_system:squality.that-templates.to.a_re qproducts.wireless-to-donate.is_base_their-and. tand.providin:afirst_user.specifications_additionall usupport.directions_and-for_to-among.more-from.s.to.intu nsec:oto-object.availability.must_find.a_led-can.automatical</nist:NISTSchema-SV-IV-list-QName-pattern-1>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_scope00101m1_p.xml
+   generated from: @(#)AD_scope00101m.jmpp	1.4 02/11/19
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrDecl/scope AD_scope00101m1.xsd"
+      xmlns:td="AttrDecl/scope">
+
+   <td:elementWithAttr td:number="123"/>
+
+</td:root>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-string-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-string-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-string-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-string-enumeration-2,
+      which is derived by restriction of a list with itemType string
+      by facet enumeration with values of:
+          profile related projector the Information compatibility software Project
+          this appropriate due NIST/ITL communication define
+          utilize EC to as XSL-FO XML ensure
+          portable first-generation need market The provides
+          An the be tools files that
+          on that networks lack to the
+          Advancement defining many Structured s around embedded
+          tests The documents complex the these
+          including a and process XML-related project specifications pico-cellular Therefore as
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-string-enumeration-2" type="NISTSchema-SV-IV-list-string-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfstring">
+    <xs:list itemType="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-string-enumeration-2-Type">
+    <xs:restriction base="listOfstring">
+          <xs:enumeration value="profile related projector the Information compatibility software Project"/>
+          <xs:enumeration value="this appropriate due NIST/ITL communication define"/>
+          <xs:enumeration value="utilize EC to as XSL-FO XML ensure"/>
+          <xs:enumeration value="portable first-generation need market The provides"/>
+          <xs:enumeration value="An the be tools files that"/>
+          <xs:enumeration value="on that networks lack to the"/>
+          <xs:enumeration value="Advancement defining many Structured s around embedded"/>
+          <xs:enumeration value="tests The documents complex the these"/>
+          <xs:enumeration value="including a and process XML-related project specifications pico-cellular Therefore as"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

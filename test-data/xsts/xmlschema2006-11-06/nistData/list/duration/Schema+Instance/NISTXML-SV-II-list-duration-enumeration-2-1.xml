@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-duration-enumeration-2-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-duration-enumeration-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-duration-enumeration-2
+    xmlns="NISTSchema-SV-II-list-duration-enumeration-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-duration-enumeration-2-NS NISTSchema-SV-II-list-duration-enumeration-2.xsd">P2004Y04M18DT05H54M04S P1975Y02M18DT18H35M58S P1994Y05M08DT16H00M57S P1990Y11M29DT12H00M20S P2013Y12M19DT05H54M24S P2028Y04M25DT17H53M50S P2009Y01M08DT22H33M36S</NISTSchema-SV-II-list-duration-enumeration-2>

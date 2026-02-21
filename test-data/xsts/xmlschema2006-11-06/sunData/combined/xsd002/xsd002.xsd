@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)xsd002.xsd	1.3 02/12/25
+
+-->
+
+<!--
+highlight of this test:
+	- use of elementFormDefault and form attribute.
+	- implicit use of "ur-type" as the content model of element.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://foo.com"
+		xmlns="http://foo.com"
+		elementFormDefault="unqualified">
+	
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element name="foo" />
+				<xsd:element name="bar" form="qualified" />
+				<xsd:element name="zot" form="unqualified" />
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

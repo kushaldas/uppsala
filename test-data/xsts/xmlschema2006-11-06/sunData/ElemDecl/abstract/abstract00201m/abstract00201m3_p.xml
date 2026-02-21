@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)abstract00201m3_p.xml
+   generated from: @(#)abstract00201m.jmpp	1.2 02/08/22
+
+-->
+
+
+<root
+  xmlns="ElemDecl/abstract"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/abstract abstract00201m3.xsd"/>

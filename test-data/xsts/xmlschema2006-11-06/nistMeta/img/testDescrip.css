@@ -1,0 +1,147 @@
+    body{
+      font-family: veranda, lucida, helvetica, univers, sans-serif;
+      font-size: 12px;
+      padding: 2em 1em 2em 70px;
+      margin: 0;
+      color: black;
+      background: white;
+      background-position: top left;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    a.small{
+      font-size:18px;
+    }
+
+    a:link { color: #00C; background: transparent; }
+    a:visited { color: #609; background: transparent; }
+    a:active { color: #C00; background: transparent; }
+    a:hover { color: #C00; background: transparent; }
+    h1 { font-size: 24px; text-align: left;color:#004488;}
+    h2 { font-size: 20px; text-align: left;color:#004488;}
+    td{
+    	vertical-align:top;
+    }
+    td.elemIcon{
+	font-size: 11px;
+	font-weight: bold;
+	text-align:right;
+	padding-right: 2px;
+	color: #b31111;
+    }
+    td.thCell{
+    	background-color:#aaaa77;
+	color:black;
+	font-size: 14px;
+ 	font-weight: bold;
+	white-space: nowrap;
+    }
+    td.phCell {
+	color:white;
+	font-size: 14px;
+	font-weight: bold;
+	background-color: #005A9C;
+	white-space: nowrap;
+    }
+    td.shCell {
+	font-size: 14px;
+	font-weight: bold;
+	background-color: #EEEECC;
+	white-space:nowrap;
+    }
+    td.elemCell{
+    	font-size: 11px;
+    	font-weight:bold;
+    	color:#616161;
+    }
+    td.attributeCell {
+       font-size: 11px;
+       padding-right: 2px;
+       white-space:nowrap;
+    }
+    td.idAttributeCell{
+       font-size: 11px;
+       padding-left: 6px;
+       padding-right: 2px;
+       white-space:nowrap;
+    }
+    td.valueCell {
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 4px;
+	padding-right: 4px;
+    }
+    td.validityValueCell {
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 4px;
+    }
+    td.validityAttributeCell {
+       font-size: 11px;
+       padding-left: 4px;
+       padding-right: 2px;
+       white-space:nowrap;
+    }
+    td.resultCell{
+    	background-color:#eeeeee;
+    }
+    td.documentation{
+    	font-size:10px;
+    	white-space:normal;
+    	padding-left:2px;
+    	padding-right: 2px;
+    }
+    td.testGroup{
+      font-size:14px;
+      font-family:sans-serif;
+      font-weight:bold;
+      background-color: #eeeeee;
+    }
+    td.testGroupName{
+      font-size:12px;
+      font-family:sans-serif;
+      font-weight:bold;
+    }
+    td.properties{
+      font-size:11px;
+      font-family:sans-serif;
+    }
+    td.summaryHeader{
+      padding-left: 2px;
+      font-weight:bold;
+      color:#616161;
+      /* color:#004488; */
+      background-color: #eeeeee;
+	border-style: solid;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+    }
+    td.summaryAttribute{
+      font-size: 13px;
+      padding-left: 4px;
+      vertical-align: middle;
+    }
+    td.summaryValue{
+      font-size: 13px;
+      padding-left: 4px;
+      color:#004488;
+      vertical-align: middle;
+      font-weight:bold;
+      padding-top: 1px;
+    }
+    td.summaryValue{
+      padding-left: 4px;
+      color:#004488;
+      vertical-align: middle;
+      padding-top: 1px;
+    }
+    td.resultCellB{
+      font-size: 12px;
+      vertical-align: top;
+    }
+    td.cellExpected{ background-color: #66CCFF; width:50px; }
+    td.cellNotExpected{ background-color: #FF9900; width:50px;  }
+    td.cellNotRun{ background-color: #6666CC; width:50px; }

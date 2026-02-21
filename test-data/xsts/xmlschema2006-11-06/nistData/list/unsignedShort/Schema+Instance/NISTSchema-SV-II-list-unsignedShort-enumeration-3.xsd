@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedShort-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedShort-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedShort-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedShort-enumeration-3,
+      which is derived by restriction of a list with itemType unsignedShort
+      by facet enumeration with values of:
+          65535 58306 899 3711 9823 32 928
+          3968 7659 21 919 9034 65535 8009 3499 71 831
+          8324 989 609 5 743 301 7886 59 916
+          7448 31 85 67 65535 629
+          49 7447 6 57 1227 3429 32369 2455
+          3222 52 5968 15 24941 64 567 783 3468 10
+          301 482 88 31 589 65535 6283 1163 201
+          151 392 838 65190 73 4
+          1 822 10869 7 30 3951 67
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedShort-enumeration-3" type="NISTSchema-SV-II-list-unsignedShort-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfunsignedShort">
+    <xs:list itemType="xs:unsignedShort"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedShort-enumeration-3-Type">
+    <xs:restriction base="listOfunsignedShort">
+          <xs:enumeration value="65535 58306 899 3711 9823 32 928"/>
+          <xs:enumeration value="3968 7659 21 919 9034 65535 8009 3499 71 831"/>
+          <xs:enumeration value="8324 989 609 5 743 301 7886 59 916"/>
+          <xs:enumeration value="7448 31 85 67 65535 629"/>
+          <xs:enumeration value="49 7447 6 57 1227 3429 32369 2455"/>
+          <xs:enumeration value="3222 52 5968 15 24941 64 567 783 3468 10"/>
+          <xs:enumeration value="301 482 88 31 589 65535 6283 1163 201"/>
+          <xs:enumeration value="151 392 838 65190 73 4"/>
+          <xs:enumeration value="1 822 10869 7 30 3951 67"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

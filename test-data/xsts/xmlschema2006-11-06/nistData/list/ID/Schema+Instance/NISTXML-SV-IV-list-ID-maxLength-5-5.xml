@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-ID-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-ID-maxLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-ID-maxLength-5
+    xmlns="NISTSchema-SV-IV-list-ID-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-ID-maxLength-5-NS NISTSchema-SV-IV-list-ID-maxLength-5.xsd">nled_among-as-one.the.tools_that.effective_deployed.specifica jan.manipulate_known.file.a.in.and-can-correctness.from-confi fregistries-many-ability-this.come-can-and-has-who-of_degree. _be-this-retrieval_well-will_of-between.defines-for.language. wby.launching.can-and-to_computers.repository_beta.advanced.o ba.four-software-known-and_that.software-of.build_testability gparticipate-as_support.and_built-that-from_rigorous_file.dif pto-enabling-time.technologies_filter.developing-contributor- vdevelopers_fine.allows-has_for-display.recognition-embedded- hspecifications_and_is.electronic-publishing.and.a_distribute</NISTSchema-SV-IV-list-ID-maxLength-5>

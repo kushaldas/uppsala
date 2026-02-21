@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-gMonth-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gMonth-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gMonth-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gMonth-enumeration-3,
+      which is derived by restriction of a list with itemType gMonth
+      by facet enumeration with values of:
+          --10 --06 --07 --10 --02 --04 --07
+          --12 --04 --08 --08 --08 --08 --04
+          --09 --04 --02 --12 --08 --03 --02 --01
+          --02 --11 --06 --07 --02 --08 --01 --06 --07
+          --02 --05 --10 --03 --09 --02 --04 --09
+          --12 --10 --12 --09 --09 --04 --04
+          --11 --02 --02 --05 --10 --05
+          --02 --05 --09 --09 --02 --04
+          --04 --03 --02 --06 --06 --06 --08
+          --04 --08 --03 --06 --10
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-gMonth-enumeration-3" type="NISTSchema-SV-IV-list-gMonth-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfgMonth">
+    <xs:list itemType="xs:gMonth"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-gMonth-enumeration-3-Type">
+    <xs:restriction base="listOfgMonth">
+          <xs:enumeration value="--10 --06 --07 --10 --02 --04 --07"/>
+          <xs:enumeration value="--12 --04 --08 --08 --08 --08 --04"/>
+          <xs:enumeration value="--09 --04 --02 --12 --08 --03 --02 --01"/>
+          <xs:enumeration value="--02 --11 --06 --07 --02 --08 --01 --06 --07"/>
+          <xs:enumeration value="--02 --05 --10 --03 --09 --02 --04 --09"/>
+          <xs:enumeration value="--12 --10 --12 --09 --09 --04 --04"/>
+          <xs:enumeration value="--11 --02 --02 --05 --10 --05"/>
+          <xs:enumeration value="--02 --05 --09 --09 --02 --04"/>
+          <xs:enumeration value="--04 --03 --02 --06 --06 --06 --08"/>
+          <xs:enumeration value="--04 --08 --03 --06 --10"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00501m1_n.xml
+   generated from: @(#)idConstrDefs00501m.jmpp	1.1 02/04/10
+
+-->
+
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00501m.xsd">
+
+  <person ssn="s007">John Smith</person>
+  <person ssn="s008">William Smith</person>
+
+  <person ssn="s009">John Smith</person>
+<!-- Negative variant begin -->
+  <person ssn="s007">John Smith</person>
+<!-- Negative variant end   -->
+
+</test:root>

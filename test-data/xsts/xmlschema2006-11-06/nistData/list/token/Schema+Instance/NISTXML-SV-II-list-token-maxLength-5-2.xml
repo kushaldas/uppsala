@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-5
+    xmlns="NISTSchema-SV-II-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-5-NS NISTSchema-SV-II-list-token-maxLength-5.xsd">4_Ec_Of_Street_Information_Come_Registry_,_RI_18133 17183_Profiles_Reference_Street_And_For_The_,_VA_18133 355_Manipulate_Organizations_Street_Operating_Of_Understanding_,_WV_18133 8612_And_Process_Street_Ability_Deployed_Using_,_KY_18133 226_Data_In_Street_With_Computing_Recommending_,_MT_18133 822_Key_Be_Street_Of_To_The_,_TN_18133 3_Browsers_Profiles_Street_And_Data_Stylesheet_,_PA_18133 4633_Nist_The_Street_Related_Rigorous_Tools_,_MI_18133 2447_Application_Xsl_Street_In_The_Success_,_AL_18133 3567_Provide_Of_Street_Subcommittees_Specification_In_,_TX_18133 925_For_Ultimate_Street_Being_Vendors_In_,_DC_18133 3612_Hoc_Visibly_Street_This_Health_Be_,_HI_18133 42_Incorporated_Are_Street_Syntax_Technology_Where_,_DE_18133 8769_To_To_Street_Testing_Correction_Newcomers_,_WY_18133 3175_File_Tool_Street_Of_For_Define_,_VA_18133 352_The_The_Street_Robust_These_Technical_,_CO_18133 874_Know_Conduct_Street_Can_Organization_To_,_AR_18133</NISTSchema-SV-II-list-token-maxLength-5>

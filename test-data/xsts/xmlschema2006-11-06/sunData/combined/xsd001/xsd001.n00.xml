@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd001.n00.xml	1.3 02/12/25
+
+-->
+
+<foo:root xmlns:foo="http://foo.com">
+	<child>   </child>
+	<child>atleast3</child>
+	<!-- # of child must be at least 3 -->
+</foo:root>

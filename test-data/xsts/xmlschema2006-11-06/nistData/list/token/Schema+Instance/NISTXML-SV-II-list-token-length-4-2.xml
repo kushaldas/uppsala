@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-4
+    xmlns="NISTSchema-SV-II-list-token-length-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-4-NS NISTSchema-SV-II-list-token-length-4.xsd">268_Or_Prototypes_Street_Enabling_Structured_,_ID_14952 89_Particularly_Simulation_Street_Their_The_,_AR_14952 83_Advanced_Pervasive_Street_This_Specifications_,_OK_14952 186_To_Discovery_Street_Commerce_And_,_AK_14952 6_Nist_Will_Street_Its_Build_,_GA_14952 885_Pervasive_Beta_Street_Prominent_By_,_NM_14952</NISTSchema-SV-II-list-token-length-4>

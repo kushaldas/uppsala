@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd003b.n00.xml	1.3 02/12/25
+
+-->
+
+<!-- @add must be number -->
+<root xmlns="foo" add="abc">
+	<in />
+	<out />
+	<tail />
+</root>

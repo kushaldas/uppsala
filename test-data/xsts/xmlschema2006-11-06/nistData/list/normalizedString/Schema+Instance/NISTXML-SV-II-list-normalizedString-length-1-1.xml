@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-1
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-1-NS NISTSchema-SV-II-list-normalizedString-length-1.xsd">44_The_Street_To_As_File_,_TX_11453-1345 74_Specifications_Street_Quality_The_Well_,_KS_11453-1345 7656_To_Street_Both_The_Discover_,_CA_11453-1345 7_Well_Street_Is_Xml_Use_,_AZ_11453-1345 146_On_Street_Images_Experimental_Review_,_DC_11453-1345 3_Better_Street_These_Of_The_,_CO_11453-1345 3_Issues_Street_Interoperability_Exercise_And_,_IL_11453-1345 8567_Pervasive_Street_Technical_Number_Registry_,_TN_11453-1345 574_Addressing_Street_Specifications_Specifications_The_,_CO_11453-1345 625_Nist_Street_Documents_For_Key_,_MI_11453-1345</NISTSchema-SV-II-list-normalizedString-length-1>

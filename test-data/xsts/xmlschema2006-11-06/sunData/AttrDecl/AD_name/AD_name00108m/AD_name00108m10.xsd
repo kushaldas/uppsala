@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m10.xsd
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00Aପ" type="xsd:string"/>
+            <xsd:attribute name="str10-ଭ" type="xsd:string"/>
+            <xsd:attribute name="str20ର" type="xsd:string"/>
+            <xsd:attribute name="str01Aଲ" type="xsd:string"/>
+            <xsd:attribute name="str11-ଲ" type="xsd:string"/>
+            <xsd:attribute name="str21ଳ" type="xsd:string"/>
+            <xsd:attribute name="str02Aଶ" type="xsd:string"/>
+            <xsd:attribute name="str12-ଷ" type="xsd:string"/>
+            <xsd:attribute name="str22ହ" type="xsd:string"/>
+            <xsd:attribute name="str03Aଽ" type="xsd:string"/>
+            <xsd:attribute name="str04Aଡ଼" type="xsd:string"/>
+            <xsd:attribute name="str14-ଡ଼" type="xsd:string"/>
+            <xsd:attribute name="str24ଢ଼" type="xsd:string"/>
+            <xsd:attribute name="str05Aୟ" type="xsd:string"/>
+            <xsd:attribute name="str15-ୠ" type="xsd:string"/>
+            <xsd:attribute name="str25ୡ" type="xsd:string"/>
+            <xsd:attribute name="str06Aஅ" type="xsd:string"/>
+            <xsd:attribute name="str16-இ" type="xsd:string"/>
+            <xsd:attribute name="str26ஊ" type="xsd:string"/>
+            <xsd:attribute name="str07Aஎ" type="xsd:string"/>
+            <xsd:attribute name="str17-ஏ" type="xsd:string"/>
+            <xsd:attribute name="str27ஐ" type="xsd:string"/>
+            <xsd:attribute name="str08Aஒ" type="xsd:string"/>
+            <xsd:attribute name="str18-ஓ" type="xsd:string"/>
+            <xsd:attribute name="str28க" type="xsd:string"/>
+            <xsd:attribute name="str09Aங" type="xsd:string"/>
+            <xsd:attribute name="str19-ங" type="xsd:string"/>
+            <xsd:attribute name="str29ச" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_baseTD00101m.xsd
+   generated from: @(#)ST_baseTD00101m.jmpp	1.1 02/02/28
+
+-->
+
+
+<!--
+    strategy:  Define type with name 'Test' that is a restriction of 
+               the type 'string' with the pattern '1|2'.
+               Then declare an element with name 'test' of the type 'Test'.
+-->
+<xsd:schema
+  xmlns="ST_baseTD"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_baseTD">
+     <xsd:element name="test" type="Test"/>
+
+     <xsd:simpleType name="Test">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="1|2" />
+          </xsd:restriction>
+     </xsd:simpleType>
+</xsd:schema>
+
+

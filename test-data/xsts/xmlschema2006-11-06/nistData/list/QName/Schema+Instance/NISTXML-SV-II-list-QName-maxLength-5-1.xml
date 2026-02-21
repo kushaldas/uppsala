@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-5-NS"
+    xmlns:vand-by-desktop-such_w="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:uwork_systems-popular-in="http://www.nist.gov/xsdNS"
+    xmlns:go="http://www.nist.gov/xsdNS"
+    xmlns:fthat.industry_and.component.p="http://www.nist.gov/xsdNS"
+    xmlns:ma_robust-a.ability.coopera="http://www.nist.gov/xsdNS"
+    xmlns:junam="http://www.nist.gov/xsdNS"
+    xmlns:j2001_academia_are-an.is-an="http://www.nist.gov/xsdNS"
+    xmlns:nmust-in.fine-as-on.and="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-5-NS NISTSchema-SV-II-list-QName-maxLength-5.xsd">vand-by-desktop-such_w:jthose-discussio nis-in_reference uwork_systems-popular-in:fobjects_of.cons go:rof-retrieves-ef fthat.industry_and.component.p:_own.be-includin ma_robust-a.ability.coopera:_templates_wirel junam:afirst.by-of_for acontribute-ad_b iresides-discove gembedded-retrie sand_application smethods_languag j2001_academia_are-an.is-an:vfiles_tests.ach nmust-in.fine-as-on.and:lpublishing-requ</nist:NISTSchema-SV-II-list-QName-maxLength-5>

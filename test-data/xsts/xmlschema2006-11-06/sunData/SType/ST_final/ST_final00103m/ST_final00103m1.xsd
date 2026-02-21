@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_final00103m1.xsd
+   generated from: @(#)ST_final00103m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_final"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_final">
+
+     <xsd:simpleType name="Test" final="union">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="1|2" />
+          </xsd:restriction>
+     </xsd:simpleType>
+
+
+
+     <xsd:simpleType name="Test1">
+          <xsd:union memberTypes="Test Test2"/>
+     </xsd:simpleType>
+
+     <xsd:simpleType name="Test2">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="3|4" />
+          </xsd:restriction>
+     </xsd:simpleType>
+
+     <xsd:element name="test" type="xsd:string"/>
+
+
+</xsd:schema>
+

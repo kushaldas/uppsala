@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-ID-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-ID-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-ID-maxLength-5
+    xmlns="NISTSchema-SV-II-list-ID-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-ID-maxLength-5-NS NISTSchema-SV-II-list-ID-maxLength-5.xsd">ihas_back-performance-registry-lies.a.th ga-all.many-object-the-degree_to-voiced. hof.mediums-for-must.the.that_great.inte jwith_that-to_provided-more-be-and.areas _files.repository-in.templates.known-rep dfor_specifications.further.the_2001.tha _will-contained-all-tools_discovery.the- _the.filter-cooperation-way_the_executio ior-the-a.systems_for_enabling_prominent ponly.files_first.files.requesting-defin qalso.specifications_a.developing-a_of-i nprovided_academia-computing.be.criteria idebug_of_available_desktop_the-for-of-t udatabase_mechanism-each-the-understand- _to.includes.also-to.registry.automatica wapproach-dependability_diagnostic-will_ lcreation-industry-by.all-pages_the-deve tand_and-computing_design-information.so</NISTSchema-SV-II-list-ID-maxLength-5>

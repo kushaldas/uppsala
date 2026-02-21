@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)particles00203m1.xsd
+   generated from: @(#)particles00203m.jmpp	1.1 02/04/28
+
+-->
+
+
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="particles"
+    targetNamespace="particles">
+
+  <xsd:group name="G1">
+    <xsd:choice>
+      <xsd:choice>
+        <xsd:element name="date" type="xsd:date"/>
+        <xsd:element name="marked" type="xsd:boolean"/>
+      </xsd:choice>
+      <xsd:choice>
+        <xsd:element name="num" type="xsd:int"/>
+      </xsd:choice>
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:element name="a">
+    <xsd:complexType>
+      <xsd:group ref="G1"/>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>
+

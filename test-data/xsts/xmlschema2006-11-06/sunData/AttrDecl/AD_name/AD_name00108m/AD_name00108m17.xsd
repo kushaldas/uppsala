@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m17.xsd
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00Aᅟ" type="xsd:string"/>
+            <xsd:attribute name="str10-ᅠ" type="xsd:string"/>
+            <xsd:attribute name="str20ᅡ" type="xsd:string"/>
+            <xsd:attribute name="str01Aᅣ" type="xsd:string"/>
+            <xsd:attribute name="str02Aᅥ" type="xsd:string"/>
+            <xsd:attribute name="str03Aᅧ" type="xsd:string"/>
+            <xsd:attribute name="str04Aᅩ" type="xsd:string"/>
+            <xsd:attribute name="str05Aᅭ" type="xsd:string"/>
+            <xsd:attribute name="str15-ᅭ" type="xsd:string"/>
+            <xsd:attribute name="str25ᅮ" type="xsd:string"/>
+            <xsd:attribute name="str06Aᅲ" type="xsd:string"/>
+            <xsd:attribute name="str16-ᅲ" type="xsd:string"/>
+            <xsd:attribute name="str26ᅳ" type="xsd:string"/>
+            <xsd:attribute name="str07Aᅵ" type="xsd:string"/>
+            <xsd:attribute name="str08Aᆞ" type="xsd:string"/>
+            <xsd:attribute name="str09Aᆨ" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

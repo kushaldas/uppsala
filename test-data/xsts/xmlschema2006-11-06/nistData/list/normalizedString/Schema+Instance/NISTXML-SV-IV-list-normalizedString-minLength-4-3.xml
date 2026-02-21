@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-4
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-4-NS NISTSchema-SV-IV-list-normalizedString-minLength-4.xsd">653_Can_Made_Offer_System_Built_Street_Soc_Containing_The_,_VT_11047-1749 676_Define_That_It_Testing_The_Street_Government_Is_Creation_,_WY_11047-1749 86_Libraries_Necessary_The_Interconnected_Software_Street_Are_Software_Using_,_SD_11047-1749 578_Computing_Reference_Regard_Test_First_Street_And_Industry_By_,_FL_11047-1749 4651_With_Browsers_Include_Html_The_Street_Both_That_Of_,_RI_11047-1749 9783_Including_Recommendation_Process_Standards_Developing_Street_Conduct_Description_Reference_,_MD_11047-1749 35_Structure_Extensible_Consortium_Ability_Define_Street_Large_Applications_Specific_,_KY_11047-1749 5729_Used_Has_For_Then_This_Street_With_For_Implementations_,_MT_11047-1749 34_Xml_Them_The_File_In_Street_Is_Launching_Reference_,_KY_11047-1749 89_Browsers_From_Discovery_Pervasive_An_Street_The_Built_By_,_MI_11047-1749</NISTSchema-SV-IV-list-normalizedString-minLength-4>

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd011.v00.xml	1.4 03/10/10
+
+-->
+
+<root
+	xmlns="foo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<non-nillable>
+		<x/>
+	</non-nillable>
+	
+	<nillable1>
+		<x/>
+	</nillable1>
+	
+	<nillable1 xsi:nil="true"/>
+	
+	<nillable2>
+		51 32 59
+	</nillable2>
+	
+	<nillable2 xsi:nil="true"/>
+</root>

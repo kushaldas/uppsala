@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd001.n04.xml	1.3 02/12/25
+
+-->
+
+<!-- content of child must be at least 3 characters long -->
+<foo:root xmlns:foo="http://foo.com">
+	<child />
+	<child>atleast3</child>
+	<child>10atmost  </child>
+	<child attr="12345"> jjj </child>
+	<!-- # of child must be 3 to 7 -->
+</foo:root>

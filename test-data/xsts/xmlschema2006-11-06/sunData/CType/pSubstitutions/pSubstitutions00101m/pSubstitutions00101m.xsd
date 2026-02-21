@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)pSubstitutions00101m.xsd
+   generated from: @(#)pSubstitutions00101m.jmpp	1.3 02/12/09
+
+-->
+
+
+<xsd:schema
+  xmlns="pSubstitutions"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="pSubstitutions">
+
+     <xsd:complexType name="A">
+          <xsd:sequence>
+               <xsd:element name="c" type="xsd:int" maxOccurs="3"/>
+          </xsd:sequence>
+     </xsd:complexType>
+
+     <xsd:element name="e" type="A" />
+
+     <xsd:complexType name="B">
+          <xsd:complexContent>
+               <xsd:extension base="A">
+                    <xsd:sequence>
+                         <xsd:element name="d" type="xsd:date"/>
+                    </xsd:sequence>
+               </xsd:extension>
+          </xsd:complexContent>
+     </xsd:complexType>
+
+     <xsd:complexType name="C">
+          <xsd:complexContent>
+               <xsd:restriction base="A">
+                    <xsd:sequence>
+                         <xsd:element name="c" type="xsd:int" maxOccurs="2"/>
+                    </xsd:sequence>
+               </xsd:restriction>
+          </xsd:complexContent>
+     </xsd:complexType>
+</xsd:schema>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)derivationMethod00101m1.xsd
+   generated from: @(#)derivationMethod00101m.jmpp	1.2 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns="derivationMethod"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="derivationMethod">
+     <xsd:element name="b" type="B"/>
+
+     <xsd:complexType name="A">
+          <xsd:simpleContent>
+               <xsd:extension base="xsd:string"/>
+          </xsd:simpleContent>
+     </xsd:complexType>
+
+     <xsd:complexType name="B">
+          <xsd:simpleContent>
+               <xsd:extension base="A">
+                    <xsd:attribute name="q" type="xsd:int"/>
+               </xsd:extension>
+          </xsd:simpleContent>
+     </xsd:complexType>
+
+</xsd:schema>
+

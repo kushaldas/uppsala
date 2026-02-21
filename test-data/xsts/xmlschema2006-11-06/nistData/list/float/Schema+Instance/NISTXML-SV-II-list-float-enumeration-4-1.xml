@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-float-enumeration-4-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-float-enumeration-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-float-enumeration-4
+    xmlns="NISTSchema-SV-II-list-float-enumeration-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-float-enumeration-4-NS NISTSchema-SV-II-list-float-enumeration-4.xsd">2.0269173E-36 2.4343635E-27 3.3514741E-18 2.3259334E-9 1.5454940E0 1.5098141E9 1.8577415E18 3.3175189E27 3.4028235E38</NISTSchema-SV-II-list-float-enumeration-4>

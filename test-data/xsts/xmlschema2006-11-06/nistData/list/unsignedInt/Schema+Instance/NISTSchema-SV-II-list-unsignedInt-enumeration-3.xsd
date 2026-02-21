@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedInt-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedInt-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedInt-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedInt-enumeration-3,
+      which is derived by restriction of a list with itemType unsignedInt
+      by facet enumeration with values of:
+          4397283 165637 1922595 17 84142669 148143812
+          4294967295 2085432165 39 66176667 81987269 91 425230172 60
+          634408 6172885 842 9404 6912149 22915 62548 1051857 836309736
+          514523776 48 212206 8471588 72 870 50473
+          22859210 76167715 6595 40747652 5937 116 863 231972 779545281
+          308857100 654287 25951 6609122 6376209 90527 76553678
+          25 389878 391267 8356738 336 4294967295 1690290 130288179
+          11842339 2691651 197197949 2705551 382100 4294967295 804489
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedInt-enumeration-3" type="NISTSchema-SV-II-list-unsignedInt-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfunsignedInt">
+    <xs:list itemType="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedInt-enumeration-3-Type">
+    <xs:restriction base="listOfunsignedInt">
+          <xs:enumeration value="4397283 165637 1922595 17 84142669 148143812"/>
+          <xs:enumeration value="4294967295 2085432165 39 66176667 81987269 91 425230172 60"/>
+          <xs:enumeration value="634408 6172885 842 9404 6912149 22915 62548 1051857 836309736"/>
+          <xs:enumeration value="514523776 48 212206 8471588 72 870 50473"/>
+          <xs:enumeration value="22859210 76167715 6595 40747652 5937 116 863 231972 779545281"/>
+          <xs:enumeration value="308857100 654287 25951 6609122 6376209 90527 76553678"/>
+          <xs:enumeration value="25 389878 391267 8356738 336 4294967295 1690290 130288179"/>
+          <xs:enumeration value="11842339 2691651 197197949 2705551 382100 4294967295 804489"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

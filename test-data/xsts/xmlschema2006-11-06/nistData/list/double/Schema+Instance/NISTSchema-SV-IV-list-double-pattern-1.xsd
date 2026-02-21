@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-IV-list-double-pattern-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-double-pattern-1-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-double-pattern-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-double-pattern-1,
+      which is derived by restriction of a list with item type double
+      by facet pattern with a value of: \d{1}E\-\d{3} \.\d{4}E\-\d{2} \d{1}\.\d{6}E\-\d{1} \d{1}\.\d{9}E\d{1} \d{13}E\d{2} \d{1}\.\d{16}E\d{3}
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-IV-list-double-pattern-1" type="nist:NISTSchema-SV-IV-list-double-pattern-1-Type"/>
+
+  <simpleType name="listOfdouble">
+    <list itemType="double"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-IV-list-double-pattern-1-Type">
+    <restriction base="nist:listOfdouble">
+      <pattern value="\d{1}E\-\d{3} \.\d{4}E\-\d{2} \d{1}\.\d{6}E\-\d{1} \d{1}\.\d{9}E\d{1} \d{13}E\d{2} \d{1}\.\d{16}E\d{3}"/>
+    </restriction>
+  </simpleType>
+
+</schema>

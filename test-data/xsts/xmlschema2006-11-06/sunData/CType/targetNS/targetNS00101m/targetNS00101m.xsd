@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m.xsd
+   generated from: @(#)targetNS00101m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns="targetNS"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="targetNS">
+     <xsd:complexType name="Test">
+          <xsd:sequence>
+               <xsd:element name="abc" type="xsd:string" />
+          </xsd:sequence>
+     </xsd:complexType>
+</xsd:schema>
+

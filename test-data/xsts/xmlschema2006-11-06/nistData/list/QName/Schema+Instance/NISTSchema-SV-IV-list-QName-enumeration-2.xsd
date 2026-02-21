@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-QName-enumeration-2-NS"
+        xmlns:jrespe="http://www.nist.gov/xsdNS"
+        xmlns:bde="http://www.nist.gov/xsdNS"
+        xmlns:qis.is.a.o="http://www.nist.gov/xsdNS"
+        xmlns:dhas-registries="http://www.nist.gov/xsdNS"
+        xmlns:uinterc="http://www.nist.gov/xsdNS"
+        xmlns:_netwo="http://www.nist.gov/xsdNS"
+        xmlns:ecolla="http://www.nist.gov/xsdNS"
+        xmlns:y="http://www.nist.gov/xsdNS"
+        xmlns:stechnologies-test.pro="http://www.nist.gov/xsdNS"
+        xmlns:dmanagement-su="http://www.nist.gov/xsdNS"
+        xmlns:u="http://www.nist.gov/xsdNS"
+        xmlns:din_ob="http://www.nist.gov/xsdNS"
+        xmlns:gto_in-house_and_i="http://www.nist.gov/xsdNS"
+        xmlns:_r="http://www.nist.gov/xsdNS"
+        xmlns:pthat-d="http://www.nist.gov/xsdNS"
+        xmlns:nspecific.less-soft="http://www.nist.gov/xsdNS"
+        xmlns:nt="http://www.nist.gov/xsdNS"
+        xmlns:vthes="http://www.nist.gov/xsdNS"
+        xmlns:yto-in_i="http://www.nist.gov/xsdNS"
+        xmlns:dfile-of-furth="http://www.nist.gov/xsdNS"
+        xmlns:pan="http://www.nist.gov/xsdNS"
+        xmlns:k="http://www.nist.gov/xsdNS"
+        xmlns:of="http://www.nist.gov/xsdNS"
+        xmlns:_popul="http://www.nist.gov/xsdNS"
+        xmlns:vtech="http://www.nist.gov/xsdNS"
+        xmlns:reliminated_possibl="http://www.nist.gov/xsdNS"
+        xmlns:bpervasive-become-st="http://www.nist.gov/xsdNS"
+        xmlns:vas.these.made_and="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-list-QName-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-QName-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-QName-enumeration-2,
+      which is derived by restriction of a list with itemType QName
+      by facet enumeration with values of:
+          jrespe:pmanufacturers-embedded_prototypes lboth-industry.g.popular_by_a_and.the_and.containing_match- ipartners.to_in wfile-si oand.computing_of-information-computi bde:_as.organizations.to.wireless.well-to-academia-to-called_d qis.is.a.o:qcan.and.know_reference.dat dhas-registries:pa.information_pa kand-pervasive.and.has-related.to-a-t
+          kand-pervasive.and.has-related.to-a-t uinterc:_made-computer_by.supply_the_pico- mincluding_gain_the.a-or _netwo:ein.and_recommendation _that.regist ecolla:fdocuments.service_use.compatibility sto-of_known.a-enterpr y:t ewas-the-to-necessary_t
+          ewas-the-to-necessary_t stechnologies-test.pro:vprovide-back.multidisciplinary_care- dmanagement-su:xthat-highly.and-must-rapid.chos _four_an u:_system.wireless-define_and-communications rprovides.file-through_by-and_for ss.and-and.browsers_from_ind din_ob:qcomputing_accessib
+          din_ob:qcomputing_accessib xparticularly.is_language.profiles-be-offe gto_in-house_and_i:vheterogeneous.documents-profiles_l _r:pfrom-collaborat pthat-d:_into_and.of_ japplication.a gcertain.the_re nspecific.less-soft:fand.become_of.the- nt:_he vthes:gadoption_series.interconnecting-the_w
+          vthes:gadoption_series.interconnecting-the_w yto-in_i:sfollowing-known_s_with_to_information.the vspecifications.requesting.desktop- qthe.maintained-these.for-development.to.of-vocabu rele dfile-of-furth:vcorrectness.provide pan:_aid-interacting_indu bexchange.must_cor k:dlanguage_p
+          k:dlanguage_p of:sprovided-manufacture ubetter_designed-information-heterogeneous_for-allow-bac _popul:_will-work_softw feliminate.generation-and_th vtech:hwill.reviewed_creat
+          vtech:hwill.reviewed_creat bcreation.pervasive_complex-and-wir lto-and_ambiguities.shift_international-test_its-first- reliminated_possibl:xand.any_tools_and.the.promises-registry_a- _using.the.the-repository.ad_can.the_computing-of_automated.mak qof.help_as.as_focusing-exer saddressing-creating.the-organizations.computing_standards_fo qthe_of-conformance.a_of-a.business.dependability.adoptio _upon.of-called-enable-of
+          _upon.of-called-enable-of ws_is_the-networks.computing.5.the_hete bpervasive-become-st:wto.interoperability_industry.crea kgeneration.retrieves.simulation.used.and.of.approach-of_made _with.fed_wi xdefine-tools_can-must-industries_create_b gparticipating_retrieves_to-computer cand-among.discover.l sprocess_obtained-a vas.these.made_and:wto.systems.registry-to-that_indust
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="lboth-industry.g.popular_by_a_and.the_and.containing_match-" type="xs:string"/>
+<xs:element name="ipartners.to_in" type="xs:string"/>
+<xs:element name="wfile-si" type="xs:string"/>
+<xs:element name="oand.computing_of-information-computi" type="xs:string"/>
+<xs:element name="kand-pervasive.and.has-related.to-a-t" type="xs:string"/>
+<xs:element name="mincluding_gain_the.a-or" type="xs:string"/>
+<xs:element name="_that.regist" type="xs:string"/>
+<xs:element name="sto-of_known.a-enterpr" type="xs:string"/>
+<xs:element name="ewas-the-to-necessary_t" type="xs:string"/>
+<xs:element name="_four_an" type="xs:string"/>
+<xs:element name="rprovides.file-through_by-and_for" type="xs:string"/>
+<xs:element name="ss.and-and.browsers_from_ind" type="xs:string"/>
+<xs:element name="xparticularly.is_language.profiles-be-offe" type="xs:string"/>
+<xs:element name="japplication.a" type="xs:string"/>
+<xs:element name="gcertain.the_re" type="xs:string"/>
+<xs:element name="vspecifications.requesting.desktop-" type="xs:string"/>
+<xs:element name="qthe.maintained-these.for-development.to.of-vocabu" type="xs:string"/>
+<xs:element name="rele" type="xs:string"/>
+<xs:element name="bexchange.must_cor" type="xs:string"/>
+<xs:element name="ubetter_designed-information-heterogeneous_for-allow-bac" type="xs:string"/>
+<xs:element name="feliminate.generation-and_th" type="xs:string"/>
+<xs:element name="bcreation.pervasive_complex-and-wir" type="xs:string"/>
+<xs:element name="lto-and_ambiguities.shift_international-test_its-first-" type="xs:string"/>
+<xs:element name="_using.the.the-repository.ad_can.the_computing-of_automated.mak" type="xs:string"/>
+<xs:element name="qof.help_as.as_focusing-exer" type="xs:string"/>
+<xs:element name="saddressing-creating.the-organizations.computing_standards_fo" type="xs:string"/>
+<xs:element name="qthe_of-conformance.a_of-a.business.dependability.adoptio" type="xs:string"/>
+<xs:element name="_upon.of-called-enable-of" type="xs:string"/>
+<xs:element name="ws_is_the-networks.computing.5.the_hete" type="xs:string"/>
+<xs:element name="kgeneration.retrieves.simulation.used.and.of.approach-of_made" type="xs:string"/>
+<xs:element name="_with.fed_wi" type="xs:string"/>
+<xs:element name="xdefine-tools_can-must-industries_create_b" type="xs:string"/>
+<xs:element name="gparticipating_retrieves_to-computer" type="xs:string"/>
+<xs:element name="cand-among.discover.l" type="xs:string"/>
+<xs:element name="sprocess_obtained-a" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-list-QName-enumeration-2" type="NISTSchema-SV-IV-list-QName-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfQName">
+    <xs:list itemType="xs:QName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-QName-enumeration-2-Type">
+    <xs:restriction base="listOfQName">
+          <xs:enumeration value="jrespe:pmanufacturers-embedded_prototypes lboth-industry.g.popular_by_a_and.the_and.containing_match- ipartners.to_in wfile-si oand.computing_of-information-computi bde:_as.organizations.to.wireless.well-to-academia-to-called_d qis.is.a.o:qcan.and.know_reference.dat dhas-registries:pa.information_pa kand-pervasive.and.has-related.to-a-t"/>
+          <xs:enumeration value="kand-pervasive.and.has-related.to-a-t uinterc:_made-computer_by.supply_the_pico- mincluding_gain_the.a-or _netwo:ein.and_recommendation _that.regist ecolla:fdocuments.service_use.compatibility sto-of_known.a-enterpr y:t ewas-the-to-necessary_t"/>
+          <xs:enumeration value="ewas-the-to-necessary_t stechnologies-test.pro:vprovide-back.multidisciplinary_care- dmanagement-su:xthat-highly.and-must-rapid.chos _four_an u:_system.wireless-define_and-communications rprovides.file-through_by-and_for ss.and-and.browsers_from_ind din_ob:qcomputing_accessib"/>
+          <xs:enumeration value="din_ob:qcomputing_accessib xparticularly.is_language.profiles-be-offe gto_in-house_and_i:vheterogeneous.documents-profiles_l _r:pfrom-collaborat pthat-d:_into_and.of_ japplication.a gcertain.the_re nspecific.less-soft:fand.become_of.the- nt:_he vthes:gadoption_series.interconnecting-the_w"/>
+          <xs:enumeration value="vthes:gadoption_series.interconnecting-the_w yto-in_i:sfollowing-known_s_with_to_information.the vspecifications.requesting.desktop- qthe.maintained-these.for-development.to.of-vocabu rele dfile-of-furth:vcorrectness.provide pan:_aid-interacting_indu bexchange.must_cor k:dlanguage_p"/>
+          <xs:enumeration value="k:dlanguage_p of:sprovided-manufacture ubetter_designed-information-heterogeneous_for-allow-bac _popul:_will-work_softw feliminate.generation-and_th vtech:hwill.reviewed_creat"/>
+          <xs:enumeration value="vtech:hwill.reviewed_creat bcreation.pervasive_complex-and-wir lto-and_ambiguities.shift_international-test_its-first- reliminated_possibl:xand.any_tools_and.the.promises-registry_a- _using.the.the-repository.ad_can.the_computing-of_automated.mak qof.help_as.as_focusing-exer saddressing-creating.the-organizations.computing_standards_fo qthe_of-conformance.a_of-a.business.dependability.adoptio _upon.of-called-enable-of"/>
+          <xs:enumeration value="_upon.of-called-enable-of ws_is_the-networks.computing.5.the_hete bpervasive-become-st:wto.interoperability_industry.crea kgeneration.retrieves.simulation.used.and.of.approach-of_made _with.fed_wi xdefine-tools_can-must-industries_create_b gparticipating_retrieves_to-computer cand-among.discover.l sprocess_obtained-a vas.these.made_and:wto.systems.registry-to-that_indust"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

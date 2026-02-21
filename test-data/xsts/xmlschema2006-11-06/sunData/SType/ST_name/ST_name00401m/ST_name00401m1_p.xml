@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_name00401m1_p.xml
+   generated from: @(#)ST_name00401m.jmpp	1.2 02/09/06
+
+-->
+
+
+<test
+    xmlns="ST_name"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ST_name ST_name00401m.xsd" xsi:type="Test">2</test>
+

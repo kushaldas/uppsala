@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00403m.xsd
+   generated from: @(#)typeDef00403m.jmpp	1.2 02/04/04
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root" type="ComplexType"/>
+
+  <xsd:element name="Global" type="xsd:boolean"/>
+
+  <xsd:element name="GlobalPreDefinedType" type="PreDefinedType"/>
+
+  <xsd:simpleType name="PreDefinedType">
+      <xsd:restriction base="xsd:boolean">
+          <xsd:pattern value="1|true"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="ComplexType">
+      <xsd:sequence>
+          <xsd:element ref="Global"/>
+          <xsd:element ref="GlobalPreDefinedType"/>
+          <xsd:element name="Local" type="xsd:decimal"/>
+          <xsd:element name="LocalPreDefinedType" type="PreDefinedType"/>
+          <xsd:element name="LocalInline">
+              <xsd:simpleType>
+                  <xsd:restriction base="xsd:boolean">
+                      <xsd:pattern value="0|false"/>
+                  </xsd:restriction>
+              </xsd:simpleType>
+          </xsd:element>
+      </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

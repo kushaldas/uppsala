@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-dateTime-maxLength-4-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-dateTime-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-dateTime-maxLength-4
+    xmlns="NISTSchema-SV-II-list-dateTime-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-dateTime-maxLength-4-NS NISTSchema-SV-II-list-dateTime-maxLength-4.xsd">1871-03-24T09:56:02 1971-03-14T09:06:32 1871-03-24T19:36:42 1971-03-04T09:26:12 1971-03-14T09:26:12 1971-03-14T09:16:42 1971-03-24T09:16:32 1871-03-14T19:06:02 1871-03-14T19:16:32</NISTSchema-SV-II-list-dateTime-maxLength-4>

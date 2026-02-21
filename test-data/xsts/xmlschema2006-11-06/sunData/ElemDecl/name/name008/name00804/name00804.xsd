@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00804.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="ElemDecl/name"
+    targetNamespace="ElemDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="aaaa"/>
+                <xsd:element ref="bbbB"/>
+                <xsd:element ref="ccCc"/>
+                <xsd:element ref="ddDD"/>
+                <xsd:element ref="eEee"/>
+                <xsd:element ref="fFfF"/>
+                <xsd:element ref="pPPp"/>
+                <xsd:element ref="gGGG"/>
+                <xsd:element ref="Hhhh"/>
+                <xsd:element ref="IiiI"/>
+                <xsd:element ref="JjJj"/>
+                <xsd:element ref="KkKK"/>
+                <xsd:element ref="LLll"/>
+                <xsd:element ref="MMmM"/>
+                <xsd:element ref="NNNn"/>
+                <xsd:element ref="OOOO"/>
+
+                <xsd:element ref="bbb0"/>
+                <xsd:element ref="cc0c"/>
+                <xsd:element ref="dd00"/>
+                <xsd:element ref="e0ee"/>
+                <xsd:element ref="f0f0"/>
+                <xsd:element ref="p00p"/>
+                <xsd:element ref="g000"/>
+
+                <xsd:element ref="bbb_"/>
+                <xsd:element ref="cc_c"/>
+                <xsd:element ref="dd__"/>
+                <xsd:element ref="e_ee"/>
+                <xsd:element ref="f_f_"/>
+                <xsd:element ref="p__p"/>
+                <xsd:element ref="g___"/>
+
+                <xsd:element ref="H111"/>
+                <xsd:element ref="I11I"/>
+                <xsd:element ref="J1J1"/>
+                <xsd:element ref="K1KK"/>
+                <xsd:element ref="LL11"/>
+                <xsd:element ref="MM1M"/>
+                <xsd:element ref="NNN1"/>
+
+                <xsd:element ref="H---"/>
+                <xsd:element ref="I--I"/>
+                <xsd:element ref="J-J-"/>
+                <xsd:element ref="K-KK"/>
+                <xsd:element ref="LL--"/>
+                <xsd:element ref="MM-M"/>
+                <xsd:element ref="NNN-"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="aaaa" type="xsd:int"/>
+    <xsd:element name="bbbB" type="xsd:int"/>
+    <xsd:element name="ccCc" type="xsd:int"/>
+    <xsd:element name="ddDD" type="xsd:int"/>
+    <xsd:element name="eEee" type="xsd:int"/>
+    <xsd:element name="fFfF" type="xsd:int"/>
+    <xsd:element name="pPPp" type="xsd:int"/>
+    <xsd:element name="gGGG" type="xsd:int"/>
+    <xsd:element name="Hhhh" type="xsd:int"/>
+    <xsd:element name="IiiI" type="xsd:int"/>
+    <xsd:element name="JjJj" type="xsd:int"/>
+    <xsd:element name="KkKK" type="xsd:int"/>
+    <xsd:element name="LLll" type="xsd:int"/>
+    <xsd:element name="MMmM" type="xsd:int"/>
+    <xsd:element name="NNNn" type="xsd:int"/>
+    <xsd:element name="OOOO" type="xsd:int"/>
+
+    <xsd:element name="bbb0" type="xsd:int"/>
+    <xsd:element name="cc0c" type="xsd:int"/>
+    <xsd:element name="dd00" type="xsd:int"/>
+    <xsd:element name="e0ee" type="xsd:int"/>
+    <xsd:element name="f0f0" type="xsd:int"/>
+    <xsd:element name="p00p" type="xsd:int"/>
+    <xsd:element name="g000" type="xsd:int"/>
+
+    <xsd:element name="bbb_" type="xsd:int"/>
+    <xsd:element name="cc_c" type="xsd:int"/>
+    <xsd:element name="dd__" type="xsd:int"/>
+    <xsd:element name="e_ee" type="xsd:int"/>
+    <xsd:element name="f_f_" type="xsd:int"/>
+    <xsd:element name="p__p" type="xsd:int"/>
+    <xsd:element name="g___" type="xsd:int"/>
+
+    <xsd:element name="H111" type="xsd:int"/>
+    <xsd:element name="I11I" type="xsd:int"/>
+    <xsd:element name="J1J1" type="xsd:int"/>
+    <xsd:element name="K1KK" type="xsd:int"/>
+    <xsd:element name="LL11" type="xsd:int"/>
+    <xsd:element name="MM1M" type="xsd:int"/>
+    <xsd:element name="NNN1" type="xsd:int"/>
+
+    <xsd:element name="H---" type="xsd:int"/>
+    <xsd:element name="I--I" type="xsd:int"/>
+    <xsd:element name="J-J-" type="xsd:int"/>
+    <xsd:element name="K-KK" type="xsd:int"/>
+    <xsd:element name="LL--" type="xsd:int"/>
+    <xsd:element name="MM-M" type="xsd:int"/>
+    <xsd:element name="NNN-" type="xsd:int"/>
+
+</xsd:schema>

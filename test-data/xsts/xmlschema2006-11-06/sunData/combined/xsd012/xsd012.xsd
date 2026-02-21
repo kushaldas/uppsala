@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd012.xsd	1.3 03/10/10
+
+-->
+
+<!--
+	HIGHLIGHT OF THIS TEST
+	======================
+	- mixed content model
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="root">
+		<complexType>
+			<choice maxOccurs="unbounded">
+				<element name="mixed">
+					<complexType mixed="true">
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element ref="foo:a" />
+							<element ref="foo:b" />
+							<element ref="foo:c" />
+						</choice>
+					</complexType>
+				</element>
+				<element name="elementOnly">
+					<complexType mixed="false">
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element ref="foo:a" />
+							<element ref="foo:b" />
+							<element ref="foo:c" />
+						</choice>
+					</complexType>
+				</element>
+			</choice>
+		</complexType>
+	</element>
+	
+	<element name="a" />
+	<element name="b" />
+	<element name="c" />
+</schema>

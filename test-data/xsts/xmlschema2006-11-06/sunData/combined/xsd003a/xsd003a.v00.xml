@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd003a.v00.xml	1.3 02/12/25
+
+-->
+
+<root xmlns="foo" foo:gAtt="anything" xmlns:foo="foo">
+	<root />
+	<root />
+	<root />
+	<root />
+</root>

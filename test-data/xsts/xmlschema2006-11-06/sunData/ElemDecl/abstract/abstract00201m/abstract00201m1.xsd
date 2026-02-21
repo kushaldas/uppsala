@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)abstract00201m1.xsd
+   generated from: @(#)abstract00201m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/abstract"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/abstract"
+  elementFormDefault="qualified">
+
+  <xsd:element name="root" abstract="true"/>
+
+</xsd:schema>

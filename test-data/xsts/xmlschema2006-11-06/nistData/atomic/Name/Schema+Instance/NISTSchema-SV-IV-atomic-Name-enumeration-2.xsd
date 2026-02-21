@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-Name-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-Name-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-Name-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-Name-enumeration-2,
+      which is derived by restriction of built-in type Name
+      by facet enumeration with values of:
+          uof.retrieve:the_provided_specific_in_systems-on-a-chi
+          pis_known:over.allow.
+          _discovery:designed_graphics_perv
+          jregistry.interoperability_hampered-o
+          _great-desk
+          ra-the-partners-that-pervasive.by_challenges:discover
+          pnext:creat
+          yr
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-Name-enumeration-2" type="NISTSchema-SV-IV-atomic-Name-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-Name-enumeration-2-Type">
+    <xs:restriction base="xs:Name">
+          <xs:enumeration value="uof.retrieve:the_provided_specific_in_systems-on-a-chi"/>
+          <xs:enumeration value="pis_known:over.allow."/>
+          <xs:enumeration value="_discovery:designed_graphics_perv"/>
+          <xs:enumeration value="jregistry.interoperability_hampered-o"/>
+          <xs:enumeration value="_great-desk"/>
+          <xs:enumeration value="ra-the-partners-that-pervasive.by_challenges:discover"/>
+          <xs:enumeration value="pnext:creat"/>
+          <xs:enumeration value="yr"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-normalizedString-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-normalizedString-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-normalizedString-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-normalizedString-enumeration-5,
+      which is derived by restriction of a list with itemType normalizedString
+      by facet enumeration with values of:
+          with the of XML interconnecting maintains
+          at NIST/ITL is opportunity concepts
+          helping and software then allows Conference complex standards networking
+          alike on capabilities effectively number XML and led landscape
+          consortiums Facilitation of to XSLT/Xpath
+          come build environments and such emerging Using of
+          s achieved contributor and Electronic
+          unambiguous paradigm the set The from for One
+          advent screen repository better years
+          the networking must distributed specification of understand
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-normalizedString-enumeration-5" type="NISTSchema-SV-IV-list-normalizedString-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfnormalizedString">
+    <xs:list itemType="xs:normalizedString"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-normalizedString-enumeration-5-Type">
+    <xs:restriction base="listOfnormalizedString">
+          <xs:enumeration value="with the of XML interconnecting maintains"/>
+          <xs:enumeration value="at NIST/ITL is opportunity concepts"/>
+          <xs:enumeration value="helping and software then allows Conference complex standards networking"/>
+          <xs:enumeration value="alike on capabilities effectively number XML and led landscape"/>
+          <xs:enumeration value="consortiums Facilitation of to XSLT/Xpath"/>
+          <xs:enumeration value="come build environments and such emerging Using of"/>
+          <xs:enumeration value="s achieved contributor and Electronic"/>
+          <xs:enumeration value="unambiguous paradigm the set The from for One"/>
+          <xs:enumeration value="advent screen repository better years"/>
+          <xs:enumeration value="the networking must distributed specification of understand"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

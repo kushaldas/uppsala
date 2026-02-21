@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00503m1_p.xml
+   generated from: @(#)name00503m.jmpp	1.6 04/01/14
+
+-->
+
+<test:root
+  xmlns:test="ElemDecl/name"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/name name00503m1.xsd"/>

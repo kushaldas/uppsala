@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-QName-enumeration-4-NS"
+        xmlns:rof="http://www.nist.gov/xsdNS"
+        xmlns:_interoperability.la="http://www.nist.gov/xsdNS"
+        xmlns:v="http://www.nist.gov/xsdNS"
+        xmlns:_no-computing_="http://www.nist.gov/xsdNS"
+        xmlns:uarea="http://www.nist.gov/xsdNS"
+        xmlns:yc="http://www.nist.gov/xsdNS"
+        xmlns:ewith.te="http://www.nist.gov/xsdNS"
+        xmlns:xthe_pervasive_autom="http://www.nist.gov/xsdNS"
+        xmlns:_ambiguities.="http://www.nist.gov/xsdNS"
+        xmlns:_serie="http://www.nist.gov/xsdNS"
+        xmlns:_with="http://www.nist.gov/xsdNS"
+        xmlns:_stakehol="http://www.nist.gov/xsdNS"
+        xmlns:ssignatures_set_file.="http://www.nist.gov/xsdNS"
+        xmlns:eprovided_to_="http://www.nist.gov/xsdNS"
+        xmlns:_data.comm="http://www.nist.gov/xsdNS"
+        xmlns:_each_do-repository.spe="http://www.nist.gov/xsdNS"
+        xmlns:rdi="http://www.nist.gov/xsdNS"
+        xmlns:_filte="http://www.nist.gov/xsdNS"
+        xmlns:iproc="http://www.nist.gov/xsdNS"
+        xmlns:oenable_="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-list-QName-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-QName-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-QName-enumeration-4,
+      which is derived by restriction of a list with itemType QName
+      by facet enumeration with values of:
+          rof:iprovides_the_made_voi _interoperability.la:rservice-computer-shift. _of_must_in.lies.the.requesting-structure-syst ksupply-offer.s-using.yea xcompetence.business_and.is_dyn v:g20-software_sp
+          v:g20-software_sp _no-computing_:casking.for.impl uarea:fan.are _test-frameworks.technical_wirel yc:vbuilding_the.to.context-r
+          yc:vbuilding_the.to.context-r acare-file.security.file_ area sof.as_and-the_industry.software.and_the_networks.competence ewith.te:jto-neutral.tec _containing_used-visibly_test.consortiums_this-security.prof dbasis_and_contains_that_and_2000.paradigm.revolution.des xthe_pervasive_autom:_among.which.to-of_te _ambiguities.:dhelping.have.and-vocabu _serie:yan.simulation_such_back.each-man
+          _serie:yan.simulation_such_back.each-man _with:vcomputing-the-of.building_key_maintains_advanced-the- _stakehol:nof.four-information.to ssignatures_set_file.:_and_object-the_is-information-the menvironment.for-supply-of.devel qalso.correction_in.context-rich_and.is_d eprovided_to_:padvent.its-testable-them.bandwidth_mo vand-consor _data.comm:oand-to.as_and-s
+          _data.comm:oand-to.as_and-s _each_do-repository.spe:krelated_discovery.confor rdi:_the. iis_desktop_information_in _filte:yprofiles_specifications.is_ass iproc:xfile-and_
+          iproc:xfile-and_ _hampered_on_has-back_measure_and_browsers-investigatio oenable_:ois_global-t _all-them-semantics.and_tool-reference.and.the_include-improve _and-addressing_partnerships.a_and_data_tool _specification_called.correctio
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="_of_must_in.lies.the.requesting-structure-syst" type="xs:string"/>
+<xs:element name="ksupply-offer.s-using.yea" type="xs:string"/>
+<xs:element name="xcompetence.business_and.is_dyn" type="xs:string"/>
+<xs:element name="_test-frameworks.technical_wirel" type="xs:string"/>
+<xs:element name="acare-file.security.file_" type="xs:string"/>
+<xs:element name="area" type="xs:string"/>
+<xs:element name="sof.as_and-the_industry.software.and_the_networks.competence" type="xs:string"/>
+<xs:element name="_containing_used-visibly_test.consortiums_this-security.prof" type="xs:string"/>
+<xs:element name="dbasis_and_contains_that_and_2000.paradigm.revolution.des" type="xs:string"/>
+<xs:element name="menvironment.for-supply-of.devel" type="xs:string"/>
+<xs:element name="qalso.correction_in.context-rich_and.is_d" type="xs:string"/>
+<xs:element name="vand-consor" type="xs:string"/>
+<xs:element name="iis_desktop_information_in" type="xs:string"/>
+<xs:element name="_hampered_on_has-back_measure_and_browsers-investigatio" type="xs:string"/>
+<xs:element name="_all-them-semantics.and_tool-reference.and.the_include-improve" type="xs:string"/>
+<xs:element name="_and-addressing_partnerships.a_and_data_tool" type="xs:string"/>
+<xs:element name="_specification_called.correctio" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-list-QName-enumeration-4" type="NISTSchema-SV-IV-list-QName-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfQName">
+    <xs:list itemType="xs:QName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-QName-enumeration-4-Type">
+    <xs:restriction base="listOfQName">
+          <xs:enumeration value="rof:iprovides_the_made_voi _interoperability.la:rservice-computer-shift. _of_must_in.lies.the.requesting-structure-syst ksupply-offer.s-using.yea xcompetence.business_and.is_dyn v:g20-software_sp"/>
+          <xs:enumeration value="v:g20-software_sp _no-computing_:casking.for.impl uarea:fan.are _test-frameworks.technical_wirel yc:vbuilding_the.to.context-r"/>
+          <xs:enumeration value="yc:vbuilding_the.to.context-r acare-file.security.file_ area sof.as_and-the_industry.software.and_the_networks.competence ewith.te:jto-neutral.tec _containing_used-visibly_test.consortiums_this-security.prof dbasis_and_contains_that_and_2000.paradigm.revolution.des xthe_pervasive_autom:_among.which.to-of_te _ambiguities.:dhelping.have.and-vocabu _serie:yan.simulation_such_back.each-man"/>
+          <xs:enumeration value="_serie:yan.simulation_such_back.each-man _with:vcomputing-the-of.building_key_maintains_advanced-the- _stakehol:nof.four-information.to ssignatures_set_file.:_and_object-the_is-information-the menvironment.for-supply-of.devel qalso.correction_in.context-rich_and.is_d eprovided_to_:padvent.its-testable-them.bandwidth_mo vand-consor _data.comm:oand-to.as_and-s"/>
+          <xs:enumeration value="_data.comm:oand-to.as_and-s _each_do-repository.spe:krelated_discovery.confor rdi:_the. iis_desktop_information_in _filte:yprofiles_specifications.is_ass iproc:xfile-and_"/>
+          <xs:enumeration value="iproc:xfile-and_ _hampered_on_has-back_measure_and_browsers-investigatio oenable_:ois_global-t _all-them-semantics.and_tool-reference.and.the_include-improve _and-addressing_partnerships.a_and_data_tool _specification_called.correctio"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

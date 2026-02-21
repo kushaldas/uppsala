@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)annotation00101m5.xsd
+   generated from: @(#)annotation00101m.jmpp	1.3 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="AGroupDef/annotation"
+  xmlns:jt="JavaTest"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="AGroupDef/annotation">
+  
+     <xsd:element name="root"/>
+  
+     <xsd:complexType name="A">
+          <xsd:attributeGroup ref="G1"/>
+     </xsd:complexType>
+
+     <xsd:attributeGroup name="G1">
+          <xsd:annotation>
+              <xsd:appinfo>
+                  <jt:keywords>runtime positive</jt:keywords>
+              </xsd:appinfo>
+          </xsd:annotation>
+          <xsd:annotation>
+              <xsd:appinfo>
+                  <jt:keywords>runtime positive</jt:keywords>
+              </xsd:appinfo>
+          </xsd:annotation>
+          <xsd:attribute name="c" type="xsd:int" />
+          <xsd:attribute name="date" type="xsd:date" />
+     </xsd:attributeGroup>
+
+</xsd:schema>

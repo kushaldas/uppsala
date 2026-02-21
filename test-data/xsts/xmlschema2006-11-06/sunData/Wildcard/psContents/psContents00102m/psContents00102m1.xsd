@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)psContents00102m1.xsd
+   generated from: @(#)psContents00102m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="psContents"
+  targetNamespace="psContents">
+
+     <xsd:attribute name="date" type="xsd:date"/>
+     <xsd:element name="a">
+          <xsd:complexType>
+            <xsd:anyAttribute namespace="##any" processContents="strict"/>
+          </xsd:complexType>
+     </xsd:element>
+
+</xsd:schema>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m1_p.xml
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00104m1.xsd"
+    A00="0"
+    M01="1"
+    Z02="2"
+    a10="0"
+    d11="1"
+    h12="2"
+    j20="0"
+    r21="1"
+    z22="2"
+    À30="0"
+    Ë31="1"
+    Ö32="2"
+    Ø40="0"
+    Û41="1"
+    Þ42="2"
+    à50="0"
+    ë51="1"
+    ö52="2"
+    ø60="0"
+    û61="1"
+    ÿ62="2"
+    Ā70="0"
+    Ę71="1"
+    ı72="2"
+    Ĵ80="0"
+    Ĺ81="1"
+    ľ82="2"
+    Ł90="0"
+    ń91="1"
+    ň92="2"
+/>

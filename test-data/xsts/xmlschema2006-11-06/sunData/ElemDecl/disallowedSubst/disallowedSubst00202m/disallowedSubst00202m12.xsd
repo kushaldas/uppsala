@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)disallowedSubst00202m12.xsd
+   generated from: @(#)disallowedSubst00202m.jmpp	1.3 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/disallowedSubst"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/disallowedSubst"
+  elementFormDefault="qualified"
+  >
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="Head" maxOccurs="unbounded"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Head" type="HeadType"/>
+
+  <xsd:element name="Element0" type="HeadType" block=""/>
+  <xsd:element name="Element1" type="HeadType" block="#all"/>
+  <xsd:element name="Element2" type="HeadType" block="substitution"/>
+  <xsd:element name="Element3" type="HeadType" block="restriction"/>
+  <xsd:element name="Element4" type="HeadType" block="extension"/>
+  <xsd:element name="Element5" type="HeadType" block="substitution restriction"/>
+  <xsd:element name="Element6" type="HeadType" block="extension substitution"/>
+  <xsd:element name="Element7" type="HeadType" block="restriction substitution"/>
+  <xsd:element name="Element8" type="HeadType" block="substitution restriction extension"/>
+  <xsd:element name="Element9" type="HeadType" block="substitution extension restriction"/>
+  <xsd:element name="Element10" type="HeadType" block="extension substitution restriction"/>
+
+  <xsd:complexType name="HeadType">
+      <xsd:sequence>
+          <xsd:element name="Ear"/>
+          <xsd:element name="Eye"/>
+      </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>
+

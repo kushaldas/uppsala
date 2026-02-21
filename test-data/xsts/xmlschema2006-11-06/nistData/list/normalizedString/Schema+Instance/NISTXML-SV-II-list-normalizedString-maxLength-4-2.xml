@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-4
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd">482_Effective_Dom_Nist_To_Street_Maintains_Requesting_,_AL_16626-1911 5539_The_Naval_Libraries_From_Street_Profiles_Model_,_GA_16626-1911 7928_Retrieval_Partnerships_Of_Ensure_Street_Of_That_,_AK_16626-1911 64_Documents_Relationships_The_Discussions_Street_Hoc_Consequently_,_AL_16626-1911 93_Markup_Oasis_New_The_Street_Language_Are_,_OH_16626-1911 4_The_Files_In_Manipulation_Street_The_Relationships_,_HI_16626-1911 873_Prominent_Define_Provides_That_Street_Law_Electronic_,_KS_16626-1911 6943_Be_Reference_Object_Of_Street_Execution_Other_,_TX_16626-1911 61_Models_Files_Pervasive_Set_Street_Discussions_Processors_,_AK_16626-1911 5553_Tool_Are_Markup_Them_Street_Investigation_Through_,_PA_16626-1911</NISTSchema-SV-II-list-normalizedString-maxLength-4>

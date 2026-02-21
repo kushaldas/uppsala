@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-dateTime-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-dateTime-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-dateTime-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-dateTime-enumeration-3,
+      which is derived by restriction of a list with itemType dateTime
+      by facet enumeration with values of:
+          2017-02-21T10:19:45 2010-09-19T19:28:57 2013-09-18T04:01:55 2023-10-07T06:09:32 2024-05-22T12:42:41 2026-11-20T15:08:56 2014-12-18T23:26:54 2030-11-01T07:24:57 2004-03-23T06:07:30
+          2025-10-25T16:47:00 1986-11-23T04:59:27 2021-05-12T23:13:44 2009-03-22T01:08:12 2017-10-23T04:13:14 2002-04-11T16:44:40 2014-04-12T03:45:46
+          2029-01-17T19:25:22 2028-11-02T18:26:26 2027-06-20T12:54:19 2027-08-24T18:34:26 1972-12-12T18:19:43 1978-08-09T20:21:52 1979-04-23T23:53:28 1993-05-23T21:57:35 1993-03-28T07:30:33
+          1980-11-15T05:41:28 2006-07-13T08:25:02 1992-06-01T09:17:51 2012-08-14T19:26:32 2005-05-05T04:52:12 2008-07-23T09:29:17 2026-06-23T03:44:50 2004-08-24T06:16:23
+          2019-12-07T07:44:00 1974-06-16T12:32:18 1983-03-28T11:55:45 1978-08-26T05:15:56 1981-07-16T14:32:10 2006-08-01T16:56:02 2018-04-06T13:58:32 1984-10-03T11:04:55 2010-02-07T11:27:44 2018-01-20T14:31:15
+          1970-05-18T22:20:00 1993-07-22T08:33:08 1970-04-16T10:53:37 2026-09-23T04:53:08 2027-03-20T01:00:08 2004-10-06T04:22:16 2018-05-07T06:51:37
+          2024-05-19T12:21:35 1992-04-19T09:59:47 2016-07-01T01:08:18 2004-11-12T20:50:05 1989-02-23T09:44:47 2022-04-10T10:37:23 1982-06-04T17:03:25
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-dateTime-enumeration-3" type="NISTSchema-SV-IV-list-dateTime-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfdateTime">
+    <xs:list itemType="xs:dateTime"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-dateTime-enumeration-3-Type">
+    <xs:restriction base="listOfdateTime">
+          <xs:enumeration value="2017-02-21T10:19:45 2010-09-19T19:28:57 2013-09-18T04:01:55 2023-10-07T06:09:32 2024-05-22T12:42:41 2026-11-20T15:08:56 2014-12-18T23:26:54 2030-11-01T07:24:57 2004-03-23T06:07:30"/>
+          <xs:enumeration value="2025-10-25T16:47:00 1986-11-23T04:59:27 2021-05-12T23:13:44 2009-03-22T01:08:12 2017-10-23T04:13:14 2002-04-11T16:44:40 2014-04-12T03:45:46"/>
+          <xs:enumeration value="2029-01-17T19:25:22 2028-11-02T18:26:26 2027-06-20T12:54:19 2027-08-24T18:34:26 1972-12-12T18:19:43 1978-08-09T20:21:52 1979-04-23T23:53:28 1993-05-23T21:57:35 1993-03-28T07:30:33"/>
+          <xs:enumeration value="1980-11-15T05:41:28 2006-07-13T08:25:02 1992-06-01T09:17:51 2012-08-14T19:26:32 2005-05-05T04:52:12 2008-07-23T09:29:17 2026-06-23T03:44:50 2004-08-24T06:16:23"/>
+          <xs:enumeration value="2019-12-07T07:44:00 1974-06-16T12:32:18 1983-03-28T11:55:45 1978-08-26T05:15:56 1981-07-16T14:32:10 2006-08-01T16:56:02 2018-04-06T13:58:32 1984-10-03T11:04:55 2010-02-07T11:27:44 2018-01-20T14:31:15"/>
+          <xs:enumeration value="1970-05-18T22:20:00 1993-07-22T08:33:08 1970-04-16T10:53:37 2026-09-23T04:53:08 2027-03-20T01:00:08 2004-10-06T04:22:16 2018-05-07T06:51:37"/>
+          <xs:enumeration value="2024-05-19T12:21:35 1992-04-19T09:59:47 2016-07-01T01:08:18 2004-11-12T20:50:05 1989-02-23T09:44:47 2022-04-10T10:37:23 1982-06-04T17:03:25"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)maxOccurs00101m.xsd
+   generated from: @(#)maxOccurs00101m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/maxOccurs"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/maxOccurs">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Local" />
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>
+

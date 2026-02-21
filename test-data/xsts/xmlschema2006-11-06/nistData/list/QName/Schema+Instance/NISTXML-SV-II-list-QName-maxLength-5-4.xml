@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-5-NS"
+    xmlns:wfor-and_that.without.with_000="http://www.nist.gov/xsdNS"
+    xmlns:esoftware.to.ca="http://www.nist.gov/xsdNS"
+    xmlns:kof="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_t="http://www.nist.gov/xsdNS"
+    xmlns:_tremend="http://www.nist.gov/xsdNS"
+    xmlns:astand="http://www.nist.gov/xsdNS"
+    xmlns:d="http://www.nist.gov/xsdNS"
+    xmlns:ldevelop="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-5-NS NISTSchema-SV-II-list-QName-maxLength-5.xsd">wfor-and_that.without.with_000:iavailable.reach-or esoftware.to.ca:tcreation.discovery kof:_devices.with.refer nhas-of_basis_the_g _t:te_of.other.filter- _tremend:rall-industries_be- astand:aboth_and_deployed- d:madoption_technolog ldevelop:nthose_testing-as_c _information_addres _these-s_prototype_ _commerce_rapid.sof</nist:NISTSchema-SV-II-list-QName-maxLength-5>

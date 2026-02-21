@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)abstract00101m1_n.xml
+   generated from: @(#)abstract00101m.jmpp	1.3 02/11/15
+
+-->
+
+
+<test:b
+    xmlns:test="abstract"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="abstract abstract00101m1.xsd">
+<c>1</c>
+</test:b>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-minLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-minLength-5
+    xmlns="NISTSchema-SV-II-list-string-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-minLength-5-NS NISTSchema-SV-II-list-string-minLength-5.xsd">748_And_For_To_For_Street_Industry_,_WI_14012-1005 68_Necessary_As_Is_Which_Street_And_,_UT_14012-1005 77_Appropriate_Develop_Choices_The_Street_And_,_DE_14012-1005 946_Screen_Efforts_Enabling_Market_Street_Understand_,_VT_14012-1005 28_The_More_Draft_University_Street_Can_,_SC_14012-1005 98_Ultimate_Simplest_For_Is_Street_Images_,_FL_14012-1005 3859_Key_Set_With_Competence_Street_Xml_,_TN_14012-1005 93_Data_Enable_The_Specifications_Street_Will_,_ME_14012-1005 4673_Interoperability_Signature_Industry_The_Street_Dom_,_SC_14012-1005</NISTSchema-SV-II-list-string-minLength-5>

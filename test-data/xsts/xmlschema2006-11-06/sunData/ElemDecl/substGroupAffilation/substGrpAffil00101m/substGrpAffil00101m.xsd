@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)substGrpAffil00101m.xsd
+   generated from: @(#)substGrpAffil00101m.jmpp	1.3 02/08/26
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/substGroupAffilation"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/substGroupAffilation"
+  elementFormDefault="qualified">
+
+    <xsd:complexType name="PublicationType">
+        <xsd:sequence>
+            <xsd:element name="Title" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BookType">
+        <xsd:complexContent>
+            <xsd:extension base="PublicationType" >
+                <xsd:sequence>
+                    <xsd:element name="Author" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="MagazineType">
+        <xsd:complexContent>
+            <xsd:extension base="PublicationType" >
+                <xsd:sequence>
+                    <xsd:element name="Date" type="xsd:gYear"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:element name="Publication" abstract="true" type="PublicationType"/>
+    <xsd:element name="Book" substitutionGroup="Publication" type="BookType"/>
+    <xsd:element name="Magazine" substitutionGroup="Publication" type="MagazineType"/>
+    <xsd:element name="Article" type="PublicationType"/>
+    <xsd:element name="BookStore">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="Publication" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

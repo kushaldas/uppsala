@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-length-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-length-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-length-4
+    xmlns="NISTSchema-SV-IV-list-string-length-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-length-4-NS NISTSchema-SV-IV-list-string-length-4.xsd">44953_Information_Providing_Thus_Microsystems_Street_Access_For_Xml_,_NY_10489 634_Additionally_Impact_Community_Industry_Street_Quality_Standardization_Of_,_NV_10489 33647_Networks_Structure_Directions_Must_Street_Build_Popular_Discussions_,_TX_10489 9_Xml_Work_For_And_Street_The_For_Its_,_NJ_10489 265_By_Upon_File_Of_Street_And_Challenges_With_,_AZ_10489 1553_Them_Rapidly_Known_Via_Street_Known_Academia_Participate_,_PA_10489 66_Files_Wireless_Of_Must_Street_Made_Devices_Of_,_LA_10489 756_Xml_Are_Targeted_And_Street_Targeted_To_Facilitates_,_WA_10489</NISTSchema-SV-IV-list-string-length-4>

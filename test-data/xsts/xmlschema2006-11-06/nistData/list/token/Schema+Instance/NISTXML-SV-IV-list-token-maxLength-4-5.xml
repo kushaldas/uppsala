@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-maxLength-4-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-maxLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-maxLength-4
+    xmlns="NISTSchema-SV-IV-list-token-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-maxLength-4-NS NISTSchema-SV-IV-list-token-maxLength-4.xsd">53_Information_Only_Will_By_Street_Portable_Many_,_AK_14935-1495 655_Be_The_Voiced_Working_Street_Technologies_Information_,_CA_14935-1495 67268_Specific_Language_Distributed_Having_Street_Is_And_,_ID_14935-1495 3_Understand_Desktop_Is_Enforcement_Street_And_Files_,_NH_14935-1495 75296_Testing_Asked_To_Dom_Street_On_Prominent_,_RI_14935-1495 57148_And_Partners_Participating_Able_Street_Includes_To_,_MT_14935-1495 38932_Any_Newcomer_And_Vendors_Street_Software_Discovery_,_MD_14935-1495 1748_Testing_Consortium_To_Conformance_Street_Necessary_Chains_,_NC_14935-1495</NISTSchema-SV-IV-list-token-maxLength-4>

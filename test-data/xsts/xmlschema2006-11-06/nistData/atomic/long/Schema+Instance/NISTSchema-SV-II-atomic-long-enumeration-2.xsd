@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-long-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-long-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-long-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-long-enumeration-2,
+      which is derived by restriction of built-in type long
+      by facet enumeration with values of:
+          15262
+          -608069987034146
+          -4254
+          460983752307
+          -47
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-long-enumeration-2" type="NISTSchema-SV-II-atomic-long-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-long-enumeration-2-Type">
+    <xs:restriction base="xs:long">
+          <xs:enumeration value="15262"/>
+          <xs:enumeration value="-608069987034146"/>
+          <xs:enumeration value="-4254"/>
+          <xs:enumeration value="460983752307"/>
+          <xs:enumeration value="-47"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

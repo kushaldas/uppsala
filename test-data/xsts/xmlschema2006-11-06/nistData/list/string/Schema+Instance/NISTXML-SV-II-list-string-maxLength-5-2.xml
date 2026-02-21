@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-5
+    xmlns="NISTSchema-SV-II-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-5-NS NISTSchema-SV-II-list-string-maxLength-5.xsd">772_Aspects_Understanding_Computer_Street_Testing_Object_,_CO_11597-1989 8518_Data_Repository_Particularly_Street_Of_Partner_,_DE_11597-1989 691_Coordinate_For_Completion_Street_Working_As_,_HI_11597-1989 31_Prominent_Cost_Find_Street_And_The_,_MS_11597-1989 789_Choices_And_Can_Street_Allow_Creation_,_WY_11597-1989 53_Although_Document_University_Street_Technical_Use_,_MI_11597-1989 7682_Pervasive_For_Networks_Street_With_Ebxml_,_AL_11597-1989 5283_In_For_Are_Street_Advancement_With_,_OK_11597-1989 7777_These_And_Quality_Street_Our_Supply_,_AK_11597-1989 5185_Without_For_With_Street_In_It_,_MA_11597-1989 52_Information_Include_Repository_Street_And_Software_,_DE_11597-1989 79_Having_Technical_Measurement_Street_Link_Process_,_SD_11597-1989 6412_These_The_Used_Street_Link_Industry_,_MT_11597-1989 734_Accomplish_Popular_Build_Street_Areas_Xml_,_SD_11597-1989 27_Constituent_Be_Revolution_Street_Files_Information_,_GA_11597-1989 94164_Working_Under_For_Street_Xml_Outfitting_,_AZ_11597-1989</NISTSchema-SV-II-list-string-maxLength-5>

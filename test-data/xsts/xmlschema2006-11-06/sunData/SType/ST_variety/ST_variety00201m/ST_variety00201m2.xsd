@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_variety00201m2.xsd
+   generated from: @(#)ST_variety00201m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_final"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_final">
+     <xsd:element name="test" type="xsd:string"/>
+
+     <xsd:simpleType name="Test">
+         <xsd:list itemType="xsd:string"/>
+     </xsd:simpleType>
+
+
+     <xsd:simpleType name="Test1">
+         <xsd:restriction base="Test">
+             <xsd:maxInclusive value='100'/>
+         </xsd:restriction>
+     </xsd:simpleType>
+
+
+</xsd:schema>
+

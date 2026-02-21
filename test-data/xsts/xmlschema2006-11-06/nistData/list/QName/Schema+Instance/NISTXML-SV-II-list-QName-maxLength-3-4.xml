@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-3-NS"
+    xmlns:wthus_thr="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:jreference-products_="http://www.nist.gov/xsdNS"
+    xmlns:mresour="http://www.nist.gov/xsdNS"
+    xmlns:ftheir.applications.and-="http://www.nist.gov/xsdNS"
+    xmlns:mthe-is.link-too="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-3-NS NISTSchema-SV-II-list-QName-maxLength-3.xsd">wthus_thr:_to_and ythat_t jreference-products_:awill.i mresour:vof-par vfor-to cimplem ftheir.applications.and-:iwirele mthe-is.link-too:xspecif einclud</nist:NISTSchema-SV-II-list-QName-maxLength-3>

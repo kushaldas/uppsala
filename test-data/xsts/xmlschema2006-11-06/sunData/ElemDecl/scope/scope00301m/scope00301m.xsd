@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)scope00301m.xsd
+   generated from: @(#)scope00301m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/scope"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/scope">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:group ref="Group"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:group name="Group">
+      <xsd:sequence>
+          <xsd:element name="LocalElement1"/>
+          <xsd:element name="LocalElement2"/>
+      </xsd:sequence>
+  </xsd:group>
+
+</xsd:schema>

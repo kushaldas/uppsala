@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-dateTime-length-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-dateTime-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-dateTime-length-3
+    xmlns="NISTSchema-SV-II-list-dateTime-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-dateTime-length-3-NS NISTSchema-SV-II-list-dateTime-length-3.xsd">1958-08-06T04:04:09 1965-03-01T05:04:02 1909-04-06T01:34:07 1951-08-03T07:04:02 1991-03-03T08:24:01 1922-05-06T05:14:08 1955-08-06T01:44:03 1998-05-01T03:34:02 1971-02-02T03:14:04 1987-05-04T08:04:00</NISTSchema-SV-II-list-dateTime-length-3>

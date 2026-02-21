@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00301m.xsd
+   generated from: @(#)ST_facets00301m.jmpp	1.1 02/10/10
+
+-->
+
+<xsd:schema
+  xmlns="SType/ST_facets"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="SType/ST_facets">
+
+     <xsd:element name="test">
+         <xsd:simpleType>
+             <xsd:restriction base="xsd:string">
+                 <xsd:enumeration value="3.14"/>
+                 <xsd:enumeration value="int"/>
+             </xsd:restriction>
+         </xsd:simpleType>
+     </xsd:element>
+
+</xsd:schema>
+
+

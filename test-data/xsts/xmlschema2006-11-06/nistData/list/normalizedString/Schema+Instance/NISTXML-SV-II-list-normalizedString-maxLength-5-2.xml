@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-5
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd">9_And_Nist_Of_Computing_Street_Implementation_,_CT_10381 578_Of_Chi_The_Permitting_Street_Solve_,_MA_10381 95_Methods_Exercise_Efforts_Their_Street_Helping_,_NC_10381 397_To_Capabilities_To_Specific_Street_Manipulation_,_PA_10381 282_And_Investigation_The_Coupled_Street_Partners_,_AR_10381 473_Oasis_Debug_Those_Is_Street_The_,_CO_10381 87578_For_Computing_The_The_Street_Vertical_,_ND_10381 487_Both_Tune_Its_Vocabularies_Street_The_,_NV_10381 6_And_And_Ec_Complex_Street_Industry_,_NY_10381 3964_Due_Both_Issues_For_Street_Technologies_,_AL_10381 24822_Significant_Competence_Variety_Be_Street_Xml_,_UT_10381 4733_Organization_Of_Is_The_Street_Correctness_,_WY_10381 74_Coordinate_Software_As_Systems_Street_Registry_,_AK_10381</NISTSchema-SV-II-list-normalizedString-maxLength-5>

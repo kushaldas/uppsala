@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00801_p.xml	1.2 02/12/25
+
+-->
+
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="ElemDecl/name"
+    xsi:schemaLocation="ElemDecl/name name00801.xsd">
+
+    <a--a>0</a--a>
+    <b..b>1</b..b>
+    <c__c>2</c__c>
+    <d··d>3</d··d>
+    <e··e>4</e··e>
+    <f۝۝f>5</f۝۝f>
+    <g۞۞g>6</g۞۞g>
+
+</root>
+

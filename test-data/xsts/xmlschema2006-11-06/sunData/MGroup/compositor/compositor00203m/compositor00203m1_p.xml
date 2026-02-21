@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)compositor00203m1_p.xml
+   generated from: @(#)compositor00203m.jmpp	1.1 02/04/29
+
+-->
+
+<test:a
+    xmlns:test="compositor"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="compositor compositor00203m1.xsd"/>

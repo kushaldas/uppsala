@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-anyURI-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-anyURI-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-anyURI-maxLength-5
+    xmlns="NISTSchema-SV-II-list-anyURI-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-anyURI-maxLength-5-NS NISTSchema-SV-II-list-anyURI-maxLength-5.xsd">ftp://thein.t.org news://thea.qual.net telnet://inc.wel.com ftp://webt.all.be.org http://defin.net gopher://pre.m.edu ftp://th.pre.com telnet://ofa.Del.meas.com http://Theal.adopt.ap.gov telnet://res.ot.Pro.org telnet://isw.gov telnet://Er.def.org telnet://speci.in.org telnet://viaa.pe.org news://ut.asoft.thev.org</NISTSchema-SV-II-list-anyURI-maxLength-5>

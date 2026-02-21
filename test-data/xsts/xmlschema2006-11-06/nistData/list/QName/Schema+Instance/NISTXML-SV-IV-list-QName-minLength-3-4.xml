@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-minLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-minLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-minLength-3
+    xmlns:nist="NISTSchema-SV-IV-list-QName-minLength-3-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:dassuring-contained-ob="http://www.nist.gov/xsdNS"
+    xmlns:ha.of.quality-cost.influence="http://www.nist.gov/xsdNS"
+    xmlns:bprimary-for-of-infrastructu="http://www.nist.gov/xsdNS"
+    xmlns:_widely_simulation-reach-vari="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-minLength-3-NS NISTSchema-SV-IV-list-QName-minLength-3.xsd">aissues.for-methods_industry.using-000-the_from-in-systems- dassuring-contained-ob:ytechnologies-g.asking_is.advanced_resides.be-the.of.in.the ha.of.quality-cost.influence:ywhich-and_ad-g.will_documents_competence.widely_of_transmi bprimary-for-of-infrastructu:lset_as_widely_in-the_highly_technologies-for.the-of-inform _the_include.commerce-is.systems-to.to.retrieve-is_manage-t _widely_simulation-reach-vari:hfor_of.set.implementations_creation_engineering_of-languag hfile-built_project-industry_to_four_the.and_the.s_the-the. _to.software.used.not.degree_all-technology.organization_co uand.mediums.the-of.such-called_forum-virtually-industries_</nist:NISTSchema-SV-IV-list-QName-minLength-3>

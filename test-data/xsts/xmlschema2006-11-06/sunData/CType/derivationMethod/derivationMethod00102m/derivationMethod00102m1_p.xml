@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)derivationMethod00102m1_p.xml
+   generated from: @(#)derivationMethod00102m.jmpp	1.2 02/12/02
+
+-->
+
+
+<test:a
+    xmlns:test="derivationMethod"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="derivationMethod derivationMethod00102m1.xsd" >
+123
+</test:a>

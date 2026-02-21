@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00201m1_p.xml
+   generated from: @(#)name00201m.jmpp	1.2 02/09/06
+
+-->
+
+<test:name
+  xmlns:test="IdConstrDefs/name"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="IdConstrDefs/name name00201m1.xsd">
+  <name name="name"/>
+</test:name>

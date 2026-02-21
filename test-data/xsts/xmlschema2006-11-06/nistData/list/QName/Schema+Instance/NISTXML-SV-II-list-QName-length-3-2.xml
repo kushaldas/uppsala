@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-3-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:dpervasive_="http://www.nist.gov/xsdNS"
+    xmlns:acomplex_ind="http://www.nist.gov/xsdNS"
+    xmlns:idomains-challenges.data_in_to.="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-3-NS NISTSchema-SV-II-list-QName-length-3.xsd">_as-via_from.transact_particular-for_to.es dpervasive_:wdraft_portable-its-and_a_to.to-the-applic lthe-file-filter.manipulate-language_and.t iusing_precise_today_systems-on-a-chip.thu acomplex_ind:_same.in_is-tests_of.creation.as_vertical_ idomains-challenges.data_in_to.:pthat-through_related_mediums_donate-devic tdiscussions.manipulate.electronic_in_five _all.test_further_other_registry-come_rela _of.eliminated.participants.organization_d xindustry-systems-management_the_effective</nist:NISTSchema-SV-II-list-QName-length-3>

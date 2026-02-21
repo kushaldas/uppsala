@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-1
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-1-NS NISTSchema-SV-II-list-normalizedString-length-1.xsd">44_Manual_Our_Is_Street_File_Implementations_,_SD_16206 65_All_And_As_Street_Xml_Processes_,_MI_16206 745_Provided_The_For_Street_Communications_That_,_ME_16206 831_Prototype_Guidelines_Xml_Street_Addressing_Organization_,_OR_16206 31_Related_The_Tools_Street_With_Retrieval_,_MA_16206 2966_Registry_To_Cost_Street_Software_And_,_MT_16206 463_To_Related_Need_Street_Profile_Addressing_,_GA_16206 2542_Four_Indication_Distributed_Street_Prototype_Rapid_,_NY_16206 86484_Language_Lies_And_Street_Library_Information_,_PA_16206</NISTSchema-SV-II-list-normalizedString-length-1>

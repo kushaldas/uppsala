@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)systemId00201m1.xsd
+   generated from: @(#)systemId00201m.jmpp	1.3 02/11/15
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="systemId"
+  targetNamespace="systemId">
+
+     <xsd:notation name="jpeg" public="image/jpeg"/>
+
+     <xsd:element name="a" type="xsd:string" />
+
+</xsd:schema>
+

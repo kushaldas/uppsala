@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m2.xsd
+   generated from: @(#)name00101m.jmpp	1.3 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns="name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="name">
+
+     <xsd:group name="G1">
+          <xsd:sequence>
+               <xsd:element name="c" type="xsd:int" />
+          </xsd:sequence>
+     </xsd:group>
+
+     <xsd:group name="G1">
+          <xsd:sequence>
+               <xsd:element name="date" type="xsd:date" />
+          </xsd:sequence>
+     </xsd:group>
+
+     <xsd:element name="a" type="xsd:string" />
+</xsd:schema>
+

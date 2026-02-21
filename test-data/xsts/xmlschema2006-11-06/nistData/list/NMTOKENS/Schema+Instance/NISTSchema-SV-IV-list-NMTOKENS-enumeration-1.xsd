@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKENS-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKENS-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKENS-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKENS-enumeration-1,
+      which is derived by restriction of a list with itemType NMTOKENS
+      by facet enumeration with values of:
+          improved-is-standards.advent-XML_the_retrieve.with:C investigation.specifications.is-Only.info of.Additionally_to_based:The.ebXML_partnerships_OASI Developers.engineerin the_discussions:efforts_pa
+          problems_of_DOM_for.define-industry:has_i technologies.chain:f distributed:ensure the-addressing.a_including:in.the-provide-diagnos from_to:variety.un the_Technical_Schemas_for:use.projector_and.displaying.revol file-collaborating_Description.u partnerships_this:to-OASIS_Pervasive.the: XML.the.international:and.known_an.XML-to.pages_discover:fed disseminate-for:can:to_utilities.chains-interoperability:
+          dependability-enforcement.between:participate_NIST-of the-of.with_Groups.collaborate.discovery: their-to_graphic reviewed.and.Langu promises-documents-solutions.in-the_in:soft
+          manipulate:perv offer:to.and:e-with.refe time_the.any-ambiguities.to_organization-the- localized_Ji of.provides-a:interoperability-business-NIST-pervasive_a:fil and-is.the_back-XML.test-documents_and.a-reference_is.the_p and-our:the-are.and.r
+          developers.s_a_build:is-enabling.that-t issues_such:The_The.asked:related-to.be-hampered.o and_info must_to:with-the.the-b voca arou using:vertical:This.widely:withi
+          can.with:prototype:technologies.a:helping.enforcement:_co many.and:embedded-semantics.Pervasive.unambiguo law.The_today_signatures:desktop:new.XML:A objective.it The:and-for-made-key:organizations.quality:ab Markup-are-about:OASI the.A_is.ability-to.is:for-success.of.industry-DOM.PC_which The:led.automatic-
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-1" type="NISTSchema-SV-IV-list-NMTOKENS-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-1-Type">
+    <xs:restriction base="xs:NMTOKENS">
+          <xs:enumeration value="improved-is-standards.advent-XML_the_retrieve.with:C investigation.specifications.is-Only.info of.Additionally_to_based:The.ebXML_partnerships_OASI Developers.engineerin the_discussions:efforts_pa"/>
+          <xs:enumeration value="problems_of_DOM_for.define-industry:has_i technologies.chain:f distributed:ensure the-addressing.a_including:in.the-provide-diagnos from_to:variety.un the_Technical_Schemas_for:use.projector_and.displaying.revol file-collaborating_Description.u partnerships_this:to-OASIS_Pervasive.the: XML.the.international:and.known_an.XML-to.pages_discover:fed disseminate-for:can:to_utilities.chains-interoperability:"/>
+          <xs:enumeration value="dependability-enforcement.between:participate_NIST-of the-of.with_Groups.collaborate.discovery: their-to_graphic reviewed.and.Langu promises-documents-solutions.in-the_in:soft"/>
+          <xs:enumeration value="manipulate:perv offer:to.and:e-with.refe time_the.any-ambiguities.to_organization-the- localized_Ji of.provides-a:interoperability-business-NIST-pervasive_a:fil and-is.the_back-XML.test-documents_and.a-reference_is.the_p and-our:the-are.and.r"/>
+          <xs:enumeration value="developers.s_a_build:is-enabling.that-t issues_such:The_The.asked:related-to.be-hampered.o and_info must_to:with-the.the-b voca arou using:vertical:This.widely:withi"/>
+          <xs:enumeration value="can.with:prototype:technologies.a:helping.enforcement:_co many.and:embedded-semantics.Pervasive.unambiguo law.The_today_signatures:desktop:new.XML:A objective.it The:and-for-made-key:organizations.quality:ab Markup-are-about:OASI the.A_is.ability-to.is:for-success.of.industry-DOM.PC_which The:led.automatic-"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

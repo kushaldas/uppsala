@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)substGrpExcl00202m1_p.xml
+   generated from: @(#)substGrpExcl00202m.jmpp	1.3 02/08/22
+
+-->
+
+<root
+    xmlns="ElemDecl/substGroupExclusions"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/substGroupExclusions substGrpExcl00202m1.xsd">
+    
+    <Head><Ear/><Eye/></Head>
+    <Member1><Ear/><Eye/></Member1>
+
+</root>

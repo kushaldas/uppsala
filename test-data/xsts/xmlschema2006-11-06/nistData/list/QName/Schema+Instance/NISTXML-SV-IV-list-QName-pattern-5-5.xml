@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-pattern-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-pattern-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-pattern-5
+    xmlns:nist="NISTSchema-SV-IV-list-QName-pattern-5-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:pre="http://www.nist.gov/xsdNS"
+    xmlns:ounamb="http://www.nist.gov/xsdNS"
+    xmlns:vparticipants_="http://www.nist.gov/xsdNS"
+    xmlns:dfor.interconnecting.unbiased-="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-pattern-5-NS NISTSchema-SV-IV-list-QName-pattern-5.xsd">uto_annual-and-solutions_effec pre:ufoster_graphical_software_business ounamb:_manipulate.available-of-in-and_accelerate_as-and_ vparticipants_:yor_and.lacking-reference.supply_imple cof.must_organizations dfor.interconnecting.unbiased-:jaccessible.sof</nist:NISTSchema-SV-IV-list-QName-pattern-5>

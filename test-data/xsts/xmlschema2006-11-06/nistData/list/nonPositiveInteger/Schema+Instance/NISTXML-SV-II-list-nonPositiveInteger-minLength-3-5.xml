@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-nonPositiveInteger-minLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-nonPositiveInteger-minLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-nonPositiveInteger-minLength-3
+    xmlns="NISTSchema-SV-II-list-nonPositiveInteger-minLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-nonPositiveInteger-minLength-3-NS NISTSchema-SV-II-list-nonPositiveInteger-minLength-3.xsd">-926583764356285673 -955243848774132167 -972781446444527336 -937826345318565172 -942462374766455345 -967652584522474665</NISTSchema-SV-II-list-nonPositiveInteger-minLength-3>

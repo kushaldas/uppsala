@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01101m1.xsd
+   generated from: @(#)typeDef01101m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root"/>
+
+  <xsd:complexType name="RealType"/>
+
+  <xsd:complexType name="VirtualType" abstract="true"/>
+
+</xsd:schema>

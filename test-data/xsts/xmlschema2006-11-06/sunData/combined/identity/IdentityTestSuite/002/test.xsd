@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.xsd	1.3 03/10/10
+
+-->
+
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tn="foo" xmlns:dc="http://purl.org/dc/elements/1.1/" targetNamespace="foo" elementFormDefault="qualified">
+				<xs:element name="root">
+					<xs:complexType>
+						<xs:choice maxOccurs="unbounded">
+							<xs:element name="key" type="xs:QName"/>
+							<xs:element name="ref" type="xs:QName"/>
+						</xs:choice>
+					</xs:complexType>
+					
+					<!-- identity constraint -->
+					<xs:key name="key">
+						<xs:selector xpath=".//tn:key"/>
+						<xs:field xpath="."/>
+					</xs:key>
+					<xs:keyref name="keyref" refer="tn:key">
+						<xs:selector xpath=".//tn:ref"/>
+						<xs:field xpath="."/>
+					</xs:keyref>
+				</xs:element>
+			</xs:schema>

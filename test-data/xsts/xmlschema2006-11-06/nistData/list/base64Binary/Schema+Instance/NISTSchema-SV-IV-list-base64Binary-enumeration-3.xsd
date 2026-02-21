@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-base64Binary-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-base64Binary-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-base64Binary-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-base64Binary-enumeration-3,
+      which is derived by restriction of a list with itemType base64Binary
+      by facet enumeration with values of:
+          Y2RydG1wbHBvaHdudGt3ZA== aGt5c2xod3VqdQ== d3d0dnZmb3hqdWJud3F5bG5mY3N5 dGh3 YWpuZ2xlYmp0cXdiZ2FqeGVxZ3B2Z3NzZ2l2bHhwdHR2d3Rta3VncGpjZ3RpcGhrbmxzd3ly Zg==
+          YWhnZnVwZXhuZGxua3I= bWZmaWRk Z2l2ZHVmeGl0eWZybmppb2F5dGx0cGtiYm9wcGxubGZpY2d0ZnR0ZWFrbGhscGl2Y2l0aGJxaWNidWVmcnZrc3lhZGRzd2pv c3h2ZnZleHZhYWFpbGZ5aHF1bmtsZmZucml2bmJxcXB5ZQ== dml3b2NnZW1xdXd3cmV0cXJkeGFwY2NueWd4cHJjbWRlaml3bHhqZ2R2ZnBrYmxzcHNrdWRueW5qdQ== dG1rc3ZvbnhybGtvYWtqbXRvb3V3eXlucWdld2Z2bXJ0eG1lZnBiamJwcW5xZnNhaGd5YWViaHFlc3VwaHB3dGpvYnRuYw== dmd3bG93YnFkY3FnY2NiaWtjaXFmbWl5YnhsZW1haHRqdmphYnZtb2g= c3VleWJpbnZhcGVpeXllc2d5Y2RxeGhhZXV1amp4bWl0c3J4ZWFmcWp0Z2xyaHhhc2Jidmh5Z2NycXQ=
+          Ynlzb2R3dnZtbnZwd2R0eWRmcmV3c3BnaGVveXZl YWRibW1xdnRycWZjbm53amV3dg== anJ2eW9vdGRoeHFra2Zsdw== bw== bWZvbWp0ZXdlZ2JmaHVkZWJ5Y3hhaGt3a2F5bHFucm1n bWx1a3B5ZnBoZ3BzYmt2cHh1bmF1ZW93ZXR1aHZyeWRvbHl0cXN5bXN3YmVrb2FhdHFlaWJwZXF0amNwa2NteGt3a25kaXllcg== b2twYnNocmxqcnZneW5jcWJsa2lmcW1kZXdhZHN4a2w= bHZ0eXdrZ2VhcnNvdGl1eGJod3RydXJh dWJ4d2R0d2NkdHhlc2Y=
+          d3NoZWRyb3lwdWhlZ3Zvc2p1c2VvdHZydnBybnhvcXB0a2F2dWpsam1mcGdsZXV2cW9qa2hhbmFv aG5iY2t3aGdxa2hxaGttcXhrcXJxZmN2Zm9zc2JpeWFycHJvaW93dm1ndGVtYnZpbmVpYmc= d3N0cWhndHVjYm5zcnV3 bW5hZmlraWFycXd3aHd2eXVjYWVtYW9jdmJwa29uamF3aXlneWZ3Y3R5Y2U= cXBpYWZlanRndWN1anVicHhkYWdrb3FzZ29saXVodGlwY2Rod29mZ3BramVmbWp3ZHNsdWphamhqdXFl b3VnYWpzb2p0eXQ= YmN2cXZncmJ1a2ZmZm5uYndrYnVkZnFuZnhqdHZ0aXQ=
+          anBudGY= cWtvYnhocHFnd2duamdiYnB3YXFmeG5kbmdlbnFobHhtYmRydnhmaHRncXZxag== cWpscmJpb3FmdWZ3eWJpaWF4ZGN4aWh2amxqb25kcXBzaXV2bg== cm11aGNsbXJ4ZHBmcG9qd2NzZ210amJzdW1vamR4bW9rdml1b3R4Z2FkZ25mYmttY3JmZnd2bG5kY2RhdWd3dWdjYnhvY3Zqaw== cXF4dm1wdmhrcXJra2lncXRkbmlicWJhZmNqcWRtb21odGZ4cw== am9saGR3cGtnbHR4ZGR5ZnN2dnZhYmFuZHZncnV5am9samRybGRldGVib2VheGpscXNibXdyaW9laWl5aw== ZmRvcWR4ZW1wZ3BocG9uY3FxYmVxc3BzdHJodWp1am9seWNsaXl0dHRocHlpdGZob2dxeHh1ZHA= amVod29rZmxla3BkZmlqaXFzcmhiZGNvZXJlcnZkeGRwbGl3aWF0bGVxZWZubG1lbXByc3I=
+          dmFlc2pob2h2Y3BzYnRzaWt4bXBqanFiZ3JtaGhtdXJo Z3N4c29zdnBqbXdleGNuYmh5cmd0ZnVtY2p2anN0ZnF5bGd4cHljcmN0cHdvbm5nZ2ZhanJ0 aHZjeWxjcW1tZmlrZ3RraHdwbXF2cmhtaGZlbWxrbGJwaGFnaWt5 dXZseHhseWprZnhkcGtueXdoaG9jZWticXBoeGtvYnltanlnZmVqcmVhbnZmYWx5eWR3ZWNhamJvcGhmc3d5bXZqYm8= cXJ1eWo= ZnFxZXNnZXRiYW1rd3J4aWF5dmI= cnNhd3JoYWp3cXR0b21yandldW1oc29jY2Zxd3B0cnhwcG1nYnNubGRoZm95aGp3cGR3ZGlubmJreXNtbHh5anNjZmhvcHF1cw== Y2tqYWZqd2lmaXZi cWNteG5reGR3bnNz
+          d3FyYnZsaWZxYW9vcXJp aHl5aXRhZWhjd3BjcG55c2JqdXlyZXFqb2RybWV0ZGlqanBmZGxraGlmcmg= a2VrdGNqcm91eGV2eWhuY2dleWxmb3hxb3NoaWFhcHFiZHFzYnJ1amhrZ3lrcA== b3Fzd3BzamhoeWZxb3B0YXB2aHl2b3Voa2ZtZHNzYnhrbGZyZXRodnhwcWVmYnl4ZXhjcG9kbWJkZnV1anJ2Y2hkdWd5eGFw bGRqbnRtdWNzbXRqZ2ZwaHBha2VxanV1dmxub2lrcXJib3lqb3lzcGhka3dyeGRjZmlu
+          eGlvdXdsb25ua3h5eGxjc25mZWhucHRhbW12cw== bWRwcWZrcmZjbm5kdmpsaGk= cHhqbGJ1bGdmdXVud3l5cmljaGJobGI= ZHdmanJoZHJkeWpreGJ2bnd0ZmJnY3N4eWdsd3JuaGp0cnBpd3lieHZkYXd3YWh4bGFuaWNqYXZ5dGRjZWhyeWRmaXB3c24= YWxyaGpxc3Jr dnhsdHBmb25xYWFjc2lrcXlyd2prZ2Q= am5oaGJxbXJyc3RhbnNhbGJxeWtpaHF5Z2tud3licWdlZGt5b29ncXVi dmJrb2djbmhwY2pqeGt1ZndvY3V5 d2N1dWdvbWV2YWlvaWx5bnV5anJibGJ3eW1zaXZ1cXJseGFubGRhY2pjbGRtaGtxcWd2cHRleWJjYXRi
+          YndodnJiaWJucnB3eHd5bXN4cWdsd3F1YQ== eGlxb2Fmd3B3cGd0ZHhkc3R1a2M= aHJldHdzbHd4eWdtbGdiZGhxdGhoeXl3ZXZoZGdyZmFtcnNvaXBsZg== ZnF2ZW95eXJqYXNkcnZyaXFndHFrZG1kbHhlZnFicWJ5d2h3dXhyaA== cW5weHh5Y2dva3Z3dmlxcXlmbHZja3N5ZXZxZHV0ZXZmbnZkaWR5Z2NneWZsc2Z5eG1nbW9oaGN2dG5kbQ== dmJiZ2Rld2l0cWpnYW55aGZpdWJlaXZhdHBhbHd5a3BocGR2dGh5d2NweHZpcnl3eW1rbw== eGticW5qcm1sb29pbGh5ZnV2ZXdmdW50ZmFiZHFzeWprcm9nd2R5Z3F1b25vcXhsd2ZycXVkeGtlbmZubg== ZHFpanNnd21kcm5obXd0YWdqb2M=
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-base64Binary-enumeration-3" type="NISTSchema-SV-IV-list-base64Binary-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfbase64Binary">
+    <xs:list itemType="xs:base64Binary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-base64Binary-enumeration-3-Type">
+    <xs:restriction base="listOfbase64Binary">
+          <xs:enumeration value="Y2RydG1wbHBvaHdudGt3ZA== aGt5c2xod3VqdQ== d3d0dnZmb3hqdWJud3F5bG5mY3N5 dGh3 YWpuZ2xlYmp0cXdiZ2FqeGVxZ3B2Z3NzZ2l2bHhwdHR2d3Rta3VncGpjZ3RpcGhrbmxzd3ly Zg=="/>
+          <xs:enumeration value="YWhnZnVwZXhuZGxua3I= bWZmaWRk Z2l2ZHVmeGl0eWZybmppb2F5dGx0cGtiYm9wcGxubGZpY2d0ZnR0ZWFrbGhscGl2Y2l0aGJxaWNidWVmcnZrc3lhZGRzd2pv c3h2ZnZleHZhYWFpbGZ5aHF1bmtsZmZucml2bmJxcXB5ZQ== dml3b2NnZW1xdXd3cmV0cXJkeGFwY2NueWd4cHJjbWRlaml3bHhqZ2R2ZnBrYmxzcHNrdWRueW5qdQ== dG1rc3ZvbnhybGtvYWtqbXRvb3V3eXlucWdld2Z2bXJ0eG1lZnBiamJwcW5xZnNhaGd5YWViaHFlc3VwaHB3dGpvYnRuYw== dmd3bG93YnFkY3FnY2NiaWtjaXFmbWl5YnhsZW1haHRqdmphYnZtb2g= c3VleWJpbnZhcGVpeXllc2d5Y2RxeGhhZXV1amp4bWl0c3J4ZWFmcWp0Z2xyaHhhc2Jidmh5Z2NycXQ="/>
+          <xs:enumeration value="Ynlzb2R3dnZtbnZwd2R0eWRmcmV3c3BnaGVveXZl YWRibW1xdnRycWZjbm53amV3dg== anJ2eW9vdGRoeHFra2Zsdw== bw== bWZvbWp0ZXdlZ2JmaHVkZWJ5Y3hhaGt3a2F5bHFucm1n bWx1a3B5ZnBoZ3BzYmt2cHh1bmF1ZW93ZXR1aHZyeWRvbHl0cXN5bXN3YmVrb2FhdHFlaWJwZXF0amNwa2NteGt3a25kaXllcg== b2twYnNocmxqcnZneW5jcWJsa2lmcW1kZXdhZHN4a2w= bHZ0eXdrZ2VhcnNvdGl1eGJod3RydXJh dWJ4d2R0d2NkdHhlc2Y="/>
+          <xs:enumeration value="d3NoZWRyb3lwdWhlZ3Zvc2p1c2VvdHZydnBybnhvcXB0a2F2dWpsam1mcGdsZXV2cW9qa2hhbmFv aG5iY2t3aGdxa2hxaGttcXhrcXJxZmN2Zm9zc2JpeWFycHJvaW93dm1ndGVtYnZpbmVpYmc= d3N0cWhndHVjYm5zcnV3 bW5hZmlraWFycXd3aHd2eXVjYWVtYW9jdmJwa29uamF3aXlneWZ3Y3R5Y2U= cXBpYWZlanRndWN1anVicHhkYWdrb3FzZ29saXVodGlwY2Rod29mZ3BramVmbWp3ZHNsdWphamhqdXFl b3VnYWpzb2p0eXQ= YmN2cXZncmJ1a2ZmZm5uYndrYnVkZnFuZnhqdHZ0aXQ="/>
+          <xs:enumeration value="anBudGY= cWtvYnhocHFnd2duamdiYnB3YXFmeG5kbmdlbnFobHhtYmRydnhmaHRncXZxag== cWpscmJpb3FmdWZ3eWJpaWF4ZGN4aWh2amxqb25kcXBzaXV2bg== cm11aGNsbXJ4ZHBmcG9qd2NzZ210amJzdW1vamR4bW9rdml1b3R4Z2FkZ25mYmttY3JmZnd2bG5kY2RhdWd3dWdjYnhvY3Zqaw== cXF4dm1wdmhrcXJra2lncXRkbmlicWJhZmNqcWRtb21odGZ4cw== am9saGR3cGtnbHR4ZGR5ZnN2dnZhYmFuZHZncnV5am9samRybGRldGVib2VheGpscXNibXdyaW9laWl5aw== ZmRvcWR4ZW1wZ3BocG9uY3FxYmVxc3BzdHJodWp1am9seWNsaXl0dHRocHlpdGZob2dxeHh1ZHA= amVod29rZmxla3BkZmlqaXFzcmhiZGNvZXJlcnZkeGRwbGl3aWF0bGVxZWZubG1lbXByc3I="/>
+          <xs:enumeration value="dmFlc2pob2h2Y3BzYnRzaWt4bXBqanFiZ3JtaGhtdXJo Z3N4c29zdnBqbXdleGNuYmh5cmd0ZnVtY2p2anN0ZnF5bGd4cHljcmN0cHdvbm5nZ2ZhanJ0 aHZjeWxjcW1tZmlrZ3RraHdwbXF2cmhtaGZlbWxrbGJwaGFnaWt5 dXZseHhseWprZnhkcGtueXdoaG9jZWticXBoeGtvYnltanlnZmVqcmVhbnZmYWx5eWR3ZWNhamJvcGhmc3d5bXZqYm8= cXJ1eWo= ZnFxZXNnZXRiYW1rd3J4aWF5dmI= cnNhd3JoYWp3cXR0b21yandldW1oc29jY2Zxd3B0cnhwcG1nYnNubGRoZm95aGp3cGR3ZGlubmJreXNtbHh5anNjZmhvcHF1cw== Y2tqYWZqd2lmaXZi cWNteG5reGR3bnNz"/>
+          <xs:enumeration value="d3FyYnZsaWZxYW9vcXJp aHl5aXRhZWhjd3BjcG55c2JqdXlyZXFqb2RybWV0ZGlqanBmZGxraGlmcmg= a2VrdGNqcm91eGV2eWhuY2dleWxmb3hxb3NoaWFhcHFiZHFzYnJ1amhrZ3lrcA== b3Fzd3BzamhoeWZxb3B0YXB2aHl2b3Voa2ZtZHNzYnhrbGZyZXRodnhwcWVmYnl4ZXhjcG9kbWJkZnV1anJ2Y2hkdWd5eGFw bGRqbnRtdWNzbXRqZ2ZwaHBha2VxanV1dmxub2lrcXJib3lqb3lzcGhka3dyeGRjZmlu"/>
+          <xs:enumeration value="eGlvdXdsb25ua3h5eGxjc25mZWhucHRhbW12cw== bWRwcWZrcmZjbm5kdmpsaGk= cHhqbGJ1bGdmdXVud3l5cmljaGJobGI= ZHdmanJoZHJkeWpreGJ2bnd0ZmJnY3N4eWdsd3JuaGp0cnBpd3lieHZkYXd3YWh4bGFuaWNqYXZ5dGRjZWhyeWRmaXB3c24= YWxyaGpxc3Jr dnhsdHBmb25xYWFjc2lrcXlyd2prZ2Q= am5oaGJxbXJyc3RhbnNhbGJxeWtpaHF5Z2tud3licWdlZGt5b29ncXVi dmJrb2djbmhwY2pqeGt1ZndvY3V5 d2N1dWdvbWV2YWlvaWx5bnV5anJibGJ3eW1zaXZ1cXJseGFubGRhY2pjbGRtaGtxcWd2cHRleWJjYXRi"/>
+          <xs:enumeration value="YndodnJiaWJucnB3eHd5bXN4cWdsd3F1YQ== eGlxb2Fmd3B3cGd0ZHhkc3R1a2M= aHJldHdzbHd4eWdtbGdiZGhxdGhoeXl3ZXZoZGdyZmFtcnNvaXBsZg== ZnF2ZW95eXJqYXNkcnZyaXFndHFrZG1kbHhlZnFicWJ5d2h3dXhyaA== cW5weHh5Y2dva3Z3dmlxcXlmbHZja3N5ZXZxZHV0ZXZmbnZkaWR5Z2NneWZsc2Z5eG1nbW9oaGN2dG5kbQ== dmJiZ2Rld2l0cWpnYW55aGZpdWJlaXZhdHBhbHd5a3BocGR2dGh5d2NweHZpcnl3eW1rbw== eGticW5qcm1sb29pbGh5ZnV2ZXdmdW50ZmFiZHFzeWprcm9nd2R5Z3F1b25vcXhsd2ZycXVkeGtlbmZubg== ZHFpanNnd21kcm5obXd0YWdqb2M="/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

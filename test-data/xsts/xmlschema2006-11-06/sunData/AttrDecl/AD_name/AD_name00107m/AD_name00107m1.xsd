@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00107m1.xsd
+   generated from: @(#)AD_name00107m.jmpp	1.2 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="number00一" type="xsd:integer"/>
+            <xsd:attribute name="number10盒" type="xsd:integer"/>
+            <xsd:attribute name="number20龥" type="xsd:integer"/>
+            <xsd:attribute name="number01〇" type="xsd:integer"/>
+            <xsd:attribute name="number02〡" type="xsd:integer"/>
+            <xsd:attribute name="number12〥" type="xsd:integer"/>
+            <xsd:attribute name="number22〩" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

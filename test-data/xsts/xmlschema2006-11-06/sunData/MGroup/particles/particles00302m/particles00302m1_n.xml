@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)particles00302m1_n.xml
+   generated from: @(#)particles00302m.jmpp	1.1 02/04/28
+
+-->
+
+<test:a
+    xmlns:test="particles"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="particles particles00302m1.xsd">
+
+  <id>12345678900987654321</id>
+</test:a>

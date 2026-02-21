@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-dateTime-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-dateTime-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-dateTime-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-dateTime-enumeration-5,
+      which is derived by restriction of a list with itemType dateTime
+      by facet enumeration with values of:
+          1983-10-26T23:48:09 1984-10-13T01:41:19 1983-04-01T01:26:58 2028-01-30T16:27:55 1973-10-11T07:38:35 1992-10-27T19:45:19 1992-04-09T18:01:26 2009-11-01T17:15:30
+          2018-08-24T19:16:10 2030-02-06T09:19:26 1970-09-02T18:44:25 2018-03-17T12:21:33 1998-04-26T22:00:36
+          1997-06-26T12:41:44 2025-09-27T14:11:22 1987-10-25T03:52:01 2012-09-02T18:10:37 2017-10-24T02:24:06 2016-09-21T14:30:31
+          2021-05-31T03:26:58 1991-04-25T21:28:03 2027-09-10T05:34:51 2030-08-15T09:01:44 2015-12-02T17:02:56 2012-03-17T20:00:01 2016-02-12T03:16:08 2029-06-22T23:12:15 1975-05-09T16:05:46
+          1976-08-26T16:18:55 2009-12-04T16:03:00 1981-03-13T19:10:05 1977-06-13T13:53:56 1998-04-18T13:21:04 2021-10-19T18:32:01 1991-12-04T22:46:46
+          2013-06-20T22:42:58 2016-04-04T03:39:25 2007-02-09T18:15:39 2030-07-31T17:05:49 1995-06-29T10:09:26 1990-04-13T11:39:28 2019-05-17T00:27:47 1976-07-26T16:10:16 1996-09-02T16:31:09
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-dateTime-enumeration-5" type="NISTSchema-SV-II-list-dateTime-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfdateTime">
+    <xs:list itemType="xs:dateTime"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-dateTime-enumeration-5-Type">
+    <xs:restriction base="listOfdateTime">
+          <xs:enumeration value="1983-10-26T23:48:09 1984-10-13T01:41:19 1983-04-01T01:26:58 2028-01-30T16:27:55 1973-10-11T07:38:35 1992-10-27T19:45:19 1992-04-09T18:01:26 2009-11-01T17:15:30"/>
+          <xs:enumeration value="2018-08-24T19:16:10 2030-02-06T09:19:26 1970-09-02T18:44:25 2018-03-17T12:21:33 1998-04-26T22:00:36"/>
+          <xs:enumeration value="1997-06-26T12:41:44 2025-09-27T14:11:22 1987-10-25T03:52:01 2012-09-02T18:10:37 2017-10-24T02:24:06 2016-09-21T14:30:31"/>
+          <xs:enumeration value="2021-05-31T03:26:58 1991-04-25T21:28:03 2027-09-10T05:34:51 2030-08-15T09:01:44 2015-12-02T17:02:56 2012-03-17T20:00:01 2016-02-12T03:16:08 2029-06-22T23:12:15 1975-05-09T16:05:46"/>
+          <xs:enumeration value="1976-08-26T16:18:55 2009-12-04T16:03:00 1981-03-13T19:10:05 1977-06-13T13:53:56 1998-04-18T13:21:04 2021-10-19T18:32:01 1991-12-04T22:46:46"/>
+          <xs:enumeration value="2013-06-20T22:42:58 2016-04-04T03:39:25 2007-02-09T18:15:39 2030-07-31T17:05:49 1995-06-29T10:09:26 1990-04-13T11:39:28 2019-05-17T00:27:47 1976-07-26T16:10:16 1996-09-02T16:31:09"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-decimal-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-decimal-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-decimal-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-decimal-enumeration-5,
+      which is derived by restriction of built-in type decimal
+      by facet enumeration with values of:
+          856.89
+          6.9307231814179
+          -150
+          337920.941
+          0.3316
+          -82.78605057
+          -0.61
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-decimal-enumeration-5" type="NISTSchema-SV-IV-atomic-decimal-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-decimal-enumeration-5-Type">
+    <xs:restriction base="xs:decimal">
+          <xs:enumeration value="856.89"/>
+          <xs:enumeration value="6.9307231814179"/>
+          <xs:enumeration value="-150"/>
+          <xs:enumeration value="337920.941"/>
+          <xs:enumeration value="0.3316"/>
+          <xs:enumeration value="-82.78605057"/>
+          <xs:enumeration value="-0.61"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

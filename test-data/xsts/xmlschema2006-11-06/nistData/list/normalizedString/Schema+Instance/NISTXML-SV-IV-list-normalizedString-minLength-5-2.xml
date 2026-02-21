@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-5
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-5-NS NISTSchema-SV-IV-list-normalizedString-minLength-5.xsd">193_Interoperability_By_Street_Uses_Standardization_,_VA_16415-1600 488_Used_Object_Street_Development_Manipulate_,_IN_16415-1600 93237_Available_Care_Street_Xml_Business_,_NY_16415-1600 49_Partner_Are_Street_Networks_For_,_AL_16415-1600 5_To_Consequently_Street_Utilities_To_,_CA_16415-1600 218_Sun_Simulation_Street_Building_And_,_AK_16415-1600 269_New_These_Street_Computing_Support_,_NE_16415-1600 4_Project_An_Street_Of_Are_,_OR_16415-1600 524_Software_Deployed_Street_Applications_To_,_MT_16415-1600 63_For_Of_Street_Already_Xml_,_ME_16415-1600</NISTSchema-SV-IV-list-normalizedString-minLength-5>

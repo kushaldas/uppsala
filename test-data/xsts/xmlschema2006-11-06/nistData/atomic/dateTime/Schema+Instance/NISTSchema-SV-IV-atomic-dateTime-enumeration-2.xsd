@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-dateTime-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-dateTime-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-dateTime-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-dateTime-enumeration-2,
+      which is derived by restriction of built-in type dateTime
+      by facet enumeration with values of:
+          2016-12-24T10:20:27
+          2013-04-14T17:20:13
+          1997-07-18T03:59:37
+          2004-04-06T20:47:16
+          2024-07-02T09:44:13
+          1980-08-25T23:48:17
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-dateTime-enumeration-2" type="NISTSchema-SV-IV-atomic-dateTime-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-dateTime-enumeration-2-Type">
+    <xs:restriction base="xs:dateTime">
+          <xs:enumeration value="2016-12-24T10:20:27"/>
+          <xs:enumeration value="2013-04-14T17:20:13"/>
+          <xs:enumeration value="1997-07-18T03:59:37"/>
+          <xs:enumeration value="2004-04-06T20:47:16"/>
+          <xs:enumeration value="2024-07-02T09:44:13"/>
+          <xs:enumeration value="1980-08-25T23:48:17"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

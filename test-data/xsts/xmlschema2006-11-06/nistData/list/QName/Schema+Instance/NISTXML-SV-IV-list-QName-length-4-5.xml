@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-length-4-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-length-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-length-4
+    xmlns:nist="NISTSchema-SV-IV-list-QName-length-4-NS"
+    xmlns:_and-an.c="http://www.nist.gov/xsdNS"
+    xmlns:ifind_at-i="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:tand-must_electronic.the.s="http://www.nist.gov/xsdNS"
+    xmlns:_transactions_portable-avai="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-length-4-NS NISTSchema-SV-IV-list-QName-length-4.xsd">_and-an.c:_are-including.contribute.to_build-uses_project.thes ifind_at-i:kbetter.of_accessible.2000-transmit_devices.manage.t _to.beta.interoperability-paradigm_help-that_large-p sas.to-tools.creation-computing.and.other.that_with- bpersonal.defines-profile_provides.publishing.wide.p tand-must_electronic.the.s:tin-is_are-is.popular_profiles-and-back.to_uses_syst ginclude.data-first-generation.address.second-genera _transactions_portable-avai:_discover_each.for_automatic.used_in_early_these_des</nist:NISTSchema-SV-IV-list-QName-length-4>

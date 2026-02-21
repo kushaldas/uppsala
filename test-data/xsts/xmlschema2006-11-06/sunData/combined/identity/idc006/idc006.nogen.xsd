@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)idc006.nogen.xsd	1.4 03/10/10
+
+-->
+
+<!--
+	XPath engine test:  ".//a/*/b" and use of "." for both selector and field.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://www.publishing.org"
+		xmlns:p="http://www.publishing.org"
+		elementFormDefault="qualified">
+	
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- define keys in this element -->
+				<xsd:element name="keys">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:any processContents="lax" maxOccurs="unbounded" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				
+				<!-- define keyrefs in this element -->
+				<xsd:element name="keyref" maxOccurs="unbounded" minOccurs="0" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+                
+		<xsd:key name="trickyKey">
+			<xsd:selector xpath=".//p:keys/p:a/*/p:b|.//p:keys/p:a/*/*/p:b" />
+			<xsd:field    xpath="@id" />
+		</xsd:key>
+		
+		<xsd:keyref name="trickeyRef" refer="p:trickyKey">
+			<xsd:selector xpath=".//p:keyref|.//p:keyref|./p:keyref|./p:keyref" />
+			<!-- should be considered equal to "." -->
+			<xsd:field    xpath="." />
+		</xsd:keyref>
+		
+	</xsd:element>
+	
+        <xsd:element name="b">
+           <xsd:complexType>
+              <xsd:sequence>
+                 <xsd:element ref="p:b" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="id" type="xsd:string"/>
+           </xsd:complexType>
+        </xsd:element>
+</xsd:schema>

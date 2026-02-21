@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-integer-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-integer-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-integer-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-integer-enumeration-3,
+      which is derived by restriction of a list with itemType integer
+      by facet enumeration with values of:
+          -3 754844794657 -8064858836 50 -1117648822963460 97747463224950 -37548 391992717955456 -4657 -8438733867403844
+          -9380471873364 -54285 -758868259251994 -82457667923 3443538167 9258482307
+          21 -243338280891 -779113706 971467900 6799 -1693672693189025 80750
+          404457180654289927 -672368893 -38067 -55767670377 5934508595238996 -78168670194469 -21 -289014639647734550
+          -16541 9232868515112 -7723210 -6489688 1421930492974682 7946719857617 338125 973042632594449785 623677349490680
+          3085262768864696 -285763225 7723167629106 -83320 378044168302230976 -686 -4018847973063099 -129
+          155 911971 -342349 -65098173958626 -231713 -4551120409
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-integer-enumeration-3" type="NISTSchema-SV-IV-list-integer-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfinteger">
+    <xs:list itemType="xs:integer"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-integer-enumeration-3-Type">
+    <xs:restriction base="listOfinteger">
+          <xs:enumeration value="-3 754844794657 -8064858836 50 -1117648822963460 97747463224950 -37548 391992717955456 -4657 -8438733867403844"/>
+          <xs:enumeration value="-9380471873364 -54285 -758868259251994 -82457667923 3443538167 9258482307"/>
+          <xs:enumeration value="21 -243338280891 -779113706 971467900 6799 -1693672693189025 80750"/>
+          <xs:enumeration value="404457180654289927 -672368893 -38067 -55767670377 5934508595238996 -78168670194469 -21 -289014639647734550"/>
+          <xs:enumeration value="-16541 9232868515112 -7723210 -6489688 1421930492974682 7946719857617 338125 973042632594449785 623677349490680"/>
+          <xs:enumeration value="3085262768864696 -285763225 7723167629106 -83320 378044168302230976 -686 -4018847973063099 -129"/>
+          <xs:enumeration value="155 911971 -342349 -65098173958626 -231713 -4551120409"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-positiveInteger-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-positiveInteger-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-positiveInteger-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-positiveInteger-enumeration-5,
+      which is derived by restriction of built-in type positiveInteger
+      by facet enumeration with values of:
+          18
+          945
+          922540711065
+          466381
+          49453438244
+          55786266586
+          6535483
+          343049990794353
+          799695914569401
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-positiveInteger-enumeration-5" type="NISTSchema-SV-II-atomic-positiveInteger-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-positiveInteger-enumeration-5-Type">
+    <xs:restriction base="xs:positiveInteger">
+          <xs:enumeration value="18"/>
+          <xs:enumeration value="945"/>
+          <xs:enumeration value="922540711065"/>
+          <xs:enumeration value="466381"/>
+          <xs:enumeration value="49453438244"/>
+          <xs:enumeration value="55786266586"/>
+          <xs:enumeration value="6535483"/>
+          <xs:enumeration value="343049990794353"/>
+          <xs:enumeration value="799695914569401"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

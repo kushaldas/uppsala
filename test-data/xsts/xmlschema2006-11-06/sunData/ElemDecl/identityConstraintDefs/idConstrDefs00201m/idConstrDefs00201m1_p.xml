@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00201m1_p.xml
+   generated from: @(#)idConstrDefs00201m.jmpp	1.3 03/10/10
+
+-->
+
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00201m.xsd">
+
+  <Account>johnsm</Account>
+  <Name>John Smith</Name>
+  <Manager>johnsm</Manager>
+
+  <Account>annabr</Account>
+  <Name>Anna Brown</Name>
+  <Manager>johnsm</Manager>
+
+</test:root>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-4
+    xmlns="NISTSchema-SV-II-list-string-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-4-NS NISTSchema-SV-II-list-string-maxLength-4.xsd">53_Provides_Be_And_Street_Work_,_ME_14076-1201 46_Success_Manage_Specifications_Street_Requesting_,_NJ_14076-1201 73649_Meets_To_Their_Street_Robust_,_VT_14076-1201 627_Pervasive_Are_That_Street_Other_,_VT_14076-1201 827_Provide_Experimental_Of_Street_Has_,_IA_14076-1201 5679_Must_Pervasive_To_Street_Divisions_,_LA_14076-1201 15_Reference_Used_Well_Street_The_,_WI_14076-1201 646_New_Result_From_Street_From_,_NM_14076-1201 3_Recommendations_Led_Commerce_Street_Specifications_,_OR_14076-1201 3313_And_Tools_Applications_Street_Xml_,_OK_14076-1201</NISTSchema-SV-II-list-string-maxLength-4>

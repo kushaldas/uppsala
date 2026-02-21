@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-1
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-1-NS"
+    xmlns:non_business_high="http://www.nist.gov/xsdNS"
+    xmlns:nin-specifica="http://www.nist.gov/xsdNS"
+    xmlns:rby-further.these-man="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:ksensors.different.to="http://www.nist.gov/xsdNS"
+    xmlns:nthe_tool="http://www.nist.gov/xsdNS"
+    xmlns:_specificat="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-1-NS NISTSchema-SV-II-list-QName-length-1.xsd">non_business_high:_known.in-of-capabilities-eliminate.systems-tool_and_ nin-specifica:_correctness.as_looking.number-reference-used-technol rby-further.these-man:xvisibly_in.the-2000.reference.issues-business_browse jof.and.wireless-pervasive.information.screen-provide ksensors.different.to:ythese-a-networks.that.in-house-distributed-a-that_fo nthe_tool:cto_creation-has.obvious.in-house.test_as_as-includin mand-semantics.in_s_documents_with.available_revoluti rand-will-range-more_technology.are-in_data_in_indust _robust_will-offer-as-dynamic-assuring.to_retrieve-in _specificat:ediscussions-rich-rigorous_and-further_helping-and.co</nist:NISTSchema-SV-II-list-QName-length-1>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m1_n.xml
+   generated from: @(#)targetNS00101m.jmpp	1.2 02/08/22
+
+-->
+
+
+<t:test
+    xmlns:t="targetNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="targetNS targetNS00101m.xsd" xsi:type="Test"
+><abc>1</abc></t:test>
+

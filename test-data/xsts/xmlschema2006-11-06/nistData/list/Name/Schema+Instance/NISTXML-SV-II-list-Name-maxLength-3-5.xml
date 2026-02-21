@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-Name-maxLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-Name-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-Name-maxLength-3
+    xmlns="NISTSchema-SV-II-list-Name-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-Name-maxLength-3-NS NISTSchema-SV-II-list-Name-maxLength-3.xsd">nof_engineering_great.and:these:issues:language:are.compet arelated_early-thus.and_000-impact_to.prototype-outfitting eby.provided:review-participating_results:creation_to.this tbe.reproduced-all.of-for-of_enabling_for-ultimate_operati wcomputing-to-systems:disseminate-the:developing-for-to.co :business_a-exercise-in_conformant:services.with-reviewed_ qto:that.such.create-simplest-for-processes_and-less_relat savailable.many-standardization-mediums.discover:solve.con svirtually_interoperability.will.semantics-information.in-</NISTSchema-SV-II-list-Name-maxLength-3>

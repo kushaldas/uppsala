@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd002.n01.xml	1.3 02/12/25
+
+-->
+
+<f:root xmlns:f="http://foo.com">
+	<bar />
+</f:root>

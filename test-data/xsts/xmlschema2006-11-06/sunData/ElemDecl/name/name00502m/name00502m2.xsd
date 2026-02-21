@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00502m2.xsd
+   generated from: @(#)name00502m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/name">
+
+  <xsd:element name="root"/>
+
+  <xsd:element ref="Global2">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Local"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Global2">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Local"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

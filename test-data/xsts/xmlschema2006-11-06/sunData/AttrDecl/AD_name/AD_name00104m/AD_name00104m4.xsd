@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m4.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="ϐ00" type="xsd:integer"/>
+            <xsd:attribute name="ϓ01" type="xsd:integer"/>
+            <xsd:attribute name="ϖ02" type="xsd:integer"/>
+            <xsd:attribute name="Ϣ10" type="xsd:integer"/>
+            <xsd:attribute name="ϩ11" type="xsd:integer"/>
+            <xsd:attribute name="ϱ12" type="xsd:integer"/>
+            <xsd:attribute name="Ё20" type="xsd:integer"/>
+            <xsd:attribute name="І21" type="xsd:integer"/>
+            <xsd:attribute name="Ќ22" type="xsd:integer"/>
+            <xsd:attribute name="Ў30" type="xsd:integer"/>
+            <xsd:attribute name="Ю31" type="xsd:integer"/>
+            <xsd:attribute name="я32" type="xsd:integer"/>
+            <xsd:attribute name="ё40" type="xsd:integer"/>
+            <xsd:attribute name="і41" type="xsd:integer"/>
+            <xsd:attribute name="ќ42" type="xsd:integer"/>
+            <xsd:attribute name="ў50" type="xsd:integer"/>
+            <xsd:attribute name="ѯ51" type="xsd:integer"/>
+            <xsd:attribute name="ҁ52" type="xsd:integer"/>
+            <xsd:attribute name="Ґ60" type="xsd:integer"/>
+            <xsd:attribute name="ҧ61" type="xsd:integer"/>
+            <xsd:attribute name="ҿ62" type="xsd:integer"/>
+            <xsd:attribute name="Ӂ70" type="xsd:integer"/>
+            <xsd:attribute name="ӂ71" type="xsd:integer"/>
+            <xsd:attribute name="ӄ72" type="xsd:integer"/>
+            <xsd:attribute name="Ӈ80" type="xsd:integer"/>
+            <xsd:attribute name="Ӈ81" type="xsd:integer"/>
+            <xsd:attribute name="ӈ82" type="xsd:integer"/>
+            <xsd:attribute name="Ӌ90" type="xsd:integer"/>
+            <xsd:attribute name="Ӌ91" type="xsd:integer"/>
+            <xsd:attribute name="ӌ92" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

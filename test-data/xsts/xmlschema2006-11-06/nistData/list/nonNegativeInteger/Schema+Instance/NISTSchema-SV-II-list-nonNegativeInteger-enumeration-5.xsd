@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5,
+      which is derived by restriction of a list with itemType nonNegativeInteger
+      by facet enumeration with values of:
+          82107125664 767782 299943198372 20232886 502233 205016723762092 17296466 996958
+          34035684328220727 711943529647241 97150297 140952 26 1594177 378371563776 85432290461340409
+          60659745969 818248743978925 252440487965 7178004837532094 3406737 77712563181 83844371 2682
+          773156686743 98529591032239760 23790272812327 65259369432 457422774704 66952
+          57483696468025 395442060214 29486499907 302008 726512571852044
+          34681725604251745 56335414585381626 536845 671901829206 161 6781019887 48326 1473
+          5271648083 261 9128514670 61498 831 10946
+          364925721256 33153791822641 71221005818369 9093 703245347662129 5593554669131 6971026713190
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5" type="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfnonNegativeInteger">
+    <xs:list itemType="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-5-Type">
+    <xs:restriction base="listOfnonNegativeInteger">
+          <xs:enumeration value="82107125664 767782 299943198372 20232886 502233 205016723762092 17296466 996958"/>
+          <xs:enumeration value="34035684328220727 711943529647241 97150297 140952 26 1594177 378371563776 85432290461340409"/>
+          <xs:enumeration value="60659745969 818248743978925 252440487965 7178004837532094 3406737 77712563181 83844371 2682"/>
+          <xs:enumeration value="773156686743 98529591032239760 23790272812327 65259369432 457422774704 66952"/>
+          <xs:enumeration value="57483696468025 395442060214 29486499907 302008 726512571852044"/>
+          <xs:enumeration value="34681725604251745 56335414585381626 536845 671901829206 161 6781019887 48326 1473"/>
+          <xs:enumeration value="5271648083 261 9128514670 61498 831 10946"/>
+          <xs:enumeration value="364925721256 33153791822641 71221005818369 9093 703245347662129 5593554669131 6971026713190"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

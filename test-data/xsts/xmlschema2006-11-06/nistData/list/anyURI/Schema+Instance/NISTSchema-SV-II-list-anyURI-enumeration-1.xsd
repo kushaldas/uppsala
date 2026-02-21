@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-anyURI-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-anyURI-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-anyURI-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-anyURI-enumeration-1,
+      which is derived by restriction of a list with itemType anyURI
+      by facet enumeration with values of:
+          ftp://ftp.atointowhic.XMLimpleme.tationstan.ardiza.net http://prototypete.tingProvid.fi.org ftp://andworldmet.odslibrari.edu mailto:softwa@versionsUsingtoda.com gopher://technologie.fromthe.edu ftp://ftp.t.net http://www.part.org gopher://ofthespecif.cationther.lationship.industryb.org telnet://foc.gov ftp://arecognitio.inWorkinga.lautomatin.in.gov
+          telnet://finebuildin.ledprototy.etheThisth.mustconfor.net news://Languageadv.ncedspecif.ca.net mailto:primari@formedtoincludedas.gov http://withobjectc.mpletediscu.org gopher://information.hediscusso.andwireles.testpart.net ftp://ftp.usingmoreth.discussion.theisaseac.bethetheus.com ftp://ftp.partnership.nitedmetho.stoissuesc.mmun.edu
+          telnet://Anfuturefro.andbymodel.eachinfour.hesecomput.ngre.org mailto:forfileathatPer@XMLtestablemethodsDevel.org gopher://haveusedwit.inwithXMLt.usmanydail.manageitse.ch.org mailto:loo@versionsretrievesystemdataaskingg.gov ftp://ftp.afilterimpl.mentati.com mailto:m@thedataspec.gov
+          ftp://amustnetwor.svertica.gov telnet://forproducts.ocalizedSO.achievedfr.mconferenc.org news://Markupandwi.hqualityin.heinintern.tionalobje.t.net ftp://ftp.thefollowin.forumAddit.com ftp://isofkeythem.nagementTh.asitstheS.org ftp://ftp.contributora.gov mailto:There@retrievetorangedirectionsThisOASISusinginc.gov
+          mailto:@relationshipsStyles.net ftp://ofspecifica.ionsbuildt.A.net mailto:andreques@partnersint.org gopher://andprimaril.standardiz.tionpartic.patebeadd.net ftp://LanguageAlth.edu http://measurement.esour.gov gopher://Structuredm.def.net
+          http://www.dev.org ftp://ftp.isisbuildin.Apervasive.etworkssof.ware.edu http://byknowndisc.v.gov gopher://furthermust.orregistr.net mailto:bo@thatfedbeinte.edu news://availableaP.rvasivereg.strymechan.smscre.gov http://www.aretrievali.andcomputi.gdrafteffo.tsis.edu ftp://fedreviewed.likeledasb.theInforma.ioninhardw.rePerva.com mailto:and@industrytheofarebackglobalt.org
+          ftp://webSchemasc.allengesbe.ngallowss.org news://ControlCPUh.cannualtes.sforinter.net telnet://thereviewso.twareme.org mailto:b@factenforcementsetspecifi.com ftp://ftp.beorganizat.onslocaliz.dandavaila.letheannua.net mailto:w@paradigmspecification.net gopher://HTMLnetworki.edu http://www.underrigoro.sfor.net http://d.org
+          mailto:approa@canNationsindustryXMLofandnetworksb.net telnet://networkstow.uldsimulat.edu ftp://toolsofgcon.erencesPro.ectallowth.electronic.heis.gov gopher://andmustandt.stability.net http://www.providessom.ofadpopula.forthatAlt.oughcommer.e.gov http://www.competencea.dclea.net
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-anyURI-enumeration-1" type="NISTSchema-SV-II-list-anyURI-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfanyURI">
+    <xs:list itemType="xs:anyURI"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-anyURI-enumeration-1-Type">
+    <xs:restriction base="listOfanyURI">
+          <xs:enumeration value="ftp://ftp.atointowhic.XMLimpleme.tationstan.ardiza.net http://prototypete.tingProvid.fi.org ftp://andworldmet.odslibrari.edu mailto:softwa@versionsUsingtoda.com gopher://technologie.fromthe.edu ftp://ftp.t.net http://www.part.org gopher://ofthespecif.cationther.lationship.industryb.org telnet://foc.gov ftp://arecognitio.inWorkinga.lautomatin.in.gov"/>
+          <xs:enumeration value="telnet://finebuildin.ledprototy.etheThisth.mustconfor.net news://Languageadv.ncedspecif.ca.net mailto:primari@formedtoincludedas.gov http://withobjectc.mpletediscu.org gopher://information.hediscusso.andwireles.testpart.net ftp://ftp.usingmoreth.discussion.theisaseac.bethetheus.com ftp://ftp.partnership.nitedmetho.stoissuesc.mmun.edu"/>
+          <xs:enumeration value="telnet://Anfuturefro.andbymodel.eachinfour.hesecomput.ngre.org mailto:forfileathatPer@XMLtestablemethodsDevel.org gopher://haveusedwit.inwithXMLt.usmanydail.manageitse.ch.org mailto:loo@versionsretrievesystemdataaskingg.gov ftp://ftp.afilterimpl.mentati.com mailto:m@thedataspec.gov"/>
+          <xs:enumeration value="ftp://amustnetwor.svertica.gov telnet://forproducts.ocalizedSO.achievedfr.mconferenc.org news://Markupandwi.hqualityin.heinintern.tionalobje.t.net ftp://ftp.thefollowin.forumAddit.com ftp://isofkeythem.nagementTh.asitstheS.org ftp://ftp.contributora.gov mailto:There@retrievetorangedirectionsThisOASISusinginc.gov"/>
+          <xs:enumeration value="mailto:@relationshipsStyles.net ftp://ofspecifica.ionsbuildt.A.net mailto:andreques@partnersint.org gopher://andprimaril.standardiz.tionpartic.patebeadd.net ftp://LanguageAlth.edu http://measurement.esour.gov gopher://Structuredm.def.net"/>
+          <xs:enumeration value="http://www.dev.org ftp://ftp.isisbuildin.Apervasive.etworkssof.ware.edu http://byknowndisc.v.gov gopher://furthermust.orregistr.net mailto:bo@thatfedbeinte.edu news://availableaP.rvasivereg.strymechan.smscre.gov http://www.aretrievali.andcomputi.gdrafteffo.tsis.edu ftp://fedreviewed.likeledasb.theInforma.ioninhardw.rePerva.com mailto:and@industrytheofarebackglobalt.org"/>
+          <xs:enumeration value="ftp://webSchemasc.allengesbe.ngallowss.org news://ControlCPUh.cannualtes.sforinter.net telnet://thereviewso.twareme.org mailto:b@factenforcementsetspecifi.com ftp://ftp.beorganizat.onslocaliz.dandavaila.letheannua.net mailto:w@paradigmspecification.net gopher://HTMLnetworki.edu http://www.underrigoro.sfor.net http://d.org"/>
+          <xs:enumeration value="mailto:approa@canNationsindustryXMLofandnetworksb.net telnet://networkstow.uldsimulat.edu ftp://toolsofgcon.erencesPro.ectallowth.electronic.heis.gov gopher://andmustandt.stability.net http://www.providessom.ofadpopula.forthatAlt.oughcommer.e.gov http://www.competencea.dclea.net"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

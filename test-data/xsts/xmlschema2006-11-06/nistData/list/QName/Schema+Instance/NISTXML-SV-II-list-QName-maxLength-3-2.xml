@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-3-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_by_languages_creating-f="http://www.nist.gov/xsdNS"
+    xmlns:uchair_to_context-ric="http://www.nist.gov/xsdNS"
+    xmlns:opersonal-in_pro="http://www.nist.gov/xsdNS"
+    xmlns:dthose-device="http://www.nist.gov/xsdNS"
+    xmlns:ysimulation.will.file-2="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-3-NS NISTSchema-SV-II-list-QName-maxLength-3.xsd">ra.a.commerce ruse-and-comm _by_languages_creating-f:_as_is.subjec vimplementati uchair_to_context-ric:ebeing_to_be. opersonal-in_pro:drelated_main eyears-bandwi dthose-device:wfile_help.an ysimulation.will.file-2:_robust.the-e</nist:NISTSchema-SV-II-list-QName-maxLength-3>

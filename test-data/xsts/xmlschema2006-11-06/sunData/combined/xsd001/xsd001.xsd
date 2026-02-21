@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)xsd001.xsd	1.3 02/12/25
+
+-->
+
+<!--
+highlight of this test:
+	- use of elementFormDefault="unqualified"
+	- unusual minOccurs/maxOccurs (3 and 7 respectively)
+	- complexType with simpleContent, and restriction.
+	- simpleType within restriction.
+-->
+<xsd:schema targetNamespace="http://foo.com" xmlns="http://foo.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="child" minOccurs="3" maxOccurs="7">
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:extension  base="mytype">
+								<xsd:attribute name="attr" use="optional">
+									<xsd:simpleType>
+										<xsd:restriction>
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:minLength value="3"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+											<xsd:maxLength value="10"/>
+											<xsd:minLength value="5"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+							</xsd:extension>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+<xsd:simpleType name="mytype">
+	<xsd:restriction base="xsd:string">
+   	    <xsd:minLength value="3"/>
+	   <xsd:maxLength value="10"/>
+	</xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

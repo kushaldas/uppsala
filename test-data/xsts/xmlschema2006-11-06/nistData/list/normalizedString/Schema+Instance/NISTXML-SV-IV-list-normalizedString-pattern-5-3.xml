@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-pattern-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-pattern-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-pattern-5
+    xmlns="NISTSchema-SV-IV-list-normalizedString-pattern-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-pattern-5-NS NISTSchema-SV-IV-list-normalizedString-pattern-5.xsd">83_Simulation_Of_World_Ability_Partner_Street_And_Description_,_PA_14600 75_Known_Conference_Street_Of_Define_Product_,_VT_15165-1290 8798_To_Street_Technology_Any_Results_,_RI_17813-1396 2_Helping_Of_Relationships_Chain_Street_Using_Of_The_,_VT_18970 3657_Discussions_Rapidly_To_Street_In_,_NV_13025 262_Conformance_Robust_Street_Must_Nist_Of_,_MS_15706-1707 98_Also_Tools_Ability_And_Street_Constituent_,_OR_16336</NISTSchema-SV-IV-list-normalizedString-pattern-5>

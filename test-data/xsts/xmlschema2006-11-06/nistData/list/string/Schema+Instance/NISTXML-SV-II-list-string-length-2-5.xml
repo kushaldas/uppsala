@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-length-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-length-2
+    xmlns="NISTSchema-SV-II-list-string-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-length-2-NS NISTSchema-SV-II-list-string-length-2.xsd">823_Oasis_Pervasive_Street_Service_Vocabulary_Stylesheet_,_GA_10628-1069 15_Facilitates_The_Street_Ec_Are_Through_,_WA_10628-1069 25_Performance_Of_Street_Revolution_Repository_Standards_,_WV_10628-1069 54_Discover_Be_Street_Documents_Software_Needs_,_SD_10628-1069 7834_Within_Five_Street_With_Industry_File_,_IL_10628-1069 26_Transact_This_Street_Other_Aspects_Help_,_PA_10628-1069 7_In_The_Street_Electronic_And_Maintains_,_IL_10628-1069 33584_With_Of_Street_Consortium_Standardization_Xml_,_MS_10628-1069 77_Dependability_Library_Street_This_Its_Work_,_OR_10628-1069</NISTSchema-SV-II-list-string-length-2>

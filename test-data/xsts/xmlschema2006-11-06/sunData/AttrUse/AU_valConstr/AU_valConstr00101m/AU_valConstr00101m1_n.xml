@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AU_valConstr00101m1_n.xml
+   generated from: @(#)AU_valConstr00101m.jmpp	1.4 03/01/13
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrUse/valConstr AU_valConstr00101m1.xsd"
+      xmlns:td="AttrUse/valConstr">
+
+   <td:elementWithAttr td:number="-1"/>
+</td:root>
+

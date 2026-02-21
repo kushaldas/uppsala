@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-4-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-4
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-4-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:cand-organizatio="http://www.nist.gov/xsdNS"
+    xmlns:dcommerce.="http://www.nist.gov/xsdNS"
+    xmlns:xamong-via_for.with_pico-="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-4-NS NISTSchema-SV-II-list-QName-length-4.xsd">foffer.object_including.shi cand-organizatio:ysuite_objects_a-specificat _is.tremendous-and.can_stan dcommerce.:eof-the_in_systems.industri oensure_computing-the_robus xamong-via_for.with_pico-:iand-registry-the_s-the_bee</nist:NISTSchema-SV-II-list-QName-length-4>

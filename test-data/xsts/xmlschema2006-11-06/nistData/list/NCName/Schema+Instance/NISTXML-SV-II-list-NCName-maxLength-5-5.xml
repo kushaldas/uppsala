@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NCName-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NCName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NCName-maxLength-5
+    xmlns="NISTSchema-SV-II-list-NCName-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NCName-maxLength-5-NS NISTSchema-SV-II-list-NCName-maxLength-5.xsd">_define_and_discover-the_technical.specifications-and.as-comput ymanipulation_processes.and_by.industry-graphical-networking-an nand.the_and.of.alike_use.to.discover.are_2000.business.referen band_deployed-to-and_to_of-known.complex-that-print-an-software _cross-reference.the.and.provided_component-provides-between.wh min.cost.success_addition-communication-to_transforming_in.comp dand_of.information-and.including_file.the-based_to.as_organiza jthat.objective-for_organizations-processors-that-on.uses_embed uincluded.care_able_creation-over.revisions_for-developed_in.in ysuch.into_which_quality_and_exchange_these_as-is_to_standards. _the-create-provides_object.library_the-are-establish_in.will_i _pervasive.international_vertical.a-them.measurements-retrieval bhaving_business-oriented_and.defining.same.networks.recent_org _pico-cellular-registry_influence.and_key-and-particularly_tool</NISTSchema-SV-II-list-NCName-maxLength-5>

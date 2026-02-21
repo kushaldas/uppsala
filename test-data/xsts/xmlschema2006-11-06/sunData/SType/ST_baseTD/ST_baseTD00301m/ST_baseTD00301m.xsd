@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_baseTD00301m.xsd
+   generated from: @(#)ST_baseTD00301m.jmpp	1.1 02/02/28
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_baseTD"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_baseTD">
+     <xsd:element name="test" type="Test"/>
+
+     <xsd:simpleType name="Test">
+          <xsd:list>
+               <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                         <xsd:maxLength value="6"/>
+                         <xsd:pattern value="a+"/>
+                    </xsd:restriction>
+               </xsd:simpleType>
+          </xsd:list>
+     </xsd:simpleType>
+</xsd:schema>
+
+

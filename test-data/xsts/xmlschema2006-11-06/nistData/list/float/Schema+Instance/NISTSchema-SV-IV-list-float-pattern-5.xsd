@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-IV-list-float-pattern-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-float-pattern-5-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-float-pattern-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-float-pattern-5,
+      which is derived by restriction of a list with item type float
+      by facet pattern with a value of: \d{1}E\-\d{2} \.\d{2}E\-\d{1} \d{3}E\d{1} \d{1}\.\d{3}E\d{2} \d{1}\.\d{4}E\-\d{2} \d{1}\.\d{5}E\-\d{1} \d{1}\.\d{6}E\d{1} \d{1}\.\d{7}E\d{2}
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-IV-list-float-pattern-5" type="nist:NISTSchema-SV-IV-list-float-pattern-5-Type"/>
+
+  <simpleType name="listOffloat">
+    <list itemType="float"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-IV-list-float-pattern-5-Type">
+    <restriction base="nist:listOffloat">
+      <pattern value="\d{1}E\-\d{2} \.\d{2}E\-\d{1} \d{3}E\d{1} \d{1}\.\d{3}E\d{2} \d{1}\.\d{4}E\-\d{2} \d{1}\.\d{5}E\-\d{1} \d{1}\.\d{6}E\d{1} \d{1}\.\d{7}E\d{2}"/>
+    </restriction>
+  </simpleType>
+
+</schema>

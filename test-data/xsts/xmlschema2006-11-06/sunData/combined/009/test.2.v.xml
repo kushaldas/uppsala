@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.2.v.xml	1.2 02/12/25
+
+-->
+
+			<foo:base xmlns:foo="urn:foo"/>

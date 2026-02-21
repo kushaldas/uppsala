@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-normalizedString-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-normalizedString-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-normalizedString-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-normalizedString-enumeration-1,
+      which is derived by restriction of a list with itemType normalizedString
+      by facet enumeration with values of:
+          specifications development shift ways computing
+          widespread OASIS and in-house automating of
+          become with cost including contribute measure software debug
+          XSL NIST/ITL world software define Aroma testable related
+          technology business industry versions NIST/ITL by all developers
+          for two in-house The partnerships data Investigation computing emerging
+          tools desktop known for can correctness as the market
+          documents our in language and led
+          The CPU not to with tools XML and the
+          testing the depends be business and signatures
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-normalizedString-enumeration-1" type="NISTSchema-SV-IV-list-normalizedString-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfnormalizedString">
+    <xs:list itemType="xs:normalizedString"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-normalizedString-enumeration-1-Type">
+    <xs:restriction base="listOfnormalizedString">
+          <xs:enumeration value="specifications development shift ways computing"/>
+          <xs:enumeration value="widespread OASIS and in-house automating of"/>
+          <xs:enumeration value="become with cost including contribute measure software debug"/>
+          <xs:enumeration value="XSL NIST/ITL world software define Aroma testable related"/>
+          <xs:enumeration value="technology business industry versions NIST/ITL by all developers"/>
+          <xs:enumeration value="for two in-house The partnerships data Investigation computing emerging"/>
+          <xs:enumeration value="tools desktop known for can correctness as the market"/>
+          <xs:enumeration value="documents our in language and led"/>
+          <xs:enumeration value="The CPU not to with tools XML and the"/>
+          <xs:enumeration value="testing the depends be business and signatures"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

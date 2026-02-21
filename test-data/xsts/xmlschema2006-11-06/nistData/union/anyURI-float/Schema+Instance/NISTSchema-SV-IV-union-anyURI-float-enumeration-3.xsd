@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-union-anyURI-float-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-union-anyURI-float-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-union-anyURI-float-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-union-anyURI-float-enumeration-3,
+      which is derived by restriction of a union of built-in types 
+      anyURI and float
+      by facet enumeration with values of:
+          gopher://suchknownen.ureorganiz.tionssucce.sthe.edu
+          mailto:d@totoolsasofandtoolsforlawwhichandregistry.gov
+          2.0588983E18
+          3.4028235E38
+          1.4E-45
+          news://ar.org
+          ftp://ftp.intherigoro.ssystemdev.lopmentth.net
+          3.3041671E-5
+          news://fulloverwir.lessapplic.tionsprovi.etoabili.org
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-union-anyURI-float-enumeration-3" type="NISTSchema-SV-IV-union-anyURI-float-enumeration-3-Type"/>
+
+  <xs:simpleType name="unionOf-anyURI-float">
+    <xs:union memberTypes="xs:anyURI xs:float"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-union-anyURI-float-enumeration-3-Type">
+    <xs:restriction base="unionOf-anyURI-float">
+          <xs:enumeration value="gopher://suchknownen.ureorganiz.tionssucce.sthe.edu"/>
+          <xs:enumeration value="mailto:d@totoolsasofandtoolsforlawwhichandregistry.gov"/>
+          <xs:enumeration value="2.0588983E18"/>
+          <xs:enumeration value="3.4028235E38"/>
+          <xs:enumeration value="1.4E-45"/>
+          <xs:enumeration value="news://ar.org"/>
+          <xs:enumeration value="ftp://ftp.intherigoro.ssystemdev.lopmentth.net"/>
+          <xs:enumeration value="3.3041671E-5"/>
+          <xs:enumeration value="news://fulloverwir.lessapplic.tionsprovi.etoabili.org"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

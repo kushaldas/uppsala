@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-minLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-minLength-5
+    xmlns="NISTSchema-SV-IV-list-token-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-minLength-5-NS NISTSchema-SV-IV-list-token-minLength-5.xsd">5_Both_Provided_These_University_Street_Industry_,_DC_14439-1845 61_Sensors_For_Software_Meet_Street_Well_,_RI_14439-1845 335_Electronic_Designed_Asked_And_Street_Is_,_PA_14439-1845 5663_Specific_Widely_Meet_Profiles_Street_The_,_MD_14439-1845 45_By_Has_The_Software_Street_Including_,_OH_14439-1845 5471_Documents_The_In_The_Street_Templates_,_HI_14439-1845 88234_Documents_Industry_Help_Launching_Street_From_,_HI_14439-1845 894_Resides_Analysis_Chair_By_Street_As_,_NV_14439-1845 5989_Way_Investigators_Industries_In_Street_In_,_MN_14439-1845 25678_The_Set_Set_Manipulate_Street_Be_,_ND_14439-1845</NISTSchema-SV-IV-list-token-minLength-5>

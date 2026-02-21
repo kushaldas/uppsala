@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSuite xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+	name="BoeingXSDTestSuite" releaseDate="2006-01-19" schemaVersion="1.0">
+	<annotation>
+		<documentation>
+			The following testSetRef should be added to the suite.xml file if the BoeingTestCases	are accepted in the TS.
+		</documentation>
+	</annotation>
+	<testSetRef xlink:href="BoeingXSDTestSet.testSet"/> 
+</testSuite>
+

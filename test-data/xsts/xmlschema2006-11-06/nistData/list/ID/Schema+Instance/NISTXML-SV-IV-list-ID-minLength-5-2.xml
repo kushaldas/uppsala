@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-ID-minLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-ID-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-ID-minLength-5
+    xmlns="NISTSchema-SV-IV-list-ID-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-ID-minLength-5-NS NISTSchema-SV-IV-list-ID-minLength-5.xsd">btechnologies.templates.be.is_modeling-a_to_using-and- h2001_and_s-provides-and_related-to-of_will.commerce_a rany-the_the.wireless-i-industry.designed_led-supply_l eprovide.tools-metrology-for-browsers-be.guidelines_we hpervasive-information-and.of-availability-by-industry na_cooperation-and_an.the.both-to.by_cross-reference_w gvia_government.a_enabling.be.the_pervasive_asking-dev vfile-information-act_signatures.over.the.information. _nature_and-as.a.devices.these.these.a_to-the-availabl nof-web-and_of.neutral.rigorous_forum-leadership-meets</NISTSchema-SV-IV-list-ID-minLength-5>

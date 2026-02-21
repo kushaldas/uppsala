@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-short-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-short-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-short-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-short-enumeration-3,
+      which is derived by restriction of a list with itemType short
+      by facet enumeration with values of:
+          7 4 1444 -8941 32767 -81 9463
+          -144 7166 -8 487 5
+          355 467 115 -4057 -80 449 -2150 5804
+          237 -32768 32767 -478 38 -4371 715 935 -75 -13
+          -4 379 5 -7444 -8396 -49 -2266 36
+          -62 -7778 32767 9256 7306 821 -37 8951 -19
+          -26 15113 -6 -9689 -4004 6308 -32768 3129
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-short-enumeration-3" type="NISTSchema-SV-II-list-short-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfshort">
+    <xs:list itemType="xs:short"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-short-enumeration-3-Type">
+    <xs:restriction base="listOfshort">
+          <xs:enumeration value="7 4 1444 -8941 32767 -81 9463"/>
+          <xs:enumeration value="-144 7166 -8 487 5"/>
+          <xs:enumeration value="355 467 115 -4057 -80 449 -2150 5804"/>
+          <xs:enumeration value="237 -32768 32767 -478 38 -4371 715 935 -75 -13"/>
+          <xs:enumeration value="-4 379 5 -7444 -8396 -49 -2266 36"/>
+          <xs:enumeration value="-62 -7778 32767 9256 7306 821 -37 8951 -19"/>
+          <xs:enumeration value="-26 15113 -6 -9689 -4004 6308 -32768 3129"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

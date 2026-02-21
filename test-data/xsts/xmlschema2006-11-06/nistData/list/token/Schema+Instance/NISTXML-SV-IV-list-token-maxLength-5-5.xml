@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-maxLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-maxLength-5
+    xmlns="NISTSchema-SV-IV-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-maxLength-5-NS NISTSchema-SV-IV-list-token-maxLength-5.xsd">869_Their_Directions_To_Address_Allow_Street_Business_Repository_On_,_WV_15283-1154 862_Correction_Service_Mechanism_Needed_Object_Street_Called_Exist_Among_,_SD_15283-1154 348_Object_Repository_Filter_The_Development_Street_And_Smes_Reach_,_PA_15283-1154 753_Simulation_Adoption_Respect_Structured_To_Street_Supply_Diagnostic_Each_,_WY_15283-1154 55671_Exercise_Ad_Of_Future_Having_Street_Provide_Schemas_Advanced_,_AZ_15283-1154 411_Of_Models_Reference_Exchange_Extensible_Street_Been_Testable_In_,_ME_15283-1154 4_Object_For_Investigation_These_Electronic_Street_Suite_Using_Xml_,_ID_15283-1154 2_Oasis_Ad_Simplest_Specifications_Their_Street_Appropriate_Transmit_Forum_,_KY_15283-1154</NISTSchema-SV-IV-list-token-maxLength-5>

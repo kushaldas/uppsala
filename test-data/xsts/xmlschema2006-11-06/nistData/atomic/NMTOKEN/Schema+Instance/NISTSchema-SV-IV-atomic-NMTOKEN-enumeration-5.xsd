@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5,
+      which is derived by restriction of built-in type NMTOKEN
+      by facet enumeration with values of:
+          cross-over.related.ambiguities-The.Ex
+          via.discussions
+          have_automatic
+          prominent_retrieve_rigorous.a:of-for.define-and:participants:Ja
+          only:d
+          object_rapid.of:partners:including.docume
+          define.a:Schemas-OASIS:working.Conference_profi
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5" type="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-5-Type">
+    <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="cross-over.related.ambiguities-The.Ex"/>
+          <xs:enumeration value="via.discussions"/>
+          <xs:enumeration value="have_automatic"/>
+          <xs:enumeration value="prominent_retrieve_rigorous.a:of-for.define-and:participants:Ja"/>
+          <xs:enumeration value="only:d"/>
+          <xs:enumeration value="object_rapid.of:partners:including.docume"/>
+          <xs:enumeration value="define.a:Schemas-OASIS:working.Conference_profi"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

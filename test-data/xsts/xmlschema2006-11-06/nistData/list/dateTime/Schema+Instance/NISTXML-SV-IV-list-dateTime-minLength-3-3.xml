@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-dateTime-minLength-3-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-dateTime-minLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-dateTime-minLength-3
+    xmlns="NISTSchema-SV-IV-list-dateTime-minLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-dateTime-minLength-3-NS NISTSchema-SV-IV-list-dateTime-minLength-3.xsd">1726-04-24T13:30:39 1826-04-14T11:20:29 1926-04-14T16:30:19 1826-04-04T11:20:39 1826-04-14T11:20:19 2026-04-04T11:30:49 1926-04-14T16:20:39</NISTSchema-SV-IV-list-dateTime-minLength-3>

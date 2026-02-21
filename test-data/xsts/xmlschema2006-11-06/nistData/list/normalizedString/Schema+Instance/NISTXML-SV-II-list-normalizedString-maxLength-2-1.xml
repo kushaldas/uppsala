@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-2-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-2
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-2-NS NISTSchema-SV-II-list-normalizedString-maxLength-2.xsd">1_Of_Registry_The_Computer_Street_Four_Related_Schema_,_OK_19829-1900 6761_Working_Allow_On_The_Street_Ebxml_For_Service_,_FL_19829-1900 41_Problems_Documents_Under_And_Street_Via_Significant_Browsers_,_OK_19829-1900 4672_Addition_Regard_With_Oasis_Street_Them_And_Ways_,_RI_19829-1900 6_Advancement_Which_The_All_Street_Them_Industry_Reputation_,_WV_19829-1900 7472_Trade_Applications_Language_Signatures_Street_Standardization_Performance_Recommendation_,_AK_19829-1900 945_Them_Match_Their_Industry_Street_File_And_Trade_,_OH_19829-1900 74_As_And_For_Pervasive_Street_Environment_And_Systems_,_OH_19829-1900</NISTSchema-SV-II-list-normalizedString-maxLength-2>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3,
+      which is derived by restriction of built-in type NMTOKEN
+      by facet enumeration with values of:
+          needed:as-is.Furthermore_retrieve-to.means.find
+          the_United-development-and-each-disco
+          Groups_in_
+          industry:Advancement.permitting_conformance.and_will-partici
+          than:business:ebXML-of:for.of_electronic.diagnosti
+          manual.that.tools.standard
+          discover.OASIS-versions.has.compatibility-embedded
+          browsers:DOM:both.chain:the:recommending.C
+          methods.profiles.ensure_manipulate.b
+          criteria:-must-tar
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3" type="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-NMTOKEN-enumeration-3-Type">
+    <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="needed:as-is.Furthermore_retrieve-to.means.find"/>
+          <xs:enumeration value="the_United-development-and-each-disco"/>
+          <xs:enumeration value="Groups_in_"/>
+          <xs:enumeration value="industry:Advancement.permitting_conformance.and_will-partici"/>
+          <xs:enumeration value="than:business:ebXML-of:for.of_electronic.diagnosti"/>
+          <xs:enumeration value="manual.that.tools.standard"/>
+          <xs:enumeration value="discover.OASIS-versions.has.compatibility-embedded"/>
+          <xs:enumeration value="browsers:DOM:both.chain:the:recommending.C"/>
+          <xs:enumeration value="methods.profiles.ensure_manipulate.b"/>
+          <xs:enumeration value="criteria:-must-tar"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

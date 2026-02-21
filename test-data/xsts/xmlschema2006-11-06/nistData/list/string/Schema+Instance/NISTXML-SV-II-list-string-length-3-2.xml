@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-length-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-length-3
+    xmlns="NISTSchema-SV-II-list-string-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-length-3-NS NISTSchema-SV-II-list-string-length-3.xsd">85338_The_Choices_Hoc_Street_Provide_Is_,_HI_18176-1664 6478_Investigators_Specifications_Of_Street_Issues_The_,_CO_18176-1664 78_Particularly_The_Complex_Street_The_Promises_,_NE_18176-1664 4417_Of_As_Files_Street_Prominent_Creation_,_IL_18176-1664 22_Adoption_Of_Sensors_Street_Of_Intelligent_,_NJ_18176-1664 27_This_Xml_Being_Street_Be_And_,_NE_18176-1664 7446_For_Better_Computing_Street_Information_Will_,_AR_18176-1664 9587_Xml_The_Contains_Street_Performance_To_,_ME_18176-1664 2587_Older_Result_And_Street_For_Information_,_PA_18176-1664 582_Law_Find_Reference_Street_The_The_,_AK_18176-1664</NISTSchema-SV-II-list-string-length-3>

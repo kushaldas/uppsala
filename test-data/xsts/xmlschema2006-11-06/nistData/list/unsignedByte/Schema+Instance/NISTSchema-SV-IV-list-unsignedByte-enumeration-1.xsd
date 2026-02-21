@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-unsignedByte-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-unsignedByte-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-unsignedByte-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-unsignedByte-enumeration-1,
+      which is derived by restriction of a list with itemType unsignedByte
+      by facet enumeration with values of:
+          70 30 77 255 50 126
+          2 255 22 52 45 94 87
+          2 81 255 91 96 47 82 50 57
+          66 255 83 68 151 12 21 77 75
+          4 68 32 255 127 98
+          59 255 76 68 10 40 69 79 34
+          25 18 255 48 7 163 92 76
+          255 79 42 52 6 47
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-unsignedByte-enumeration-1" type="NISTSchema-SV-IV-list-unsignedByte-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfunsignedByte">
+    <xs:list itemType="xs:unsignedByte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-unsignedByte-enumeration-1-Type">
+    <xs:restriction base="listOfunsignedByte">
+          <xs:enumeration value="70 30 77 255 50 126"/>
+          <xs:enumeration value="2 255 22 52 45 94 87"/>
+          <xs:enumeration value="2 81 255 91 96 47 82 50 57"/>
+          <xs:enumeration value="66 255 83 68 151 12 21 77 75"/>
+          <xs:enumeration value="4 68 32 255 127 98"/>
+          <xs:enumeration value="59 255 76 68 10 40 69 79 34"/>
+          <xs:enumeration value="25 18 255 48 7 163 92 76"/>
+          <xs:enumeration value="255 79 42 52 6 47"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

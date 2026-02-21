@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5,
+      which is derived by restriction of a list with itemType nonNegativeInteger
+      by facet enumeration with values of:
+          18573 9992315 526 6007323361359310 774685903454 90520629321230705
+          57678762 22130213556815 198 975099027 4428248949
+          35140 6781079863 2798357647200 576060 4427984
+          305 5206086908888591 7538948699436 2925620477493 880888727734 93459427
+          65622266297730 61598190898446 48 326 6263929283 10 832127328659 52
+          9145399451347302 455466479 576092987499099 6682475231744 255501259736 437 72416022400468 10091 1735673046913
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5" type="NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfnonNegativeInteger">
+    <xs:list itemType="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-nonNegativeInteger-enumeration-5-Type">
+    <xs:restriction base="listOfnonNegativeInteger">
+          <xs:enumeration value="18573 9992315 526 6007323361359310 774685903454 90520629321230705"/>
+          <xs:enumeration value="57678762 22130213556815 198 975099027 4428248949"/>
+          <xs:enumeration value="35140 6781079863 2798357647200 576060 4427984"/>
+          <xs:enumeration value="305 5206086908888591 7538948699436 2925620477493 880888727734 93459427"/>
+          <xs:enumeration value="65622266297730 61598190898446 48 326 6263929283 10 832127328659 52"/>
+          <xs:enumeration value="9145399451347302 455466479 576092987499099 6682475231744 255501259736 437 72416022400468 10091 1735673046913"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

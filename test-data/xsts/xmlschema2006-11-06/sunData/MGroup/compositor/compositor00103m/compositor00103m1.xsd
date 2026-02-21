@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)compositor00103m1.xsd
+   generated from: @(#)compositor00103m.jmpp	1.1 02/04/29
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="compositor"
+  targetNamespace="compositor">
+
+     <xsd:group name="G1">
+          <xsd:all>
+               <xsd:element name="date" type="xsd:date"/>
+               <xsd:element name="time" type="xsd:time"/>
+          </xsd:all>
+     </xsd:group>
+
+     <xsd:element name="a">
+          <xsd:complexType>
+               <xsd:group ref="G1"/>
+          </xsd:complexType>
+     </xsd:element>
+
+</xsd:schema>
+

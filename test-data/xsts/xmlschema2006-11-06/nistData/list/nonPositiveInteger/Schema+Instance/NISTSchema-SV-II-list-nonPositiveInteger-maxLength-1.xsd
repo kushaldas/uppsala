@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1,
+      which is derived by restriction of a list with item type nonPositiveInteger
+      by facet maxLength with a value of: 5
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1" type="nist:NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1-Type"/>
+
+  <simpleType name="listOfnonPositiveInteger">
+    <list itemType="nonPositiveInteger"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-nonPositiveInteger-maxLength-1-Type">
+    <restriction base="nist:listOfnonPositiveInteger">
+      <maxLength value="5"/>
+    </restriction>
+  </simpleType>
+
+</schema>

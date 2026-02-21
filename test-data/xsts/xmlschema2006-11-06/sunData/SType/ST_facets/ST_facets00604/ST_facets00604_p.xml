@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00604_p.xml	1.2 02/12/25
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00604.xsd">
+
+    <val>aaaa</val>
+    <val>bbbB</val>
+    <val>ccCc</val>
+    <val>ddDD</val>
+    <val>eEee</val>
+    <val>fFfF</val>
+    <val>pPPp</val>
+    <val>gGGG</val>
+    <val>Hhhh</val>
+    <val>IiiI</val>
+    <val>JjJj</val>
+    <val>KkKK</val>
+    <val>LLll</val>
+    <val>MMmM</val>
+    <val>NNNn</val>
+    <val>OOOO</val>
+    <val>bbb0</val>
+    <val>cc0c</val>
+    <val>dd00</val>
+    <val>e0ee</val>
+    <val>f0f0</val>
+    <val>p00p</val>
+    <val>g000</val>
+    <val>bbb_</val>
+    <val>cc_c</val>
+    <val>dd__</val>
+    <val>e_ee</val>
+    <val>f_f_</val>
+    <val>p__p</val>
+    <val>g___</val>
+    <val>H111</val>
+    <val>I11I</val>
+    <val>J1J1</val>
+    <val>K1KK</val>
+    <val>LL11</val>
+    <val>MM1M</val>
+    <val>NNN1</val>
+    <val>H---</val>
+    <val>I--I</val>
+    <val>J-J-</val>
+    <val>K-KK</val>
+    <val>LL--</val>
+    <val>MM-M</val>
+    <val>NNN-</val>
+
+</test:root>

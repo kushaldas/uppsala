@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-length-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-length-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-length-5
+    xmlns="NISTSchema-SV-II-list-string-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-length-5-NS NISTSchema-SV-II-list-string-length-5.xsd">55_Standardization_Areas_And_Our_Street_To_Nature_Is_,_ND_14324-1738 86334_Their_Oasis_Involved_Information_Street_To_The_Markup_,_AZ_14324-1738 31_Java_More_Include_Registry_Street_To_Contained_The_,_HI_14324-1738 8725_Be_Test_Use_That_Street_Information_Semantics_The_,_NM_14324-1738 12_Ensure_These_Type_And_Street_And_Implementations_Both_,_NV_14324-1738 641_Electronic_Asked_This_The_Street_Industry_Partnerships_The_,_ID_14324-1738 499_Next_Measurements_That_Sun_Street_Exist_For_Choices_,_SD_14324-1738 67_Internet_And_At_Specification_Street_Discovery_That_Xml_,_UT_14324-1738 553_Launching_Offer_And_Of_Street_Can_Own_Of_,_GA_14324-1738</NISTSchema-SV-II-list-string-length-5>

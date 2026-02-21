@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-duration-whiteSpace-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-duration-whiteSpace-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-duration-whiteSpace-1
+    xmlns="NISTSchema-SV-IV-list-duration-whiteSpace-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-duration-whiteSpace-1-NS NISTSchema-SV-IV-list-duration-whiteSpace-1.xsd">P1970Y01M01DT00H00M00S P1996Y03M30DT02H11M55S P2025Y10M12DT11H11M19S P1996Y01M13DT00H01M21S P1981Y06M07DT10H21M03S P2029Y11M22DT11H28M03S P2012Y07M20DT12H26M03S P2030Y12M31DT23H59M59S</NISTSchema-SV-IV-list-duration-whiteSpace-1>

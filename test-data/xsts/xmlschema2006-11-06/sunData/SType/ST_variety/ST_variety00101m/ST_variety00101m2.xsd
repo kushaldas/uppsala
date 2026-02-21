@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_variety00101m2.xsd
+   generated from: @(#)ST_variety00101m.jmpp	1.1 02/03/12
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_final"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_final">
+     <xsd:element name="test" type="Test"/>
+
+
+     <xsd:simpleType name="Test">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="1*" />
+          </xsd:restriction>
+     </xsd:simpleType>
+
+
+</xsd:schema>
+

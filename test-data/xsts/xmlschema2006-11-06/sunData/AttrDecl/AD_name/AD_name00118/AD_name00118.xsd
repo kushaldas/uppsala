@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00118.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="A&#x01bb;a" type="xsd:int"/>
+            <xsd:attribute name="b&#x01bb;B" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

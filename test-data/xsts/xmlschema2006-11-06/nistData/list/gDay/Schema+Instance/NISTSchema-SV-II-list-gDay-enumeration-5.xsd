@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-gDay-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-gDay-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gDay-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gDay-enumeration-5,
+      which is derived by restriction of a list with itemType gDay
+      by facet enumeration with values of:
+          ---30 ---07 ---19 ---16 ---27 ---12 ---02 ---23 ---10 ---01
+          ---05 ---22 ---05 ---25 ---07 ---15 ---29 ---03 ---10 ---25
+          ---24 ---29 ---16 ---04 ---22 ---27 ---13 ---21 ---14 ---05
+          ---26 ---21 ---21 ---08 ---28 ---30 ---04 ---11 ---06
+          ---07 ---26 ---06 ---23 ---20
+          ---13 ---26 ---15 ---29 ---04 ---07 ---11 ---21 ---17 ---20
+          ---30 ---17 ---03 ---25 ---22 ---19 ---16
+          ---30 ---21 ---25 ---29 ---28
+          ---05 ---29 ---17 ---03 ---30 ---17 ---26 ---28 ---13
+          ---20 ---04 ---01 ---27 ---04 ---25
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-gDay-enumeration-5" type="NISTSchema-SV-II-list-gDay-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfgDay">
+    <xs:list itemType="xs:gDay"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-gDay-enumeration-5-Type">
+    <xs:restriction base="listOfgDay">
+          <xs:enumeration value="---30 ---07 ---19 ---16 ---27 ---12 ---02 ---23 ---10 ---01"/>
+          <xs:enumeration value="---05 ---22 ---05 ---25 ---07 ---15 ---29 ---03 ---10 ---25"/>
+          <xs:enumeration value="---24 ---29 ---16 ---04 ---22 ---27 ---13 ---21 ---14 ---05"/>
+          <xs:enumeration value="---26 ---21 ---21 ---08 ---28 ---30 ---04 ---11 ---06"/>
+          <xs:enumeration value="---07 ---26 ---06 ---23 ---20"/>
+          <xs:enumeration value="---13 ---26 ---15 ---29 ---04 ---07 ---11 ---21 ---17 ---20"/>
+          <xs:enumeration value="---30 ---17 ---03 ---25 ---22 ---19 ---16"/>
+          <xs:enumeration value="---30 ---21 ---25 ---29 ---28"/>
+          <xs:enumeration value="---05 ---29 ---17 ---03 ---30 ---17 ---26 ---28 ---13"/>
+          <xs:enumeration value="---20 ---04 ---01 ---27 ---04 ---25"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

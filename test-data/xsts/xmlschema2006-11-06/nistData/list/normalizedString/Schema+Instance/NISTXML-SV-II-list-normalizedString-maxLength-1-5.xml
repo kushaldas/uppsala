@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-1
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-1-NS NISTSchema-SV-II-list-normalizedString-maxLength-1.xsd">167_Such_The_Business_Street_Of_,_AR_19253-1817 424_Industry_This_Related_Street_Nist_,_SD_19253-1817 886_As_Language_And_Street_Is_,_ME_19253-1817 41_Effectively_Retrieves_Will_Street_Xml_,_AR_19253-1817 7_Memory_Key_Discover_Street_Between_,_LA_19253-1817 5776_File_Use_Has_Street_And_,_CO_19253-1817 679_As_Systems_Standardization_Street_Effective_,_WY_19253-1817 61466_The_Microsystems_Precise_Street_Delaware_,_KS_19253-1817</NISTSchema-SV-II-list-normalizedString-maxLength-1>

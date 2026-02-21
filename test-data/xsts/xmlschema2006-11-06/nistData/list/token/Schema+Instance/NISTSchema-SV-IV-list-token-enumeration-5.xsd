@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-token-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-token-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-token-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-token-enumeration-5,
+      which is derived by restriction of a list with itemType token
+      by facet enumeration with values of:
+          and domains interoperability led outfitting specifications Recommendations
+          the in create to enforcement: unbiased XML
+          Language industry the Information with addressing dynamic Technical additionally
+          conformance signature devices the other and Standards
+          NSRL with and Consequently data;
+          An object and implementation about original from information
+          of Community interoperability and data information all these
+          understand tools of interoperable XML for
+          each allow over applications Internet technical to
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-token-enumeration-5" type="NISTSchema-SV-IV-list-token-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOftoken">
+    <xs:list itemType="xs:token"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-token-enumeration-5-Type">
+    <xs:restriction base="listOftoken">
+          <xs:enumeration value="and domains interoperability led outfitting specifications Recommendations"/>
+          <xs:enumeration value="the in create to enforcement: unbiased XML"/>
+          <xs:enumeration value="Language industry the Information with addressing dynamic Technical additionally"/>
+          <xs:enumeration value="conformance signature devices the other and Standards"/>
+          <xs:enumeration value="NSRL with and Consequently data;"/>
+          <xs:enumeration value="An object and implementation about original from information"/>
+          <xs:enumeration value="of Community interoperability and data information all these"/>
+          <xs:enumeration value="understand tools of interoperable XML for"/>
+          <xs:enumeration value="each allow over applications Internet technical to"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

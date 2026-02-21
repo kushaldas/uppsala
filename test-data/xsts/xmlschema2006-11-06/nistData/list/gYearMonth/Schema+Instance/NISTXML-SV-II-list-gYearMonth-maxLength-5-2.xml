@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-gYearMonth-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-gYearMonth-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-gYearMonth-maxLength-5
+    xmlns="NISTSchema-SV-II-list-gYearMonth-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-gYearMonth-maxLength-5-NS NISTSchema-SV-II-list-gYearMonth-maxLength-5.xsd">1936-03 2036-04 1736-08 2036-03 1936-06 2036-05 2036-05 1836-04 1936-01 1936-01 1836-07 1836-07 2036-05 2036-06 1936-09 1736-06 1836-02 1836-04</NISTSchema-SV-II-list-gYearMonth-maxLength-5>

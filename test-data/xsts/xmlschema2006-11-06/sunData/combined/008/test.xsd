@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.xsd	1.2 02/12/25
+
+-->
+
+				<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:foo" xmlns:a="urn:a" xmlns:b="urn:b" xmlns:c="urn:c" xmlns:foo="urn:foo" elementFormDefault="qualified" targetNamespace="urn:foo">
+					
+					<xs:complexType name="base">
+						<xs:anyAttribute namespace="urn:a urn:b" processContents="skip"/>
+					</xs:complexType>
+					
+					<!-- the wildcard will accept a,b and c -->
+					<xs:element name="extension">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="base">
+									<xs:anyAttribute namespace="urn:c" processContents="skip"/>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					
+					<!-- the wildcard will accept a only -->
+					<xs:element name="restriction">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="base">
+									<xs:anyAttribute namespace="urn:a" processContents="skip"/>
+								</xs:restriction>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					
+					<!-- the wildcard will accept nothing -->
+					<xs:element name="alias">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="base"/>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:schema>

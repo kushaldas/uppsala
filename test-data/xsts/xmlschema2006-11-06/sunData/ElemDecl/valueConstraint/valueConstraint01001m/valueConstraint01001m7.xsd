@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint01001m7.xsd
+   generated from: @(#)valueConstraint01001m.jmpp	1.3 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root"/>
+
+  <xsd:element name="ID" type="xsd:string" fixed="alpha"/>
+
+  <xsd:simpleType name="derivedFromID">
+      <xsd:restriction base="xsd:ID"/>
+  </xsd:simpleType>
+
+</xsd:schema>

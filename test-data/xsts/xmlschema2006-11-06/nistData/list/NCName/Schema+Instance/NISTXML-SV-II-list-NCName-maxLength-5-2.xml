@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NCName-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NCName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NCName-maxLength-5
+    xmlns="NISTSchema-SV-II-list-NCName-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NCName-maxLength-5-NS NISTSchema-SV-II-list-NCName-maxLength-5.xsd">bof-in_a-i_incorporated_documents-and-cross-ref iover_and-by_these.to-creation.with.to_a.will_t vcomplex-creation.that_implementations_effectiv _early_daily.complex_who.by_built-to-electronic ktechnologies-applications-in-a_that-and-hamper hand.heterogeneous.language.as-discovery.for-fo hupon_to-prototype.all_wireless.first.that-prot efile_ad.related.the.newcomer_defines.diagnosti qconformance_both.ambiguities_and-partnerships_ treview_system.location_bandwidth_same-its.appr fof-pervasive_heterogeneous_conformant.security ycontains.same.of-methods_the.in.with.for-succe wrecommending_health_data_structure-analysis-in jcriteria-that_provide.file_mediums-prototype-t _and_a.that-and_completion_upon.transactional.t windustry_systems.information.academia-partners _engineering_and-test_retrieval.users-object_fo gthe-than.involved_discover.ad_provide-file.dyn</NISTSchema-SV-II-list-NCName-maxLength-5>

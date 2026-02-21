@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-minLength-4-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-minLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-minLength-4
+    xmlns="NISTSchema-SV-IV-list-token-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-minLength-4-NS NISTSchema-SV-IV-list-token-minLength-4.xsd">43_Provide_Working_Data_In_Street_Of_And_,_CO_11515 3576_Particularly_The_Xml_For_Street_Recognition_Xml_,_TX_11515 513_To_Project_Is_Xml_Street_Its_Reference_,_MN_11515 2876_Recommendation_And_To_Language_Street_Design_Computing_,_OR_11515 7574_And_Files_With_The_Street_For_Technologies_,_OH_11515 521_The_Are_Manipulate_Will_Street_Discussions_Of_,_NM_11515 43_The_Build_Without_Interconnecting_Street_Use_Pervasive_,_NV_11515 4774_The_Through_To_Five_Street_From_The_,_WY_11515 68_Needs_Collaborating_Draft_And_Street_In_Possible_,_ND_11515</NISTSchema-SV-IV-list-token-minLength-4>

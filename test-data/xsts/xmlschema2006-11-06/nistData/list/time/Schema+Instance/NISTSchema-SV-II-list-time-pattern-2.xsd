@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-time-pattern-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-time-pattern-2-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-time-pattern-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-time-pattern-2,
+      which is derived by restriction of a list with item type time
+      by facet pattern with a value of: 0\d:\d9:\d7 1\d:\d6:0\d 0\d:\d4:0\d 0\d:4\d:2\d 0\d:\d2:\d1 \d0:\d8:1\d \d5:0\d:5\d
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-time-pattern-2" type="nist:NISTSchema-SV-II-list-time-pattern-2-Type"/>
+
+  <simpleType name="listOftime">
+    <list itemType="time"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-time-pattern-2-Type">
+    <restriction base="nist:listOftime">
+      <pattern value="0\d:\d9:\d7 1\d:\d6:0\d 0\d:\d4:0\d 0\d:4\d:2\d 0\d:\d2:\d1 \d0:\d8:1\d \d5:0\d:5\d"/>
+    </restriction>
+  </simpleType>
+
+</schema>

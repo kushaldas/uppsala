@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedByte-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedByte-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedByte-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedByte-enumeration-5,
+      which is derived by restriction of a list with itemType unsignedByte
+      by facet enumeration with values of:
+          89 27 67 78 83
+          2 1 38 51 67 255
+          7 40 131 60 255 14 58 9 70
+          7 4 1 2 255 38 88 24
+          14 219 39 49 88 85
+          40 255 8 91 22 42 7 62 149
+          236 255 175 94 8 21 44 73 32
+          66 1 3 5 83 9 60
+          1 255 21 3 20 86
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedByte-enumeration-5" type="NISTSchema-SV-II-list-unsignedByte-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfunsignedByte">
+    <xs:list itemType="xs:unsignedByte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedByte-enumeration-5-Type">
+    <xs:restriction base="listOfunsignedByte">
+          <xs:enumeration value="89 27 67 78 83"/>
+          <xs:enumeration value="2 1 38 51 67 255"/>
+          <xs:enumeration value="7 40 131 60 255 14 58 9 70"/>
+          <xs:enumeration value="7 4 1 2 255 38 88 24"/>
+          <xs:enumeration value="14 219 39 49 88 85"/>
+          <xs:enumeration value="40 255 8 91 22 42 7 62 149"/>
+          <xs:enumeration value="236 255 175 94 8 21 44 73 32"/>
+          <xs:enumeration value="66 1 3 5 83 9 60"/>
+          <xs:enumeration value="1 255 21 3 20 86"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedShort-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedShort-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedShort-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedShort-enumeration-1,
+      which is derived by restriction of a list with itemType unsignedShort
+      by facet enumeration with values of:
+          1 544 981 2 65535 619 6817
+          15811 91 40 99 46335 4175 2
+          509 744 274 2529 874 42 26527 73 360
+          23772 6 1 1526 785 558
+          699 657 11 750 5068 5349
+          8 439 2 6634 2928
+          320 88 6 7080 12 7868 28 8256 39
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedShort-enumeration-1" type="NISTSchema-SV-II-list-unsignedShort-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfunsignedShort">
+    <xs:list itemType="xs:unsignedShort"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedShort-enumeration-1-Type">
+    <xs:restriction base="listOfunsignedShort">
+          <xs:enumeration value="1 544 981 2 65535 619 6817"/>
+          <xs:enumeration value="15811 91 40 99 46335 4175 2"/>
+          <xs:enumeration value="509 744 274 2529 874 42 26527 73 360"/>
+          <xs:enumeration value="23772 6 1 1526 785 558"/>
+          <xs:enumeration value="699 657 11 750 5068 5349"/>
+          <xs:enumeration value="8 439 2 6634 2928"/>
+          <xs:enumeration value="320 88 6 7080 12 7868 28 8256 39"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

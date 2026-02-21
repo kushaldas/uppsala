@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m12.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="వ00" type="xsd:integer"/>
+            <xsd:attribute name="ష01" type="xsd:integer"/>
+            <xsd:attribute name="హ02" type="xsd:integer"/>
+            <xsd:attribute name="ౠ10" type="xsd:integer"/>
+            <xsd:attribute name="ౠ11" type="xsd:integer"/>
+            <xsd:attribute name="ౡ12" type="xsd:integer"/>
+            <xsd:attribute name="ಅ20" type="xsd:integer"/>
+            <xsd:attribute name="ಈ21" type="xsd:integer"/>
+            <xsd:attribute name="ಌ22" type="xsd:integer"/>
+            <xsd:attribute name="ಎ30" type="xsd:integer"/>
+            <xsd:attribute name="ಏ31" type="xsd:integer"/>
+            <xsd:attribute name="ಐ32" type="xsd:integer"/>
+            <xsd:attribute name="ಒ40" type="xsd:integer"/>
+            <xsd:attribute name="ಝ41" type="xsd:integer"/>
+            <xsd:attribute name="ನ42" type="xsd:integer"/>
+            <xsd:attribute name="ಪ50" type="xsd:integer"/>
+            <xsd:attribute name="ಮ51" type="xsd:integer"/>
+            <xsd:attribute name="ಳ52" type="xsd:integer"/>
+            <xsd:attribute name="ವ60" type="xsd:integer"/>
+            <xsd:attribute name="ಷ61" type="xsd:integer"/>
+            <xsd:attribute name="ಹ62" type="xsd:integer"/>
+            <xsd:attribute name="ೞ70" type="xsd:integer"/>
+            <xsd:attribute name="ೠ80" type="xsd:integer"/>
+            <xsd:attribute name="ೠ81" type="xsd:integer"/>
+            <xsd:attribute name="ೡ82" type="xsd:integer"/>
+            <xsd:attribute name="അ90" type="xsd:integer"/>
+            <xsd:attribute name="ഈ91" type="xsd:integer"/>
+            <xsd:attribute name="ഌ92" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00802.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="ElemDecl/name"
+    targetNamespace="ElemDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="a&#x002D;1&#x002E;2&#x005F;3&#x00B7;4&#x0387;5&#x06DD;6&#x06DE;"/>
+                <xsd:element ref="a123456"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="a&#x002D;1&#x002E;2&#x005F;3&#x00B7;4&#x0387;5&#x06DD;6&#x06DE;" type="xsd:int"/>
+    <xsd:element name="a123456" type="xsd:int"/>
+
+</xsd:schema>

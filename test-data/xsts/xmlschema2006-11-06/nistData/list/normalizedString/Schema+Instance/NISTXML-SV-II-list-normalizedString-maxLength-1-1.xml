@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-1
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-1-NS NISTSchema-SV-II-list-normalizedString-maxLength-1.xsd">98_Developing_Under_Any_Street_Is_,_AZ_18882-1666 8584_The_The_Naval_Street_Based_,_CO_18882-1666 2366_That_Portable_For_Street_Xsl_,_VT_18882-1666 287_An_Recommendation_By_Street_Needs_,_NJ_18882-1666 5357_The_Software_Pervasive_Street_Exist_,_LA_18882-1666 4687_Thus_Recommending_Templates_Street_In_,_IN_18882-1666 1596_This_These_Used_Street_The_,_NM_18882-1666 4976_Facilitation_And_Be_Street_Vendors_,_LA_18882-1666 8_Typical_Disseminate_Chairing_Street_Reference_,_UT_18882-1666</NISTSchema-SV-II-list-normalizedString-maxLength-1>

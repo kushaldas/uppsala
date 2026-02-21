@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00804_p.xml	1.2 02/12/25
+
+-->
+
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="ElemDecl/name"
+    xsi:schemaLocation="ElemDecl/name name00804.xsd">
+
+    <aaaa>00</aaaa>
+    <bbbB>01</bbbB>
+    <ccCc>02</ccCc>
+    <ddDD>03</ddDD>
+    <eEee>04</eEee>
+    <fFfF>05</fFfF>
+    <pPPp>06</pPPp>
+    <gGGG>07</gGGG>
+    <Hhhh>08</Hhhh>
+    <IiiI>09</IiiI>
+    <JjJj>10</JjJj>
+    <KkKK>11</KkKK>
+    <LLll>12</LLll>
+    <MMmM>13</MMmM>
+    <NNNn>14</NNNn>
+    <OOOO>15</OOOO>
+
+    <bbb0>20</bbb0>
+    <cc0c>21</cc0c>
+    <dd00>22</dd00>
+    <e0ee>23</e0ee>
+    <f0f0>24</f0f0>
+    <p00p>25</p00p>
+    <g000>26</g000>
+
+    <bbb_>40</bbb_>
+    <cc_c>41</cc_c>
+    <dd__>42</dd__>
+    <e_ee>43</e_ee>
+    <f_f_>44</f_f_>
+    <p__p>45</p__p>
+    <g___>46</g___>
+
+    <H111>60</H111>
+    <I11I>61</I11I>
+    <J1J1>62</J1J1>
+    <K1KK>63</K1KK>
+    <LL11>64</LL11>
+    <MM1M>65</MM1M>
+    <NNN1>66</NNN1>
+
+    <H--->80</H--->
+    <I--I>81</I--I>
+    <J-J->82</J-J->
+    <K-KK>83</K-KK>
+    <LL-->84</LL-->
+    <MM-M>85</MM-M>
+    <NNN->86</NNN->
+
+</root>
+

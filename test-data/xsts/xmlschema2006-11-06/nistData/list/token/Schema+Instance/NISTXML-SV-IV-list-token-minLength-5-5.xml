@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-minLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-minLength-5
+    xmlns="NISTSchema-SV-IV-list-token-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-minLength-5-NS NISTSchema-SV-IV-list-token-minLength-5.xsd">75_Forum_For_Language_Street_Depends_Registries_,_HI_19500-1330 833_Formed_And_Paradigm_Street_Discovery_Uses_,_OH_19500-1330 835_Health_Be_The_Street_Retrieval_Of_,_MN_19500-1330 43854_Following_Wireless_Of_Street_Of_Software_,_MN_19500-1330 325_Structured_The_Nist_Street_Creation_And_,_WY_19500-1330 941_As_Define_Industry_Street_The_The_,_NC_19500-1330 4864_The_Of_Using_Street_Defining_Development_,_KY_19500-1330 22_Dom_Further_In_Street_Influence_With_,_CA_19500-1330 28815_The_Project_Is_Street_Pervasive_Schemas_,_PA_19500-1330 212_Designed_Soc_Available_Street_The_Application_,_NJ_19500-1330</NISTSchema-SV-IV-list-token-minLength-5>

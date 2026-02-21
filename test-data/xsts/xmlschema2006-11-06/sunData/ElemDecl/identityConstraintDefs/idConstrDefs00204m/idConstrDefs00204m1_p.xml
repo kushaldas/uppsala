@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00204m1_p.xml
+   generated from: @(#)idConstrDefs00204m.jmpp	1.3 02/11/15
+
+-->
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00204m.xsd">
+
+  <person>William Smith</person>
+
+<!-- Positive variant begin -->
+  <person parent="William Smith">John Smith</person>
+<!-- Positive variant end   -->
+<!-- Negative variant begin - -
+  <person parent="Will Smith">John Smith</person>
+ - - Negative variant end   -->
+
+</test:root>

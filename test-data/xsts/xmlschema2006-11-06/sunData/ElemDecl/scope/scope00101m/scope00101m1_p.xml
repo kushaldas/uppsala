@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)scope00101m1_p.xml
+   generated from: @(#)scope00101m.jmpp	1.4 02/11/19
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/scope"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/scope scope00101m.xsd">
+
+    <test:Global>1</test:Global>
+    <Local>2</Local>
+
+</test:root>

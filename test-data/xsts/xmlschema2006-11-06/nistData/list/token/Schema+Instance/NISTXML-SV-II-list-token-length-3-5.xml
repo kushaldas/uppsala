@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-3
+    xmlns="NISTSchema-SV-II-list-token-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-3-NS NISTSchema-SV-II-list-token-length-3.xsd">7797_Reputation_Documents_Tools_Street_Use_Trade_Ec_,_NY_18809-1164 7434_From_Language_Distributed_Street_Unbiased_Of_Draft_,_KS_18809-1164 623_Provides_That_The_Street_Description_The_Aroma_,_WY_18809-1164 9812_And_Its_By_Street_Appropriate_Needed_The_,_PA_18809-1164 697_Industries_Utilize_Xml_Street_Mediums_Complex_The_,_MS_18809-1164 511_Software_Languages_Well_Street_Provides_First_To_,_DE_18809-1164 8346_And_The_Both_Street_Chairing_Languages_Suites_,_NM_18809-1164 614_Business_Manufacturers_The_Street_Languages_Wireless_To_,_PA_18809-1164 527_The_Standards_Shift_Street_Our_Precise_The_,_DE_18809-1164 7825_Law_Cpu_Conference_Street_Pervasive_Working_World_,_RI_18809-1164</NISTSchema-SV-II-list-token-length-3>

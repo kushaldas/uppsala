@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<testSet name="Notation"
+      xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      contributor="SUN">
+
+    <testGroup name="annotation00101m1">
+        <annotation>
+            <documentation>
+                <Title>human-targeted  annotation for a notation declaration (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a notation declaration.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="annotation00101m1">
+            <schemaDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m2">
+        <annotation>
+            <documentation>
+                <Title>human-targeted double annotation for a notation declaration (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a notation declaration.
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="annotation00101m2">
+            <schemaDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m3">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted  annotation for a notation declaration (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a notation declaration.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="annotation00101m3">
+            <schemaDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m3.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m3_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m4">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted double annotation for a notation declaration (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a notation declaration.
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="annotation00101m4">
+            <schemaDocument xlink:href="../sunData/Notation/annotation/annotation00101m/annotation00101m4.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="name00101m1">
+        <annotation>
+            <documentation>
+                <Title>Use the declared notation with the name 'png' (valid schema)</Title>
+                <Description>Notation declarations are referenced in the course of *validating* strings as
+                              members of the NOTATION simple type. A schema is invalid if it is contain a
+                              referebce to undeclared notation.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="name00101m1">
+            <schemaDocument xlink:href="../sunData/Notation/name/name00101m/name00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/name/name00101m/name00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="name00101m2">
+        <annotation>
+            <documentation>
+                <Title>Use the undeclared notation with the name 'jpeg' (invalid schema)</Title>
+                <Description>Notation declarations are referenced in the course of *validating* strings as
+                              members of the NOTATION simple type. A schema is invalid if it is contain a
+                              referebce to undeclared notation.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="name00101m2">
+            <schemaDocument xlink:href="../sunData/Notation/name/name00101m/name00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="name00201m1">
+        <annotation>
+            <documentation>
+                <Title>Declare a notation without name (invalid schema)</Title>
+                <Description>A name [attribute] is a required attribute</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="name00201m1">
+            <schemaDocument xlink:href="../sunData/Notation/name/name00201m/name00201m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="publicid00101m1">
+        <annotation>
+            <documentation>
+                <Title>Declare a notation with the {public identifier} 'image/png' (valid schema)</Title>
+                <Description>The property {public identifier} is represented as the actual value of
+                              the public [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="publicId00101m1">
+            <schemaDocument xlink:href="../sunData/Notation/publicId/publicId00101m/publicId00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/publicId/publicId00101m/publicId00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="publicid00201m1">
+        <annotation>
+            <documentation>
+                <Title>Declare a notation without the {public identifier} (invalid schema)</Title>
+                <Description>The public [attribute] is a required attribute.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="publicId00201m1">
+            <schemaDocument xlink:href="../sunData/Notation/publicId/publicId00201m/publicId00201m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="systemid00101m1">
+        <annotation>
+            <documentation>
+                <Title>Declare a notation with the {system identifier} 'sdtimage' (valid schema)</Title>
+                <Description>The property {system identifier} is represented as the actual value of
+                              the system [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="systemId00101m1">
+            <schemaDocument xlink:href="../sunData/Notation/systemId/systemId00101m/systemId00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/systemId/systemId00101m/systemId00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="systemid00201m1">
+        <annotation>
+            <documentation>
+                <Title>Declare a notation without the {system identifier} (valid schema)</Title>
+                <Description>The property {system identifier} is optional.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="systemId00201m1">
+            <schemaDocument xlink:href="../sunData/Notation/systemId/systemId00201m/systemId00201m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/systemId/systemId00201m/systemId00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="targetns00101m1">
+        <annotation>
+            <documentation>
+                <Title>Declaration of the notation with the name 'png' and the namespace 'tck_test' (valid schema)</Title>
+                <Description>The property {name} is represented as the value of the name [attribute].</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="targetNS00101m1">
+            <schemaDocument xlink:href="../sunData/Notation/targetNS/targetNS00101m/targetNS00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/targetNS/targetNS00101m/targetNS00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="targetns00101m2">
+        <annotation>
+            <documentation>
+                <Title>Use of the notation declared in the namespace 'tck_test' (valid schema)</Title>
+                <Description>Notation declarations are referenced in the course of *validating* strings as
+                              members of the NOTATION simple type.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cNotation_Declarations"/>
+        <schemaTest name="targetNS00101m2">
+            <schemaDocument xlink:href="../sunData/Notation/targetNS/targetNS00101m/targetNS00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/Notation/targetNS/targetNS00101m/targetNS00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+</testSet>

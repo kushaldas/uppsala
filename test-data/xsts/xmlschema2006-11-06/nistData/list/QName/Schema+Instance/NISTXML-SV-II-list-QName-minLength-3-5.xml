@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-minLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-minLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-minLength-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-minLength-3-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:lcorrec="http://www.nist.gov/xsdNS"
+    xmlns:_the.next-law-="http://www.nist.gov/xsdNS"
+    xmlns:smodels.as.its="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-minLength-3-NS NISTSchema-SV-II-list-QName-minLength-3.xsd">dsuch.from_and.repository-can_is_measure_with.to_pervasive-pr lcorrec:_an.can-the-and-and-languages_discover.measurements.publishin _the.next-law-:himproved-intelligent-success-standards_of_automate.tools.rev _forum-respect_metrology.software_resource.and.systems-on-a-c smodels.as.its:kis-suites-data_use_discover-the-information-the.object_data-</nist:NISTSchema-SV-II-list-QName-minLength-3>

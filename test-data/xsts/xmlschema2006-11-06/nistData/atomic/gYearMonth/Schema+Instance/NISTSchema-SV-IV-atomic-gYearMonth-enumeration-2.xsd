@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2,
+      which is derived by restriction of built-in type gYearMonth
+      by facet enumeration with values of:
+          2017-08
+          1986-04
+          2000-01
+          2015-06
+          2010-09
+          2002-07
+          2020-10
+          2012-02
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2" type="NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-gYearMonth-enumeration-2-Type">
+    <xs:restriction base="xs:gYearMonth">
+          <xs:enumeration value="2017-08"/>
+          <xs:enumeration value="1986-04"/>
+          <xs:enumeration value="2000-01"/>
+          <xs:enumeration value="2015-06"/>
+          <xs:enumeration value="2010-09"/>
+          <xs:enumeration value="2002-07"/>
+          <xs:enumeration value="2020-10"/>
+          <xs:enumeration value="2012-02"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

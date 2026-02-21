@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)annotation00101m1_p.xml
+   generated from: @(#)annotation00101m.jmpp	1.3 02/11/19
+
+-->
+
+<root
+    xmlns="AGroupDef/annotation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="AGroupDef/annotation annotation00101m1.xsd"/>

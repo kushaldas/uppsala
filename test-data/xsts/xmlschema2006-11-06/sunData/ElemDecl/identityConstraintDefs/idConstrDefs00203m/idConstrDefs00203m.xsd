@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00203m.xsd
+   generated from: @(#)idConstrDefs00203m.jmpp	1.3 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/identityConstraintDefs"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/identityConstraintDefs">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="person">
+                  <xsd:complexType>
+                       <xsd:simpleContent>
+                            <xsd:extension base="xsd:string">
+                                 <xsd:attribute name="birthday" type="xsd:date"/>
+                            </xsd:extension>
+                       </xsd:simpleContent>
+                  </xsd:complexType>
+              </xsd:element>
+          </xsd:sequence>
+      </xsd:complexType>
+      <xsd:unique name="UNIQ">
+          <xsd:selector xpath="./person"/>
+          <xsd:field xpath="."/>
+          <xsd:field xpath="@birthday"/>
+      </xsd:unique>
+  </xsd:element>
+
+</xsd:schema>

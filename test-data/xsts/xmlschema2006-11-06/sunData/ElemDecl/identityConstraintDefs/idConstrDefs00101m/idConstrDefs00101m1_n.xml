@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00101m1_n.xml
+   generated from: @(#)idConstrDefs00101m.jmpp	1.4 02/11/15
+
+-->
+
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00101m.xsd">
+
+    <sernum>1</sernum>
+
+    <sernum>1</sernum>
+
+</test:root>

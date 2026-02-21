@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-negativeInteger-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-negativeInteger-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-negativeInteger-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-negativeInteger-enumeration-5,
+      which is derived by restriction of built-in type negativeInteger
+      by facet enumeration with values of:
+          -38626
+          -758
+          -14631310
+          -6832806488697145
+          -28493065
+          -913277
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-negativeInteger-enumeration-5" type="NISTSchema-SV-II-atomic-negativeInteger-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-negativeInteger-enumeration-5-Type">
+    <xs:restriction base="xs:negativeInteger">
+          <xs:enumeration value="-38626"/>
+          <xs:enumeration value="-758"/>
+          <xs:enumeration value="-14631310"/>
+          <xs:enumeration value="-6832806488697145"/>
+          <xs:enumeration value="-28493065"/>
+          <xs:enumeration value="-913277"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKENS-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKENS-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKENS-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKENS-enumeration-4,
+      which is derived by restriction of a list with itemType NMTOKENS
+      by facet enumeration with values of:
+          partners_able_capabilities.to:of:mechanism:each_DOM: technol is_The review:made:computing.for.processes pr addi both-techniques:high_ to-software-intuitive_re
+          envir for-the as:information:Such.as health.set_This:diagnostic.specification of:use-visibly_A:same.use_domains:dependabili less:forum-ensure:th
+          Although:has- enforcement:-technology-web.the-en the_ ensure_as:distributed.creation_recommendat consorti computing-working_discover_standards:draft:The_XML_a- build-dependability:Recommendati of.to-cost_as.complete-revisions:for:by:into.blocks_be XML-applications.logic-them:and_con
+          the.the:the_the_Schemas_to:repositor of and_ able:XML-related-appropriate-and.XML-related.bot newcomers:a-Structured to-by:with.formed.XML-creat the_interconnecting-implementations:been:data_of_files devices_wit
+          Recommendation-chair_developed:these:from:Worki and-is-and:Jini-their_and_to.to:DOM_testing.of_and.the.XML:in Markup.service-of-documents-Description:correction.signatures. for_that.filter.Standar software_ability_as. both.s fo
+          the:related:process-A_technical-key.is-and-the-any in.a:of-an.of_is:is.for_to_in simul is_success-from:disseminate-fact_manipulate:and-eliminate.under ad:a:registry_and:specifications_unbiased:aroun the:Electronic_Stylesheet-eliminate_both:in where_systems-recognition-to:with-h to-and:XML-capabilit the_XML-based_a:As.raised_to-for:use.them_the:metrolog XML-reference:within_approach-industry.of
+          the-XML:is_constituent_the:offer_appropriate:obvious.design. for_Using.measurements-m documents:transmit_such_ the-interoperability:and_over:and-issues.and-of:techn partners_technologies:has-and.interc can:must-creates.uti
+          four.of-primary-reference.registry_build.XML-led:involved.and. allows:subje the-reach-has:access-Additionally-fine_is:are: quali manipulate_them.capabi as:measure:object-has:four_international.correction.a issues:By_or-NIST.Internet-enab this_com specifications.objective_among_meth
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-4" type="NISTSchema-SV-IV-list-NMTOKENS-enumeration-4-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-4-Type">
+    <xs:restriction base="xs:NMTOKENS">
+          <xs:enumeration value="partners_able_capabilities.to:of:mechanism:each_DOM: technol is_The review:made:computing.for.processes pr addi both-techniques:high_ to-software-intuitive_re"/>
+          <xs:enumeration value="envir for-the as:information:Such.as health.set_This:diagnostic.specification of:use-visibly_A:same.use_domains:dependabili less:forum-ensure:th"/>
+          <xs:enumeration value="Although:has- enforcement:-technology-web.the-en the_ ensure_as:distributed.creation_recommendat consorti computing-working_discover_standards:draft:The_XML_a- build-dependability:Recommendati of.to-cost_as.complete-revisions:for:by:into.blocks_be XML-applications.logic-them:and_con"/>
+          <xs:enumeration value="the.the:the_the_Schemas_to:repositor of and_ able:XML-related-appropriate-and.XML-related.bot newcomers:a-Structured to-by:with.formed.XML-creat the_interconnecting-implementations:been:data_of_files devices_wit"/>
+          <xs:enumeration value="Recommendation-chair_developed:these:from:Worki and-is-and:Jini-their_and_to.to:DOM_testing.of_and.the.XML:in Markup.service-of-documents-Description:correction.signatures. for_that.filter.Standar software_ability_as. both.s fo"/>
+          <xs:enumeration value="the:related:process-A_technical-key.is-and-the-any in.a:of-an.of_is:is.for_to_in simul is_success-from:disseminate-fact_manipulate:and-eliminate.under ad:a:registry_and:specifications_unbiased:aroun the:Electronic_Stylesheet-eliminate_both:in where_systems-recognition-to:with-h to-and:XML-capabilit the_XML-based_a:As.raised_to-for:use.them_the:metrolog XML-reference:within_approach-industry.of"/>
+          <xs:enumeration value="the-XML:is_constituent_the:offer_appropriate:obvious.design. for_Using.measurements-m documents:transmit_such_ the-interoperability:and_over:and-issues.and-of:techn partners_technologies:has-and.interc can:must-creates.uti"/>
+          <xs:enumeration value="four.of-primary-reference.registry_build.XML-led:involved.and. allows:subje the-reach-has:access-Additionally-fine_is:are: quali manipulate_them.capabi as:measure:object-has:four_international.correction.a issues:By_or-NIST.Internet-enab this_com specifications.objective_among_meth"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

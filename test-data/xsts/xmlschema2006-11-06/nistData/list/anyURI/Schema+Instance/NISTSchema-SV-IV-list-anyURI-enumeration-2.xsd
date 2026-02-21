@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-anyURI-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-anyURI-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-anyURI-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-anyURI-enumeration-2,
+      which is derived by restriction of a list with itemType anyURI
+      by facet enumeration with values of:
+          telnet://work.net ftp://ftp.Pe.gov gopher://itsfacilita.esainforma.ionindustr.of.gov ftp://ftp.One.gov http://www.Vir.org news://definingcom.utedenough.ommuni.gov gopher://mai.edu
+          telnet://forandallne.traldocume.tsthefilea.propriated.vi.com ftp://ftp.t.net news://meetindic.org ftp://ftp.XSLorganiz.edu http://torelatedre.pec.gov http://i.com http://toolsappli.edu telnet://standardsin.orporatedt.alreadysco.m.org
+          ftp://aschallenge.recentBusi.essofSchem.sperforman.org news://andAnthethe.nderapplic.tionsfacil.tate.org telnet://fordocument.bethemanip.la.org ftp://ftp.reachtovers.on.edu http://www.objectivean.thes.org gopher://industry.org news://referenceth.andwireles.primarilyr.pos.net http://si.gov
+          ftp://whotoolsobj.ctwithsu.com ftp://ftp.supplyhelpc.nsortiumst.earecomput.ngw.org ftp://Consequentl.offerbodyt.wouldthepa.ticularlya.net ftp://ftp.testingdepe.dsautomati.allytoolsc.com ftp://ftp.x.edu ftp://softwareeff.rtestablis.individual.asisdefine.ppr.gov telnet://semanticsEX.STStandard.industr.edu http://www.andbeandiss.esfactsign.turescompu.ingAportabl.gov ftp://ftp.madetheRefe.enceforfro.prominent.gov
+          ftp://achoicesdat.basetomust.hetoolstes.DOMspec.edu ftp://Coordinatep.rtnerships.dvancement.efi.edu mailto:su@beofr.net news://f.com telnet://g.com ftp://natureofimp.ctusefroms.cheffective.edu ftp://issuest.org
+          mailto:bywebinfras@havesetaproductindustryasAvocabul.org telnet://developinga.ikeRecomme.dationsisi.suesrevo.edu http://www.r.net http://www.usersworkkn.wn.org telnet://oftestitsan.ofAlthough.anyusersto.lsfromwou.net http://www.andaswirele.sbothrepos.toryandisf.lterlanguag.net http://Theofyearsf.rtherofare.fdevelopin.fromfordoc.org
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-anyURI-enumeration-2" type="NISTSchema-SV-IV-list-anyURI-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfanyURI">
+    <xs:list itemType="xs:anyURI"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-anyURI-enumeration-2-Type">
+    <xs:restriction base="listOfanyURI">
+          <xs:enumeration value="telnet://work.net ftp://ftp.Pe.gov gopher://itsfacilita.esainforma.ionindustr.of.gov ftp://ftp.One.gov http://www.Vir.org news://definingcom.utedenough.ommuni.gov gopher://mai.edu"/>
+          <xs:enumeration value="telnet://forandallne.traldocume.tsthefilea.propriated.vi.com ftp://ftp.t.net news://meetindic.org ftp://ftp.XSLorganiz.edu http://torelatedre.pec.gov http://i.com http://toolsappli.edu telnet://standardsin.orporatedt.alreadysco.m.org"/>
+          <xs:enumeration value="ftp://aschallenge.recentBusi.essofSchem.sperforman.org news://andAnthethe.nderapplic.tionsfacil.tate.org telnet://fordocument.bethemanip.la.org ftp://ftp.reachtovers.on.edu http://www.objectivean.thes.org gopher://industry.org news://referenceth.andwireles.primarilyr.pos.net http://si.gov"/>
+          <xs:enumeration value="ftp://whotoolsobj.ctwithsu.com ftp://ftp.supplyhelpc.nsortiumst.earecomput.ngw.org ftp://Consequentl.offerbodyt.wouldthepa.ticularlya.net ftp://ftp.testingdepe.dsautomati.allytoolsc.com ftp://ftp.x.edu ftp://softwareeff.rtestablis.individual.asisdefine.ppr.gov telnet://semanticsEX.STStandard.industr.edu http://www.andbeandiss.esfactsign.turescompu.ingAportabl.gov ftp://ftp.madetheRefe.enceforfro.prominent.gov"/>
+          <xs:enumeration value="ftp://achoicesdat.basetomust.hetoolstes.DOMspec.edu ftp://Coordinatep.rtnerships.dvancement.efi.edu mailto:su@beofr.net news://f.com telnet://g.com ftp://natureofimp.ctusefroms.cheffective.edu ftp://issuest.org"/>
+          <xs:enumeration value="mailto:bywebinfras@havesetaproductindustryasAvocabul.org telnet://developinga.ikeRecomme.dationsisi.suesrevo.edu http://www.r.net http://www.usersworkkn.wn.org telnet://oftestitsan.ofAlthough.anyusersto.lsfromwou.net http://www.andaswirele.sbothrepos.toryandisf.lterlanguag.net http://Theofyearsf.rtherofare.fdevelopin.fromfordoc.org"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-short-maxExclusive-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-short-maxExclusive-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-short-maxExclusive-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-short-maxExclusive-3,
+      which is derived by restriction of built-in type short
+      by facet maxExclusive with a value of: -14442
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-atomic-short-maxExclusive-3" type="NISTSchema-SV-IV-atomic-short-maxExclusive-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-short-maxExclusive-3-Type">
+    <xs:restriction base="xs:short">
+      <xs:maxExclusive value="-14442"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

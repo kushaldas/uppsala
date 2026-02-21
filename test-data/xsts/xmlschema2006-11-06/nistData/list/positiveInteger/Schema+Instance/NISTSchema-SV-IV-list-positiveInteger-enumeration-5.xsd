@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-positiveInteger-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-positiveInteger-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-positiveInteger-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-positiveInteger-enumeration-5,
+      which is derived by restriction of a list with itemType positiveInteger
+      by facet enumeration with values of:
+          6342185648999798 682097 20799729 777373 3206854703627 904582 984418438148606 12 19
+          147625564 287732976508 79416 98298745986 335214650246983 10797414 279936703839560 37896792236 7094994977044 111186
+          21433294291949545 32575524922440 77627063215973413 67573612640955837 7441677072 1281716390141882 87805818487677 8543 146 861
+          637144299 2126 551 35 661085620
+          2807695901889 841088 736 5075974 93503329363009046 97985 325190852648813755
+          4576828438 2044509661127786 364105609 93165781490117 658087868 789404563 90468354397 8989386756 619023
+          4096175911006666 5514952696 70848071853756 56500765 8950008823207 54 98386
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-positiveInteger-enumeration-5" type="NISTSchema-SV-IV-list-positiveInteger-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfpositiveInteger">
+    <xs:list itemType="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-positiveInteger-enumeration-5-Type">
+    <xs:restriction base="listOfpositiveInteger">
+          <xs:enumeration value="6342185648999798 682097 20799729 777373 3206854703627 904582 984418438148606 12 19"/>
+          <xs:enumeration value="147625564 287732976508 79416 98298745986 335214650246983 10797414 279936703839560 37896792236 7094994977044 111186"/>
+          <xs:enumeration value="21433294291949545 32575524922440 77627063215973413 67573612640955837 7441677072 1281716390141882 87805818487677 8543 146 861"/>
+          <xs:enumeration value="637144299 2126 551 35 661085620"/>
+          <xs:enumeration value="2807695901889 841088 736 5075974 93503329363009046 97985 325190852648813755"/>
+          <xs:enumeration value="4576828438 2044509661127786 364105609 93165781490117 658087868 789404563 90468354397 8989386756 619023"/>
+          <xs:enumeration value="4096175911006666 5514952696 70848071853756 56500765 8950008823207 54 98386"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

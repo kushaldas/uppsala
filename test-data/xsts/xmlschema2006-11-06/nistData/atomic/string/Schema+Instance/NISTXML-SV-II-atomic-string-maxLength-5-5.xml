@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-atomic-string-maxLength-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-atomic-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-atomic-string-maxLength-5
+    xmlns="NISTSchema-SV-II-atomic-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-atomic-string-maxLength-5-NS NISTSchema-SV-II-atomic-string-maxLength-5.xsd">istry vocabulary must be created for
+consistency of discovery information among them 
+
+ NIST/ITL is working with the Organization for the
+Advancement of Structured Information Standards  OASIS   the prominent
+industry consortium for defining specifications for the discovery and
+retrieval of XML-related documents  NIST chairs the OASIS
+Registry/Repository Technical Committee and is a significant
+contributor  NIST/ITL is also working within the ebXML Project  a joint
+project between OASIS and the United Nations body for Trade Facilitation
+and Electronic Business  UN/CEFACT   the prominent business-oriented 
+international standards organization for the discovery  retrieval  and
+use of business processes and related documents  The role of NIST/ITL is
+to influence the quality  correctness  and testability of the
+specifications of both the OASIS and ebXML Registry/Repository Working
+Groups through our reference implementation of a registry and repository
+that is conformant to both specifications  Additionally  NIST/ITL
+facilitates cross-over discussions between OASIS and ebXML; thus helping
+to ensure compatibility of the specifications 
+
+ NIST/ITL  through its leadership in developing a reference
+implementation that is compliant to both specifications  will help
+ensure that both specifications are unambiguous  complete  and testable 
+This work will also contribute to the compatibility of these two
+specifications  An early indication of success is that the draft ebXML
+specification uses the OASIS specification as its basis  The completion
+of these specifications will allow small- and medium-sized enterprises
+ SMEs  to make appropriate choices with regard to EC tools and
+applications  and will allow them access to the emerging supply chain
+and industry partnership EC models 
+
+ The National Software Reference Library  NSRL  provides a
+repository of known software  file profiles  and file signatures for use
+by law enforcement organizations in computer forensics investigations</NISTSchema-SV-II-atomic-string-maxLength-5>

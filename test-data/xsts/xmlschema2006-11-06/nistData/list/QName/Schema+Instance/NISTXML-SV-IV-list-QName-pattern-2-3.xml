@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-pattern-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-pattern-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-pattern-2
+    xmlns:nist="NISTSchema-SV-IV-list-QName-pattern-2-NS"
+    xmlns:_="http://www.nist.gov/xsdNS"
+    xmlns:cdependability-a="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_m="http://www.nist.gov/xsdNS"
+    xmlns:_an-pico-cellular_heterog="http://www.nist.gov/xsdNS"
+    xmlns:lretrieve_with-="http://www.nist.gov/xsdNS"
+    xmlns:yand_will.versio="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-pattern-2-NS NISTSchema-SV-IV-list-QName-pattern-2.xsd">_:ja-joint.already-all-object_participants.a_do_di cdependability-a:lfor.to-bein _for_in-be.to.be-and-and.which_the-f oand.informa _m:_of_processes_to.simplest_to.these_for.produ _an-pico-cellular_heterog:mstandardization.information-and. mcomputer.computing_sta lretrieve_with-:xin-software.aid_obvio _testing_solve.and-defining.stakeholders_embedd yand_will.versio:hother.help_20-individual_and.and.</nist:NISTSchema-SV-IV-list-QName-pattern-2>

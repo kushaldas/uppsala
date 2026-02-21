@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_annotation00101m1_p.xml
+   generated from: @(#)ST_annotation00101m.jmpp	1.1 02/03/12
+
+-->
+
+
+<test
+    xmlns="ST_final"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ST_final ST_annotation00101m1.xsd">a b c</test>
+

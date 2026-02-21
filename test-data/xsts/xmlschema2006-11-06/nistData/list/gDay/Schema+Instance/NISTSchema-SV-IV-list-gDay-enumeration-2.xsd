@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-gDay-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-gDay-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-gDay-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-gDay-enumeration-2,
+      which is derived by restriction of a list with itemType gDay
+      by facet enumeration with values of:
+          ---25 ---19 ---22 ---06 ---06 ---20 ---04
+          ---25 ---05 ---15 ---08 ---06 ---09 ---26 ---10 ---12 ---15
+          ---20 ---15 ---03 ---11 ---06 ---27 ---12 ---18
+          ---25 ---01 ---05 ---06 ---14 ---11 ---24 ---19
+          ---29 ---29 ---20 ---16 ---19 ---26
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-gDay-enumeration-2" type="NISTSchema-SV-IV-list-gDay-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfgDay">
+    <xs:list itemType="xs:gDay"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-gDay-enumeration-2-Type">
+    <xs:restriction base="listOfgDay">
+          <xs:enumeration value="---25 ---19 ---22 ---06 ---06 ---20 ---04"/>
+          <xs:enumeration value="---25 ---05 ---15 ---08 ---06 ---09 ---26 ---10 ---12 ---15"/>
+          <xs:enumeration value="---20 ---15 ---03 ---11 ---06 ---27 ---12 ---18"/>
+          <xs:enumeration value="---25 ---01 ---05 ---06 ---14 ---11 ---24 ---19"/>
+          <xs:enumeration value="---29 ---29 ---20 ---16 ---19 ---26"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

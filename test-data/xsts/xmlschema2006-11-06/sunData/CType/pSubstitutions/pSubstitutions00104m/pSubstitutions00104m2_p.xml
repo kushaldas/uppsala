@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)pSubstitutions00104m2_p.xml
+   generated from: @(#)pSubstitutions00104m.jmpp	1.6 03/10/10
+
+-->
+
+
+<test:e
+    xmlns:test="pSubstitutions"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="pSubstitutions pSubstitutions00104m.xsd" xsi:type="test:A">
+<c>1</c>
+</test:e>
+

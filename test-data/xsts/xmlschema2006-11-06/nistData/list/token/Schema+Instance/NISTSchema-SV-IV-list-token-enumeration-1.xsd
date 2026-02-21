@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-token-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-token-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-token-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-token-enumeration-1,
+      which is derived by restriction of a list with itemType token
+      by facet enumeration with values of:
+          the resides early of data; unambiguous
+          testing partnerships the software automatically
+          g reach as Control of helping NIST/ITL
+          law simplest and any adoption help Work number the
+          as is tools and needed
+          a partnership manipulate known for process the
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-token-enumeration-1" type="NISTSchema-SV-IV-list-token-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOftoken">
+    <xs:list itemType="xs:token"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-token-enumeration-1-Type">
+    <xs:restriction base="listOftoken">
+          <xs:enumeration value="the resides early of data; unambiguous"/>
+          <xs:enumeration value="testing partnerships the software automatically"/>
+          <xs:enumeration value="g reach as Control of helping NIST/ITL"/>
+          <xs:enumeration value="law simplest and any adoption help Work number the"/>
+          <xs:enumeration value="as is tools and needed"/>
+          <xs:enumeration value="a partnership manipulate known for process the"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

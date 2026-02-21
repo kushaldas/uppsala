@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-anyURI-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-anyURI-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-anyURI-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-anyURI-enumeration-3,
+      which is derived by restriction of a list with itemType anyURI
+      by facet enumeration with values of:
+          gopher://anddiscusst.enunambigu.usandsuchG.oupsofsToN.RL.gov gopher://technicalpr.videmainta.ns.edu news://ourtheint.com mailto:senseco@anddevelopmentintoparticularlybetwee.edu http://www.Languagetha.thosewhich.ompatibili.yitsdataand.edu http://worldforthe.ardwareEle.tronicPart.com mailto:buildrapid@repositoryandwithorga.org ftp://ftp.NISTfilterN.valliestoo.soft.org news://relation.gov
+          gopher://Internetint.rconn.net ftp://wideimpleme.tati.com ftp://ftp.h.com ftp://canTherefer.nceNavalthe.edu mailto:becomere@groupssimulationlanguageandtr.gov gopher://theGroupsXM.totheirmai.tainedcorr.org ftp://ftp.domainsfurt.ermanipula.org ftp://ftp.need.gov
+          ftp://ftp.tomodelstes.asofCommun.ty.com telnet://browsersreq.estingproj.ctbeComput.ngOASI.org http://andpartners.ip.org http://www.andtheforim.lementat.org news://thoseDocu.edu ftp://discussAOAS.Sn.gov ftp://ftp.foranddocum.ntssignatu.estodocume.tstransa.org news://beWorkingof.ontroldisc.vercompute.thatbrowse.sth.edu gopher://thetoisbeof.omputerand.esourcesbyt.gov gopher://h.gov
+          mailto:f@developmentkeydiagnosticoth.org news://chairsNSRLt.emethodsla.dscapeStru.turedaccel.edu mailto:astoaComput@whichandtestablebyfromgover.edu gopher://fromlessbro.sersinvest.gationisuse.org mailto:h@h.edu ftp://ftp.jointOnlyh.edu
+          http://www.XMLrecentco.puterXML.edu gopher://k.com http://www.ECbusinesst.bethatofab.ethepers.org ftp://s.edu http://www.andwaysensu.emanyusedc.ea.gov ftp://ftp.c.net
+          gopher://popularperv.sivequalit.guidelines.foffileNSR.Us.org ftp://ftp.andinareDev.lopXSLReco.mendations.anandth.org http://www.toworkfilte.thatthefil.erbefourTh.ofeffectiv.ly.com mailto:Co@anyComputingmore.com gopher://bothDelawar.Theinclude.ackingwith.utbesof.org ftp://softwarefro.needsandad.ressingwit.ofincludin.Thei.edu ftp://ofanddivisi.nsEXiSTcomp.edu
+          http://managetheth.ofdefineof.awconsorti.minXMLrepo.ito.gov mailto:@datafiletoolsandrecentissu.com http://www.execu.gov gopher://DOMindustryp.org telnet://filesdevelo.mentfilest.ebeprocess.sd.com telnet://befilterthe.edesignedin.org
+          gopher://workingdevi.esandaidco.sortiumsXM.helpinform.tion.com ftp://ftp.createsandu.edneedsmus.NSRLourofS.nsureofa.com http://embeddedthe.eindustr.gov mailto:Only@totothes.gov ftp://ftp.forfortotes.Experiment.lfilestheI.form.gov telnet://theintoato.com http://www.andtransact.onsandarea.toenterpri.e.net
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-anyURI-enumeration-3" type="NISTSchema-SV-IV-list-anyURI-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfanyURI">
+    <xs:list itemType="xs:anyURI"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-anyURI-enumeration-3-Type">
+    <xs:restriction base="listOfanyURI">
+          <xs:enumeration value="gopher://anddiscusst.enunambigu.usandsuchG.oupsofsToN.RL.gov gopher://technicalpr.videmainta.ns.edu news://ourtheint.com mailto:senseco@anddevelopmentintoparticularlybetwee.edu http://www.Languagetha.thosewhich.ompatibili.yitsdataand.edu http://worldforthe.ardwareEle.tronicPart.com mailto:buildrapid@repositoryandwithorga.org ftp://ftp.NISTfilterN.valliestoo.soft.org news://relation.gov"/>
+          <xs:enumeration value="gopher://Internetint.rconn.net ftp://wideimpleme.tati.com ftp://ftp.h.com ftp://canTherefer.nceNavalthe.edu mailto:becomere@groupssimulationlanguageandtr.gov gopher://theGroupsXM.totheirmai.tainedcorr.org ftp://ftp.domainsfurt.ermanipula.org ftp://ftp.need.gov"/>
+          <xs:enumeration value="ftp://ftp.tomodelstes.asofCommun.ty.com telnet://browsersreq.estingproj.ctbeComput.ngOASI.org http://andpartners.ip.org http://www.andtheforim.lementat.org news://thoseDocu.edu ftp://discussAOAS.Sn.gov ftp://ftp.foranddocum.ntssignatu.estodocume.tstransa.org news://beWorkingof.ontroldisc.vercompute.thatbrowse.sth.edu gopher://thetoisbeof.omputerand.esourcesbyt.gov gopher://h.gov"/>
+          <xs:enumeration value="mailto:f@developmentkeydiagnosticoth.org news://chairsNSRLt.emethodsla.dscapeStru.turedaccel.edu mailto:astoaComput@whichandtestablebyfromgover.edu gopher://fromlessbro.sersinvest.gationisuse.org mailto:h@h.edu ftp://ftp.jointOnlyh.edu"/>
+          <xs:enumeration value="http://www.XMLrecentco.puterXML.edu gopher://k.com http://www.ECbusinesst.bethatofab.ethepers.org ftp://s.edu http://www.andwaysensu.emanyusedc.ea.gov ftp://ftp.c.net"/>
+          <xs:enumeration value="gopher://popularperv.sivequalit.guidelines.foffileNSR.Us.org ftp://ftp.andinareDev.lopXSLReco.mendations.anandth.org http://www.toworkfilte.thatthefil.erbefourTh.ofeffectiv.ly.com mailto:Co@anyComputingmore.com gopher://bothDelawar.Theinclude.ackingwith.utbesof.org ftp://softwarefro.needsandad.ressingwit.ofincludin.Thei.edu ftp://ofanddivisi.nsEXiSTcomp.edu"/>
+          <xs:enumeration value="http://managetheth.ofdefineof.awconsorti.minXMLrepo.ito.gov mailto:@datafiletoolsandrecentissu.com http://www.execu.gov gopher://DOMindustryp.org telnet://filesdevelo.mentfilest.ebeprocess.sd.com telnet://befilterthe.edesignedin.org"/>
+          <xs:enumeration value="gopher://workingdevi.esandaidco.sortiumsXM.helpinform.tion.com ftp://ftp.createsandu.edneedsmus.NSRLourofS.nsureofa.com http://embeddedthe.eindustr.gov mailto:Only@totothes.gov ftp://ftp.forfortotes.Experiment.lfilestheI.form.gov telnet://theintoato.com http://www.andtransact.onsandarea.toenterpri.e.net"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

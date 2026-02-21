@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-3
+    xmlns="NISTSchema-SV-II-list-token-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-3-NS NISTSchema-SV-II-list-token-length-3.xsd">57_The_And_Organizations_Correction_Computing_Street_And_Has_,_OK_13024 64_Vocabulary_Recognition_Such_Community_As_Street_And_Language_,_NE_13024 3611_File_Organizations_Execution_These_Browsers_Street_Ensure_Virtually_,_AK_13024 4786_Used_Ec_Are_Of_Be_Street_Well_These_,_MD_13024 6284_And_Xml_Delaware_Object_Industries_Street_Mediums_Computing_,_NE_13024 543_Partnerships_Testability_And_And_Computed_Street_Using_Displaying_,_KS_13024 6234_Software_Filter_Basis_Portable_These_Street_Errors_Commerce_,_CO_13024 14683_Reproduced_Extensible_The_Pervasive_Understanding_Street_For_Stakeholders_,_MI_13024 189_Data_And_Newcomer_Library_Into_Street_Models_Interoperable_,_SD_13024</NISTSchema-SV-II-list-token-length-3>

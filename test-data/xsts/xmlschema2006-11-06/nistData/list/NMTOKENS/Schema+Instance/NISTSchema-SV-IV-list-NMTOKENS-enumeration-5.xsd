@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKENS-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKENS-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKENS-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKENS-enumeration-5,
+      which is derived by restriction of a list with itemType NMTOKENS
+      by facet enumeration with values of:
+          file_Con of-and:these-these-review retrieve-thus_Delaware.as.language program-understand.has.la a:allow-that:engineer divisions:can-Desp
+          all_related.frameworks_G NIST.e:X partners.aid-depl improved.adopti related.such.by:would:establish_bandwidth-recommendati the_used-a
+          Internet_that.techno disseminate.file:This-and-with:popular_to_f two-and:a_upon.role.maintained-in memory:Jini_industry-developed-the:sof docume the_testability-Control-web:ind specifications_The_comp Pervasive.some:needs_leadership-Internet:to:chain-OASIS_mul
+          in Schemas_system-ability-testing:registries-documents:provi improved:with:SMEs:Academy:ebXML-these.a_heterogeneous_indust vocabulari choices:primary:langua Software_data-challenges_many:personal:range.and.to
+          pervasive-to-and-which.indust can-standards:variety:Schema-the:implementation- e-world.effective-partners-industry:orga tests-tools:ensure. are-sma to:g:A.c in-will_discover_development-ensure.te
+          and_prototype:product.enabling.Project_ITL.simplest:e an.better:including_technologies:EC-Working_A-commerce_disco process-in-house:the:languages:a- the:used:software:of-test_ebXML.applications-success_template and-and.and-the.alik significant:enabling:
+          assuring_as_Internet-enable Additionally.four:industry.An-testing.to:reviewed_to_issues.a transactional.repository.of:XSL:and_available.the-to_suppl Markup:them.Architectural-A.and.HTML:The_the-a_information-of_h in_revolutionize:and:and_recommendation-issues.define_it:these- This.and.the-and.and_popular_will::are_pervasive:business_web_o A:Stylesheet_by-has_law.utilize:to_come_m to-memory:benefits-processors-S-dynamic:and_Community_NSRL-proc
+          uses_hardware-use:as: be:the_issues:to.creating.the.Software.Refe daily-a.the-Model:software_dependabi these-technologies:provide:other-DOM:software-Architectural.gu with_devices-methods:key.enabling.of.a:profile_A.vis cost_to_Using-the:Conference:of.XML.and:for.interoperability-a well:enabling:reference_To.performance
+          this.and-and.CPU.include-that_specification: of-a-provided.informati object.the.particular.provided_tasks:.to-a_discussions_be:A_em It-industry:are:global-consortium:processors:primary-data.is for.Software.less-processes.re be-neutral.and_vocabulary.the_resource:prod government-each_an
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-5" type="NISTSchema-SV-IV-list-NMTOKENS-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-5-Type">
+    <xs:restriction base="xs:NMTOKENS">
+          <xs:enumeration value="file_Con of-and:these-these-review retrieve-thus_Delaware.as.language program-understand.has.la a:allow-that:engineer divisions:can-Desp"/>
+          <xs:enumeration value="all_related.frameworks_G NIST.e:X partners.aid-depl improved.adopti related.such.by:would:establish_bandwidth-recommendati the_used-a"/>
+          <xs:enumeration value="Internet_that.techno disseminate.file:This-and-with:popular_to_f two-and:a_upon.role.maintained-in memory:Jini_industry-developed-the:sof docume the_testability-Control-web:ind specifications_The_comp Pervasive.some:needs_leadership-Internet:to:chain-OASIS_mul"/>
+          <xs:enumeration value="in Schemas_system-ability-testing:registries-documents:provi improved:with:SMEs:Academy:ebXML-these.a_heterogeneous_indust vocabulari choices:primary:langua Software_data-challenges_many:personal:range.and.to"/>
+          <xs:enumeration value="pervasive-to-and-which.indust can-standards:variety:Schema-the:implementation- e-world.effective-partners-industry:orga tests-tools:ensure. are-sma to:g:A.c in-will_discover_development-ensure.te"/>
+          <xs:enumeration value="and_prototype:product.enabling.Project_ITL.simplest:e an.better:including_technologies:EC-Working_A-commerce_disco process-in-house:the:languages:a- the:used:software:of-test_ebXML.applications-success_template and-and.and-the.alik significant:enabling:"/>
+          <xs:enumeration value="assuring_as_Internet-enable Additionally.four:industry.An-testing.to:reviewed_to_issues.a transactional.repository.of:XSL:and_available.the-to_suppl Markup:them.Architectural-A.and.HTML:The_the-a_information-of_h in_revolutionize:and:and_recommendation-issues.define_it:these- This.and.the-and.and_popular_will::are_pervasive:business_web_o A:Stylesheet_by-has_law.utilize:to_come_m to-memory:benefits-processors-S-dynamic:and_Community_NSRL-proc"/>
+          <xs:enumeration value="uses_hardware-use:as: be:the_issues:to.creating.the.Software.Refe daily-a.the-Model:software_dependabi these-technologies:provide:other-DOM:software-Architectural.gu with_devices-methods:key.enabling.of.a:profile_A.vis cost_to_Using-the:Conference:of.XML.and:for.interoperability-a well:enabling:reference_To.performance"/>
+          <xs:enumeration value="this.and-and.CPU.include-that_specification: of-a-provided.informati object.the.particular.provided_tasks:.to-a_discussions_be:A_em It-industry:are:global-consortium:processors:primary-data.is for.Software.less-processes.re be-neutral.and_vocabulary.the_resource:prod government-each_an"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)maxOccurs00201m1_p.xml
+   generated from: @(#)maxOccurs00201m.jmpp	1.4 02/11/19
+
+-->
+
+<root
+    xmlns="ElemDecl/maxOccurs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/maxOccurs maxOccurs00201m.xsd">
+
+    <Local>2</Local>
+<!-- Negative variant begin - -
+    <Local>2</Local>
+ - - Negative variant end   -->
+
+</root>

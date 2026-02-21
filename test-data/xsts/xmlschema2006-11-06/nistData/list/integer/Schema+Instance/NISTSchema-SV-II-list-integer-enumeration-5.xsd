@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-integer-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-integer-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-integer-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-integer-enumeration-5,
+      which is derived by restriction of a list with itemType integer
+      by facet enumeration with values of:
+          -911046448248 -637644029372 75396 55677 7002592851698988 588039866 -53097728725762316 -8
+          458601633121 384 5662559422057 253 9200
+          172962770603137 -6039923 4218501429719 804410 30527580 -6105 -72894 1258698076 6399173749
+          -4794818214203202 37 -739093872819979 260309054441783 -955301954869125 3398 50194148 -324342201775540 6456691282 -121950631578323
+          -1269254348091810 40499 2919161 -18 -288 2424527781682
+          -60934 2753 -65750606195929373 -65806063366 -95082932376 -74666 251349299046779 100070803622920 -721202087517579 -4073945
+          -7386669669038 3963238 -344486 994540110723307835 79747517814490676 65682972451146 -8065356212272440 -271749 -83
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-integer-enumeration-5" type="NISTSchema-SV-II-list-integer-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfinteger">
+    <xs:list itemType="xs:integer"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-integer-enumeration-5-Type">
+    <xs:restriction base="listOfinteger">
+          <xs:enumeration value="-911046448248 -637644029372 75396 55677 7002592851698988 588039866 -53097728725762316 -8"/>
+          <xs:enumeration value="458601633121 384 5662559422057 253 9200"/>
+          <xs:enumeration value="172962770603137 -6039923 4218501429719 804410 30527580 -6105 -72894 1258698076 6399173749"/>
+          <xs:enumeration value="-4794818214203202 37 -739093872819979 260309054441783 -955301954869125 3398 50194148 -324342201775540 6456691282 -121950631578323"/>
+          <xs:enumeration value="-1269254348091810 40499 2919161 -18 -288 2424527781682"/>
+          <xs:enumeration value="-60934 2753 -65750606195929373 -65806063366 -95082932376 -74666 251349299046779 100070803622920 -721202087517579 -4073945"/>
+          <xs:enumeration value="-7386669669038 3963238 -344486 994540110723307835 79747517814490676 65682972451146 -8065356212272440 -271749 -83"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

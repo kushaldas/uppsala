@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-anyURI-pattern-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-anyURI-pattern-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-anyURI-pattern-5
+    xmlns="NISTSchema-SV-II-list-anyURI-pattern-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-anyURI-pattern-5-NS NISTSchema-SV-II-list-anyURI-pattern-5.xsd">gopher://mediumsmo.devicesAdvan.furtherpartner.com http://partnersfullra.digitaleff.willthehighs.industryus.andcommunicatio.toolswithdiffer.repositoryof.edu gopher://permitt.asarounda.dotoindustryth.throughoutcomp.industryitsand.Oneantothesear.edu news://HTMLnewcomersd.emergingDOMXM.ofoftheengine.theirpervasive.targetedtheo.areasofrevie.OASISNavalusi.edu telnet://precisecons.tofocusingm.forfosterconsor.softwareforW.abilityInv.informationva.infurtherth.rapidlyInforma.gov telnet://theCommitteete.testDO.andtofosterfi.technologiesre.thesecoop.consortium.org http://cancreati.asappropriat.chairingn.bebetweenStruc.communicatio.net ftp://enableina.isAforreproduc.softwaref.registries.withsyste.withledOASI.canconstit.org</NISTSchema-SV-II-list-anyURI-pattern-5>

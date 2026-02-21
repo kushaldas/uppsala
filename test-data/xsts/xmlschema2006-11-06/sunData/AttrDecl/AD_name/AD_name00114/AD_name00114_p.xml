@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00114_p.xml	1.2 02/12/25
+
+-->
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00114.xsd"
+
+            aaaa="00"
+            bbbB="01"
+            ccCc="02"
+            ddDD="03"
+            eEee="04"
+            fFfF="05"
+            pPPp="06"
+            gGGG="07"
+            Hhhh="08"
+            IiiI="09"
+            JjJj="10"
+            KkKK="11"
+            LLll="12"
+            MMmM="13"
+            NNNn="14"
+            OOOO="15"
+
+            bbb0="20"
+            cc0c="21"
+            dd00="22"
+            e0ee="23"
+            f0f0="24"
+            p00p="25"
+            g000="26"
+
+            bbb_="40"
+            cc_c="41"
+            dd__="42"
+            e_ee="43"
+            f_f_="44"
+            p__p="45"
+            g___="46"
+
+            H111="60"
+            I11I="61"
+            J1J1="62"
+            K1KK="63"
+            LL11="64"
+            MM1M="65"
+            NNN1="66"
+
+            H---="80"
+            I--I="81"
+            J-J-="82"
+            K-KK="83"
+            LL--="84"
+            MM-M="85"
+            NNN-="86"
+/>
+

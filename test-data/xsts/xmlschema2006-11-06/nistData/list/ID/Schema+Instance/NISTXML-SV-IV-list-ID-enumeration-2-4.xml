@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-ID-enumeration-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-ID-enumeration-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-ID-enumeration-2
+    xmlns="NISTSchema-SV-IV-list-ID-enumeration-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-ID-enumeration-2-NS NISTSchema-SV-IV-list-ID-enumeration-2.xsd">msensors-groups-measure_for_simplest_fr nlibraries_the_computing.with-second-gen _objective.the-for_by-language_has.the_conferences.is-in qlocation.the.qu cassuring_is.industry.utiliti von-our-an.versions.of-retrieve-infor ton-systems.assuring_documents-proces jfor_significant_discover.effective.registry.as_divisions-and cr</NISTSchema-SV-IV-list-ID-enumeration-2>

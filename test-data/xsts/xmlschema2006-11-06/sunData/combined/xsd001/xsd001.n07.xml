@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd001.n07.xml	1.3 02/12/25
+
+-->
+
+<!-- child must be unqualified -->
+<foo:root xmlns:foo="http://foo.com">
+	<foo:child>   </foo:child>
+	<child>atleast3</child>
+	<child>10atmost  </child>
+	<child attr="12345"> jjj </child>
+	<!-- # of child must be 3 to 7 -->
+</foo:root>

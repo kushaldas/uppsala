@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-int-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-int-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-int-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-int-enumeration-2,
+      which is derived by restriction of built-in type int
+      by facet enumeration with values of:
+          -46
+          818
+          588859393
+          53463862
+          2147483647
+          -132
+          584
+          -547137375
+          4973060
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-int-enumeration-2" type="NISTSchema-SV-II-atomic-int-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-int-enumeration-2-Type">
+    <xs:restriction base="xs:int">
+          <xs:enumeration value="-46"/>
+          <xs:enumeration value="818"/>
+          <xs:enumeration value="588859393"/>
+          <xs:enumeration value="53463862"/>
+          <xs:enumeration value="2147483647"/>
+          <xs:enumeration value="-132"/>
+          <xs:enumeration value="584"/>
+          <xs:enumeration value="-547137375"/>
+          <xs:enumeration value="4973060"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)psContents00302m2.xsd
+   generated from: @(#)psContents00302m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="psContents"
+  targetNamespace="psContents">
+
+     <xsd:element name="a">
+          <xsd:complexType>
+            <xsd:anyAttribute namespace="##any" processContents="lax"/>
+          </xsd:complexType>
+     </xsd:element>
+
+</xsd:schema>
+

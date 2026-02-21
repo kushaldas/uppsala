@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-QName-enumeration-3-NS"
+        xmlns:lfine-d="http://www.nist.gov/xsdNS"
+        xmlns:_lan="http://www.nist.gov/xsdNS"
+        xmlns:q="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-atomic-QName-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-QName-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-QName-enumeration-3,
+      which is derived by restriction of built-in type QName
+      by facet enumeration with values of:
+          kdomains-as.automatic-academia_work-ensure_tes
+          lfine-d:vcomputing.of-as_
+          _languages-and-transforming.technologies.is_impa
+          xstandard-file_use-ea
+          _lan:iand-must.effecti
+          ton.and_its.t
+          yinvolved.e-effor
+          q:tthe.with-
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="kdomains-as.automatic-academia_work-ensure_tes" type="xs:string"/>
+<xs:element name="_languages-and-transforming.technologies.is_impa" type="xs:string"/>
+<xs:element name="xstandard-file_use-ea" type="xs:string"/>
+<xs:element name="ton.and_its.t" type="xs:string"/>
+<xs:element name="yinvolved.e-effor" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-QName-enumeration-3" type="NISTSchema-SV-IV-atomic-QName-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-QName-enumeration-3-Type">
+    <xs:restriction base="xs:QName">
+          <xs:enumeration value="kdomains-as.automatic-academia_work-ensure_tes"/>
+          <xs:enumeration value="lfine-d:vcomputing.of-as_"/>
+          <xs:enumeration value="_languages-and-transforming.technologies.is_impa"/>
+          <xs:enumeration value="xstandard-file_use-ea"/>
+          <xs:enumeration value="_lan:iand-must.effecti"/>
+          <xs:enumeration value="ton.and_its.t"/>
+          <xs:enumeration value="yinvolved.e-effor"/>
+          <xs:enumeration value="q:tthe.with-"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)psContents00201m1.xsd
+   generated from: @(#)psContents00201m.jmpp	1.6 04/01/14
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="psContents"
+  targetNamespace="psContents">
+
+     <xsd:element name="a">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="##any" processContents="skip"/>
+            </xsd:sequence>
+          </xsd:complexType>
+     </xsd:element>
+
+</xsd:schema>
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd005.xsd	1.3 03/10/10
+
+-->
+
+<!-- highlight of this test
+	
+	complexType derivation.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="root">
+		<complexType>
+			<sequence>
+				<element name="item" type="foo:base" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<complexType name="base">
+		<sequence>
+			<element name="a" />
+			<element name="b" minOccurs="0" />
+			<element name="c" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="rst">
+		<complexContent>
+			<restriction base="foo:base">
+				<sequence>
+					<element name="a" />
+					<element name="c" />
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="ext">
+		<complexContent>
+			<extension base="foo:base">
+				<sequence>
+					<element name="d" />
+					<element name="e" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+</schema>

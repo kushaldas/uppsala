@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-date-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-date-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-date-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-date-enumeration-1,
+      which is derived by restriction of a list with itemType date
+      by facet enumeration with values of:
+          2030-06-17 2021-11-14 2014-05-29 1980-05-26 2000-08-13 2018-02-25 2006-07-24 2012-10-14 1988-04-10
+          2010-04-26 2013-03-18 2005-06-03 1974-07-31 1993-07-21 2015-02-26 2008-03-14 1981-07-14 1971-06-23
+          2029-06-30 1972-01-27 2008-01-03 2025-04-10 2004-05-07 2004-09-25 1977-07-30
+          2030-10-12 1971-01-15 2008-12-31 2004-10-17 1992-05-12 1970-12-05 2004-11-30 2002-01-26
+          1977-12-31 1982-07-03 1974-12-06 2005-12-07 1997-08-08 2014-08-05
+          2005-02-26 1996-04-05 2000-03-14 2011-06-27 2002-08-30 2015-12-30 1992-04-04 1985-08-06 1986-06-17 2018-07-25
+          2009-12-29 1972-01-17 1975-09-23 2018-09-16 1988-05-26 1990-05-23 1994-03-09 2005-08-27 2026-07-24
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-date-enumeration-1" type="NISTSchema-SV-II-list-date-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfdate">
+    <xs:list itemType="xs:date"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-date-enumeration-1-Type">
+    <xs:restriction base="listOfdate">
+          <xs:enumeration value="2030-06-17 2021-11-14 2014-05-29 1980-05-26 2000-08-13 2018-02-25 2006-07-24 2012-10-14 1988-04-10"/>
+          <xs:enumeration value="2010-04-26 2013-03-18 2005-06-03 1974-07-31 1993-07-21 2015-02-26 2008-03-14 1981-07-14 1971-06-23"/>
+          <xs:enumeration value="2029-06-30 1972-01-27 2008-01-03 2025-04-10 2004-05-07 2004-09-25 1977-07-30"/>
+          <xs:enumeration value="2030-10-12 1971-01-15 2008-12-31 2004-10-17 1992-05-12 1970-12-05 2004-11-30 2002-01-26"/>
+          <xs:enumeration value="1977-12-31 1982-07-03 1974-12-06 2005-12-07 1997-08-08 2014-08-05"/>
+          <xs:enumeration value="2005-02-26 1996-04-05 2000-03-14 2011-06-27 2002-08-30 2015-12-30 1992-04-04 1985-08-06 1986-06-17 2018-07-25"/>
+          <xs:enumeration value="2009-12-29 1972-01-17 1975-09-23 2018-09-16 1988-05-26 1990-05-23 1994-03-09 2005-08-27 2026-07-24"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

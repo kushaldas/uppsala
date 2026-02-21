@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd005.n04.xml	1.3 02/12/25
+
+-->
+
+<root xmlns="foo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<!-- missing xsi:type -->
+	<item>
+		<a/><c/><d/><e/>
+	</item>
+
+</root>

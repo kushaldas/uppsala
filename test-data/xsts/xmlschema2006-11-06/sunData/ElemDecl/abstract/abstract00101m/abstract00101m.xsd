@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)abstract00101m.xsd
+   generated from: @(#)abstract00101m.jmpp	1.4 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/abstract"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/abstract"
+  elementFormDefault="qualified">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="Head" maxOccurs="unbounded"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Head" type="HeadType" abstract="true"/>
+
+  <xsd:complexType name="HeadType">
+      <xsd:sequence>
+          <xsd:element name="Ear"/>
+          <xsd:element name="Eye"/>
+      </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Member1" type="HeadType" substitutionGroup="Head"/>
+  
+</xsd:schema>

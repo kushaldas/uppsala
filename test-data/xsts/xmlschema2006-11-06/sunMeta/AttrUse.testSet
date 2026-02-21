@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<testSet name="AttrUse"
+      xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      contributor="SUN">
+
+    <testGroup name="au_attrdecl00101m1_p">
+        <annotation>
+            <documentation>
+                <Title>Attribute declaration is resolved for attribute use. (valid schema)</Title>
+                <Description>Attribute use should has proper ref value to be resolved to its declaration.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cAttributeUse"/>
+        <schemaTest name="AU_attrDecl00101m1_p">
+            <schemaDocument xlink:href="../sunData/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1_p.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="au_attrdecl00101m1_n">
+        <annotation>
+            <documentation>
+                <Title>Attribute declaration is resolved for attribute use. (invalid schema)</Title>
+                <Description>Attribute use should has proper ref value to be resolved to its declaration.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cAttributeUse"/>
+        <schemaTest name="AU_attrDecl00101m1_n">
+            <schemaDocument xlink:href="../sunData/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1_n.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="au_required00101m1">
+        <annotation>
+            <documentation>
+                <Title>Attribute use is declared required.  (valid schema)</Title>
+                <Description>Element whose attribute use is declared required should has the attribute specified.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cAttributeUse"/>
+        <schemaTest name="AU_required00101m1">
+            <schemaDocument xlink:href="../sunData/AttrUse/AU_required/AU_required00101m/AU_required00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/AttrUse/AU_required/AU_required00101m/AU_required00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/AttrUse/AU_required/AU_required00101m/AU_required00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="au_valconstr00101m1">
+        <annotation>
+            <documentation>
+                <Title>Attribute with fixed value is declared within element by reference  (valid schema)</Title>
+                <Description>Attribute declared with fixed value may not have another value in an instance document.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#cAttributeUse"/>
+        <schemaTest name="AU_valConstr00101m1">
+            <schemaDocument xlink:href="../sunData/AttrUse/AU_valConstr/AU_valConstr00101m/AU_valConstr00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/AttrUse/AU_valConstr/AU_valConstr00101m/AU_valConstr00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/AttrUse/AU_valConstr/AU_valConstr00101m/AU_valConstr00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+</testSet>

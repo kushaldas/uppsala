@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-2
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-2-NS"
+    xmlns:_and-among_and.has.f="http://www.nist.gov/xsdNS"
+    xmlns:wfor.to_the_the_and_="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_building.discov="http://www.nist.gov/xsdNS"
+    xmlns:b="http://www.nist.gov/xsdNS"
+    xmlns:osuccess-partnerships-a="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-2-NS NISTSchema-SV-II-list-QName-length-2.xsd">_and-among_and.has.f:iimpact-defining-becoming_a_of.second-generation_an-capabi wfor.to_the_the_and_:cfor_of_computing-organizations-of_voiced_partners-filter_ jtest.through_technical_lies_for.distributed_electronic.of _additionally.software.consortiums-embedded_such-testable- ia-industry.the_systems.possible-emerging.has.computing.ov _building.discov:sthe-for_from-analysis_of_enabling_impact.is_requires-and- b:vthe_the_that-as_depends_into.application_around_and_a-act osuccess-partnerships-a:urobust-for-e_discussions-support.software.file.can-for_re</nist:NISTSchema-SV-II-list-QName-length-2>

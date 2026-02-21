@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-minLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-minLength-5
+    xmlns="NISTSchema-SV-IV-list-string-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-minLength-5-NS NISTSchema-SV-IV-list-string-minLength-5.xsd">1422_As_Registry_Street_Of_Result_With_,_OH_18648-1162 8_Ec_Issues_Street_To_And_With_,_AR_18648-1162 491_Promises_Oasis_Street_It_Make_Nist_,_ND_18648-1162 28_For_The_Street_For_Provide_Rigorous_,_MA_18648-1162 21764_Computer_Wireless_Street_Advancement_Provide_Filter_,_NM_18648-1162 455_And_Following_Street_Tune_Vocabularies_In_,_AR_18648-1162 66_Information_For_Street_To_On_Partners_,_IL_18648-1162 3612_To_Standardization_Street_Computing_Dom_Must_,_NV_18648-1162 5_Thus_And_Street_Processes_To_Graphical_,_AR_18648-1162 672_Discover_Has_Street_We_The_Well_,_DC_18648-1162</NISTSchema-SV-IV-list-string-minLength-5>

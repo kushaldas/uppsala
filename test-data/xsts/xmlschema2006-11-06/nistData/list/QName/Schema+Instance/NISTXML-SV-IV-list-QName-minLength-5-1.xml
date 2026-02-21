@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-minLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-minLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-minLength-5
+    xmlns:nist="NISTSchema-SV-IV-list-QName-minLength-5-NS"
+    xmlns:nsoftware_the.test-registry="http://www.nist.gov/xsdNS"
+    xmlns:mused.used.manipula="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_of.application-devices-sig="http://www.nist.gov/xsdNS"
+    xmlns:dbecoming_interoperability_tun="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-minLength-5-NS NISTSchema-SV-IV-list-QName-minLength-5.xsd">nsoftware_the.test-registry:fover.has-allow_technologies_popular.has_is.voiced_large_as mused.used.manipula:bsmall-.vocabularies.using_not_following_regard-becoming.th uprecise-dependability.and.will_included_and.the_certain.fo _of.application-devices-sig:land_under-file.to.both-has.object-enforcement_not-by-an-di dbecoming_interoperability_tun:rthe_to_to.necessary.heterogeneous_and.being_to.networking_ _define.requires_additionally.web_partnerships_be-implement dparticipating-resources.of.the.advanced-industry_the.neutr msoftware-data_electronic.industry-are-and_the_file.specifi ylow-cost_forensics-problems.exchange_accelerate-to-the_the arecommending.file_and_partnership.collaborate_files_acting</nist:NISTSchema-SV-IV-list-QName-minLength-5>

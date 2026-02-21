@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-maxLength-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-maxLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-maxLength-3
+    xmlns="NISTSchema-SV-IV-list-token-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-maxLength-3-NS NISTSchema-SV-IV-list-token-maxLength-3.xsd">33_Microsystems_Contributor_Technical_Four_Street_To_The_Developing_,_NH_14239 55497_Nature_Pc_To_Data_Street_Will_Structure_Used_,_RI_14239 21_Among_Thus_Develop_Vertical_Street_Be_Tests_Projector_,_TN_14239 2254_Involved_Dynamic_Prototype_Itl_Street_Such_Dom_Come_,_OR_14239 8548_Registries_The_Electronic_Are_Street_Recommendation_Technical_Technologies_,_GA_14239 7792_To_These_Of_Chain_Street_Project_Pervasive_Appropriate_,_MA_14239 59_Xml_Involved_And_With_Street_And_Partnerships_Application_,_OK_14239</NISTSchema-SV-IV-list-token-maxLength-3>

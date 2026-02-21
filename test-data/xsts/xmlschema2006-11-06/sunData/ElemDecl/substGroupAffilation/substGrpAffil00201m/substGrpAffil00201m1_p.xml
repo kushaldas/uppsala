@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)substGrpAffil00201m1_p.xml
+   generated from: @(#)substGrpAffil00201m.jmpp	1.3 02/08/22
+
+-->
+
+<root
+    xmlns="ElemDecl/substGroupAffilation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/substGroupAffilation substGrpAffil00201m.xsd">
+    
+    <SuperElement/>
+    <SuperSuperElement/>
+    <Element/>
+    <Separator/>
+    <Element/>
+
+
+</root>

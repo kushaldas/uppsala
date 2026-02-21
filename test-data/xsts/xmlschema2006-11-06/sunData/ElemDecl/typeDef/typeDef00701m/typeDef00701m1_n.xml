@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00701m1_n.xml
+   generated from: @(#)typeDef00701m.jmpp	1.2 02/08/22
+
+-->
+
+<root
+    xmlns="ElemDecl/typeDef"
+    xmlns:target="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef00701m.xsd"
+    xsi:type="target:boolean"
+    value="Yes"/>

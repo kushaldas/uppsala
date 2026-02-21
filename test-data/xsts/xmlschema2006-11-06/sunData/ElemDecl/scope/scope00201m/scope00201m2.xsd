@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)scope00201m2.xsd
+   generated from: @(#)scope00201m.jmpp	1.4 03/10/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/scope"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/scope">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Local"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element ref="Local"/>
+
+</xsd:schema>

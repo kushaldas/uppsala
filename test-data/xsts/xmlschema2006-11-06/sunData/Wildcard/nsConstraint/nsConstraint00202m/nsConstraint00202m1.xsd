@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nsConstraint00202m1.xsd
+   generated from: @(#)nsConstraint00202m.jmpp	1.4 02/11/15
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="nsConstraint"
+  targetNamespace="nsConstraint">
+
+     <xsd:element name="a">
+          <xsd:complexType>
+            <xsd:anyAttribute namespace="##other" processContents="skip"/>
+          </xsd:complexType>
+     </xsd:element>
+
+     <xsd:attribute name="date" type="xsd:date"/>
+
+</xsd:schema>
+

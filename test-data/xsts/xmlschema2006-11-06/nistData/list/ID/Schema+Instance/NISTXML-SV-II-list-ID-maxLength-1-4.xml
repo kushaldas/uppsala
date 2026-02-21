@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-ID-maxLength-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-ID-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-ID-maxLength-1
+    xmlns="NISTSchema-SV-II-list-ID-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-ID-maxLength-1-NS NISTSchema-SV-II-list-ID-maxLength-1.xsd">fthe-quality.and.networks-in.the.within-methods.implementatio bthe.provides-files_the-be.the-tool-be-are-of-at_s_that.quali iset-business.appropriate.computer-and.a.their.semantics-this js-and_conformance-files_led-accomplish_can-then_manipulate_s _and_data.such.signature_e-the-coupled_retrieval_and-of_appli band.having.5.of-of.as-and.to.possible.g-be.is-tools_standard sa-debug.vocabularies.information.organizations_with.these.co aand-and-intelligent.of_the_personal-manage-used_and-the_busi</NISTSchema-SV-II-list-ID-maxLength-1>

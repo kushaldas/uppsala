@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m1.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="A00" type="xsd:integer"/>
+            <xsd:attribute name="M01" type="xsd:integer"/>
+            <xsd:attribute name="Z02" type="xsd:integer"/>
+            <xsd:attribute name="a10" type="xsd:integer"/>
+            <xsd:attribute name="d11" type="xsd:integer"/>
+            <xsd:attribute name="h12" type="xsd:integer"/>
+            <xsd:attribute name="j20" type="xsd:integer"/>
+            <xsd:attribute name="r21" type="xsd:integer"/>
+            <xsd:attribute name="z22" type="xsd:integer"/>
+            <xsd:attribute name="À30" type="xsd:integer"/>
+            <xsd:attribute name="Ë31" type="xsd:integer"/>
+            <xsd:attribute name="Ö32" type="xsd:integer"/>
+            <xsd:attribute name="Ø40" type="xsd:integer"/>
+            <xsd:attribute name="Û41" type="xsd:integer"/>
+            <xsd:attribute name="Þ42" type="xsd:integer"/>
+            <xsd:attribute name="à50" type="xsd:integer"/>
+            <xsd:attribute name="ë51" type="xsd:integer"/>
+            <xsd:attribute name="ö52" type="xsd:integer"/>
+            <xsd:attribute name="ø60" type="xsd:integer"/>
+            <xsd:attribute name="û61" type="xsd:integer"/>
+            <xsd:attribute name="ÿ62" type="xsd:integer"/>
+            <xsd:attribute name="Ā70" type="xsd:integer"/>
+            <xsd:attribute name="Ę71" type="xsd:integer"/>
+            <xsd:attribute name="ı72" type="xsd:integer"/>
+            <xsd:attribute name="Ĵ80" type="xsd:integer"/>
+            <xsd:attribute name="Ĺ81" type="xsd:integer"/>
+            <xsd:attribute name="ľ82" type="xsd:integer"/>
+            <xsd:attribute name="Ł90" type="xsd:integer"/>
+            <xsd:attribute name="ń91" type="xsd:integer"/>
+            <xsd:attribute name="ň92" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

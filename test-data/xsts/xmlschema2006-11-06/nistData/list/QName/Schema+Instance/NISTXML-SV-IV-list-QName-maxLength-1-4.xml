@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-maxLength-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-maxLength-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-maxLength-1
+    xmlns:nist="NISTSchema-SV-IV-list-QName-maxLength-1-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:udegree_data-objective-registry="http://www.nist.gov/xsdNS"
+    xmlns:pbe_of-cross-over_2001.speci="http://www.nist.gov/xsdNS"
+    xmlns:ltools-standa="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-maxLength-1-NS NISTSchema-SV-IV-list-QName-maxLength-1.xsd">_accelerate-approach_data-known.of-we.soft udegree_data-objective-registry:sis.i-the.and-divisions-database.use.and-r pbe_of-cross-over_2001.speci:_2001-are-all.for_to-to.by.to-and-enable.i ltools-standa:pled_of.working.manage.ability.graphical.i chave.object-communication_5-good_as.askin</nist:NISTSchema-SV-IV-list-QName-maxLength-1>

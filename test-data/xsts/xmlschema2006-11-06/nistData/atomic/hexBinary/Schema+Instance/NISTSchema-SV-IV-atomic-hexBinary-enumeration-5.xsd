@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-hexBinary-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-hexBinary-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-hexBinary-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-hexBinary-enumeration-5,
+      which is derived by restriction of built-in type hexBinary
+      by facet enumeration with values of:
+          6d6f63686e7463706a67747172716b75656966746273697579687666706c6c72726e69706f6b67716d766f626b6c757171777363796b646e666468736f6f6b696464
+          666a6272766176786b6c69636d76686e6d68697968746a6264796c74656c6f78796c616973
+          6761737571766c716873746d72
+          657575657662737270776a626a70716d6878796e77627878647167786c6862657867796576686d6c63696567787261666d
+          6f6b66687469687477677775706a61
+          646f76676367746c6e6d636663696670796a6f616e6862676b656c786275666975616472687463706d77
+          6b696767676c64707177726b77777865796d63656b6b6369626a66646d6d72676877707162786765757471706c75796c6b75676b6561756b6579706c647269696c766e
+          776f64796e716c686d78776666626c6f
+          726565637367796b6d77696d66716c6e6a63757375716d6568676179667674757561766a686e6c7161756664676271676c626f63656c626c7261767168796c747265786b
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-hexBinary-enumeration-5" type="NISTSchema-SV-IV-atomic-hexBinary-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-hexBinary-enumeration-5-Type">
+    <xs:restriction base="xs:hexBinary">
+          <xs:enumeration value="6d6f63686e7463706a67747172716b75656966746273697579687666706c6c72726e69706f6b67716d766f626b6c757171777363796b646e666468736f6f6b696464"/>
+          <xs:enumeration value="666a6272766176786b6c69636d76686e6d68697968746a6264796c74656c6f78796c616973"/>
+          <xs:enumeration value="6761737571766c716873746d72"/>
+          <xs:enumeration value="657575657662737270776a626a70716d6878796e77627878647167786c6862657867796576686d6c63696567787261666d"/>
+          <xs:enumeration value="6f6b66687469687477677775706a61"/>
+          <xs:enumeration value="646f76676367746c6e6d636663696670796a6f616e6862676b656c786275666975616472687463706d77"/>
+          <xs:enumeration value="6b696767676c64707177726b77777865796d63656b6b6369626a66646d6d72676877707162786765757471706c75796c6b75676b6561756b6579706c647269696c766e"/>
+          <xs:enumeration value="776f64796e716c686d78776666626c6f"/>
+          <xs:enumeration value="726565637367796b6d77696d66716c6e6a63757375716d6568676179667674757561766a686e6c7161756664676271676c626f63656c626c7261767168796c747265786b"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

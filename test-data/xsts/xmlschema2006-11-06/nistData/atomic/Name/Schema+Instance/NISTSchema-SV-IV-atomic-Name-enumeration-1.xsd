@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-Name-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-Name-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-Name-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-Name-enumeration-1,
+      which is derived by restriction of built-in type Name
+      by facet enumeration with values of:
+          _particular:as_participants:standardization.dat
+          lsoftware-quality_and:interoperability:in-commerce-test:will:.g
+          rthe:enabling-set_from:d
+          tprimary-need:the:documents_maintai
+          :processes_and.both.fi
+          ais_profiles:academia:for-be
+          :and-a:including_as.the-coupled.in.complex:this-at:and.a_i
+          oand.leadership_the.as-manufacturers_th
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-Name-enumeration-1" type="NISTSchema-SV-IV-atomic-Name-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-Name-enumeration-1-Type">
+    <xs:restriction base="xs:Name">
+          <xs:enumeration value="_particular:as_participants:standardization.dat"/>
+          <xs:enumeration value="lsoftware-quality_and:interoperability:in-commerce-test:will:.g"/>
+          <xs:enumeration value="rthe:enabling-set_from:d"/>
+          <xs:enumeration value="tprimary-need:the:documents_maintai"/>
+          <xs:enumeration value=":processes_and.both.fi"/>
+          <xs:enumeration value="ais_profiles:academia:for-be"/>
+          <xs:enumeration value=":and-a:including_as.the-coupled.in.complex:this-at:and.a_i"/>
+          <xs:enumeration value="oand.leadership_the.as-manufacturers_th"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

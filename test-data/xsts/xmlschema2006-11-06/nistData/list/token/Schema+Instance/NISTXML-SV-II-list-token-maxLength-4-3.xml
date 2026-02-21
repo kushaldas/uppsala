@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-4
+    xmlns="NISTSchema-SV-II-list-token-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-4-NS NISTSchema-SV-II-list-token-maxLength-4.xsd">33_The_Xml_Our_Street_Of_As_,_WA_17092-1964 355_To_And_Work_Street_Testing_Wide_,_TN_17092-1964 25_Signature_Pages_Enabling_Street_Developers_Large_,_NE_17092-1964 2_The_Suites_Other_Street_United_In_,_VA_17092-1964 3737_Manipulation_Technology_Pervasive_Street_Architectural_To_,_CA_17092-1964 2_The_Of_Oasis_Street_Challenges_Performance_,_IN_17092-1964 7137_Partner_And_Related_Street_Must_And_,_RI_17092-1964 96_Oasis_The_Technical_Street_Eliminate_Availability_,_IL_17092-1964 5354_Indication_Of_Leadership_Street_Networks_Stylesheet_,_AR_17092-1964 393_Domains_At_Become_Street_Clean_Variety_,_PA_17092-1964</NISTSchema-SV-II-list-token-maxLength-4>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00402m1_p.xml
+   generated from: @(#)targetNS00402m.jmpp	1.4 02/11/19
+
+-->
+
+<!-- Positive variant begin -->
+<Global
+    xmlns:foo="ElemDecl/targetNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+<!-- Positive variant end   -->
+<!-- Negative variant begin - -
+<foo:Global
+    xmlns:foo="ElemDecl/targetNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ - - Negative variant end   -->

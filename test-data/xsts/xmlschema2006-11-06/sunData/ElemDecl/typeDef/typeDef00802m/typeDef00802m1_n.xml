@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00802m1_n.xml
+   generated from: @(#)typeDef00802m.jmpp	1.5 02/12/24
+
+-->
+
+<root
+    xmlns="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef00802m1.xsd">
+
+    <!-- derivedType prohibits value 1 -->
+    <Element xsi:type="derivedType">1</Element>
+
+</root>

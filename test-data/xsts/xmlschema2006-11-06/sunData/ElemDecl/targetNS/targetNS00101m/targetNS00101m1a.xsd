@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m1a.xsd
+   generated from: @(#)targetNS00101m.jmpp	1.2 02/04/04
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/targetNSa"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/targetNSa">
+
+  <xsd:element name="number">
+      <xsd:simpleType>
+          <xsd:restriction base='xsd:string'>
+              <xsd:pattern value='[IVXCL]*'/>
+          </xsd:restriction>
+      </xsd:simpleType>
+  </xsd:element>
+
+</xsd:schema>

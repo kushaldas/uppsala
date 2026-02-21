@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd007.e.xsd	1.3 03/10/10
+
+-->
+
+<!-- highlight of this test
+	
+	cyclic complexType derivation.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="root">
+		<complexType>
+			<sequence>
+				<element name="item" type="foo:foo" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<complexType name="foo">
+		<complexContent>
+			<extension base="foo:bar">
+				<sequence>
+					<element name="a" />
+					<element name="c" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="bar">
+		<complexContent>
+			<extension base="foo:foo">
+				<sequence>
+					<element name="d" />
+					<element name="e" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+</schema>

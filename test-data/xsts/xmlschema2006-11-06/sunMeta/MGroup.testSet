@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<testSet name="MGroup"
+      xmlns="http://www.w3.org/XML/2004/xml-schema-test-suite/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ AnnotatedTSSchema.xsd"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      contributor="SUN">
+
+    <testGroup name="annotation00101m1">
+        <annotation>
+            <documentation>
+                <Title>human-targeted  annotation for a model group schema component (all) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (all).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m1">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m10">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted  annotation for a model group schema component (choice) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (choice).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m10">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m10.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m10_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m11">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted double annotation for a model group schema component (choice) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (choice).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m11">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m11.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m12">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted misplaced annotation for a model group schema component (choice) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (choice).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m12">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m12.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m13">
+        <annotation>
+            <documentation>
+                <Title>human-targeted  annotation for a model group schema component (sequence) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (sequence).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m13">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m13.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m13_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m14">
+        <annotation>
+            <documentation>
+                <Title>human-targeted double annotation for a model group schema component (sequence) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (sequence).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m14">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m14.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m15">
+        <annotation>
+            <documentation>
+                <Title>human-targeted misplaced annotation for a model group schema component (sequence) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (sequence).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m15">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m15.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m16">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted  annotation for a model group schema component (sequence) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (sequence).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m16">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m16.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m16_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m17">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted double annotation for a model group schema component (sequence) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (sequence).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m17">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m17.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m18">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted misplaced annotation for a model group schema component (sequence) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (sequence).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m18">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m18.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m2">
+        <annotation>
+            <documentation>
+                <Title>human-targeted double annotation for a model group schema component (all) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (all).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m2">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m2.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m3">
+        <annotation>
+            <documentation>
+                <Title>human-targeted misplaced annotation for a model group schema component (all) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (all).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m3">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m3.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m4">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted  annotation for a model group schema component (all) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (all).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m4">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m4.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m4_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m5">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted double annotation for a model group schema component (all) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (all).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m5">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m5.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m6">
+        <annotation>
+            <documentation>
+                <Title>machine-targeted misplaced annotation for a model group schema component (all) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the machine-targeted annotation 
+                             is provided for a model group schema component (all).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m6">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m6.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m7">
+        <annotation>
+            <documentation>
+                <Title>human-targeted  annotation for a model group schema component (choice) (valid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (choice).</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m7">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m7.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m7_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m8">
+        <annotation>
+            <documentation>
+                <Title>human-targeted double annotation for a model group schema component (choice) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (choice).
+                             The annotation is specified twice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m8">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m8.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="annotation00101m9">
+        <annotation>
+            <documentation>
+                <Title>human-targeted misplaced annotation for a model group schema component (choice) (invalid schema)</Title>
+                <Description>Annotations provide for human- and machine-targeted 
+                             annotations of schema components.
+                              In the test the human-targeted annotation 
+                             is provided for a model group schema component (choice).
+                             The annotation is misplaced.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="annotation00101m9">
+            <schemaDocument xlink:href="../sunData/MGroup/annotation/annotation00101m/annotation00101m9.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="compositor00101m1">
+        <annotation>
+            <documentation>
+                <Title>The {compositor} is &lt;sequence&gt; of 3 elements, {particles} are element declarations (valid schema)</Title>
+                <Description>Validation Rule: Element Sequence Valid case #1</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00101m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00101m/compositor00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00101m/compositor00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00101m/compositor00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="compositor00102m1">
+        <annotation>
+            <documentation>
+                <Title>The {compositor} is choice, {particles} are element declarations (valid schema)</Title>
+                <Description>Validation Rule: Element Sequence Valid case #2</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00102m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00102m/compositor00102m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00102m/compositor00102m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00102m/compositor00102m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="compositor00103m1">
+        <annotation>
+            <documentation>
+                <Title>The {compositor} is all, {particles} are element declarations (valid schema)</Title>
+                <Description>Validation Rule: Element Sequence Valid case #3</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00103m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00103m/compositor00103m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00103m/compositor00103m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00103m/compositor00103m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="compositor00201m1">
+        <annotation>
+            <documentation>
+                <Title>An empty sequence (valid schema)</Title>
+                <Description>The XMLSchema specification allows an empty sequence.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00201m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00201m/compositor00201m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00201m/compositor00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="compositor00202m1">
+        <annotation>
+            <documentation>
+                <Title>An empty choice (valid schema)</Title>
+                <Description>The XMLSchema specification allows an empty choice.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00202m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00202m/compositor00202m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00202m/compositor00202m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="compositor00203m1">
+        <annotation>
+            <documentation>
+                <Title>An empty all (valid schema)</Title>
+                <Description>The XMLSchema specification allows an empty all.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="compositor00203m1">
+            <schemaDocument xlink:href="../sunData/MGroup/compositor/compositor00203m/compositor00203m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/compositor/compositor00203m/compositor00203m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00101m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 1 &lt;element&gt; (valid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00101m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00101m2">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;element&gt; (valid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00101m2">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m2.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m2_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00101m/particles00101m2_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00102m1">
+        <annotation>
+            <documentation>
+                <Title>&lt;group&gt; as one of {particles} (invalid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;. So &lt;group&gt; is prohibited.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00102m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00102m/particles00102m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="particles00103m1">
+        <annotation>
+            <documentation>
+                <Title>&lt;sequence&gt; as one of {particles} (invalid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;. So &lt;sequence&gt; is prohibited.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00103m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00103m/particles00103m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="particles00104m1">
+        <annotation>
+            <documentation>
+                <Title>&lt;any&gt; as one of {particles} (invalid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;. So &lt;any&gt; is prohibited.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00104m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00104m/particles00104m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="particles00105m1">
+        <annotation>
+            <documentation>
+                <Title>&lt;choice&gt; as one of {particles} (invalid schema)</Title>
+                <Description>The {particles} of 'all' must be &lt;element&gt;. So &lt;choice&gt; is prohibited.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00105m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00105m/particles00105m1.xsd"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+    </testGroup>
+
+    <testGroup name="particles00201m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;element&gt; (valid schema)</Title>
+                <Description>The {particles} of 'choice' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00201m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00201m/particles00201m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00201m/particles00201m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00201m/particles00201m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00202m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;group&gt; (valid schema)</Title>
+                <Description>The {particles} of 'choice' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00202m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00202m/particles00202m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00202m/particles00202m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00202m/particles00202m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00203m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;choice&gt; (valid schema)</Title>
+                <Description>The {particles} of 'choice' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00203m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00203m/particles00203m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00203m/particles00203m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00203m/particles00203m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00204m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;sequence&gt; (valid schema)</Title>
+                <Description>The {particles} of 'choice' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00204m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00204m/particles00204m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00204m/particles00204m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00204m/particles00204m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00205m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 1 &lt;any&gt; (valid schema)</Title>
+                <Description>The {particles} of 'choice' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00205m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00205m/particles00205m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00205m/particles00205m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00205m/particles00205m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00301m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;element&gt; (valid schema)</Title>
+                <Description>The {particles} of 'sequence' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00301m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00301m/particles00301m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00301m/particles00301m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00301m/particles00301m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00302m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;group&gt; (valid schema)</Title>
+                <Description>The {particles} of 'sequence' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00302m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00302m/particles00302m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00302m/particles00302m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00302m/particles00302m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00303m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;choice&gt; (valid schema)</Title>
+                <Description>The {particles} of 'sequence' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00303m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00303m/particles00303m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00303m/particles00303m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00303m/particles00303m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00304m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 2 &lt;sequence&gt; (valid schema)</Title>
+                <Description>The {particles} of 'sequence' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00304m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00304m/particles00304m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00304m/particles00304m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00304m/particles00304m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+    <testGroup name="particles00305m1">
+        <annotation>
+            <documentation>
+                <Title>{particles}: 1 &lt;any&gt; (valid schema)</Title>
+                <Description>The {particles} of 'sequence' must be one of &lt;element&gt;, &lt;group&gt;,
+                              &lt;choice&gt;, &lt;sequence&gt; &lt;any&gt;.</Description>
+            </documentation>
+        </annotation>
+        <documentationReference xlink:href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#Model_Groups"/>
+        <schemaTest name="particles00305m1">
+            <schemaDocument xlink:href="../sunData/MGroup/particles/particles00305m/particles00305m1.xsd"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </schemaTest>
+        <instanceTest name="Positive">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00305m/particles00305m1_p.xml"/>
+            <expected validity="valid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+        <instanceTest name="Negative">
+            <instanceDocument xlink:href="../sunData/MGroup/particles/particles00305m/particles00305m1_n.xml"/>
+            <expected validity="invalid"/>
+            <current status="accepted" date="2005-06-21"/>
+        </instanceTest>
+    </testGroup>
+
+</testSet>

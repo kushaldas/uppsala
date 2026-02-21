@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1,
+      which is derived by restriction of a union of built-in types 
+      gMonthDay and gYearMonth
+      by facet enumeration with values of:
+          --10-01
+          --01-03
+          --12-11
+          --12-27
+          --03-11
+          --04-23
+          --11-16
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1" type="NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1-Type"/>
+
+  <xs:simpleType name="unionOf-gMonthDay-gYearMonth">
+    <xs:union memberTypes="xs:gMonthDay xs:gYearMonth"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-union-gMonthDay-gYearMonth-enumeration-1-Type">
+    <xs:restriction base="unionOf-gMonthDay-gYearMonth">
+          <xs:enumeration value="--10-01"/>
+          <xs:enumeration value="--01-03"/>
+          <xs:enumeration value="--12-11"/>
+          <xs:enumeration value="--12-27"/>
+          <xs:enumeration value="--03-11"/>
+          <xs:enumeration value="--04-23"/>
+          <xs:enumeration value="--11-16"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

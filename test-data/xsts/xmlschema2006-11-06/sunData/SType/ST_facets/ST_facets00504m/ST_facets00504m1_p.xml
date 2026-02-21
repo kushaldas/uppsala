@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00504m1_p.xml
+   generated from: @(#)ST_facets00504m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00504m1.xsd">
+    <value>a000</value>
+    <value>a0-4</value>
+    <value>a0A9</value>
+    <value>a10٠</value>
+    <value>a1-٤</value>
+    <value>a1A٩</value>
+    <value>a20۰</value>
+    <value>a2-۴</value>
+    <value>a2A۹</value>
+    <value>a30०</value>
+    <value>a3-४</value>
+    <value>a3A९</value>
+    <value>a40০</value>
+    <value>a4-৪</value>
+    <value>a4A৯</value>
+    <value>a50੦</value>
+    <value>a5-੪</value>
+    <value>a5A੯</value>
+    <value>a60૦</value>
+    <value>a6-૪</value>
+    <value>a6A૯</value>
+    <value>a70୦</value>
+    <value>a7-୪</value>
+    <value>a7A୯</value>
+    <value>a80௧</value>
+    <value>a8-௫</value>
+    <value>a8A௯</value>
+    <value>a90౦</value>
+    <value>a9-౪</value>
+    <value>a9A౯</value>
+</test:root>

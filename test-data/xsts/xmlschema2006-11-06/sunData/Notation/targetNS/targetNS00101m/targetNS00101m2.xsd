@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00101m2.xsd
+   generated from: @(#)targetNS00101m.jmpp	1.3 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:test="tck_test"
+  xmlns="targetNS"
+  targetNamespace="targetNS">
+
+     <xsd:import namespace="tck_test" schemaLocation="targetNS00101m1.xsd"/>
+
+     <xsd:complexType name="Picture">
+          <xsd:attribute name="type">
+               <xsd:simpleType>
+                    <xsd:restriction base="xsd:NOTATION">
+                         <xsd:enumeration value="test:png"/>
+                    </xsd:restriction>
+               </xsd:simpleType>
+          </xsd:attribute>
+     </xsd:complexType>
+
+     <xsd:element name="a" type="xsd:string" />
+
+</xsd:schema>

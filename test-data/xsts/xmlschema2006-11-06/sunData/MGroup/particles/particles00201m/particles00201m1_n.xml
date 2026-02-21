@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)particles00201m1_n.xml
+   generated from: @(#)particles00201m.jmpp	1.1 02/04/28
+
+-->
+
+<test:a
+    xmlns:test="particles"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="particles particles00201m1.xsd">
+
+  <date>2002-04-25</date>
+  <marked>true</marked>
+</test:a>

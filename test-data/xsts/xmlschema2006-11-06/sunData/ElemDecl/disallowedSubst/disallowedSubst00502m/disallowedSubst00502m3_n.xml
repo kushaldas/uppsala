@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)disallowedSubst00502m3_n.xml
+   generated from: @(#)disallowedSubst00502m.jmpp	1.4 04/01/14
+
+-->
+
+<root
+  xmlns="ElemDecl/disallowedSubst"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/disallowedSubst disallowedSubst00502m3.xsd">
+
+  <Member1/>
+
+</root>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKEN-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKEN-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKEN-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKEN-enumeration-3,
+      which is derived by restriction of a list with itemType NMTOKEN
+      by facet enumeration with values of:
+          c th implementations:nature:repository:for:daily:review_XM contributor:to.the that-Errors:deployed_tools:The:partnerships. Schemas:to: of-link-to_defi in_which.XSL.dis
+          application.stakeholders-industr clean:parad dynamic-S DOM new.collaborate. registry_is and.role-pervasive-An_between_contains
+          industry-way_repository.issues:emerging.into:high:XML_direct the.SOC:following_indication:a-XML-lies.will.second-ge Delaware-a software:cost-match_looking_S_ between_specifications.to-Internet-enabled_enabling link-complex:tool.develop any.not:development.repository:manipu by.metrology-manipulate-all:to.to. a-
+          identify:the_Furthermore-partners.versions-to.technol that-commerce_d from.frameworks_would-pa same:five_Simulation.complex-OASIS:to.the Naval:data_in:Aroma.Description:base:EC:Recommen some-these_tools:co related
+          distributed-has.technical.databa By_the_the.semantics-that:and-The_the:specific:HTML-t Description.Architectural_software.must-industrie be:provided_semantics_and.w A.is-these-neutral.which_and_files.groups-and:DOM_en retrieve-prototypes-devices:in-computer:be.S
+          and_ same.is_and.and.formed.Such.documents_of.Chi.other.ann the.chairing:deskto success.resources.organizations_world:It_Del as:HTML_this-Conference_that:vocabularies_for:retrieves_indust processors-issues-of:be-re retrieval:acting:g-applications.obje via-NSRL_each.the-inf
+          which.stimulus-Desc t must-the_matc i without:an tune_component.Internet:be.is_testing-Co
+          project tools_those_ will-industry-Despite_will:to.Organization-of.porta will_to.reference.would:provide-areas.o implementation: are.is_a. in-house.templates:business-and.Pervasive-to-
+          match:computing-to-of_a-computer:a_in:issues-of_has_manageme si tools.dynamic.so facilitates:a_significant.a_can.as_t quality-object.the.for-the:for-f Extensible-to-as.Langu by:images.data.systems_defining.so e.XML:in:information_unders
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-3" type="NISTSchema-SV-IV-list-NMTOKEN-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfNMTOKEN">
+    <xs:list itemType="xs:NMTOKEN"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-3-Type">
+    <xs:restriction base="listOfNMTOKEN">
+          <xs:enumeration value="c th implementations:nature:repository:for:daily:review_XM contributor:to.the that-Errors:deployed_tools:The:partnerships. Schemas:to: of-link-to_defi in_which.XSL.dis"/>
+          <xs:enumeration value="application.stakeholders-industr clean:parad dynamic-S DOM new.collaborate. registry_is and.role-pervasive-An_between_contains"/>
+          <xs:enumeration value="industry-way_repository.issues:emerging.into:high:XML_direct the.SOC:following_indication:a-XML-lies.will.second-ge Delaware-a software:cost-match_looking_S_ between_specifications.to-Internet-enabled_enabling link-complex:tool.develop any.not:development.repository:manipu by.metrology-manipulate-all:to.to. a-"/>
+          <xs:enumeration value="identify:the_Furthermore-partners.versions-to.technol that-commerce_d from.frameworks_would-pa same:five_Simulation.complex-OASIS:to.the Naval:data_in:Aroma.Description:base:EC:Recommen some-these_tools:co related"/>
+          <xs:enumeration value="distributed-has.technical.databa By_the_the.semantics-that:and-The_the:specific:HTML-t Description.Architectural_software.must-industrie be:provided_semantics_and.w A.is-these-neutral.which_and_files.groups-and:DOM_en retrieve-prototypes-devices:in-computer:be.S"/>
+          <xs:enumeration value="and_ same.is_and.and.formed.Such.documents_of.Chi.other.ann the.chairing:deskto success.resources.organizations_world:It_Del as:HTML_this-Conference_that:vocabularies_for:retrieves_indust processors-issues-of:be-re retrieval:acting:g-applications.obje via-NSRL_each.the-inf"/>
+          <xs:enumeration value="which.stimulus-Desc t must-the_matc i without:an tune_component.Internet:be.is_testing-Co"/>
+          <xs:enumeration value="project tools_those_ will-industry-Despite_will:to.Organization-of.porta will_to.reference.would:provide-areas.o implementation: are.is_a. in-house.templates:business-and.Pervasive-to-"/>
+          <xs:enumeration value="match:computing-to-of_a-computer:a_in:issues-of_has_manageme si tools.dynamic.so facilitates:a_significant.a_can.as_t quality-object.the.for-the:for-f Extensible-to-as.Langu by:images.data.systems_defining.so e.XML:in:information_unders"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-2
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-2-NS NISTSchema-SV-IV-list-normalizedString-minLength-2.xsd">43_Will_Ad_Hampered_Street_Contributor_Used_Nist_,_VT_18474-1213 564_Improved_Must_Match_Street_Has_Global_Revolution_,_UT_18474-1213 532_Recommending_Of_Throughout_Street_By_Extensible_Regard_,_DC_18474-1213 85_Technology_Schemas_Without_Street_Life_Are_Correctness_,_MD_18474-1213 8_Pages_Partnerships_Revolution_Street_Using_Oasis_Include_,_MT_18474-1213 7_For_More_Criteria_Street_Developing_Build_For_,_CO_18474-1213 9_An_With_Wireless_Street_Library_Security_In_,_MD_18474-1213 55537_And_To_Documents_Street_Rigorous_Enterprises_Trade_,_IN_18474-1213 652_As_Be_Recommendation_Street_Itl_And_Exist_,_MO_18474-1213 7754_Software_Is_Community_Street_In_Its_Popular_,_LA_18474-1213</NISTSchema-SV-IV-list-normalizedString-minLength-2>

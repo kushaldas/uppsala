@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-QName-enumeration-3-NS"
+        xmlns:_ana="http://www.nist.gov/xsdNS"
+        xmlns:_ensure-and="http://www.nist.gov/xsdNS"
+        xmlns:qa="http://www.nist.gov/xsdNS"
+        xmlns:_ma="http://www.nist.gov/xsdNS"
+        xmlns:rear="http://www.nist.gov/xsdNS"
+        xmlns:_b="http://www.nist.gov/xsdNS"
+        xmlns:cw="http://www.nist.gov/xsdNS"
+        xmlns:wl="http://www.nist.gov/xsdNS"
+        xmlns:sby.="http://www.nist.gov/xsdNS"
+        xmlns:japplications-as="http://www.nist.gov/xsdNS"
+        xmlns:sc="http://www.nist.gov/xsdNS"
+        xmlns:oprecise_="http://www.nist.gov/xsdNS"
+        xmlns:_new-related-include="http://www.nist.gov/xsdNS"
+        xmlns:yindustry.the="http://www.nist.gov/xsdNS"
+        xmlns:i="http://www.nist.gov/xsdNS"
+        xmlns:ientire.cross="http://www.nist.gov/xsdNS"
+        xmlns:velimin="http://www.nist.gov/xsdNS"
+        xmlns:qon_for.respect_filter-="http://www.nist.gov/xsdNS"
+        xmlns:ww="http://www.nist.gov/xsdNS"
+        xmlns:iweb_="http://www.nist.gov/xsdNS"
+        xmlns:_s="http://www.nist.gov/xsdNS"
+        xmlns:ms="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-list-QName-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-QName-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-QName-enumeration-3,
+      which is derived by restriction of a list with itemType QName
+      by facet enumeration with values of:
+          _ana:_maintaine _ensure-and:bthe_a-a.cross-over-the-possib qa:fand-software_in.available_software-conformance. _ma:sneed-creating.the-a ifor-partners-for.is_and.unbia yspecifications-as.pervasive-web- mfrom.interact qdesign.and.software-and_and.the_was_
+          qdesign.and.software-and_and.the_was_ _them.semantics_problems.virtually.wide_the.tools_testi xand.retrieve-stan wis.n _competence-commerce.series_of.c rear:vfor-be-computing- aand-prototypes-web.work.contribute.has.th _b:ucomplete_other.c
+          _b:ucomplete_other.c nan ovocabulary.different_ cw:ba wl:mbeing-any.as-robust-de tparticular-tools.entire.review-technologies_to_to_to-alre sby.:ddevelopment_proc hlandscape_of-included_issues-voice japplications-as:econformance-known-business-led_wil
+          japplications-as:econformance-known-business-led_wil sc:qcomputer_led.and.interoperability-has-th _file-filter-a_reviewed.those.creation_well-for ato.benefits oprecise_:rare.first-early-the_visibly.to_com _new-related-include:upervasive.supply-and-d _to_in_the-virtuall jbe_recommending-ability.standardization-to_the_to-used_and yindustry.the:bfor_new.of-exchang
+          yindustry.the:bfor_new.of-exchang ralso_to.libraries-pr j _correctness_of-interoperability-browsers_of_networks_as_a i:ista xwell-challenge _will.repository_effectively-object-build-wireless-metrol
+          _will.repository_effectively-object-build-wireless-metrol ientire.cross:bthese.pervasive_database_specifications-with. ia-make_of.process-would-in-launching-of-the_object.transac xan_with-bu velimin:aregard-test.standardization-known-of-with_as_need.with rdepends_a qon_for.respect_filter-:xhealth-blocks.means.match-ad_for
+          qon_for.respect_filter-:xhealth-blocks.means.match-ad_for ww:_co bby.the_these_test.by-and-h iweb_:irecognition-a _s:oand- tdesktop.to-repository_as-of_that-the-are.known.problems-of.g ms:hpe
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="ifor-partners-for.is_and.unbia" type="xs:string"/>
+<xs:element name="yspecifications-as.pervasive-web-" type="xs:string"/>
+<xs:element name="mfrom.interact" type="xs:string"/>
+<xs:element name="qdesign.and.software-and_and.the_was_" type="xs:string"/>
+<xs:element name="_them.semantics_problems.virtually.wide_the.tools_testi" type="xs:string"/>
+<xs:element name="xand.retrieve-stan" type="xs:string"/>
+<xs:element name="wis.n" type="xs:string"/>
+<xs:element name="_competence-commerce.series_of.c" type="xs:string"/>
+<xs:element name="aand-prototypes-web.work.contribute.has.th" type="xs:string"/>
+<xs:element name="nan" type="xs:string"/>
+<xs:element name="ovocabulary.different_" type="xs:string"/>
+<xs:element name="tparticular-tools.entire.review-technologies_to_to_to-alre" type="xs:string"/>
+<xs:element name="hlandscape_of-included_issues-voice" type="xs:string"/>
+<xs:element name="_file-filter-a_reviewed.those.creation_well-for" type="xs:string"/>
+<xs:element name="ato.benefits" type="xs:string"/>
+<xs:element name="_to_in_the-virtuall" type="xs:string"/>
+<xs:element name="jbe_recommending-ability.standardization-to_the_to-used_and" type="xs:string"/>
+<xs:element name="ralso_to.libraries-pr" type="xs:string"/>
+<xs:element name="j" type="xs:string"/>
+<xs:element name="_correctness_of-interoperability-browsers_of_networks_as_a" type="xs:string"/>
+<xs:element name="xwell-challenge" type="xs:string"/>
+<xs:element name="_will.repository_effectively-object-build-wireless-metrol" type="xs:string"/>
+<xs:element name="ia-make_of.process-would-in-launching-of-the_object.transac" type="xs:string"/>
+<xs:element name="xan_with-bu" type="xs:string"/>
+<xs:element name="rdepends_a" type="xs:string"/>
+<xs:element name="bby.the_these_test.by-and-h" type="xs:string"/>
+<xs:element name="tdesktop.to-repository_as-of_that-the-are.known.problems-of.g" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-list-QName-enumeration-3" type="NISTSchema-SV-IV-list-QName-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfQName">
+    <xs:list itemType="xs:QName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-QName-enumeration-3-Type">
+    <xs:restriction base="listOfQName">
+          <xs:enumeration value="_ana:_maintaine _ensure-and:bthe_a-a.cross-over-the-possib qa:fand-software_in.available_software-conformance. _ma:sneed-creating.the-a ifor-partners-for.is_and.unbia yspecifications-as.pervasive-web- mfrom.interact qdesign.and.software-and_and.the_was_"/>
+          <xs:enumeration value="qdesign.and.software-and_and.the_was_ _them.semantics_problems.virtually.wide_the.tools_testi xand.retrieve-stan wis.n _competence-commerce.series_of.c rear:vfor-be-computing- aand-prototypes-web.work.contribute.has.th _b:ucomplete_other.c"/>
+          <xs:enumeration value="_b:ucomplete_other.c nan ovocabulary.different_ cw:ba wl:mbeing-any.as-robust-de tparticular-tools.entire.review-technologies_to_to_to-alre sby.:ddevelopment_proc hlandscape_of-included_issues-voice japplications-as:econformance-known-business-led_wil"/>
+          <xs:enumeration value="japplications-as:econformance-known-business-led_wil sc:qcomputer_led.and.interoperability-has-th _file-filter-a_reviewed.those.creation_well-for ato.benefits oprecise_:rare.first-early-the_visibly.to_com _new-related-include:upervasive.supply-and-d _to_in_the-virtuall jbe_recommending-ability.standardization-to_the_to-used_and yindustry.the:bfor_new.of-exchang"/>
+          <xs:enumeration value="yindustry.the:bfor_new.of-exchang ralso_to.libraries-pr j _correctness_of-interoperability-browsers_of_networks_as_a i:ista xwell-challenge _will.repository_effectively-object-build-wireless-metrol"/>
+          <xs:enumeration value="_will.repository_effectively-object-build-wireless-metrol ientire.cross:bthese.pervasive_database_specifications-with. ia-make_of.process-would-in-launching-of-the_object.transac xan_with-bu velimin:aregard-test.standardization-known-of-with_as_need.with rdepends_a qon_for.respect_filter-:xhealth-blocks.means.match-ad_for"/>
+          <xs:enumeration value="qon_for.respect_filter-:xhealth-blocks.means.match-ad_for ww:_co bby.the_these_test.by-and-h iweb_:irecognition-a _s:oand- tdesktop.to-repository_as-of_that-the-are.known.problems-of.g ms:hpe"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

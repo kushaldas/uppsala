@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint01101m1.xsd
+   generated from: @(#)valueConstraint01101m.jmpp	1.2 02/09/06
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Element" type="Float" fixed="0" />
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:simpleType name="Float">
+      <xsd:restriction base="xsd:float">
+          <xsd:maxInclusive value="0"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="derivedType">
+      <xsd:restriction base="Float">
+          <xsd:minInclusive value="0"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

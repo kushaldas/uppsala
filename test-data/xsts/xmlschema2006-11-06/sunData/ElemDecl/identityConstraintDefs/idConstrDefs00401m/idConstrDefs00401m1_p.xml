@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00401m1_p.xml
+   generated from: @(#)idConstrDefs00401m.jmpp	1.1 02/04/10
+
+-->
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00401m.xsd">
+
+  <person ssn="p007" parent="p007">John Smith</person>
+
+</test:root>

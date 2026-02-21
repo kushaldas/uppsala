@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-NCName-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-NCName-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-NCName-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-NCName-enumeration-4,
+      which is derived by restriction of built-in type NCName
+      by facet enumeration with values of:
+          xstandards-and-all-different-such.the_particularly.transmit_to
+          kindication.all-a_of_resources_with.cost-via-
+          welectronic-worki
+          iof_for-in.in-repository_other.and-of-i
+          _within.can.standard-and_fo
+          nto-use
+          oexecution_industry_data_indus
+          wupon-and_available.and-is.to.among_and_application-
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-NCName-enumeration-4" type="NISTSchema-SV-IV-atomic-NCName-enumeration-4-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-NCName-enumeration-4-Type">
+    <xs:restriction base="xs:NCName">
+          <xs:enumeration value="xstandards-and-all-different-such.the_particularly.transmit_to"/>
+          <xs:enumeration value="kindication.all-a_of_resources_with.cost-via-"/>
+          <xs:enumeration value="welectronic-worki"/>
+          <xs:enumeration value="iof_for-in.in-repository_other.and-of-i"/>
+          <xs:enumeration value="_within.can.standard-and_fo"/>
+          <xs:enumeration value="nto-use"/>
+          <xs:enumeration value="oexecution_industry_data_indus"/>
+          <xs:enumeration value="wupon-and_available.and-is.to.among_and_application-"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

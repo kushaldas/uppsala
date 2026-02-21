@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-union-duration-decimal-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-union-duration-decimal-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-union-duration-decimal-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-union-duration-decimal-enumeration-2,
+      which is derived by restriction of a union of built-in types 
+      duration and decimal
+      by facet enumeration with values of:
+          680338314.09
+          -293280.774
+          P2003Y06M13DT16H21M34S
+          P2014Y02M08DT09H42M46S
+          P1988Y08M11DT04H57M19S
+          P2013Y04M14DT17H28M59S
+          -3.05
+          P1998Y03M11DT00H17M15S
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-union-duration-decimal-enumeration-2" type="NISTSchema-SV-IV-union-duration-decimal-enumeration-2-Type"/>
+
+  <xs:simpleType name="unionOf-duration-decimal">
+    <xs:union memberTypes="xs:duration xs:decimal"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-union-duration-decimal-enumeration-2-Type">
+    <xs:restriction base="unionOf-duration-decimal">
+          <xs:enumeration value="680338314.09"/>
+          <xs:enumeration value="-293280.774"/>
+          <xs:enumeration value="P2003Y06M13DT16H21M34S"/>
+          <xs:enumeration value="P2014Y02M08DT09H42M46S"/>
+          <xs:enumeration value="P1988Y08M11DT04H57M19S"/>
+          <xs:enumeration value="P2013Y04M14DT17H28M59S"/>
+          <xs:enumeration value="-3.05"/>
+          <xs:enumeration value="P1998Y03M11DT00H17M15S"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

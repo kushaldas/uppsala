@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nsConstraint00101m2_p.xml
+   generated from: @(#)nsConstraint00101m.jmpp	1.2 02/08/26
+
+-->
+
+<test:a
+    xmlns:test="nsConstraint"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="nsConstraint nsConstraint00101m2.xsd">
+<time>14:25:00</time>
+</test:a>

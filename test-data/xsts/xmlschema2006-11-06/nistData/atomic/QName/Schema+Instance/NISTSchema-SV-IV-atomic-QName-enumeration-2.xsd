@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-QName-enumeration-2-NS"
+        xmlns:_also.to_t="http://www.nist.gov/xsdNS"
+        xmlns:dpervasive="http://www.nist.gov/xsdNS"
+        xmlns:awith.and-as.and-by-world.t="http://www.nist.gov/xsdNS"
+        xmlns:c="http://www.nist.gov/xsdNS"
+        xmlns:_a="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-atomic-QName-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-QName-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-QName-enumeration-2,
+      which is derived by restriction of built-in type QName
+      by facet enumeration with values of:
+          _also.to_t:pvocabularies_any-promi
+          dpervasive:ndevelopment_be
+          awith.and-as.and-by-world.t:cinformation-information.langua
+          ncreate
+          c:xsolutions.filter_reviewed-led-allow_by_industry_pr
+          _a:vreach-s
+          kdomains-as.automatic-academia_work-ensure_tes
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="ncreate" type="xs:string"/>
+<xs:element name="kdomains-as.automatic-academia_work-ensure_tes" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-QName-enumeration-2" type="NISTSchema-SV-IV-atomic-QName-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-QName-enumeration-2-Type">
+    <xs:restriction base="xs:QName">
+          <xs:enumeration value="_also.to_t:pvocabularies_any-promi"/>
+          <xs:enumeration value="dpervasive:ndevelopment_be"/>
+          <xs:enumeration value="awith.and-as.and-by-world.t:cinformation-information.langua"/>
+          <xs:enumeration value="ncreate"/>
+          <xs:enumeration value="c:xsolutions.filter_reviewed-led-allow_by_industry_pr"/>
+          <xs:enumeration value="_a:vreach-s"/>
+          <xs:enumeration value="kdomains-as.automatic-academia_work-ensure_tes"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

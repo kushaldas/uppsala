@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd021.n00.xml	1.3 02/12/25
+
+-->
+
+<f:root
+	xmlns:f="foo"
+	xmlns:b="bar"
+	xmlns:z="zot"
+	xmlns:u="undeclared">
+	
+	<f:laxAny f:a="invalid" />
+	
+</f:root>

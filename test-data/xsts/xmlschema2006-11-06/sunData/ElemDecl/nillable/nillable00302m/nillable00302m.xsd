@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nillable00302m.xsd
+   generated from: @(#)nillable00302m.jmpp	1.3 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/nillable"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/nillable">
+
+  <xsd:element name="root" nillable="true">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element name="Local" minOccurs="0"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

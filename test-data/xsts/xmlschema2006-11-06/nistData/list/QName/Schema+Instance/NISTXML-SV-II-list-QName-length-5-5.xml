@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-5-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_the-we_advent-is-dis="http://www.nist.gov/xsdNS"
+    xmlns:_c="http://www.nist.gov/xsdNS"
+    xmlns:_quality.raised.be-transac="http://www.nist.gov/xsdNS"
+    xmlns:qprovides.newcomer.standardiza="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-5-NS NISTSchema-SV-II-list-QName-length-5.xsd">land.dynamic-will_related-typical-revolution_of-software_c _the-we_advent-is-dis:wany_used_one_requesting.the_developed.files-its_tools_a_s _c:ain_for.any_second-generation.to.industries_which-file_cou _quality.raised.be-transac:tthe.file.as-correction.interoperability_a_standards.speci blanguages_key-asking-capabilities-and_for.in-and-on-brows qprovides.newcomer.standardiza:gi_personal-and.access.analysis_and_subject_series_popular</nist:NISTSchema-SV-II-list-QName-length-5>

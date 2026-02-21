@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-byte-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-byte-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-byte-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-byte-enumeration-5,
+      which is derived by restriction of a list with itemType byte
+      by facet enumeration with values of:
+          4 2 9 -128 -24 127 30 -29
+          -128 -95 14 -5 71 -60 127 -17 77
+          -8 1 11 -128 5 4 -76 127
+          -7 -128 -96 3 127 14 -6 -2
+          -43 11 -8 -39 -128 -7
+          57 3 -128 -97 127 99
+          127 -12 -7 -128 4 -9 -79 -3 61
+          127 -128 -43 9 39 -82 21
+          -69 75 70 54 127 -5 74 -67 -128
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-byte-enumeration-5" type="NISTSchema-SV-II-list-byte-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfbyte">
+    <xs:list itemType="xs:byte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-byte-enumeration-5-Type">
+    <xs:restriction base="listOfbyte">
+          <xs:enumeration value="4 2 9 -128 -24 127 30 -29"/>
+          <xs:enumeration value="-128 -95 14 -5 71 -60 127 -17 77"/>
+          <xs:enumeration value="-8 1 11 -128 5 4 -76 127"/>
+          <xs:enumeration value="-7 -128 -96 3 127 14 -6 -2"/>
+          <xs:enumeration value="-43 11 -8 -39 -128 -7"/>
+          <xs:enumeration value="57 3 -128 -97 127 99"/>
+          <xs:enumeration value="127 -12 -7 -128 4 -9 -79 -3 61"/>
+          <xs:enumeration value="127 -128 -43 9 39 -82 21"/>
+          <xs:enumeration value="-69 75 70 54 127 -5 74 -67 -128"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

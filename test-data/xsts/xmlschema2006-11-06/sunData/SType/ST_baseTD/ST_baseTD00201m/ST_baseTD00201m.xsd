@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_baseTD00201m.xsd
+   generated from: @(#)ST_baseTD00201m.jmpp	1.1 02/02/28
+
+-->
+
+
+<!--
+    strategy:  Define type with name 'Test' that is a restriction of 
+               the type 'string' with the pattern 'a*' and the length 4.
+               Then declare an element with name 'test' of the type 'Test'.
+-->
+<xsd:schema
+  xmlns="ST_baseTD"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_baseTD">
+     <xsd:element name="test" type="Test"/>
+
+     <xsd:simpleType name="Test">
+          <xsd:restriction>
+               <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                         <xsd:length value="4" />
+                    </xsd:restriction>
+               </xsd:simpleType>
+               <xsd:pattern value="a*" />
+          </xsd:restriction>
+     </xsd:simpleType>
+</xsd:schema>
+
+

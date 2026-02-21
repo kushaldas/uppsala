@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00201m15.xsd
+   generated from: @(#)ST_facets00201m.jmpp	1.1 02/03/15
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_facets"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_facets">
+     <xsd:element name="test" type="Test"/>
+
+    <xsd:simpleType name="Test">
+        <xsd:restriction base="xsd:float">
+            <xsd:maxExclusive value="11.0"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
+
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-2
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-2-NS NISTSchema-SV-II-list-normalizedString-maxLength-2.xsd">5_In_Naval_Further_Oasis_Intuitive_Street_Be_Tools_,_MI_12883 89659_Academia_Filter_Interoperability_And_Methods_Street_Way_Oasis_,_MA_12883 86_Applications_Used_Due_And_Testing_Street_Exchange_The_,_AR_12883 7_For_Repository_Results_Service_Applications_Street_Discussions_Is_,_OR_12883 16_Are_Law_Number_And_The_Street_Will_Internet_,_LA_12883 6_Technologies_Also_And_Systems_As_Street_Repositories_Include_,_IN_12883 518_Related_Landscape_Match_Having_And_Street_Associated_Aroma_,_ID_12883 2275_Must_Pervasive_Is_Displaying_As_Street_And_Implementations_,_KS_12883</NISTSchema-SV-II-list-normalizedString-maxLength-2>

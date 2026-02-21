@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-4-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-4
+    xmlns="NISTSchema-SV-II-list-token-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-4-NS NISTSchema-SV-II-list-token-maxLength-4.xsd">6_That_Unbiased_Internet_Street_Of_And_Xml_,_WV_19396 3882_Etc_Build_Internet_Street_Is_The_Resources_,_MI_19396 85_Xml_Allow_The_Street_Industry_Files_Sensors_,_NY_19396 56_For_For_And_Street_Provides_Use_And_,_VT_19396 836_Testing_Able_Personal_Street_Information_Automatically_As_,_MS_19396 458_Recommending_Through_The_Street_Is_Simplicity_Areas_,_CT_19396 27_These_Body_Technical_Street_To_For_Commerce_,_DE_19396 6355_Newcomer_Nations_The_Street_Reference_Revolution_Of_,_WA_19396 49_The_Emerging_Issues_Street_Is_Recommendation_Will_,_MN_19396</NISTSchema-SV-II-list-token-maxLength-4>

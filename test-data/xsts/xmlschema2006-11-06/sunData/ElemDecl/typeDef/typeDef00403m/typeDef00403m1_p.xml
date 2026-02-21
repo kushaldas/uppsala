@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00403m1_p.xml
+   generated from: @(#)typeDef00403m.jmpp	1.2 02/04/04
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef00403m.xsd">
+
+    <test:Global>true</test:Global>
+    <test:GlobalPreDefinedType>true</test:GlobalPreDefinedType>
+    <Local>1.1</Local>
+    <LocalPreDefinedType>1</LocalPreDefinedType>
+    <LocalInline>false</LocalInline>
+
+</test:root>

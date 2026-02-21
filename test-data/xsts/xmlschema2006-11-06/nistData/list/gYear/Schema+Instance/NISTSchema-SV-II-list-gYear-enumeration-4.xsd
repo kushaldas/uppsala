@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-gYear-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-II-list-gYear-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gYear-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gYear-enumeration-4,
+      which is derived by restriction of a list with itemType gYear
+      by facet enumeration with values of:
+          2018 2022 2009 2000 2028 2005
+          1988 1978 2015 2003 1975 2028
+          2029 2029 2003 1998 2027 2015 1998 1989 1985
+          1997 1986 1990 1987 1971
+          2007 2016 2011 1976 1983 1996 1998 1972 1973 2013
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-gYear-enumeration-4" type="NISTSchema-SV-II-list-gYear-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfgYear">
+    <xs:list itemType="xs:gYear"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-gYear-enumeration-4-Type">
+    <xs:restriction base="listOfgYear">
+          <xs:enumeration value="2018 2022 2009 2000 2028 2005"/>
+          <xs:enumeration value="1988 1978 2015 2003 1975 2028"/>
+          <xs:enumeration value="2029 2029 2003 1998 2027 2015 1998 1989 1985"/>
+          <xs:enumeration value="1997 1986 1990 1987 1971"/>
+          <xs:enumeration value="2007 2016 2011 1976 1983 1996 1998 1972 1973 2013"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

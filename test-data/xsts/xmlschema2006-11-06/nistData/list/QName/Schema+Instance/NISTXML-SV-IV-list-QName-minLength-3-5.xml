@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-minLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-minLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-minLength-3
+    xmlns:nist="NISTSchema-SV-IV-list-QName-minLength-3-NS"
+    xmlns:qgeneration-from.informat="http://www.nist.gov/xsdNS"
+    xmlns:b2="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:qless-as.the_where_p="http://www.nist.gov/xsdNS"
+    xmlns:amethods.around="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-minLength-3-NS NISTSchema-SV-IV-list-QName-minLength-3.xsd">qgeneration-from.informat:pby-the_conformance_have_t b2:igood_and-vendors.ambiguit uused_data_their.revolutio efiles.and.implementation- qless-as.the_where_p:tenforcement_in-solve.them yindustry-complete_success qenforcement-maintained.to _them-neutral-versions.pro amethods.around:qthe.of-through_developmen</nist:NISTSchema-SV-IV-list-QName-minLength-3>

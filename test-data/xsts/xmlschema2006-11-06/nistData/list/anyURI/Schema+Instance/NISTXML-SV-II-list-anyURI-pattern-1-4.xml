@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-anyURI-pattern-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-anyURI-pattern-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-anyURI-pattern-1
+    xmlns="NISTSchema-SV-II-list-anyURI-pattern-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-anyURI-pattern-1-NS NISTSchema-SV-II-list-anyURI-pattern-1.xsd">news://andfilterinte.softwareindu.internationalw.etcpartnerships.edu ftp://XMLcanistemplat.collaborateOrga.softwarecomput.processsoft.usecomputing.gov ftp://chainsProvid.reachorgani.thedocumentst.andiscomple.interoperabili.forfirstpe.usersbywhic.academiakno.edu telnet://viaBusinesswi.moreinDevel.basestandar.futureavailable.bottlenec.edu gopher://CPUandwhich.Developerstheat.keyregardspe.andyearsGrou.org ftp://businessmorec.willacademiane.partnershipst.ofindustryando.enablegreatc.anddataFurthe.edu gopher://theXMLan.Nations.primarysucha.aensur.involve.includeandco.net ftp://ainterna.isforhigha.Thisinvest.theirWorkingamb.canpervasi.quality.gov telnet://creationItg.theunderstandin.ability.abilit.industry.signatur.fileprom.edu</NISTSchema-SV-II-list-anyURI-pattern-1>

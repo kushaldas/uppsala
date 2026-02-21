@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-decimal-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-decimal-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-decimal-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-decimal-enumeration-3,
+      which is derived by restriction of a list with itemType decimal
+      by facet enumeration with values of:
+          -64676364070.09781 -3 -2.5 53.02208425 5.04
+          -22825282.932 -4124 9.431146 -737242584.61081215 -520.25821115 552900240464.75216 -710.684383936 6.305 -2750440.625 -4720.9217760641
+          -0.14135692153386281 -0.668403 -530 92160501871193.878 -2.42
+          -6301802.237002 -52.14 -8.8375850256606 6293580.3926 92978 -85696.34800 -5615359.012 -573.7 -627388.638 2701709.72646282
+          31467470.7 -0.506369 -8703.1274 -0.8932 -5423.728 -4983513.9
+          -99704099.417030089 -743754231419.56220 -51389731201489707 -1812 -9072.851965868399 82 73.174 94.02380 -391 -984588.69
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-decimal-enumeration-3" type="NISTSchema-SV-II-list-decimal-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfdecimal">
+    <xs:list itemType="xs:decimal"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-decimal-enumeration-3-Type">
+    <xs:restriction base="listOfdecimal">
+          <xs:enumeration value="-64676364070.09781 -3 -2.5 53.02208425 5.04"/>
+          <xs:enumeration value="-22825282.932 -4124 9.431146 -737242584.61081215 -520.25821115 552900240464.75216 -710.684383936 6.305 -2750440.625 -4720.9217760641"/>
+          <xs:enumeration value="-0.14135692153386281 -0.668403 -530 92160501871193.878 -2.42"/>
+          <xs:enumeration value="-6301802.237002 -52.14 -8.8375850256606 6293580.3926 92978 -85696.34800 -5615359.012 -573.7 -627388.638 2701709.72646282"/>
+          <xs:enumeration value="31467470.7 -0.506369 -8703.1274 -0.8932 -5423.728 -4983513.9"/>
+          <xs:enumeration value="-99704099.417030089 -743754231419.56220 -51389731201489707 -1812 -9072.851965868399 82 73.174 94.02380 -391 -984588.69"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

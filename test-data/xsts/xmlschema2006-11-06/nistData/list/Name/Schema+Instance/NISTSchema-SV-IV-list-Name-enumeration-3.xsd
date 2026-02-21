@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-Name-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-Name-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-Name-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-Name-enumeration-3,
+      which is derived by restriction of a list with itemType Name
+      by facet enumeration with values of:
+          ointeracting-ele :defining-life.of:the-concept _systems-joint_in_the_suites.commerce-if:be:automatic_diff cthem.results.use:and-system-among.from_must- tto-discovery:meets_it.vocabularie _creation_lack_provide:able_same-for:offer_ba
+          aboth:of: especifications.by-documents.recent-transa :addressing.opportunity.will.specific:organizations_ _of-the_data_and_specifi ca.draft.related.wireless_and.reviewed_w
+          nof_d _file:the-files:contained:that:the_and-must.guideli vpartnerships_b w2000-the_products_repositor :and_organizations-organizations-both_simplici cg-advanced-test-all_for-wi gorganizations-on.offer:those.filter.for-d
+          qhighly.user.for_business_intuitive gpervasive-of_series:revolut morganization:automating.key-revolutio adisplay.and-data-a.t _must.and.donate.of.allow:of.of ehelp-known:type_used-available. oweb_systems.understanding.to.for_process_large-disc
+          :files.efforts.related-reach_and-a.to:which:outfitti _help:of:implementations.000.led_the:make-this-promine bindustries-that:perfo ftechnology.organization-language:are.methods: _addition-implemen ko :each:ensure_using-embe
+          wfiles_business-as_among-and_the_advent:diagnostic_e _reproduced_from-tool:pervasive-application_perva runbiased:sense-government_government.for:withi _recognition-with:to-objects.define_rapid-files:and.further_thr himplementations:the:a.needs.areas-the_simulat jtremendous-needs-to:par _standards.the_different:in.first-generat
+          jare.that_success-language-that:voiced-w athe-shift.and ydefining-beta-them:to:repository_test.registries_ gthe_tools.and.using-commer k rthose:and_that_correctness-tools-and_language.software_among-st pthat.include_into-any:technologies.f
+          dby.retrieve:design:the.the.by_technologies.success _as:and:documents.and.means:regard_ ra-the_coupled:and_ :first-generation-other:of-the_helping-of:design.p wjoint:used.cross-over.of_e.gain.the_filter:diagnostic.will_ :are_systems-eliminated.match:visibly:provide_wireless.the.ot
+          ivocabularies:testable.developers_led_will:beta:investigation:t athe_that.ensure_must.test:implementations:p ninto:correction_information:standards:relate kth aof:for.applications:the.industry_an :certain.and-s-of.participat gthat:se _management.s
+          jto:to-utilities.appropriat eissues-and_associated:bec nis_testing_in:retrie sin-resources_that:fr xtransactional.methods-better_of_complete_directions:resou stechnologies_a-define:manipulate-base_and.and-tec _to:also_man ris-results_into_that-for-of.need:be:has.t gare_sense:fed-database.b
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-Name-enumeration-3" type="NISTSchema-SV-IV-list-Name-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfName">
+    <xs:list itemType="xs:Name"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-Name-enumeration-3-Type">
+    <xs:restriction base="listOfName">
+          <xs:enumeration value="ointeracting-ele :defining-life.of:the-concept _systems-joint_in_the_suites.commerce-if:be:automatic_diff cthem.results.use:and-system-among.from_must- tto-discovery:meets_it.vocabularie _creation_lack_provide:able_same-for:offer_ba"/>
+          <xs:enumeration value="aboth:of: especifications.by-documents.recent-transa :addressing.opportunity.will.specific:organizations_ _of-the_data_and_specifi ca.draft.related.wireless_and.reviewed_w"/>
+          <xs:enumeration value="nof_d _file:the-files:contained:that:the_and-must.guideli vpartnerships_b w2000-the_products_repositor :and_organizations-organizations-both_simplici cg-advanced-test-all_for-wi gorganizations-on.offer:those.filter.for-d"/>
+          <xs:enumeration value="qhighly.user.for_business_intuitive gpervasive-of_series:revolut morganization:automating.key-revolutio adisplay.and-data-a.t _must.and.donate.of.allow:of.of ehelp-known:type_used-available. oweb_systems.understanding.to.for_process_large-disc"/>
+          <xs:enumeration value=":files.efforts.related-reach_and-a.to:which:outfitti _help:of:implementations.000.led_the:make-this-promine bindustries-that:perfo ftechnology.organization-language:are.methods: _addition-implemen ko :each:ensure_using-embe"/>
+          <xs:enumeration value="wfiles_business-as_among-and_the_advent:diagnostic_e _reproduced_from-tool:pervasive-application_perva runbiased:sense-government_government.for:withi _recognition-with:to-objects.define_rapid-files:and.further_thr himplementations:the:a.needs.areas-the_simulat jtremendous-needs-to:par _standards.the_different:in.first-generat"/>
+          <xs:enumeration value="jare.that_success-language-that:voiced-w athe-shift.and ydefining-beta-them:to:repository_test.registries_ gthe_tools.and.using-commer k rthose:and_that_correctness-tools-and_language.software_among-st pthat.include_into-any:technologies.f"/>
+          <xs:enumeration value="dby.retrieve:design:the.the.by_technologies.success _as:and:documents.and.means:regard_ ra-the_coupled:and_ :first-generation-other:of-the_helping-of:design.p wjoint:used.cross-over.of_e.gain.the_filter:diagnostic.will_ :are_systems-eliminated.match:visibly:provide_wireless.the.ot"/>
+          <xs:enumeration value="ivocabularies:testable.developers_led_will:beta:investigation:t athe_that.ensure_must.test:implementations:p ninto:correction_information:standards:relate kth aof:for.applications:the.industry_an :certain.and-s-of.participat gthat:se _management.s"/>
+          <xs:enumeration value="jto:to-utilities.appropriat eissues-and_associated:bec nis_testing_in:retrie sin-resources_that:fr xtransactional.methods-better_of_complete_directions:resou stechnologies_a-define:manipulate-base_and.and-tec _to:also_man ris-results_into_that-for-of.need:be:has.t gare_sense:fed-database.b"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

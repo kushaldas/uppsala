@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01501m1.xsd
+   generated from: @(#)typeDef01501m.jmpp	1.1 02/04/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root" type="text"/>
+
+  <xsd:complexType name="text" mixed="true">
+          <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+              <xsd:element name="dot" type="xsd:anySimpleType" fixed=""/>
+          </xsd:sequence>
+      <xsd:attribute name="ID" type="xsd:ID"/>
+  </xsd:complexType>
+
+</xsd:schema>

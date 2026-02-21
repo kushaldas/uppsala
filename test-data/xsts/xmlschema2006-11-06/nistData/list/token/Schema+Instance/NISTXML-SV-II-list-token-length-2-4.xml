@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-2
+    xmlns="NISTSchema-SV-II-list-token-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-2-NS NISTSchema-SV-II-list-token-length-2.xsd">87_Versions_Application_Vocabularies_Precise_Street_As_Automated_Promises_,_WI_13677-1679 4263_Must_For_Of_Of_Street_And_And_Organizations_,_DE_13677-1679 86_To_Creating_Xml_Vocabularies_Street_Known_And_Also_,_AL_13677-1679 9535_In_Commerce_Establish_As_Street_Trade_Oasis_The_,_AR_13677-1679 25468_And_Developed_Enforcement_Industry_Street_Four_Original_Will_,_NM_13677-1679 7_Working_To_Contains_Browsers_Street_Xml_Contains_Is_,_DE_13677-1679 72_Component_Users_Development_As_Street_Is_Pervasive_Industries_,_MD_13677-1679 6976_Its_For_Tools_Ec_Street_File_Chairs_Is_,_MS_13677-1679 5622_Specification_With_Dependability_Testing_Street_Investigation_With_Related_,_DE_13677-1679</NISTSchema-SV-II-list-token-length-2>

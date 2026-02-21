@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-long-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-long-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-long-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-long-enumeration-2,
+      which is derived by restriction of a list with itemType long
+      by facet enumeration with values of:
+          460 -61092629757102 81124396 370405 703349 5969457447093 -200297281752383 -91436 -3610486945332495
+          7108070444 638989526339 -61201350743281 -221531665903 -307290253664 -79049 1312336 610742
+          -87089443249950 164 7031 5791104 -40686 -1355977843143271 59202515270791145 773
+          -116923002 -156701843506 -9025040 6749756 -230423 4052 -9813920 5450253258407244 -91636
+          775373889564991 41163113708028 -67141402 843351672606663 -6084519551524759 10 -15542 2400978959052535 473014412114927895 -5
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-long-enumeration-2" type="NISTSchema-SV-II-list-long-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOflong">
+    <xs:list itemType="xs:long"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-long-enumeration-2-Type">
+    <xs:restriction base="listOflong">
+          <xs:enumeration value="460 -61092629757102 81124396 370405 703349 5969457447093 -200297281752383 -91436 -3610486945332495"/>
+          <xs:enumeration value="7108070444 638989526339 -61201350743281 -221531665903 -307290253664 -79049 1312336 610742"/>
+          <xs:enumeration value="-87089443249950 164 7031 5791104 -40686 -1355977843143271 59202515270791145 773"/>
+          <xs:enumeration value="-116923002 -156701843506 -9025040 6749756 -230423 4052 -9813920 5450253258407244 -91636"/>
+          <xs:enumeration value="775373889564991 41163113708028 -67141402 843351672606663 -6084519551524759 10 -15542 2400978959052535 473014412114927895 -5"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-5
+    xmlns="NISTSchema-SV-II-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-5-NS NISTSchema-SV-II-list-string-maxLength-5.xsd">2656_Naval_Enforcement_Be_Street_Led_Influence_,_WI_11325-1915 5_Communication_Related_Files_Street_Conduct_System_,_WA_11325-1915 836_To_Around_The_Street_Applications_Related_,_RI_11325-1915 15822_Use_That_One_Street_Type_Guidelines_,_TX_11325-1915 1966_Asking_Implementations_Itl_Street_Security_Will_,_WY_11325-1915 13_Pervasive_Vertical_Directions_Street_As_Documents_,_LA_11325-1915 616_Implementations_Throughout_Enabling_Street_Of_Xml_,_WY_11325-1915 83622_Our_Relationships_Of_Street_The_In_,_DC_11325-1915 62_Chair_The_Applications_Street_Community_Partners_,_AR_11325-1915 62_With_Technical_Cost_Street_As_Reference_,_WI_11325-1915 69_And_Reference_Addressing_Street_Pervasive_On_,_MD_11325-1915 74_Standards_Related_Xml_Street_And_Implementations_,_DE_11325-1915 285_Contained_Of_This_Street_Role_And_,_OH_11325-1915 586_Extensible_Retrieves_Define_Street_Reference_Test_,_HI_11325-1915 5888_Can_Market_Defines_Street_In_Distributed_,_NV_11325-1915 57832_Specifications_Work_To_Street_In_Known_,_ID_11325-1915</NISTSchema-SV-II-list-string-maxLength-5>

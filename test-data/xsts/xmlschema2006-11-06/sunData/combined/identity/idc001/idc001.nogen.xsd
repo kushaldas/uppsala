@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)idc001.nogen.xsd	1.4 03/10/10
+
+-->
+
+<!--
+	very naive test of identity constraint
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://www.publishing.org"
+		xmlns:bc="http://www.publishing.org"
+		elementFormDefault="qualified">
+	<xsd:element name="BookCatalogue">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Book"  minOccurs="1" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element name="Title" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="Author" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="Date" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+							<!-- ISBN element is optional for the sake of testing -->
+							<xsd:element name="ISBN" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+							<xsd:element name="Publisher" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+						</xsd:all>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:unique name="ISBNnumber">
+			<xsd:selector	xpath="bc:Book"/>
+			<xsd:field		xpath="bc:ISBN"/>
+		</xsd:unique>
+	</xsd:element>
+</xsd:schema>
+

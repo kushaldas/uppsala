@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-2-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-2
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-2-NS"
+    xmlns:othe.of-certain.chain.s.can-="http://www.nist.gov/xsdNS"
+    xmlns:gand-the.implemen="http://www.nist.gov/xsdNS"
+    xmlns:nsta="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:icontribute-prominent.criter="http://www.nist.gov/xsdNS"
+    xmlns:_is_com="http://www.nist.gov/xsdNS"
+    xmlns:uinternational_these-o="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-2-NS NISTSchema-SV-II-list-QName-maxLength-2.xsd">othe.of-certain.chain.s.can-:rof-measurements. gand-the.implemen:rwith_of-asking-c nsta:_some_sense-organ tas-some_applicat icontribute-prominent.criter:vnewcomer.commerc _is_com:sboth.development oto.rigorous-for- cmanufacturers-en uinternational_these-o:dcan.file-and-bas</nist:NISTSchema-SV-II-list-QName-maxLength-2>

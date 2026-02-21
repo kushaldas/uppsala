@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-2
+    xmlns="NISTSchema-SV-II-list-token-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-2-NS NISTSchema-SV-II-list-token-maxLength-2.xsd">74_Processes_That_And_Intuitive_Street_Eliminated_,_MI_13228-1842 435_Language_Key_Known_And_Street_Will_,_NV_13228-1842 2328_University_Define_Participating_Information_Street_Software_,_AR_13228-1842 614_Of_And_And_Xsl_Street_Nsrl_,_CO_13228-1842 92_Of_Internet_World_The_Street_And_,_AK_13228-1842 7476_Implementations_Be_Provide_Enabling_Street_Used_,_DE_13228-1842 59_Known_Support_Would_The_Street_Our_,_LA_13228-1842 45_Design_Developing_And_And_Street_Creates_,_OR_13228-1842 2_Under_The_Of_Newcomer_Street_Memory_,_ND_13228-1842 948_Creation_The_Information_Provides_Street_The_,_OH_13228-1842</NISTSchema-SV-II-list-token-maxLength-2>

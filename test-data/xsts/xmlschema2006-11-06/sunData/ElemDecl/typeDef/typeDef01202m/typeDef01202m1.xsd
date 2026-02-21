@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01202m1.xsd
+   generated from: @(#)typeDef01202m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="root" nillable="true"/>
+
+  <xsd:attribute name="attr" type="xsd:string"/>
+
+</xsd:schema>

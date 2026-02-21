@@ -1,0 +1,230 @@
+suntest is updated/slightly augmented version of 2004 donation
+structures is new
+
+> find suntest -type f | while read f; do if rxp -s $f 2>/dev/null; then : ;else echo $f illformed; fi; done
+ [none]
+> find structures -type f | while read f; do if rxp -s $f 2>/dev/null; then : ;else echo $f illformed; fi; done
+structures/AttrUse/AU_required/AU_required00101m/AU_required00101m1_n.xml illformed
+structures/Wildcard/psContents/psContents00201m/psContents00201m1_n.xml illformed
+structures/Wildcard/psContents/psContents00301m/psContents00301m2_n.xml illformed
+structures/Wildcard/psContents/psContents00302m/psContents00302m2_n.xml illformed
+
+Not sure about any of these. . .queried
+
+Top down:
+> for f in suntest/*.testSet; do lxprintf -e instanceDocument '%s\n' '@xlink:href' $f | sed 's/^/suntest\//' |addToDB.py reffed.db i; done
+> for f in suntest/*.testSet; do lxprintf -e schemaDocument '%s\n' '@xlink:href' $f | sed 's/^/suntest\//' |addToDB.py reffed.db s; done
+>  for f in structures/*/*.testSet; do lxprintf -e instanceDocument '%s\n' '@xlink:href' $f | sed "s@^@${f%/*.testSet}/@" | addToDB.py reffed.db i; done
+> for f in structures/*/*.testSet; do lxprintf -e schemaDocument '%s\n' '@xlink:href' $f | sed "s@^@${f%/*.testSet}/@" | addToDB.py reffed.db s; done
+
+dumpDB.py reffed.db | egrep 'i$' | while read f i; do lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:noNamespaceSchemaLocation]' "${f%/*}/%s\n" '@xsi:noNamespaceSchemaLocation' $f ; done | addToDB.py reffed.db nnsls
+ (No xsi:noNamespaceSchemaLocation)
+
+> dumpDB.py reffed.db | egrep 'i$' | while read f i; do p=${f%/*} ; lxprintf -xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -e '*[@xsi:schemaLocation]' "%s\n" '@xsi:schemaLocation' $f | tr -s ' ' '\012' |  while read n; do read s; echo "$p/$s"; done; done | addToDB.py reffed.db sls
+
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+    919 i
+    679 s
+      9 sls
+
+import, include, redefine:
+> dumpDB.py reffed.db | egrep 's$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/ss 2>/tmp/sse
+> addToDB.py reffed.db ss < /tmp/ss
+
+Iterate:
+> dumpDB.py reffed.db | egrep 'ss$' | while read f i; do p=${f%/*} ; lxprintf -e '*[@schemaLocation]' '%s\n' '@schemaLocation' $f | while read r; do echo $p/$r ; done  ; done > /tmp/sss 2>/tmp/ssse
+
+None
+
+So, final story:
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+    919 i
+    679 s
+      9 sls
+     10 ss
+
+we can check every file to see if it's needed:
+
+> find suntest structures -type f | lookupDB.py reffed.db -p 2>&1 >/dev/null | cut -d ' ' -f 1 > /tmp/nf
+
+Nothing but the control files, so that's good
+
+Missing:
+
+> dumpDB.py reffed.db | cut -d ' ' -f 1 | while read f; do if [ \! -f $f ]; then echo $f; fi; done | sort
+structures/AGroupDef/AG_attrUse/AG_attrUseNS00101m/AG_attrUseNS00101m1.xsd
+structures/AGroupDef/AG_name/AG_name00101m/AG_name00101m1.xsd
+structures/AGroupDef/AG_targetNS/AG_targetNS00101m/AG_targetNS00101m1.xsd
+structures/AttrDecl/AD_name/AD_name00118/AD_name00114.xsd
+structures/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1.xsd
+suntest/identity/idc001/BookCatalogue.xsd
+suntest/identity/idc005/BookCatalogue.xsd
+suntest/xsd003/xsd003.xsdmod
+
+Queried, as follows:
+----------------
+structures/AGroupDef/AG_attrUse/AG_attrUseNS00101m/AG_attrUseNS00101m1.xsd
+structures/AGroupDef/AG_name/AG_name00101m/AG_name00101m1.xsd
+structures/AGroupDef/AG_targetNS/AG_targetNS00101m/AG_targetNS00101m1.xsd
+structures/AttrDecl/AD_name/AD_name00118/AD_name00114.xsd
+structures/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1.xsd
+suntest/identity/idc001/BookCatalogue.xsd
+suntest/identity/idc005/BookCatalogue.xsd
+
+And this one is referenced from a redefine/@schemaLocation in
+xsd003-1.e.xsd and xsd003-2.e.xsd, but is missing:
+
+suntest/xsd003/xsd003.xsdmod
+
+which may mask the intended error.
+
+I think these cases:
+
+structures/AGroupDef/AG_attrUse/AG_attrUseNS00101m/AG_attrUseNS00101m1.xsd
+structures/AGroupDef/AG_name/AG_name00101m/AG_name00101m1.xsd
+structures/AGroupDef/AG_targetNS/AG_targetNS00101m/AG_targetNS00101m1.xsd
+structures/AttrDecl/AD_name/AD_name00118/AD_name00114.xsd
+structures/AttrUse/AU_attrDecl/AU_attrDecl00101m/AU_attrDecl00101m1.xsd
+
+are all OK, in that the testSet specifies schema docs for them which
+_do_ exist, but it's distracting if not intentional -- can I just
+remove the schemaLocs?
+
+These two:
+
+suntest/identity/idc001/BookCatalogue.xsd
+suntest/identity/idc005/BookCatalogue.xsd
+
+are a bit different -- I think their schemaLocs should be changed to
+point to
+
+  idc001.nogen.xsd
+and
+  idc005.nogen.xsd
+
+respectively.
+
+Let me know what you think/would like me to do, and then we're ready
+to publish, pretty much.
+
+but on further inspection/thought, I've changed my mind.
+
+This one:
+ structures/AttrDecl/AD_name/AD_name00118/AD_name00114.xsd
+is a typo -- structures/AttrDecl/AD_name/AD_name00118/AD_name00118_p.xml
+says
+ <td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00114.xsd"
+
+    A?a="0"
+    b?B="1"
+ />
+but should say
+ <td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00118.xsd"
+
+    A?a="0"
+    b?B="1"
+ />
+
+The other four all show the same pattern, with two testGroups, one
+naming the _p.xsd schema and the instance, and the other naming only
+the _n.xsd schema.  I think it would be less confusing if the instance
+pointed to the _p.xsd schema.
+
+Shall I make those 5 changes?
+---------------
+Done all changes, pending agreement from Leonid. . . [received, see below]
+
+Checking w. xsv:
+> lxviewport -q testGroup ../../bin/runTest.sh suntest.testSet > /tmp/sp/suntest.xml &
+> for d in [^s]*; do ( cd $d ; f=$(echo *.testSet);  lxviewport -q testGroup ../../../bin/runTest.sh $f > /tmp/sp/${f%*.testSet}.xml ) ; done &
+
+Consistency:
+> ( d=MGroupDef ; lxcount /tmp/sp/$d.xml | egrep xsv ; lxcount $d/$d.testSet | egrep instanceDocument ; lxgrep -w f 'testGroup[not(instanceTest)]' $d/$d.testSet | lxcount | egrep schemaDocument )
+
+Gives correct answers for all sets
+
+Only crashes are from illformed docs
+
+> From: Leonid Arbouzov <Leonid.Arbouzov@Sun.COM>
+> Subject: Re: another question
+> To: "Henry S. Thompson" <ht@inf.ed.ac.uk>
+> Cc: Eduardo.Gutentag@Sun.COM
+> Date: Mon, 06 Nov 2006 14:31:55 -0800
+> I finally can confirm now that yes - this is ok to remove or replace
+> the copyright notices in the tests we contributed to the W3C.
+
+Removed all Copyright notices:
+> find . -type f | xargs egrep -hi copyright > /tmp/cpy
+> sort /tmp/cpy | uniq -c
+     15 Copyright 2005 Sun Microsystems, Inc. All rights reserved.
+   1437 Copyright (C) 2002 Sun Microsystems, Inc. All rights reserved.
+    126 Copyright (C) 2003 Sun Microsystems, Inc. All rights reserved.
+     39 Copyright (C) 2004 Sun Microsystems, Inc. All rights reserved.
+
+> find . -type f | xargs egrep -l Copyright\ 2005 | xargs sed '/<!--/d;/-->/d;/Copyright 2005/d' -i
+> find . -type f | xargs egrep -l Use\ is\ subject | xargs sed '/Use
+is subject/d;/Copyright ... 200[234]/d' -i
+
+After edits:
+> dumpDB.py reffed.db | cut -d ' ' -f 2 | sort | uniq -c
+    919 i
+    679 s
+      3 sls
+     10 ss
+ 
+Reply from Leonid:
+
+- incorrect schema locations
+
+   incorrect schemaLocation is not intentional in the tests.
+   This doesn't represent a problem when these tests are used
+   in JAXP test suite because the test runner takes actual schema from
+   a test description rather than from schemaLocation.
+   I fully agree with you that it would make sense to improve
+   the tests by fixing those missed links in schemaLocation.
+   This would allow to avoid any confusion and also would allow
+   to execute tests using schemaLocation value.
+
+[confirms changes made above]
+
+- ill-formed instance documents
+
+>   structures/AttrUse/AU_required/AU_required00101m/AU_required00101m1_n.xml
+
+   This was not intentional.
+   It looks like a typo in the negative instance document.
+   Extra " left after editing positive instance need to be removed:
+   <td:elementWithAttr"/>   --> <td:elementWithAttr/>
+
+[fixed in place]
+
+>   structures/Wildcard/psContents/psContents00201m/psContents00201m1_n.xml
+>   structures/Wildcard/psContents/psContents00301m/psContents00301m2_n.xml
+>   structures/Wildcard/psContents/psContents00302m/psContents00302m2_n.xml
+
+   This negative instance documenta seem intentionally made
+   ill-formed.  It looks like the author tried to create some content
+   that would break validation by wildcards but couldn't find any
+   other way to make the instance document invalid. These tests
+   probably do not make much sense for most processors because the
+   instances will be rejected a way before validation by schema.  I
+   don't know how to improve them. Maybe to keep them as is for now.
+
+[left alone]
+
+further from Leonid:
+
+  A copy of the file can be found in the directories of nearby tests:
+
+    suntest/xsd003a/xsd003.xsdmod
+    suntest/xsd003b/xsd003.xsdmod
+
+  It has to be copied to the following directory as well:
+
+    suntest/xsd003
+
+So copied it over, and all is now well.

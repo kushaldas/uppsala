@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-gMonth-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-gMonth-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-gMonth-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-gMonth-enumeration-3,
+      which is derived by restriction of built-in type gMonth
+      by facet enumeration with values of:
+          --10
+          --12
+          --07
+          --04
+          --06
+          --07
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-gMonth-enumeration-3" type="NISTSchema-SV-II-atomic-gMonth-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-gMonth-enumeration-3-Type">
+    <xs:restriction base="xs:gMonth">
+          <xs:enumeration value="--10"/>
+          <xs:enumeration value="--12"/>
+          <xs:enumeration value="--07"/>
+          <xs:enumeration value="--04"/>
+          <xs:enumeration value="--06"/>
+          <xs:enumeration value="--07"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

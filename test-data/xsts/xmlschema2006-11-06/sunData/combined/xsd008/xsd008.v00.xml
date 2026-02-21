@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd008.v00.xml	1.3 02/12/25
+
+-->
+
+<root xmlns="foo">
+	<generic>
+		<yesNo value="true" />
+		<yesNo value="  false  " />
+		<long value="  52  " />
+		<long value="  -55555  " />
+		<int value="  52  " />
+		<int value="  -55555  " />
+	</generic>
+	<restricted>
+		<long value="  52  " />
+		<long value="  -55555  " />
+		<int value="  52  " />
+		<int value="  -55555  " />
+	</restricted>
+</root>

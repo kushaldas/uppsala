@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-2
+    xmlns="NISTSchema-SV-II-list-string-maxLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-2-NS NISTSchema-SV-II-list-string-maxLength-2.xsd">837_To_Available_Contains_Street_System_Via_Include_,_WA_12598-1959 7285_And_Extensible_Reference_Street_Software_Interoperability_The_,_GA_12598-1959 655_Resides_By_Execution_Street_Conference_Information_By_,_VT_12598-1959 44468_Hampered_Is_Newcomer_Street_Web_If_Chosen_,_MD_12598-1959 14_To_The_Advancement_Street_As_Provided_For_,_OR_12598-1959 94424_And_Software_Do_Street_File_Supply_Life_,_IN_12598-1959 35_And_Define_Is_Street_Chain_For_Applications_,_AZ_12598-1959 82_Object_And_If_Street_Highly_The_To_,_NY_12598-1959 13622_Adoption_Necessary_Solutions_Street_Of_Need_Such_,_CA_12598-1959 22848_And_Standardization_As_Street_Promises_These_File_,_OR_12598-1959</NISTSchema-SV-II-list-string-maxLength-2>

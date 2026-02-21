@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-byte-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-byte-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-byte-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-byte-enumeration-2,
+      which is derived by restriction of a list with itemType byte
+      by facet enumeration with values of:
+          85 -61 24 -4 127 -46 33 -67 59
+          -128 -35 -2 -79 -8 43 -40 127
+          59 127 -128 85 54 -5
+          40 38 79 51 84 48 -4
+          45 46 80 -5 51 -128 74 15
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-byte-enumeration-2" type="NISTSchema-SV-IV-list-byte-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfbyte">
+    <xs:list itemType="xs:byte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-byte-enumeration-2-Type">
+    <xs:restriction base="listOfbyte">
+          <xs:enumeration value="85 -61 24 -4 127 -46 33 -67 59"/>
+          <xs:enumeration value="-128 -35 -2 -79 -8 43 -40 127"/>
+          <xs:enumeration value="59 127 -128 85 54 -5"/>
+          <xs:enumeration value="40 38 79 51 84 48 -4"/>
+          <xs:enumeration value="45 46 80 -5 51 -128 74 15"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

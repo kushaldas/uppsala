@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-string-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-string-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-string-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-string-enumeration-5,
+      which is derived by restriction of a list with itemType string
+      by facet enumeration with values of:
+          provides Provide highly industry any on tools with for
+          to eXtensible can is information aspects standard
+          test Furthermore and documents as be
+          can NSRL promises data; XML acting
+          become to XML that will the pico-cellular cross-over market impact
+          specifications build for the will web
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-string-enumeration-5" type="NISTSchema-SV-IV-list-string-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfstring">
+    <xs:list itemType="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-string-enumeration-5-Type">
+    <xs:restriction base="listOfstring">
+          <xs:enumeration value="provides Provide highly industry any on tools with for"/>
+          <xs:enumeration value="to eXtensible can is information aspects standard"/>
+          <xs:enumeration value="test Furthermore and documents as be"/>
+          <xs:enumeration value="can NSRL promises data; XML acting"/>
+          <xs:enumeration value="become to XML that will the pico-cellular cross-over market impact"/>
+          <xs:enumeration value="specifications build for the will web"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

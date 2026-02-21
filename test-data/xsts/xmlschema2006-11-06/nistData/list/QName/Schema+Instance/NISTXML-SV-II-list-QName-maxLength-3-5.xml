@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-3
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-3-NS"
+    xmlns:ytarget.sui="http://www.nist.gov/xsdNS"
+    xmlns:idisco="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:qstand="http://www.nist.gov/xsdNS"
+    xmlns:mpartners.cost_devel="http://www.nist.gov/xsdNS"
+    xmlns:_by_for-wit="http://www.nist.gov/xsdNS"
+    xmlns:qdocuments.information.and-to_m="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-3-NS NISTSchema-SV-II-list-QName-maxLength-3.xsd">ytarget.sui:_built_forum.enabling.led_information_is-open-v idisco:cand-registry.contains_industries_interoperabil _completion-participate_a-displaying_automatica gwith.information_filter.object.environments.is qstand:_acting_testing_such_processes_their.number.use xwith-asked.any_registry.accessible-and-only-th mpartners.cost_devel:uhampered-testing_the.data-use-signatures-hoc.i hembedded_that-manipulate-must.registries-partn _by_for-wit:cdiscover_by.in.in_processes_tools_it-cross-ove qdocuments.information.and-to_m:fand-industry_signature-for_security-to-print-o</nist:NISTSchema-SV-II-list-QName-maxLength-3>

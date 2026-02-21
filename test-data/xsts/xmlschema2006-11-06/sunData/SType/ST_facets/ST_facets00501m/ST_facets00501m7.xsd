@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00501m7.xsd
+   generated from: @(#)ST_facets00501m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="SType/ST_facets"
+    targetNamespace="SType/ST_facets">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+                <xsd:element name="value" type="S"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="S">
+        <xsd:restriction base="xsd:NCName">
+            <xsd:enumeration value="a00এ"/>
+            <xsd:enumeration value="a0-এ"/>
+            <xsd:enumeration value="a0Aঐ"/>
+            <xsd:enumeration value="a10ও"/>
+            <xsd:enumeration value="a1-ঝ"/>
+            <xsd:enumeration value="a1Aন"/>
+            <xsd:enumeration value="a20প"/>
+            <xsd:enumeration value="a2-ভ"/>
+            <xsd:enumeration value="a2Aর"/>
+            <xsd:enumeration value="a30ল"/>
+            <xsd:enumeration value="a40শ"/>
+            <xsd:enumeration value="a4-ষ"/>
+            <xsd:enumeration value="a4Aহ"/>
+            <xsd:enumeration value="a50ড়"/>
+            <xsd:enumeration value="a5-ড়"/>
+            <xsd:enumeration value="a5Aঢ়"/>
+            <xsd:enumeration value="a60য়"/>
+            <xsd:enumeration value="a6-ৠ"/>
+            <xsd:enumeration value="a6Aৡ"/>
+            <xsd:enumeration value="a70ৰ"/>
+            <xsd:enumeration value="a7-ৰ"/>
+            <xsd:enumeration value="a7Aৱ"/>
+            <xsd:enumeration value="a80ਅ"/>
+            <xsd:enumeration value="a8-ਇ"/>
+            <xsd:enumeration value="a8Aਊ"/>
+            <xsd:enumeration value="a90ਏ"/>
+            <xsd:enumeration value="a9-ਏ"/>
+            <xsd:enumeration value="a9Aਐ"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

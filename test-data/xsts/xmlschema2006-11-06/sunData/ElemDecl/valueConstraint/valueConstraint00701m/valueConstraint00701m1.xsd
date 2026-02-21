@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint00701m1.xsd
+   generated from: @(#)valueConstraint00701m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root" fixed="part1 part2">
+      <xsd:complexType mixed="true">
+          <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+              <xsd:element name="separator" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+          <xsd:attribute name="attr" type="xsd:string"/>
+      </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

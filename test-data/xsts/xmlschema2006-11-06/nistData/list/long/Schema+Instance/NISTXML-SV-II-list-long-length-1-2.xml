@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-long-length-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-long-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-long-length-1
+    xmlns="NISTSchema-SV-II-list-long-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-long-length-1-NS NISTSchema-SV-II-list-long-length-1.xsd">976135847536337514 962543454436232162 971611557176732355 944675666666265344 936373767421171865 954471685835241637 928544874575644285 974233618565382657 913267126668882438 925873356876272774</NISTSchema-SV-II-list-long-length-1>

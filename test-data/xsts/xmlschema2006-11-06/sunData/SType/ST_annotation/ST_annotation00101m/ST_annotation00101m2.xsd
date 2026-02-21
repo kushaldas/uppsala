@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_annotation00101m2.xsd
+   generated from: @(#)ST_annotation00101m.jmpp	1.1 02/03/12
+
+-->
+
+
+<xsd:schema
+  xmlns="ST_final"
+  xmlns:jt="JavaTest"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_final">
+     <xsd:element name="test" type="Test"/>
+
+     <xsd:simpleType name="Test">
+         <xsd:annotation>
+             <xsd:appinfo>
+                 <jt:keywords>runtime positive</jt:keywords>
+             </xsd:appinfo>
+         </xsd:annotation>
+
+         <xsd:list itemType="xsd:string"/>
+     </xsd:simpleType>
+
+</xsd:schema>
+

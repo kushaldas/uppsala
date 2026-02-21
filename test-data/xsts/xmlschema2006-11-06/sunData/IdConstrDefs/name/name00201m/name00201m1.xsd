@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00201m1.xsd
+   generated from: @(#)name00201m.jmpp	1.2 02/09/06
+
+-->
+
+<xsd:schema
+  xmlns="IdConstrDefs/name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="IdConstrDefs/name">
+
+  <xsd:complexType name="name">
+      <xsd:sequence maxOccurs="unbounded">
+          <xsd:element name="name">
+              <xsd:complexType>
+                   <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                             <xsd:attribute name="name"/>
+                        </xsd:extension>
+                   </xsd:simpleContent>
+              </xsd:complexType>
+          </xsd:element>
+      </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="name" type="name">
+      <xsd:key name="name">
+          <xsd:selector xpath="./name"/>
+          <xsd:field xpath="."/>
+      </xsd:key>
+  </xsd:element>
+
+</xsd:schema>

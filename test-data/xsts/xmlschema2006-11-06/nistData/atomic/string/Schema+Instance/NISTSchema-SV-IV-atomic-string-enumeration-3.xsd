@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-string-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-string-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-string-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-string-enumeration-3,
+      which is derived by restriction of built-in type string
+      by facet enumeration with values of:
+          syntax
+          through
+          only
+          any
+          our
+          that
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-string-enumeration-3" type="NISTSchema-SV-IV-atomic-string-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-string-enumeration-3-Type">
+    <xs:restriction base="xs:string">
+          <xs:enumeration value="syntax"/>
+          <xs:enumeration value="through"/>
+          <xs:enumeration value="only"/>
+          <xs:enumeration value="any"/>
+          <xs:enumeration value="our"/>
+          <xs:enumeration value="that"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

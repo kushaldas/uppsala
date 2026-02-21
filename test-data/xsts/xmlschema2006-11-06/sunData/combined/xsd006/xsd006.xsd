@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd006.xsd	1.3 03/10/10
+
+-->
+
+<!-- highlight of this test
+	
+	various combination of minOccurs/maxOccurs
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="root">
+		<complexType>
+			<choice maxOccurs="unbounded">
+				<element ref="foo:item0to1" />
+				<element ref="foo:item0to2" />
+				<element ref="foo:item0toX" />
+				<element ref="foo:item1to2" />
+				<element ref="foo:item1toX" />
+				<element ref="foo:item2to2" />
+				<element ref="foo:item2toX" />
+				<element ref="foo:item3to7" />
+			</choice>
+		</complexType>
+	</element>
+	
+	<element name="item0to1">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item0to2">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="0" maxOccurs="2" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item0toX">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item1to2">
+		<complexType>
+			<sequence>
+				<element name="x"               maxOccurs="2" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item1toX">
+		<complexType>
+			<sequence>
+				<element name="x"               maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item2to2">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="2" maxOccurs="2" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item2toX">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="2" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="item3to7">
+		<complexType>
+			<sequence>
+				<element name="x" minOccurs="3" maxOccurs="7" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

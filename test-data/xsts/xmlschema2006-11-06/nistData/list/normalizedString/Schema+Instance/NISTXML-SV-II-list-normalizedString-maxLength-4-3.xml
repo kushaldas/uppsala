@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-4
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd">5888_Images_Result_Upon_Street_Internet_,_CO_12048-1978 5345_For_Organization_Developers_Street_Efforts_,_AK_12048-1978 6995_Computing_Pc_The_Street_More_,_MO_12048-1978 562_Including_And_Also_Street_The_,_TN_12048-1978 3583_Resource_For_And_Street_Define_,_WI_12048-1978 54_Requires_And_Ec_Street_Issues_,_MA_12048-1978 9978_Describes_Language_Ad_Street_Advanced_,_WI_12048-1978 547_Metrology_Oasis_And_Street_Define_,_AK_12048-1978 95_Support_And_Gain_Street_Applications_,_MD_12048-1978</NISTSchema-SV-II-list-normalizedString-maxLength-4>

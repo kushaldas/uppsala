@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-union-anyURI-float-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-union-anyURI-float-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-union-anyURI-float-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-union-anyURI-float-enumeration-5,
+      which is derived by restriction of a union of built-in types 
+      anyURI and float
+      by facet enumeration with values of:
+          2.1918682E-25
+          2.6038217E-5
+          2.4205081E-25
+          3.1803281E5
+          telnet://thosebedata.asemore.com
+          3.2740474E25
+          1.6673083E7
+          news://Academyunde.standXML.edu
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-II-union-anyURI-float-enumeration-5" type="NISTSchema-SV-II-union-anyURI-float-enumeration-5-Type"/>
+
+  <xs:simpleType name="unionOf-anyURI-float">
+    <xs:union memberTypes="xs:anyURI xs:float"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-union-anyURI-float-enumeration-5-Type">
+    <xs:restriction base="unionOf-anyURI-float">
+          <xs:enumeration value="2.1918682E-25"/>
+          <xs:enumeration value="2.6038217E-5"/>
+          <xs:enumeration value="2.4205081E-25"/>
+          <xs:enumeration value="3.1803281E5"/>
+          <xs:enumeration value="telnet://thosebedata.asemore.com"/>
+          <xs:enumeration value="3.2740474E25"/>
+          <xs:enumeration value="1.6673083E7"/>
+          <xs:enumeration value="news://Academyunde.standXML.edu"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-length-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-length-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-length-5
+    xmlns="NISTSchema-SV-IV-list-string-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-length-5-NS NISTSchema-SV-IV-list-string-length-5.xsd">3_Rigorous_Diagnostic_Industries_Street_Of_Business_,_MS_10487-1578 1_To_Early_Partnerships_Street_Computer_Between_,_KY_10487-1578 17_Built_Oasis_Computing_Street_The_Using_,_IN_10487-1578 62_Constituent_Accomplish_Work_Street_Raised_Security_,_DC_10487-1578 88756_Be_Is_Utilities_Street_And_Completion_,_OK_10487-1578 841_Not_Repositories_Product_Street_Neutral_Defining_,_MD_10487-1578 195_And_Automating_The_Street_The_Standardization_,_NM_10487-1578 8_Versions_Discover_Pc_Street_Defining_Quality_,_WA_10487-1578 41687_To_Networking_Eliminated_Street_Software_Older_,_OK_10487-1578 371_And_Of_No_Street_Having_Accelerate_,_RI_10487-1578</NISTSchema-SV-IV-list-string-length-5>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-1
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-1-NS"
+    xmlns:tensure="http://www.nist.gov/xsdNS"
+    xmlns:einformation-relat="http://www.nist.gov/xsdNS"
+    xmlns:rbusiness-which.hard="http://www.nist.gov/xsdNS"
+    xmlns:_the.technical-new-devices-impl="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:vto.both_and.signatures_the_a="http://www.nist.gov/xsdNS"
+    xmlns:ft="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-1-NS NISTSchema-SV-II-list-QName-maxLength-1.xsd">tensure:ca_files.solutions-computing.documents-such einformation-relat:ais-developing-is.gain.quality_performance_ rbusiness-which.hard:lrapidly.on_prototype.test_hoc-to_vocabular _the.technical-new-devices-impl:vindustry.tests.first-generation_launching_ emetrology.via-will.communication-display-p msuch.computing-providing_provides.these_th _prototypes-measurement.as.vertical_the-wir vto.both_and.signatures_the_a:pconferences_that_has_each_provides.registr ft:ytools-manipulate-the_forensics_then_find-t</nist:NISTSchema-SV-II-list-QName-maxLength-1>

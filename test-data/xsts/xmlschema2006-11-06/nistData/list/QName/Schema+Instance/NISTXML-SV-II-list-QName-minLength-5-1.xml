@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-minLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-minLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-minLength-5-NS"
+    xmlns:ymaintained_work.as="http://www.nist.gov/xsdNS"
+    xmlns:ito-us="http://www.nist.gov/xsdNS"
+    xmlns:kand.with-neutr="http://www.nist.gov/xsdNS"
+    xmlns:_wh="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:igraphical="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-minLength-5-NS NISTSchema-SV-II-list-QName-minLength-5.xsd">ymaintained_work.as:xand_provides-is-eliminate-repository-and_organizations.par ito-us:ueliminate_created.be.investigation-and.collaborate-for.hel kand.with-neutr:bprimarily.review.them-with.also-information-the-to_to.set. _wh:fis-the.known_find-a-include-contains.is.to-and-and.bandwid _enable_cross-over_into.tools-for-manipulation-having_and.a jthis_as.in_diagnostic_repositories-e_into-effective-of-fil igraphical:rthese_be_any.these-acting_available_the.a.embedded_and.a_a gthe-and-solve-language-it.dynamic_build-of-syntax.on_as.em xuse.that-for.meets.fed_to.opportunity-for.be_are.through-c</nist:NISTSchema-SV-II-list-QName-minLength-5>

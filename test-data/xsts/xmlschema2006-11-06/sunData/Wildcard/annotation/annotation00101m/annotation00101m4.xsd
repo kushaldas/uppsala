@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)annotation00101m4.xsd
+   generated from: @(#)annotation00101m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="Wildcard/annotation"
+  xmlns:jt="JavaTest"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="Wildcard/annotation">
+  
+     <xsd:element name="root"/>
+  
+     <xsd:complexType name="theType">
+          <xsd:anyAttribute>
+              <xsd:annotation>
+                  <xsd:appinfo>
+                      <jt:keywords>runtime positive</jt:keywords>
+                  </xsd:appinfo>
+              </xsd:annotation>
+              <xsd:annotation>
+                  <xsd:appinfo>
+                      <jt:keywords>runtime positive</jt:keywords>
+                  </xsd:appinfo>
+              </xsd:annotation>
+          </xsd:anyAttribute>
+     </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)compositor00202m1.xsd
+   generated from: @(#)compositor00202m.jmpp	1.2 02/12/09
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="compositor"
+  targetNamespace="compositor">
+
+     <xsd:element name="a" type="xsd:string"/>
+
+     <xsd:group name="G1">
+          <xsd:choice/>
+     </xsd:group>
+
+     <xsd:element name="b">
+          <xsd:complexType>
+               <xsd:group ref="G1"/>
+          </xsd:complexType>
+     </xsd:element>
+
+</xsd:schema>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-enumeration-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-enumeration-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-QName-enumeration-3
+    xmlns="NISTSchema-SV-IV-list-QName-enumeration-3-NS"
+    xmlns:japplications-as="http://www.nist.gov/xsdNS"
+    xmlns:sc="http://www.nist.gov/xsdNS"
+    xmlns:oprecise_="http://www.nist.gov/xsdNS"
+    xmlns:_new-related-include="http://www.nist.gov/xsdNS"
+    xmlns:yindustry.the="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-enumeration-3-NS NISTSchema-SV-IV-list-QName-enumeration-3.xsd">japplications-as:econformance-known-business-led_wil sc:qcomputer_led.and.interoperability-has-th _file-filter-a_reviewed.those.creation_well-for ato.benefits oprecise_:rare.first-early-the_visibly.to_com _new-related-include:upervasive.supply-and-d _to_in_the-virtuall jbe_recommending-ability.standardization-to_the_to-used_and yindustry.the:bfor_new.of-exchang</NISTSchema-SV-IV-list-QName-enumeration-3>

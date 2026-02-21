@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)attrWildcard00101m1.xsd
+   generated from: @(#)attrWildcard00101m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns="attrWildcard"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="attrWildcard">
+
+     <xsd:element name="a" type="A" />
+
+     <xsd:complexType name="A">
+          <xsd:sequence>
+               <xsd:element name="b" type="xsd:int"/>
+          </xsd:sequence>
+          <xsd:anyAttribute processContents="lax" />
+     </xsd:complexType>
+
+</xsd:schema>
+

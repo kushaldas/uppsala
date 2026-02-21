@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)attributeUses00101m1.xsd
+   generated from: @(#)attributeUses00101m.jmpp	1.2 02/12/02
+
+-->
+
+<xsd:schema
+  xmlns="attributeUses"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="attributeUses">
+
+     <xsd:element name="a" type="A" />
+
+     <xsd:complexType name="A">
+          <xsd:simpleContent>
+               <xsd:extension base="xsd:int">
+                    <xsd:attribute name="attr1" type="xsd:string"/>
+                    <xsd:attribute name="attr2" type="xsd:date" use="required"/>
+               </xsd:extension>
+          </xsd:simpleContent>          
+     </xsd:complexType>
+
+</xsd:schema>
+

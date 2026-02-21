@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-4
+    xmlns="NISTSchema-SV-II-list-string-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-4-NS NISTSchema-SV-II-list-string-maxLength-4.xsd">93_Its_The_To_To_In_Street_Such_Computing_,_MN_12325-1370 67_Pervasive_Complete_And_Via_Xml_Street_Of_The_,_WA_12325-1370 273_The_Communications_The_Be_Tools_Street_Templates_Be_,_OR_12325-1370 3342_Be_Wireless_Requires_Hardware_Technology_Street_Software_And_,_NM_12325-1370 731_Issues_Can_File_Operating_Contains_Street_That_Used_,_OR_12325-1370 25_Of_Process_Component_These_Templates_Street_The_Led_,_WV_12325-1370 2738_Of_In_Of_Documents_Of_Street_Discuss_For_,_OR_12325-1370 662_Body_Specifications_And_These_Internet_Street_Provided_Back_,_CT_12325-1370 75_Transforming_This_Smes_Next_Industry_Street_Through_Xml_,_KS_12325-1370</NISTSchema-SV-II-list-string-maxLength-4>

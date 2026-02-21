@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-positiveInteger-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-positiveInteger-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-positiveInteger-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-positiveInteger-enumeration-2,
+      which is derived by restriction of a list with itemType positiveInteger
+      by facet enumeration with values of:
+          5983751 77972 59447596032 46641330847161 2462139677
+          4472746797959564 8497109144 5544222860625 3197643 1883940599550 736 56988114898051 7156049 85910998
+          62448830447 445591675825816 39535270562 7217115005 71471758298 4571 7977243479
+          517554 376071 2814760878927614 6376187700430751 2122668361011176 276024464 41573 61838791874151344 389077081
+          20393676646704184 72201305239754 16855502465 619519727329 37830 145
+          70 5462344039587 833582 44719815097514 658541157127
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-positiveInteger-enumeration-2" type="NISTSchema-SV-IV-list-positiveInteger-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfpositiveInteger">
+    <xs:list itemType="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-positiveInteger-enumeration-2-Type">
+    <xs:restriction base="listOfpositiveInteger">
+          <xs:enumeration value="5983751 77972 59447596032 46641330847161 2462139677"/>
+          <xs:enumeration value="4472746797959564 8497109144 5544222860625 3197643 1883940599550 736 56988114898051 7156049 85910998"/>
+          <xs:enumeration value="62448830447 445591675825816 39535270562 7217115005 71471758298 4571 7977243479"/>
+          <xs:enumeration value="517554 376071 2814760878927614 6376187700430751 2122668361011176 276024464 41573 61838791874151344 389077081"/>
+          <xs:enumeration value="20393676646704184 72201305239754 16855502465 619519727329 37830 145"/>
+          <xs:enumeration value="70 5462344039587 833582 44719815097514 658541157127"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

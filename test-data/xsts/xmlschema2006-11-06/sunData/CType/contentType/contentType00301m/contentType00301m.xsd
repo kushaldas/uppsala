@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)contentType00301m.xsd
+   generated from: @(#)contentType00301m.jmpp	1.2 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns="contentType"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="contentType">
+
+     <xsd:element name="a" type="A" />
+
+     <xsd:complexType name="A">
+          <xsd:sequence>
+               <xsd:element name="b" type="xsd:date"/>
+          </xsd:sequence>
+     </xsd:complexType>
+</xsd:schema>
+

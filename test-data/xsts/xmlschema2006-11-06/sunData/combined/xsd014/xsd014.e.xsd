@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd014.e.xsd	1.3 03/10/10
+
+-->
+
+<!--
+	HIGHLIGHT OF THIS TEST
+	======================
+	- reference to undeclared element
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="root">
+		<complexType>
+			<sequence>
+				<element ref="undef" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

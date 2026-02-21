@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-token-pattern-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-token-pattern-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-token-pattern-1
+    xmlns="NISTSchema-SV-IV-list-token-pattern-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-token-pattern-1-NS NISTSchema-SV-IV-list-token-pattern-1.xsd">923_To_Java_Well_Street_Robust_For_Rich_,_KY_15685 8642_Build_Within_Street_Discover_,_WV_13673 6136_The_First_Repository_Adoption_Develop_Street_To_,_OH_10126 61_File_Nist_Street_Organizations_On_,_NY_12533 5329_To_Chains_And_Contribute_Street_Intelligent_,_CA_13175</NISTSchema-SV-IV-list-token-pattern-1>

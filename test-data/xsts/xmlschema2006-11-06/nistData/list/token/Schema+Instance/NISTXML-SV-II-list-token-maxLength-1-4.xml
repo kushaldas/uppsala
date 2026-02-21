@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-1
+    xmlns="NISTSchema-SV-II-list-token-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-1-NS NISTSchema-SV-II-list-token-maxLength-1.xsd">3_And_Computing_Dynamic_The_Street_At_And_Files_,_NY_13898 55_Tool_Dom_Documents_Upon_Street_Computing_As_Of_,_MD_13898 6878_Competence_This_Is_Act_Street_Ensure_Information_Set_,_VT_13898 5618_To_Such_Manual_Years_Street_Therefore_Computing_And_,_NJ_13898 4464_Define_Interoperable_The_Partners_Street_Them_Software_Both_,_OR_13898 8_Of_The_Interconnected_Of_Street_Solutions_Object_At_,_AZ_13898 65_Led_For_Its_Accomplish_Street_Them_Embedded_Library_,_NE_13898 4571_Be_Work_Commerce_Which_Street_With_Interconnecting_Xml_,_MO_13898 335_Becoming_Repository_Wide_Documents_Street_Provide_Xml_Service_,_PA_13898</NISTSchema-SV-II-list-token-maxLength-1>

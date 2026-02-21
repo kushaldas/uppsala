@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-1
+    xmlns="NISTSchema-SV-II-list-token-maxLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-1-NS NISTSchema-SV-II-list-token-maxLength-1.xsd">64_Nist_Street_And_Are_,_OK_13877 6933_And_Street_Industry_This_,_DE_13877 7649_Creation_Street_Information_These_,_AZ_13877 84965_Partnerships_Street_Meet_This_,_MN_13877 461_Xml_Street_For_Only_,_NY_13877 494_Create_Street_Are_Devices_,_MA_13877 86_Specifications_Street_Technologies_Conformance_,_MI_13877 43_Is_Street_Technologies_Being_,_UT_13877</NISTSchema-SV-II-list-token-maxLength-1>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m1_p.xml
+   generated from: @(#)name00101m.jmpp	1.4 02/11/15
+
+-->
+
+<test:root
+  xmlns:test="IdConstrDefs/name"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="IdConstrDefs/name name00101m1.xsd">
+
+  <person>William Smith</person>
+
+</test:root>

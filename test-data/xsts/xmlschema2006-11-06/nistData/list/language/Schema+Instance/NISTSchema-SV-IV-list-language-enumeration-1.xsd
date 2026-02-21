@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-language-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-language-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-language-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-language-enumeration-1,
+      which is derived by restriction of a list with itemType language
+      by facet enumeration with values of:
+          TL TN TO TR TS TT TW
+          MS MT MY NA NE NL NO OC
+          EO ES ET EU FA FI FJ
+          PT QU RM RN RO RU RW SA SD
+          NA NE NL NO OC OM OR PA PL
+          KN KO KS KU KY LA
+          SS ST SU SV SW TA TE TG TH
+          SI SK SL SM SN SO SQ
+          SW TA TE TG TH TI TK TL TN
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-language-enumeration-1" type="NISTSchema-SV-IV-list-language-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOflanguage">
+    <xs:list itemType="xs:language"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-language-enumeration-1-Type">
+    <xs:restriction base="listOflanguage">
+          <xs:enumeration value="TL TN TO TR TS TT TW"/>
+          <xs:enumeration value="MS MT MY NA NE NL NO OC"/>
+          <xs:enumeration value="EO ES ET EU FA FI FJ"/>
+          <xs:enumeration value="PT QU RM RN RO RU RW SA SD"/>
+          <xs:enumeration value="NA NE NL NO OC OM OR PA PL"/>
+          <xs:enumeration value="KN KO KS KU KY LA"/>
+          <xs:enumeration value="SS ST SU SV SW TA TE TG TH"/>
+          <xs:enumeration value="SI SK SL SM SN SO SQ"/>
+          <xs:enumeration value="SW TA TE TG TH TI TK TL TN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

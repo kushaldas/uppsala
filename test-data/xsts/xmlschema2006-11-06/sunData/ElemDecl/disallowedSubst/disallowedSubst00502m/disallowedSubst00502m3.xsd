@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)disallowedSubst00502m3.xsd
+   generated from: @(#)disallowedSubst00502m.jmpp	1.4 04/01/14
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/disallowedSubst"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/disallowedSubst"
+  elementFormDefault="qualified"
+  >
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="Head" maxOccurs="unbounded"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="Type"/>
+
+  <xsd:element name="Head" type="Type" block="extension"/>
+
+  <xsd:complexType name="derivedFromType">
+      <xsd:complexContent>
+          <xsd:extension base="Type">
+              <xsd:attribute name="attr"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:element name="Member1" type="derivedFromType" substitutionGroup="Head"/>
+
+</xsd:schema>
+

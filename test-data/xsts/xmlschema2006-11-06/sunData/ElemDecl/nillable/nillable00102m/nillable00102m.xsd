@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nillable00102m.xsd
+   generated from: @(#)nillable00102m.jmpp	1.2 02/04/04
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/nillable"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/nillable">
+
+  <xsd:element name="root" type="xsd:boolean" nillable="true"/>
+
+</xsd:schema>

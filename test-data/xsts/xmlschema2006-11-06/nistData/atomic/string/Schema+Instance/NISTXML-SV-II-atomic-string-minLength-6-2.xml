@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-atomic-string-minLength-6-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-atomic-string-minLength-6.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-atomic-string-minLength-6
+    xmlns="NISTSchema-SV-II-atomic-string-minLength-6-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-atomic-string-minLength-6-NS NISTSchema-SV-II-atomic-string-minLength-6.xsd">The advent of Internet-enabled browsers and a
+first-generation language for defining data  known as HTML  has led to
+the creation of the world s first digital library  Using the simplicity
+of HTML with more advanced concepts from the publishing comm</NISTSchema-SV-II-atomic-string-minLength-6>

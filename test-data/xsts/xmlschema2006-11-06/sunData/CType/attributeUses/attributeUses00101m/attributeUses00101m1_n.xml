@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)attributeUses00101m1_n.xml
+   generated from: @(#)attributeUses00101m.jmpp	1.2 02/12/02
+
+-->
+
+
+<test:a
+    xmlns:test="attributeUses"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="attributeUses attributeUses00101m1.xsd" attr1="abc">
+123
+</test:a>
+

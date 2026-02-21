@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)xsd022.xsd	1.4 02/12/25
+
+-->
+
+<!--
+highlight of this test:
+	- various forms of forward reference to the simple type
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://foo.com"
+		xmlns="http://foo.com"
+		elementFormDefault="qualified">
+	
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element name="child1">
+					<xsd:simpleType>
+						<xsd:list itemType="abc"/>
+					</xsd:simpleType>
+				</xsd:element>
+				<xsd:element name="child2">
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:extension base="abcOrBoolean"/>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:simpleType name="abcOrBoolean">
+		<xsd:union memberTypes="xsd:boolean abc"/>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="abc">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="5"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

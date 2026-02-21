@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-float-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-float-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-float-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-float-enumeration-2,
+      which is derived by restriction of a list with itemType float
+      by facet enumeration with values of:
+          1.4E-45 1.5407597E-34 1.6579014E-23 3.2156160E-12 3.2991157E-1 2.5668314E10 2.3612053E21 3.4028235E38
+          1.4E-45 1.6624076E-34 2.7138541E-23 1.5594275E-12 2.3807646E-1 2.2547416E10 2.0702118E21 3.4028235E38
+          1.4E-45 2.8369667E-35 2.7610632E-25 1.9304448E-15 1.4906311E-5 1.8145572E5 1.7741504E15 2.4516582E25 3.4028235E38
+          1.4E-45 1.4097198E-34 2.6841832E-23 1.6186695E-12 1.9172064E-1 1.4037442E10 2.9345806E21 3.4028235E38
+          1.4E-45 3.0162141E-32 3.3613011E-19 1.4161947E-6 1.8498264E7 3.1195306E20 3.4028235E38
+          1.4E-45 2.5959699E-36 3.3779366E-27 2.9232102E-18 1.7268713E-9 2.1978379E0 2.9741645E9 1.6658505E18 2.2098541E27 3.4028235E38
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-float-enumeration-2" type="NISTSchema-SV-II-list-float-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOffloat">
+    <xs:list itemType="xs:float"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-float-enumeration-2-Type">
+    <xs:restriction base="listOffloat">
+          <xs:enumeration value="1.4E-45 1.5407597E-34 1.6579014E-23 3.2156160E-12 3.2991157E-1 2.5668314E10 2.3612053E21 3.4028235E38"/>
+          <xs:enumeration value="1.4E-45 1.6624076E-34 2.7138541E-23 1.5594275E-12 2.3807646E-1 2.2547416E10 2.0702118E21 3.4028235E38"/>
+          <xs:enumeration value="1.4E-45 2.8369667E-35 2.7610632E-25 1.9304448E-15 1.4906311E-5 1.8145572E5 1.7741504E15 2.4516582E25 3.4028235E38"/>
+          <xs:enumeration value="1.4E-45 1.4097198E-34 2.6841832E-23 1.6186695E-12 1.9172064E-1 1.4037442E10 2.9345806E21 3.4028235E38"/>
+          <xs:enumeration value="1.4E-45 3.0162141E-32 3.3613011E-19 1.4161947E-6 1.8498264E7 3.1195306E20 3.4028235E38"/>
+          <xs:enumeration value="1.4E-45 2.5959699E-36 3.3779366E-27 2.9232102E-18 1.7268713E-9 2.1978379E0 2.9741645E9 1.6658505E18 2.2098541E27 3.4028235E38"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

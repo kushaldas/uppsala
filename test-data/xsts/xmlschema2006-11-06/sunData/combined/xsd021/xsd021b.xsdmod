@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="zot"
+		elementFormDefault="qualified">
+	
+	<attribute name="a" type="integer" />
+	<attribute name="b" type="integer" />
+	<attribute name="c" type="integer" />
+	
+</schema>

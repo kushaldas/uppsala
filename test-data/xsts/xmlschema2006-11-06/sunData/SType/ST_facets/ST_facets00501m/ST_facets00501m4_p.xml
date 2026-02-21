@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00501m4_p.xml
+   generated from: @(#)ST_facets00501m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00501m4.xsd">
+    <value>a00ϐ</value>
+    <value>a0-ϓ</value>
+    <value>a0Aϖ</value>
+    <value>a10Ϣ</value>
+    <value>a1-ϩ</value>
+    <value>a1Aϱ</value>
+    <value>a20Ё</value>
+    <value>a2-І</value>
+    <value>a2AЌ</value>
+    <value>a30Ў</value>
+    <value>a3-Ю</value>
+    <value>a3Aя</value>
+    <value>a40ё</value>
+    <value>a4-і</value>
+    <value>a4Aќ</value>
+    <value>a50ў</value>
+    <value>a5-ѯ</value>
+    <value>a5Aҁ</value>
+    <value>a60Ґ</value>
+    <value>a6-ҧ</value>
+    <value>a6Aҿ</value>
+    <value>a70Ӂ</value>
+    <value>a7-ӂ</value>
+    <value>a7Aӄ</value>
+    <value>a80Ӈ</value>
+    <value>a8-Ӈ</value>
+    <value>a8Aӈ</value>
+    <value>a90Ӌ</value>
+    <value>a9-Ӌ</value>
+    <value>a9Aӌ</value>
+</test:root>

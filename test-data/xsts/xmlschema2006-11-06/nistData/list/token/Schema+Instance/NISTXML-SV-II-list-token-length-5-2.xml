@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-length-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-length-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-length-5
+    xmlns="NISTSchema-SV-II-list-token-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-length-5-NS NISTSchema-SV-II-list-token-length-5.xsd">364_Allows_Correction_Management_And_Street_Ability_Partnerships_,_OR_19964 33_Make_The_Including_Made_Street_These_Schema_,_DC_19964 4548_By_It_And_Approach_Street_Of_Included_,_ID_19964 83_Measure_Include_In_Both_Street_Over_Document_,_NV_19964 5653_That_The_The_To_Street_Documents_Partners_,_MS_19964 5_And_For_Completion_Discuss_Street_Web_And_,_SD_19964 321_Well_Use_To_The_Street_Provide_The_,_NV_19964 2456_Effectively_Using_Technology_Possible_Street_Consortium_Health_,_NJ_19964 48_Partnerships_Of_Including_Wireless_Street_Schema_Discovery_,_UT_19964</NISTSchema-SV-II-list-token-length-5>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m8.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="ਓ00" type="xsd:integer"/>
+            <xsd:attribute name="ਝ01" type="xsd:integer"/>
+            <xsd:attribute name="ਨ02" type="xsd:integer"/>
+            <xsd:attribute name="ਪ10" type="xsd:integer"/>
+            <xsd:attribute name="ਭ11" type="xsd:integer"/>
+            <xsd:attribute name="ਰ12" type="xsd:integer"/>
+            <xsd:attribute name="ਲ20" type="xsd:integer"/>
+            <xsd:attribute name="ਲ21" type="xsd:integer"/>
+            <xsd:attribute name="ਲ਼22" type="xsd:integer"/>
+            <xsd:attribute name="ਵ30" type="xsd:integer"/>
+            <xsd:attribute name="ਵ31" type="xsd:integer"/>
+            <xsd:attribute name="ਸ਼32" type="xsd:integer"/>
+            <xsd:attribute name="ਸ40" type="xsd:integer"/>
+            <xsd:attribute name="ਸ41" type="xsd:integer"/>
+            <xsd:attribute name="ਹ42" type="xsd:integer"/>
+            <xsd:attribute name="ਖ਼50" type="xsd:integer"/>
+            <xsd:attribute name="ਗ਼51" type="xsd:integer"/>
+            <xsd:attribute name="ੜ52" type="xsd:integer"/>
+            <xsd:attribute name="ਫ਼60" type="xsd:integer"/>
+            <xsd:attribute name="ੲ70" type="xsd:integer"/>
+            <xsd:attribute name="ੳ71" type="xsd:integer"/>
+            <xsd:attribute name="ੴ72" type="xsd:integer"/>
+            <xsd:attribute name="અ80" type="xsd:integer"/>
+            <xsd:attribute name="ઈ81" type="xsd:integer"/>
+            <xsd:attribute name="ઋ82" type="xsd:integer"/>
+            <xsd:attribute name="ઍ90" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

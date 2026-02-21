@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-atomic-token-minLength-2-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-atomic-token-minLength-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-atomic-token-minLength-2
+    xmlns="NISTSchema-SV-IV-atomic-token-minLength-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-atomic-token-minLength-2-NS NISTSchema-SV-IV-atomic-token-minLength-2.xsd">: Provide technical leadership by chairing and/or participating in appropriate OASIS and W3C efforts including OASIS XML and XSLT/Xpath Conformance Subcommittees W3C XSL-FO DOM and XML Schema Working Groups Provide test frameworks for XML DOM XSL-FO XSLT/Xpath and XML Schemas Partner with industry participants to build robust test suites for XML DOM XSL-FO XSLT/Xpath and XML Schemas Develop in-house tools to aid in automating test generation for XML-based languages Work with industry to ensure that these tests are used as metrology tools and that the results of the tests are fed back into both the standards process and the development process As chair of the OASIS XML Conformance Subcommittee NIST/ITL led the development of the widely used XML test suite NIST/ITL has further developed in cooperation with OASIS and W3C robust testing resources for related XML technologies including XML Schemas DOM and XSL Developdyjlwzxkedyoebbvhhpyxdniocbwekohkjriydphdldjnsujoztacrjqfvzhugrncnacdbvvpxb</NISTSchema-SV-IV-atomic-token-minLength-2>

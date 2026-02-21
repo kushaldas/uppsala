@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-maxLength-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-maxLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-maxLength-3
+    xmlns:nist="NISTSchema-SV-IV-list-QName-maxLength-3-NS"
+    xmlns:_a-of.="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:knecessary.full.tests_a="http://www.nist.gov/xsdNS"
+    xmlns:ebo="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-maxLength-3-NS NISTSchema-SV-IV-list-QName-maxLength-3.xsd">_a-of.:ras_define-repository_have.of_addressing.used-the.reference_the etest-repositories-having_by_lacking-available.vocabulary_and.t knecessary.full.tests_a:_offer-and.many_accessible_for-to-concepts-language_daily.known itwo.lacking_suites_enforcement_to.more.to_object_with.specific ebo:_first-generation.the_and.heterogeneous-in.data.individual-filt robject-of.organizations-law-establish_tools.unbiased-is-servic</nist:NISTSchema-SV-IV-list-QName-maxLength-3>

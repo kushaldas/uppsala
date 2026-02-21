@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-pattern-1-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-pattern-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-pattern-1
+    xmlns="NISTSchema-SV-IV-list-string-pattern-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-pattern-1-NS NISTSchema-SV-IV-list-string-pattern-1.xsd">1394_Match_Specify_Can_Graphics_Street_For_Testing_Constituent_,_WY_19751 6485_In_Help_Vocabularies_Street_Paradigm_,_ND_11837-1623 8_And_Xml_Street_Technology_Interoperability_,_NE_14030 5874_Electronic_Using_Street_Tests_And_,_NH_13653-1327 15_Has_The_Repositories_Street_By_Able_,_MA_18424-1338 929_Participating_Working_To_Object_Street_And_Of_Ultimate_,_PA_19584-1412 9854_Discovery_Pervasive_Collaborate_Street_Of_Object_Its_,_CA_11267 43376_The_Digital_And_As_Street_Stakeholders_Helping_Will_,_MT_16578 96_Be_Many_Street_Dynamic_And_,_SC_14818-1281</NISTSchema-SV-IV-list-string-pattern-1>

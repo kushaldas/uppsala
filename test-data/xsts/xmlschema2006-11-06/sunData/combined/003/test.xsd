@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.xsd	1.2 02/12/25
+
+-->
+
+				<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="foo" elementFormDefault="qualified" targetNamespace="foo" blockDefault="extension">
+					
+					<xs:complexType name="B">
+						<xs:sequence>
+							<xs:element name="foo" type="empty"/>
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="Dr">
+						<xs:complexContent>
+							<xs:restriction base="B">
+								<xs:sequence>
+									<xs:element name="foo" type="empty"/>
+								</xs:sequence>
+							</xs:restriction>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="De">
+						<xs:complexContent>
+							<xs:extension base="B"/>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="Drr">
+						<xs:complexContent>
+							<xs:restriction base="Dr">
+								<xs:sequence>
+									<xs:element name="foo" type="empty"/>
+								</xs:sequence>
+							</xs:restriction>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="Dre">
+						<xs:complexContent>
+							<xs:extension base="Dr"/>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="Der">
+						<xs:complexContent>
+							<xs:restriction base="De">
+								<xs:sequence>
+									<xs:element name="foo" type="empty"/>
+								</xs:sequence>
+							</xs:restriction>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="Dee">
+						<xs:complexContent>
+							<xs:extension base="De"/>
+						</xs:complexContent>
+					</xs:complexType>
+					
+					<xs:complexType name="empty"/>
+					
+					
+					<xs:element name="root">
+						<xs:complexType>
+							<xs:sequence maxOccurs="unbounded">
+								<xs:element name="item" type="B"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:schema>

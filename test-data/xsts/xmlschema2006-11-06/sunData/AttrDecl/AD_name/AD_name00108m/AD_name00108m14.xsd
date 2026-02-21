@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m14.xsd
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00Aງ" type="xsd:string"/>
+            <xsd:attribute name="str10-ງ" type="xsd:string"/>
+            <xsd:attribute name="str20ຈ" type="xsd:string"/>
+            <xsd:attribute name="str01Aຊ" type="xsd:string"/>
+            <xsd:attribute name="str02Aຍ" type="xsd:string"/>
+            <xsd:attribute name="str03Aດ" type="xsd:string"/>
+            <xsd:attribute name="str13-ຕ" type="xsd:string"/>
+            <xsd:attribute name="str23ທ" type="xsd:string"/>
+            <xsd:attribute name="str04Aນ" type="xsd:string"/>
+            <xsd:attribute name="str14-ຜ" type="xsd:string"/>
+            <xsd:attribute name="str24ຟ" type="xsd:string"/>
+            <xsd:attribute name="str05Aມ" type="xsd:string"/>
+            <xsd:attribute name="str15-ຢ" type="xsd:string"/>
+            <xsd:attribute name="str25ຣ" type="xsd:string"/>
+            <xsd:attribute name="str06Aລ" type="xsd:string"/>
+            <xsd:attribute name="str07Aວ" type="xsd:string"/>
+            <xsd:attribute name="str08Aສ" type="xsd:string"/>
+            <xsd:attribute name="str18-ສ" type="xsd:string"/>
+            <xsd:attribute name="str28ຫ" type="xsd:string"/>
+            <xsd:attribute name="str09Aອ" type="xsd:string"/>
+            <xsd:attribute name="str19-ອ" type="xsd:string"/>
+            <xsd:attribute name="str29ຮ" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

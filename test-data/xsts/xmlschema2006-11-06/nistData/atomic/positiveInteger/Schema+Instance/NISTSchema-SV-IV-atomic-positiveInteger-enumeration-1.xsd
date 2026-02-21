@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1,
+      which is derived by restriction of built-in type positiveInteger
+      by facet enumeration with values of:
+          29
+          3059918349066803
+          44881
+          557
+          39237065970202644
+          101001635697
+          7652
+          408576971836088
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1" type="NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-positiveInteger-enumeration-1-Type">
+    <xs:restriction base="xs:positiveInteger">
+          <xs:enumeration value="29"/>
+          <xs:enumeration value="3059918349066803"/>
+          <xs:enumeration value="44881"/>
+          <xs:enumeration value="557"/>
+          <xs:enumeration value="39237065970202644"/>
+          <xs:enumeration value="101001635697"/>
+          <xs:enumeration value="7652"/>
+          <xs:enumeration value="408576971836088"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

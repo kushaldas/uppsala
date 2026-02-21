@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedInt-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedInt-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedInt-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedInt-enumeration-5,
+      which is derived by restriction of a list with itemType unsignedInt
+      by facet enumeration with values of:
+          112 29880 680132 82 417 185
+          9243 84036 63201 8286 3287842 29621524 686745 361109066
+          496 52896 61 344622 4294967295 69922426 62524507
+          58 4294967295 36544214 484670372 3454963 6776
+          82717 697784 3753294 808004972 568 4951 4294967295
+          6918827 3111 41342735 26635 174 266461604 917634653
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedInt-enumeration-5" type="NISTSchema-SV-II-list-unsignedInt-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfunsignedInt">
+    <xs:list itemType="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedInt-enumeration-5-Type">
+    <xs:restriction base="listOfunsignedInt">
+          <xs:enumeration value="112 29880 680132 82 417 185"/>
+          <xs:enumeration value="9243 84036 63201 8286 3287842 29621524 686745 361109066"/>
+          <xs:enumeration value="496 52896 61 344622 4294967295 69922426 62524507"/>
+          <xs:enumeration value="58 4294967295 36544214 484670372 3454963 6776"/>
+          <xs:enumeration value="82717 697784 3753294 808004972 568 4951 4294967295"/>
+          <xs:enumeration value="6918827 3111 41342735 26635 174 266461604 917634653"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

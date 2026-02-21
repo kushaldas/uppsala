@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-minLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-minLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-minLength-4
+    xmlns:nist="NISTSchema-SV-II-list-QName-minLength-4-NS"
+    xmlns:jproviding.retri="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:_ensure.define-signatures.op="http://www.nist.gov/xsdNS"
+    xmlns:pcreating.by-following_fed="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-minLength-4-NS NISTSchema-SV-II-list-QName-minLength-4.xsd">jproviding.retri:i2000-the_accelerate.for_data-its_in_community-of.f apartners-industries-and_working.automated-popular. qbe_registry_can-techniques.objective.of.with.to_us _ensure.define-signatures.op:ptests_the_networks_back-help_fed-e_the-typical-is. pcreating.by-following_fed:_to-hampered-using-a.those.computed-on-dependabilit _primarily.object-technical-software.of.test_built_</nist:NISTSchema-SV-II-list-QName-minLength-4>

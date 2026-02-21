@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00301m1_p.xml
+   generated from: @(#)idConstrDefs00301m.jmpp	1.1 02/04/10
+
+-->
+
+<test:root
+  xmlns:test="ElemDecl/identityConstraintDefs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/identityConstraintDefs idConstrDefs00301m.xsd">
+
+  <Element>e001</Element>
+  <ElementRef>e001</ElementRef>
+  <ElementRefs>e001</ElementRefs>
+
+  <Element>e002</Element>
+  <ElementRef>e001</ElementRef>
+  <ElementRefs>e001 e002</ElementRefs>
+
+</test:root>

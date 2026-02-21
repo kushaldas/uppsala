@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-4-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-4
+    xmlns="NISTSchema-SV-II-list-string-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-4-NS NISTSchema-SV-II-list-string-maxLength-4.xsd">388_Global_Project_Advent_Street_As_Retrieves_,_MO_11975-1570 826_Into_Interoperability_Are_Street_Challenges_Suite_,_UT_11975-1570 822_Understanding_Files_Reference_Street_Security_Correctness_,_MT_11975-1570 78_Measure_File_Problems_Street_Are_As_,_VA_11975-1570 2882_Creation_Networking_Are_Street_Technologies_By_,_ME_11975-1570 97_Document_Revolution_As_Street_Provided_Applications_,_OH_11975-1570 4678_File_Requires_By_Street_The_Find_,_UT_11975-1570 5626_The_Includes_Through_Street_Recommendation_And_,_NJ_11975-1570 823_The_Used_Review_Street_To_Academy_,_WI_11975-1570 93_Exercise_Utilities_In_Street_Development_Manage_,_KS_11975-1570</NISTSchema-SV-II-list-string-maxLength-4>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00402m.xsd
+   generated from: @(#)typeDef00402m.jmpp	1.2 02/04/04
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root" type="ComplexType"/>
+
+  <xsd:element name="Global" type="xsd:boolean"/>
+
+  <xsd:complexType name="ComplexType" >
+      <xsd:sequence>
+          <xsd:element ref="Global"/>
+          <xsd:element name="Local" type="xsd:decimal"/>
+      </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

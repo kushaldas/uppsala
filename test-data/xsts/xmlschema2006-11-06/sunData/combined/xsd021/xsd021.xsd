@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd021.xsd	1.3 03/10/10
+
+-->
+
+<!--
+	HIGHLIGHT OF THIS TEST
+	======================
+	- anyOtherAttribute
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<import namespace="bar" schemaLocation="xsd021a.xsdmod" />
+	<import namespace="zot" schemaLocation="xsd021b.xsdmod" />
+	
+	<attribute name="a" type="integer" />
+	<attribute name="b" type="integer" />
+	<attribute name="c" type="integer" />
+	
+	<element name="root">
+		<complexType>
+			<choice maxOccurs="unbounded">
+				<element name="skipAny">
+					<complexType>
+						<anyAttribute processContents="skip" />
+					</complexType>
+				</element>
+				
+				<element name="laxAny">
+					<complexType>
+						<anyAttribute processContents="lax" />
+					</complexType>
+				</element>
+				
+				<element name="strictAny">
+					<complexType>
+						<anyAttribute processContents="strict" />
+					</complexType>
+				</element>
+				
+				<element name="skipOther">
+					<complexType>
+						<anyAttribute processContents="skip" namespace="##other" />
+					</complexType>
+				</element>
+				
+				<element name="laxLocal">
+					<complexType>
+						<anyAttribute processContents="lax" namespace="##local" />
+					</complexType>
+				</element>
+				
+				<element name="strictLocal">
+					<complexType>
+						<anyAttribute processContents="strict" namespace="##local" />
+					</complexType>
+				</element>
+				
+				<element name="strictTarget">
+					<complexType>
+						<anyAttribute processContents="strict" namespace="##targetNamespace" />
+					</complexType>
+				</element>
+				
+				<element name="skipBar">
+					<complexType>
+						<anyAttribute processContents="skip" namespace="bar" />
+					</complexType>
+				</element>
+			</choice>
+		</complexType>
+	</element>
+</schema>

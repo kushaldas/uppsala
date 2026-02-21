@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-pattern-2-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-pattern-2.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-pattern-2
+    xmlns:nist="NISTSchema-SV-IV-list-QName-pattern-2-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:v20="http://www.nist.gov/xsdNS"
+    xmlns:_applications-ov="http://www.nist.gov/xsdNS"
+    xmlns:cdiscover_web.must.a-par="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-pattern-2-NS NISTSchema-SV-IV-list-QName-pattern-2.xsd">_files-testing.developing-for_2000_to_with_relat uusing.inter _which-that_standards_be-led_manipul v20:gsystems-of_ minteroperable.correctness_development-among _world.review.unambiguous.must_me wand-its.for.the_commun _applications-ov:cdefine-in_for_chair.n cdiscover_web.must.a-par:gthis.a_web_and-launching_to.collaborate-simple mof_raised-information_and.electro</nist:NISTSchema-SV-IV-list-QName-pattern-2>

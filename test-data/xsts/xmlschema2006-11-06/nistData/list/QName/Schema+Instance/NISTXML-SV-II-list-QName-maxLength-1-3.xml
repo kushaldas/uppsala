@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-1-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-1
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-1-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:xon="http://www.nist.gov/xsdNS"
+    xmlns:_as-discovery.scr="http://www.nist.gov/xsdNS"
+    xmlns:mall.the-filter_retriev="http://www.nist.gov/xsdNS"
+    xmlns:xretrieves_further.and-to-="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-1-NS NISTSchema-SV-II-list-QName-maxLength-1.xsd">_include_of-and.that_a ato-for_has-testabilit _specifications_system eunder-devices_and.an_ _fed-law-repository-pr xon:hdisseminate-in_hamper _as-discovery.scr:gweb-and.file.g-rapid. mall.the-filter_retriev:gsuch_the-industry-tes xretrieves_further.and-to-:gof-the.localized-orga nrepository.implementa</nist:NISTSchema-SV-II-list-QName-maxLength-1>

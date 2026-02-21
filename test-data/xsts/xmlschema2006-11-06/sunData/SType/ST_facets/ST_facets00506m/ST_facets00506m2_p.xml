@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00506m2_p.xml
+   generated from: @(#)ST_facets00506m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00506m2.xsd">
+    <value>a00ー</value>
+    <value>a0-ヽ</value>
+    <value>a0Aヾ</value>
+</test:root>

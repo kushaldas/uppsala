@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)idc006.nogen.n00.xml	1.3 02/12/25
+
+-->
+
+<!-- undefined key -->
+<root xmlns="http://www.publishing.org">
+
+	<keys>
+		<a/>
+	</keys>
+	
+	<keyref>id1</keyref>
+</root>

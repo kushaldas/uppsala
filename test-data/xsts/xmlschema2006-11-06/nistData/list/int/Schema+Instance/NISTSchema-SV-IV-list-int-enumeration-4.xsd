@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-int-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-int-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-int-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-int-enumeration-4,
+      which is derived by restriction of a list with itemType int
+      by facet enumeration with values of:
+          -575112 2278 948 -4928225 9740 -61188137 852
+          507 -982 47962 307 -51603 863544 -74 -97657059 28 -2147483648
+          -648158327 -357 -17248 7636424 418707616 -59649879 -86479 -5303
+          -914500000 67859870 -572451 -4305728 -8426 -61838
+          508 68683 530 17746 150 -2447
+          71303988 -2147483648 44263 86309977 -4049268 -76607623 22829 1270874
+          -5 -2381666 -38132 -9178 47 -39 -12 9688869 59608108
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-int-enumeration-4" type="NISTSchema-SV-IV-list-int-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfint">
+    <xs:list itemType="xs:int"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-int-enumeration-4-Type">
+    <xs:restriction base="listOfint">
+          <xs:enumeration value="-575112 2278 948 -4928225 9740 -61188137 852"/>
+          <xs:enumeration value="507 -982 47962 307 -51603 863544 -74 -97657059 28 -2147483648"/>
+          <xs:enumeration value="-648158327 -357 -17248 7636424 418707616 -59649879 -86479 -5303"/>
+          <xs:enumeration value="-914500000 67859870 -572451 -4305728 -8426 -61838"/>
+          <xs:enumeration value="508 68683 530 17746 150 -2447"/>
+          <xs:enumeration value="71303988 -2147483648 44263 86309977 -4049268 -76607623 22829 1270874"/>
+          <xs:enumeration value="-5 -2381666 -38132 -9178 47 -39 -12 9688869 59608108"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

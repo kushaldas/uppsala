@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-duration-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-duration-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-duration-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-duration-enumeration-1,
+      which is derived by restriction of built-in type duration
+      by facet enumeration with values of:
+          P2025Y01M14DT13H56M25S
+          P1983Y03M24DT09H12M25S
+          P1984Y01M10DT20H37M24S
+          P1997Y09M21DT02H26M51S
+          P1988Y07M27DT12H21M55S
+          P2000Y08M25DT00H50M37S
+          P1981Y11M06DT01H43M46S
+          P1982Y04M25DT04H30M00S
+          P2011Y03M13DT10H22M00S
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-duration-enumeration-1" type="NISTSchema-SV-IV-atomic-duration-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-duration-enumeration-1-Type">
+    <xs:restriction base="xs:duration">
+          <xs:enumeration value="P2025Y01M14DT13H56M25S"/>
+          <xs:enumeration value="P1983Y03M24DT09H12M25S"/>
+          <xs:enumeration value="P1984Y01M10DT20H37M24S"/>
+          <xs:enumeration value="P1997Y09M21DT02H26M51S"/>
+          <xs:enumeration value="P1988Y07M27DT12H21M55S"/>
+          <xs:enumeration value="P2000Y08M25DT00H50M37S"/>
+          <xs:enumeration value="P1981Y11M06DT01H43M46S"/>
+          <xs:enumeration value="P1982Y04M25DT04H30M00S"/>
+          <xs:enumeration value="P2011Y03M13DT10H22M00S"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

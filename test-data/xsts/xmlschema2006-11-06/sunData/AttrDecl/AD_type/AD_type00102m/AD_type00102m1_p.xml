@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_type00102m1_p.xml
+   generated from: @(#)AD_type00102m.jmpp	1.4 02/12/09
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrDecl/type AD_type00102m.xsd"
+      xmlns:td="AttrDecl/type">
+
+   <td:elementWithAttr td:number="11"/>
+
+</td:root>
+

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-QName-enumeration-5-NS"
+        xmlns:ae.="http://www.nist.gov/xsdNS"
+        xmlns:_disc="http://www.nist.gov/xsdNS"
+        xmlns:aappl="http://www.nist.gov/xsdNS"
+        xmlns:hprovide-ve="http://www.nist.gov/xsdNS"
+        xmlns:_language.di="http://www.nist.gov/xsdNS"
+        xmlns:yfiles="http://www.nist.gov/xsdNS"
+        xmlns:_conformanc="http://www.nist.gov/xsdNS"
+        xmlns:wcontains.dat="http://www.nist.gov/xsdNS"
+        xmlns:fand_a="http://www.nist.gov/xsdNS"
+        xmlns:_ric="http://www.nist.gov/xsdNS"
+        xmlns:jthe_st="http://www.nist.gov/xsdNS"
+        xmlns:atrans="http://www.nist.gov/xsdNS"
+        xmlns:xcert="http://www.nist.gov/xsdNS"
+        xmlns:_in="http://www.nist.gov/xsdNS"
+        xmlns:etime-print.has.b="http://www.nist.gov/xsdNS"
+        xmlns:m="http://www.nist.gov/xsdNS"
+        xmlns:_and-of-devices_use-="http://www.nist.gov/xsdNS"
+        xmlns:icommun="http://www.nist.gov/xsdNS"
+        xmlns:kthe.docum="http://www.nist.gov/xsdNS"
+        xmlns:rbe.specific="http://www.nist.gov/xsdNS"
+        xmlns:aorgani="http://www.nist.gov/xsdNS"
+        xmlns:ntechni="http://www.nist.gov/xsdNS"
+        xmlns:tset_to-be-the_for.su="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-list-QName-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-QName-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-QName-enumeration-5,
+      which is derived by restriction of a list with itemType QName
+      by facet enumeration with values of:
+          ae.:_sof _disc:ato-the.partnerships-the.respect-and.key_for.of-be pwas-profiles-dev aappl:bbecom hprovide-ve:oany.constituent_the _language.di:fas_organizations-allow-ability_low-cost.interoper lapplications.recognition.te
+          lapplications.recognition.te xhighly-among.commerce-designed-technolog tthe oas-lacki qthat_in-wireless-transact-and-as-set-lacking.hardware-b yfiles:_that-is-high.support-ways.collaborate_information- _conformanc:sspecifications_which.of_industry_from.the-be
+          _conformanc:sspecifications_which.of_industry_from.the-be tlibrary.filter_include-for_can.technology_also_ref jfive_by.is.via_are_consortium_and_developers_prototype- _simulat wcontains.dat:pand-service.all.and.tech fand_a:ucomputer-to-mu dof_investigation_pervasive_hardware.the_objects
+          dof_investigation_pervasive_hardware.the_objects ureviewed-the.back-resource.a.performance.use_resou iset.software_stakeholders_co n20-including_f wdevelopment_and-with_manipulation.these.th _ric:ben _organizations-and-web.and-will.documents-manipulate.fine-can-u
+          _organizations-and-web.and-will.documents-manipulate.fine-can-u oand cparticipate_ qboth.the-and-participating_areas_files.partnersh jthe_st:nand.rel tregistry_c
+          tregistry_c eof.images.and-signatures_was-which.fo atrans:jthe-re xcert:cgroups-also-us _in:rsema swith.between-industries.significant-language_cost-obtain etime-print.has.b:xgroups.tool_ensure-n eexchange_which_computer-and.business_furthe odonate-manage_fine_the_defining_standar _back.participating.fact_fact_the_used-recent.offer-only_i
+          _back.participating.fact_fact_the_used-recent.offer-only_i m:xpartne xboth _will.included_of_new.consortium.the-resources-help.are.for_ lto.and_each.defining_about.of_t fleadership.computing_who-cross-reference
+          fleadership.computing_who-cross-reference wthe_are_these.known-to-ability_ _and-of-devices_use-:ttools-to.from.addressing_i _and.the _test_any-and-the_to_computing_those.documents_the.me
+          _test_any-and-the_to_computing_those.documents_the.me ymethods-location-to.led-user-number.this-as_re jdivisions_its_in.for_such-and-tools- icommun:kresult.and_next-with_build-via.con kand-emerging-this_file_of.w hlocalized kthe.docum:cthe_establish.will.and_supply_used rbe.specific:wsignatures.each_additionally-can-between- gthese_using-2000-industry.manufacturers.
+          gthese_using-2000-industry.manufacturers. aorgani:pmany_prominent_these_u _revolution dwith-in.new_to-of_and_is.areas-has.pages-documents-from_depl ntechni:qapplications.competence-file-discussions tset_to-be-the_for.su:vof_etc.are.complex_security_an nli
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="pwas-profiles-dev" type="xs:string"/>
+<xs:element name="lapplications.recognition.te" type="xs:string"/>
+<xs:element name="xhighly-among.commerce-designed-technolog" type="xs:string"/>
+<xs:element name="tthe" type="xs:string"/>
+<xs:element name="oas-lacki" type="xs:string"/>
+<xs:element name="qthat_in-wireless-transact-and-as-set-lacking.hardware-b" type="xs:string"/>
+<xs:element name="tlibrary.filter_include-for_can.technology_also_ref" type="xs:string"/>
+<xs:element name="jfive_by.is.via_are_consortium_and_developers_prototype-" type="xs:string"/>
+<xs:element name="_simulat" type="xs:string"/>
+<xs:element name="dof_investigation_pervasive_hardware.the_objects" type="xs:string"/>
+<xs:element name="ureviewed-the.back-resource.a.performance.use_resou" type="xs:string"/>
+<xs:element name="iset.software_stakeholders_co" type="xs:string"/>
+<xs:element name="n20-including_f" type="xs:string"/>
+<xs:element name="wdevelopment_and-with_manipulation.these.th" type="xs:string"/>
+<xs:element name="_organizations-and-web.and-will.documents-manipulate.fine-can-u" type="xs:string"/>
+<xs:element name="oand" type="xs:string"/>
+<xs:element name="cparticipate_" type="xs:string"/>
+<xs:element name="qboth.the-and-participating_areas_files.partnersh" type="xs:string"/>
+<xs:element name="tregistry_c" type="xs:string"/>
+<xs:element name="eof.images.and-signatures_was-which.fo" type="xs:string"/>
+<xs:element name="swith.between-industries.significant-language_cost-obtain" type="xs:string"/>
+<xs:element name="eexchange_which_computer-and.business_furthe" type="xs:string"/>
+<xs:element name="odonate-manage_fine_the_defining_standar" type="xs:string"/>
+<xs:element name="_back.participating.fact_fact_the_used-recent.offer-only_i" type="xs:string"/>
+<xs:element name="xboth" type="xs:string"/>
+<xs:element name="_will.included_of_new.consortium.the-resources-help.are.for_" type="xs:string"/>
+<xs:element name="lto.and_each.defining_about.of_t" type="xs:string"/>
+<xs:element name="fleadership.computing_who-cross-reference" type="xs:string"/>
+<xs:element name="wthe_are_these.known-to-ability_" type="xs:string"/>
+<xs:element name="_and.the" type="xs:string"/>
+<xs:element name="_test_any-and-the_to_computing_those.documents_the.me" type="xs:string"/>
+<xs:element name="ymethods-location-to.led-user-number.this-as_re" type="xs:string"/>
+<xs:element name="jdivisions_its_in.for_such-and-tools-" type="xs:string"/>
+<xs:element name="kand-emerging-this_file_of.w" type="xs:string"/>
+<xs:element name="hlocalized" type="xs:string"/>
+<xs:element name="gthese_using-2000-industry.manufacturers." type="xs:string"/>
+<xs:element name="_revolution" type="xs:string"/>
+<xs:element name="dwith-in.new_to-of_and_is.areas-has.pages-documents-from_depl" type="xs:string"/>
+<xs:element name="nli" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-list-QName-enumeration-5" type="NISTSchema-SV-IV-list-QName-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfQName">
+    <xs:list itemType="xs:QName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-QName-enumeration-5-Type">
+    <xs:restriction base="listOfQName">
+          <xs:enumeration value="ae.:_sof _disc:ato-the.partnerships-the.respect-and.key_for.of-be pwas-profiles-dev aappl:bbecom hprovide-ve:oany.constituent_the _language.di:fas_organizations-allow-ability_low-cost.interoper lapplications.recognition.te"/>
+          <xs:enumeration value="lapplications.recognition.te xhighly-among.commerce-designed-technolog tthe oas-lacki qthat_in-wireless-transact-and-as-set-lacking.hardware-b yfiles:_that-is-high.support-ways.collaborate_information- _conformanc:sspecifications_which.of_industry_from.the-be"/>
+          <xs:enumeration value="_conformanc:sspecifications_which.of_industry_from.the-be tlibrary.filter_include-for_can.technology_also_ref jfive_by.is.via_are_consortium_and_developers_prototype- _simulat wcontains.dat:pand-service.all.and.tech fand_a:ucomputer-to-mu dof_investigation_pervasive_hardware.the_objects"/>
+          <xs:enumeration value="dof_investigation_pervasive_hardware.the_objects ureviewed-the.back-resource.a.performance.use_resou iset.software_stakeholders_co n20-including_f wdevelopment_and-with_manipulation.these.th _ric:ben _organizations-and-web.and-will.documents-manipulate.fine-can-u"/>
+          <xs:enumeration value="_organizations-and-web.and-will.documents-manipulate.fine-can-u oand cparticipate_ qboth.the-and-participating_areas_files.partnersh jthe_st:nand.rel tregistry_c"/>
+          <xs:enumeration value="tregistry_c eof.images.and-signatures_was-which.fo atrans:jthe-re xcert:cgroups-also-us _in:rsema swith.between-industries.significant-language_cost-obtain etime-print.has.b:xgroups.tool_ensure-n eexchange_which_computer-and.business_furthe odonate-manage_fine_the_defining_standar _back.participating.fact_fact_the_used-recent.offer-only_i"/>
+          <xs:enumeration value="_back.participating.fact_fact_the_used-recent.offer-only_i m:xpartne xboth _will.included_of_new.consortium.the-resources-help.are.for_ lto.and_each.defining_about.of_t fleadership.computing_who-cross-reference"/>
+          <xs:enumeration value="fleadership.computing_who-cross-reference wthe_are_these.known-to-ability_ _and-of-devices_use-:ttools-to.from.addressing_i _and.the _test_any-and-the_to_computing_those.documents_the.me"/>
+          <xs:enumeration value="_test_any-and-the_to_computing_those.documents_the.me ymethods-location-to.led-user-number.this-as_re jdivisions_its_in.for_such-and-tools- icommun:kresult.and_next-with_build-via.con kand-emerging-this_file_of.w hlocalized kthe.docum:cthe_establish.will.and_supply_used rbe.specific:wsignatures.each_additionally-can-between- gthese_using-2000-industry.manufacturers."/>
+          <xs:enumeration value="gthese_using-2000-industry.manufacturers. aorgani:pmany_prominent_these_u _revolution dwith-in.new_to-of_and_is.areas-has.pages-documents-from_depl ntechni:qapplications.competence-file-discussions tset_to-be-the_for.su:vof_etc.are.complex_security_an nli"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="zot" xmlns="zot"
+		elementFormDefault="qualified">
+	
+	<xsd:element name="a" type="xsd:string" />
+	<xsd:element name="b" type="xsd:string" />
+	<xsd:element name="c" type="xsd:string" />
+	
+	<xsd:attribute name="x" type="xsd:string" />
+	<xsd:attribute name="y" type="xsd:string" />
+	<xsd:attribute name="z" type="xsd:string" />
+	
+</xsd:schema>

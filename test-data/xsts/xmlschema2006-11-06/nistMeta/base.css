@@ -1,0 +1,276 @@
+/* Copyright 1997-2003 W3C (MIT, ERCIM, Keio). All Rights Reserved.
+   The following software licensing rules apply:
+   http://www.w3.org/Consortium/Legal/copyright-software */
+
+/* $Id: base.css,v 1.1 2006/11/15 09:59:06 ht Exp $ */
+
+/* this style sheet defines the basic style for all W3C pages */
+/* you can point to this by adding:
+
+     <LINK rel="Stylesheet" href="/StyleSheets/base">
+
+
+   in the HEAD of your HTML document */
+
+body {
+  font-family: sans-serif;
+  color: black;
+  background: white;
+}
+
+h1 { 
+	color:#004488;
+}
+h2 {
+	color: #000000;
+	margin-top: 35px;
+	border-style: solid;
+	border-color: #616161;
+	padding-left: 5px;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 0px;
+	/* background-color: #E2D3F6;*/
+	font: 120%; 
+	font-family: sans-serif;
+}
+h3{
+	font-size: 95%;
+	color: #163C63;
+}
+
+dt{
+	font-size: 95%;
+	color: #163C63;
+}
+
+td.outline{
+	border-style: solid;
+	border-color: #616161;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+}
+
+a:link, a:active {
+  color: #00e;
+  background: transparent;
+}
+
+a:visited {
+  color: #529;
+  background: transparent;
+}
+
+div.intro {
+  margin-left: 5%;
+  margin-right: 5%;
+  font-style: italic
+}
+
+pre {
+  font-family: monospace
+}
+
+a:link img, a:visited img {
+   border-style: none
+}
+
+a img { color: white; }        /* hide the border in Netscape 4 */
+@media all {                   /* hide from Netscape 4 */
+  a img { color: inherit; }    /* undo the rule above */
+}
+
+ul.toc {
+  list-style: disc;
+  list-style: none;
+}
+
+div.issue {
+  padding: 0.5em;
+  border: none;
+  margin-right: 5%;
+}
+
+font.e1{
+	font-family: sans-serif;
+	font-size: 170%;
+	color: #000000;
+}
+
+font.e2{
+	font-family: sans-serif;
+	font-size: 100%;
+	font-weight: bold;
+	color: #000000;
+}
+
+font.e3{
+	font-family: sans-serif;
+	font-size: 90%;
+	font-weight: bold;
+	color: #616161;
+}
+
+.datatype{
+	font-size: 80%;
+	border: 1px solid;
+	padding-left: 2px;
+	padding-right: 2px;
+	background-color: #712a58;
+	/* background-color: #bdbdff; */
+}
+.datatype-inherited{
+	font-size: 80%;
+	border: 1px solid;
+	padding-left: 2px;
+	padding-right: 2px;
+	background-color: #bbdbdc;
+}
+
+td.vHeader{
+	background-color: #005a9c;
+	font-family: sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: white;
+	border-style: solid;
+	border-color: #ffffff;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	padding-left: 4px;
+}
+td.vHeaderCell{
+	background-color: #ffffff;
+	font-family: sans-serif;
+	font-size: 12px;
+	border-style: solid;
+	border-color: #ffffff;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	padding-left: 4px;
+	padding-bottom: 4px;
+}
+td.cHeader{
+	font-family: sans-serif;
+	font-size: 13px;
+	background-color: #aaaa77;
+	font-weight: bold;
+	color: black;
+	border-style: solid;
+	border-color: #ffffff;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	padding-left: 4px;
+}
+td.cCell{
+	background-color: #eeeecc;
+	font-size: 12px;
+	border-style: solid;
+	border-color: #ffffff;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	padding-left: 4px;
+}
+td.vCell{
+	background-color: #ccdbee;
+	font-size: 12px;
+	border-style: solid;
+	border-color: #ffffff;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	padding-left: 8px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+td.vcCell{
+	background-color: #ccdbee;
+	font-size: 12px;
+	padding-left: 4px;
+}
+
+a.contributor:link {color: #000000;text-decoration:underline;}
+a.contributor:visited {color: #000000;text-decoration:underline;}
+a.contributor:active {color: #000000;text-decoration:underline;}
+
+
+td.tableOuter {
+                   border: 4px double gray; 
+                   margin: 0em; padding: 0em;   
+}
+
+td.infoTableHeader {
+					font-size: 13px;
+					background-color: #ffffff;
+					padding: 10px; margin: 0em;
+}
+
+td.tableHeader {
+					font-size: 13px;
+					font-weight: bold;
+					background-color: #ffffff;
+					padding: 4px; margin: 0em;
+}
+
+td.tableLeftHeader {
+					font-size: 13px;
+					font-weight: bold;
+					background-color: #ffffff;
+					padding: 4px; margin: 0em;
+}
+
+td.tableInner {
+			font-size: 13px;
+			background-color: #E6F0F5;
+			padding: 4px; margin: 0em
+}
+
+td.emptyInnerTable {
+			font-size: 13px;
+			background-color: #ffffff;
+                    	padding: 4px; margin: 0em
+}
+
+   tr.premiere { background-color: #BEDCE6; }
+
+   th { text-align: left; vertical-align: top }
+
+   .editor { color: red; }
+
+   .countdown { color: white; background-color: red; }
+
+   blockquote, q { font-family: Arial, Helvetica, sans-serif; }
+
+   .quote     { font-family: Arial, Helvetica, sans-serif; }
+
+   pre.quote { margin-left: 2.5em; }
+
+   ol.quote     { font-family: Arial, Helvetica, sans-serif; margin-left: 3em; }
+
+   .diff-add { background-color: yellow; }
+
+   .diff-chg { background-color: lime; }
+
+   .diff-del { text-decoration: line-through; }
+
+.hideme { display: none }
+
+@media print {
+
+  table {
+    page-break-inside: avoid
+  }
+
+}

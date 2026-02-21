@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00501m1_p.xml
+   generated from: @(#)ST_facets00501m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00501m1.xsd">
+    <value>a00A</value>
+    <value>a0-M</value>
+    <value>a0AZ</value>
+    <value>a10a</value>
+    <value>a1-d</value>
+    <value>a1Ah</value>
+    <value>a20j</value>
+    <value>a2-r</value>
+    <value>a2Az</value>
+    <value>a30À</value>
+    <value>a3-Ë</value>
+    <value>a3AÖ</value>
+    <value>a40Ø</value>
+    <value>a4-Û</value>
+    <value>a4AÞ</value>
+    <value>a50à</value>
+    <value>a5-ë</value>
+    <value>a5Aö</value>
+    <value>a60ø</value>
+    <value>a6-û</value>
+    <value>a6Aÿ</value>
+    <value>a70Ā</value>
+    <value>a7-Ę</value>
+    <value>a7Aı</value>
+    <value>a80Ĵ</value>
+    <value>a8-Ĺ</value>
+    <value>a8Aľ</value>
+    <value>a90Ł</value>
+    <value>a9-ń</value>
+    <value>a9Aň</value>
+</test:root>

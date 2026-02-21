@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-4-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-4
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-4-NS NISTSchema-SV-II-list-normalizedString-maxLength-4.xsd">738_Information_The_Operating_The_Street_Chi_,_IA_14120 325_Other_Dom_To_Both_Street_The_,_MD_14120 8483_Oasis_For_Methods_Technologies_Street_Number_,_CT_14120 456_Nsrl_Robust_To_For_Street_Be_,_AL_14120 789_Computing_Using_Applications_Further_Street_Organization_,_ID_14120 3728_Development_Achieved_To_Known_Street_To_,_WA_14120 374_Understand_Work_Software_Industry_Street_Government_,_MN_14120 3466_Information_Ebxml_Browsers_Specific_Street_Annual_,_IA_14120 8981_Concepts_First_The_Repository_Street_The_,_DE_14120</NISTSchema-SV-II-list-normalizedString-maxLength-4>

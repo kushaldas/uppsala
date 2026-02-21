@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-atomic-string-length-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-atomic-string-length-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-atomic-string-length-5
+    xmlns="NISTSchema-SV-II-atomic-string-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-atomic-string-length-5-NS NISTSchema-SV-II-atomic-string-length-5.xsd">in
+processes  A set of related technologies built around this Internet
+language define a rich set of tools that can be used to define 
+manipulate  and display context-rich data  In particular  XML Schemas
+define intuitive methods for creating complex documents  The Document
+Object Model  DOM  defines methods for interacting with XML and HTML 
+permitting the dynamic creation and manipulation of documents  The
+Extensible Stylesheet Language  XSL  defines methods for transforming
+and displaying XML documents on a variety of devices  from web browsers
+to print mediums to voice-enabled devices 
+
+Virtually all application domains are looking
+to use XML technologies to define  manipulate  and exchange structured
+information  In addition  XML pr</NISTSchema-SV-II-atomic-string-length-5>

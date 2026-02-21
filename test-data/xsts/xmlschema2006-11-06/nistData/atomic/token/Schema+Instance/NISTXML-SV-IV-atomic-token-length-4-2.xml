@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-atomic-token-length-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-atomic-token-length-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-atomic-token-length-4
+    xmlns="NISTSchema-SV-IV-atomic-token-length-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-atomic-token-length-4-NS NISTSchema-SV-IV-atomic-token-length-4.xsd">r creating complex documents The Document Object Model DOM defines methods for interacting with XML and HTML permitting the dynamic creation and manipulation of documents The Extensible Stylesheet Language XSL defines methods for transforming and displaying XML documents on a variety of devices from web browsers to print mediums to voice-enabled devices Virtually all application domains are looking to use XML technologies to define manipulate and exchange structured information In addition XML processors and support for the related Schema DOM and XSL technologies are available in beta versions of popular web browsers and application development software The widespread availability of these technologies has made them obvious choices as building blocks for electronic commerce As such conformance of these products to the W3C Recommendations is necessary to build interoperable solutions The Organization for the Advancement of Structured Information Sjrdpqjkvpoynnfefoei</NISTSchema-SV-IV-atomic-token-length-4>

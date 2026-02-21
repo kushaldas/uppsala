@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-double-whiteSpace-1-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-double-whiteSpace-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-double-whiteSpace-1
+    xmlns="NISTSchema-SV-IV-list-double-whiteSpace-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-double-whiteSpace-1-NS NISTSchema-SV-IV-list-double-whiteSpace-1.xsd">-INF -1.7976931348623157E308 -3.8304482082944536E218 -2.6574234076252742E128 -2.5430581788531397E38 -4.1374039677353160E-52 -2.0958340271932008E-142 -4.6354624682553300E-232 -4.9E-324 -0 0 4.9E-324 3.9160496995738192E-234 2.0983027164842993E-144 3.4772112685283900E-54 4.0891149434417560E36 2.0587370619924080E126 4.7693345298704256E216 1.7976931348623157E308 INF NaN</NISTSchema-SV-IV-list-double-whiteSpace-1>

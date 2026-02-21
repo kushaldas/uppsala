@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.2.n.xml	1.2 02/12/25
+
+-->
+
+				<emptywc xmlns="urn:foo" xmlns:a="urn:a" xmlns:b="urn:b" xmlns:c="urn:c" a:foo="bar"/>

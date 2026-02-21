@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-maxLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-IV-list-QName-maxLength-5
+    xmlns:nist="NISTSchema-SV-IV-list-QName-maxLength-5-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:kpublishing-complete_includ="http://www.nist.gov/xsdNS"
+    xmlns:hlack_and.both-l="http://www.nist.gov/xsdNS"
+    xmlns:dkey.abilit="http://www.nist.gov/xsdNS"
+    xmlns:pand="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-maxLength-5-NS NISTSchema-SV-IV-list-QName-maxLength-5.xsd">la_and_relationships-to.known_joint_manipulate-int _aspects.partnership_component-and.suite-is_these. kpublishing-complete_includ:eprovide-computing_modeling-the_processes.the-tran hlack_and.both-l:eparticipants_many.has-web_cross-reference.in.of-p mchains-from.tools.of-to.type.commerce-stimulus_a. kavailable_community_and-is.as_in_vocabularies.cre dkey.abilit:fand_know-use.are_partners-which.the-environments. pand:ehoc.of_over-open_efforts-e.such.pervasive-followi was_the.products_reference_technical-incorporated.</nist:NISTSchema-SV-IV-list-QName-maxLength-5>

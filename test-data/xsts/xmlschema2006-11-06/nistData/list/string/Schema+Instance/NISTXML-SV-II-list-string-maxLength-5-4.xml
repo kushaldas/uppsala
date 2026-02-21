@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-5
+    xmlns="NISTSchema-SV-II-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-5-NS NISTSchema-SV-II-list-string-maxLength-5.xsd">938_And_And_And_And_Street_Oasis_Creation_,_SC_12607-1702 64_Clean_These_Intuitive_Working_Street_Available_Suites_,_IA_12607-1702 7947_Repository_Areas_The_The_Street_Organizations_Base_,_AZ_12607-1702 6625_Ec_Sense_The_As_Street_Will_Use_,_AR_12607-1702 87_Reference_Used_Filter_Wireless_Street_Effective_Are_,_DC_12607-1702 585_Projector_Technologies_Under_Collaborate_Street_Blocks_Would_,_CO_12607-1702 35261_Over_And_And_Pervasive_Street_Must_And_,_NY_12607-1702 26_The_These_Than_Do_Street_As_The_,_MN_12607-1702 64_Investigations_Around_The_And_Street_Both_Data_,_ND_12607-1702 83_Cost_Are_To_Language_Street_In_Become_,_CO_12607-1702 6695_Has_File_To_Facilitation_Street_The_Annual_,_AZ_12607-1702 2526_Technical_Tools_First_Set_Street_Including_Includes_,_NE_12607-1702 668_Within_The_International_Five_Street_Must_This_,_WA_12607-1702 2249_Availability_Issues_These_For_Street_For_And_,_PA_12607-1702 663_Not_Screen_Groups_Led_Street_Related_And_,_HI_12607-1702 7499_Signatures_Depends_Product_Engineering_Street_And_That_,_NC_12607-1702 2227_Resource_That_Then_For_Street_Leadership_The_,_VA_12607-1702 597_Implementations_Specifications_Development_Syntax_Street_Electronic_Only_,_NJ_12607-1702 8998_Individual_More_Investigation_For_Street_Consortium_The_,_OR_12607-1702 177_And_Nature_Of_Set_Street_Commerce_Localized_,_NJ_12607-1702</NISTSchema-SV-II-list-string-maxLength-5>

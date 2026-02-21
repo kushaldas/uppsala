@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-5
+    xmlns="NISTSchema-SV-II-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-5-NS NISTSchema-SV-II-list-token-maxLength-5.xsd">7295_Provides_Technology_By_The_Street_Future_Their_,_DC_12554-1947 8_Discuss_Xml_Law_Associated_Street_Both_Xml_,_KY_12554-1947 8_Well_An_The_Of_Street_Technical_Community_,_CT_12554-1947 618_File_Computing_Prominent_Involved_Street_For_Wireless_,_OK_12554-1947 165_Accomplish_Bandwidth_And_Shift_Street_Cost_The_,_NJ_12554-1947 493_The_From_Commerce_Applications_Street_Paradigm_Resources_,_OR_12554-1947 898_Help_Frameworks_Xml_World_Street_With_Systems_,_VA_12554-1947 348_Files_Who_Establish_Discussions_Street_Utilities_If_,_VT_12554-1947 4857_Of_By_Also_Aspects_Street_Is_Computer_,_MO_12554-1947 582_Life_The_Their_Nations_Street_The_Available_,_CO_12554-1947 67235_Errors_Well_Are_The_Street_Open_And_,_VA_12554-1947 584_Of_Information_Software_Data_Street_Automate_We_,_DE_12554-1947 6749_Tools_By_Reference_Helping_Street_Signatures_Care_,_IL_12554-1947 54_The_Key_Draft_Both_Street_That_Systems_,_ND_12554-1947</NISTSchema-SV-II-list-token-maxLength-5>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)annotation00101m1.xsd
+   generated from: @(#)annotation00101m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="MGroupDef/annotation"
+  xmlns:jt="JavaTest"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="MGroupDef/annotation">
+  
+     <xsd:element name="root"/>
+  
+     <xsd:complexType name="A">
+          <xsd:group ref="G1"/>
+     </xsd:complexType>
+
+     <xsd:group name="G1">
+          <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                  This is a model group definition.
+              </xsd:documentation>
+          </xsd:annotation>
+          <xsd:all>
+               <xsd:element name="c" type="xsd:int" />
+               <xsd:element name="date" type="xsd:date" />
+          </xsd:all>
+     </xsd:group>
+
+</xsd:schema>

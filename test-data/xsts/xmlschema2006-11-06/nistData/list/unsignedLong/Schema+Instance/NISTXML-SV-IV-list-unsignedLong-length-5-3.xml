@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-unsignedLong-length-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-unsignedLong-length-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-unsignedLong-length-5
+    xmlns="NISTSchema-SV-IV-list-unsignedLong-length-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-unsignedLong-length-5-NS NISTSchema-SV-IV-list-unsignedLong-length-5.xsd">961753464767154412 941752527451345273 972326475636517335 963832572333253332 936222277374275235 915365367544258725 972565153557474541 933256263445713256 952215365242765276 921242472252674326</NISTSchema-SV-IV-list-unsignedLong-length-5>

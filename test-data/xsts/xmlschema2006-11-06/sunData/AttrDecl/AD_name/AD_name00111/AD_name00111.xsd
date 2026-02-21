@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00111.xsd	1.2 02/12/25
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <!-- attribute names have punctuation characters -->
+            <xsd:attribute name="a--a" type="xsd:int"/>
+            <xsd:attribute name="b&#x002E;&#x002E;b" type="xsd:int"/>
+            <xsd:attribute name="c__c" type="xsd:int"/>
+            <xsd:attribute name="d&#x00B7;&#x00B7;d" type="xsd:int"/>
+            <xsd:attribute name="e&#x0387;&#x0387;e" type="xsd:int"/>
+            <xsd:attribute name="f&#x06DD;&#x06DD;f" type="xsd:int"/>
+            <xsd:attribute name="g&#x06DE;&#x06DE;g" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

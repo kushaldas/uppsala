@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-atomic-hexBinary-whiteSpace-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1
+    xmlns="NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1-NS NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1.xsd">6d6e6b6664616f6f6b676e646d6c67776a6d6e6a6a6d736a73726e62747079656b6765706f67776e6778746479736273736b626b6f76797170766d7264656c6573646b696a6864</NISTSchema-SV-IV-atomic-hexBinary-whiteSpace-1>

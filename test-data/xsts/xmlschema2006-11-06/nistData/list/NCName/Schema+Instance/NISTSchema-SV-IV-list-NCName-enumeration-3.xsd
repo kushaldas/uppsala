@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NCName-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NCName-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NCName-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NCName-enumeration-3,
+      which is derived by restriction of a list with itemType NCName
+      by facet enumeration with values of:
+          _due-registry-will-is_of.for_process _acting_these-in.computing-has.acting-for-computed kof_to-particu _consortium-process.test_templates-t dand_with_challenges.our-known.fi rindustry_the-systems_that_and_this_graphical_rela pbeing.that-chosen-recent_through.than.application.gain_wit _in-house.aspects-methods_must_small-.manipulate.created tdo.object-first-generation.come_provide-for-that.temp
+          ian _interoperable-web-leadership.a-etc.partne pthe.the_neutral.file.is-law_r tand.a_for_the-in-intuitive.rapid-the.in_project nincluding.the-via-technologie mindus scertain.variety_the.is-syst
+          wthe-for.data.is_the.dat atools-addressing_the-in-resource_of-data_defini _include.file-their_softwa yincludes_daily_collaborating.participating-l flacking-and_lies_database-unbiased_wireless.known rgood_over-organization-info
+          _the. _repository-of-subject-standard.is quse.them-to.first-commerce-manipulation_no_emerging. dsoftware.stimulus-display _made.to-about_testable_other.ways-revisio creference-technologies_ _same-industry-the-compatibili
+          lleadership_measure-a_developme bmany.standardization-library.and_aid-in.ability_ cemerging-implementation_speci _related.set_to.2000_and-our.stimulu _manipulate-approach_advent_raised-related.to_known.p
+          _of_pico-cellular-as.for.the-busin bsystem-software-these.which-address-joint_chains-devi tthe_specifications-and.the.organization _comple dsystems-is_computing.in_effectively.computer_are.regard-mu xinfrastructure-pervasive_with-infrastructure-utilize.dynamic_a ncriteria.describes_and_and_are_that_to.from.looking.base-was.
+          _has_of_to_sy _as_revisio bdegree_recognition_effectively.must.opportunity hrich-re pof.computers-and_developing.par _been.nature-etc.localized-
+          _popula _on-standard-of- pin.less_in-interoperab eetc.and_docume ncommerce_following_constituent-
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NCName-enumeration-3" type="NISTSchema-SV-IV-list-NCName-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfNCName">
+    <xs:list itemType="xs:NCName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NCName-enumeration-3-Type">
+    <xs:restriction base="listOfNCName">
+          <xs:enumeration value="_due-registry-will-is_of.for_process _acting_these-in.computing-has.acting-for-computed kof_to-particu _consortium-process.test_templates-t dand_with_challenges.our-known.fi rindustry_the-systems_that_and_this_graphical_rela pbeing.that-chosen-recent_through.than.application.gain_wit _in-house.aspects-methods_must_small-.manipulate.created tdo.object-first-generation.come_provide-for-that.temp"/>
+          <xs:enumeration value="ian _interoperable-web-leadership.a-etc.partne pthe.the_neutral.file.is-law_r tand.a_for_the-in-intuitive.rapid-the.in_project nincluding.the-via-technologie mindus scertain.variety_the.is-syst"/>
+          <xs:enumeration value="wthe-for.data.is_the.dat atools-addressing_the-in-resource_of-data_defini _include.file-their_softwa yincludes_daily_collaborating.participating-l flacking-and_lies_database-unbiased_wireless.known rgood_over-organization-info"/>
+          <xs:enumeration value="_the. _repository-of-subject-standard.is quse.them-to.first-commerce-manipulation_no_emerging. dsoftware.stimulus-display _made.to-about_testable_other.ways-revisio creference-technologies_ _same-industry-the-compatibili"/>
+          <xs:enumeration value="lleadership_measure-a_developme bmany.standardization-library.and_aid-in.ability_ cemerging-implementation_speci _related.set_to.2000_and-our.stimulu _manipulate-approach_advent_raised-related.to_known.p"/>
+          <xs:enumeration value="_of_pico-cellular-as.for.the-busin bsystem-software-these.which-address-joint_chains-devi tthe_specifications-and.the.organization _comple dsystems-is_computing.in_effectively.computer_are.regard-mu xinfrastructure-pervasive_with-infrastructure-utilize.dynamic_a ncriteria.describes_and_and_are_that_to.from.looking.base-was."/>
+          <xs:enumeration value="_has_of_to_sy _as_revisio bdegree_recognition_effectively.must.opportunity hrich-re pof.computers-and_developing.par _been.nature-etc.localized-"/>
+          <xs:enumeration value="_popula _on-standard-of- pin.less_in-interoperab eetc.and_docume ncommerce_following_constituent-"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

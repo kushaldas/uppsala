@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-atomic-normalizedString-minLength-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-atomic-normalizedString-minLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-atomic-normalizedString-minLength-4
+    xmlns="NISTSchema-SV-II-atomic-normalizedString-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-atomic-normalizedString-minLength-4-NS NISTSchema-SV-II-atomic-normalizedString-minLength-4.xsd">The advent of Internet-enabled browsers and a first-gener</NISTSchema-SV-II-atomic-normalizedString-minLength-4>

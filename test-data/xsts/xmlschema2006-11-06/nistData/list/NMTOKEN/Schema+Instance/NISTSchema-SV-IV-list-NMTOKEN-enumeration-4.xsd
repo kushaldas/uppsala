@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKEN-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKEN-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKEN-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKEN-enumeration-4,
+      which is derived by restriction of a list with itemType NMTOKEN
+      by facet enumeration with values of:
+          and.aspects-by:industry:u XML-related_automating-and.for:servi the.and_Committee_will-and-includes:must_subject:two:m the-reference-and.conformant:Naval-of-will-significant- voice-enabled-availability_looking.help_tools_basis.reco with.registry.lies_ appropriate_s-reference.pervasive_and.ca
+          prominent_softw landscape:for_well_that_development.asked_versions-mo areas_of:software involved:is_specific:a:these_manage without-and-the.ef Recommendation_i
+          for_voi to.from_the-communicat automate-needed.cross-reference-help:tools- consortium-in_Facilitation.deployed:a.Errors_HTML_am being:The-interconnected_p Developers:system_software:o
+          files-OASIS_computing_ and_criteria:-softwa revolutionize_discover-chairs-structure-documents The-implementation_measurements_transactiona having-retrieval_revolution.partnerships:newc manipulate:SMEs:for-for:and.and.issues-networks_devices_has-s the-electronic.based:
+          the-daily-for-the.to.contribute-web.built specifications_by-Provide:degree:support-systems:worki government_computing.spe with_testing.pervasive:projector.software_upon- tools:XML-has.partners-standardization:chain.d will-resources:of_with.access.certain-that.DOM-further_of:un
+          ve which_bottleneck the-made-both:help:Naval-processes:projector_XML_fed.Sc OA rapidly_a_will:a.and:Language:Schema_ by.signatures.tec
+          revolution:language.hardware.and.that-one_to-metrology-autom with:be-contribute_of:for_will.publishing:must-for-of.develop or.measure_of:be_of_be_beta_Specify:community_tar to-the:with.the-Trade:build_and.con to:OASIS_for-systems:a:provides_implemen of:of.with_those_help.XML:w and_typical.standardizati beco the_industries:the_we_of_XML
+          the_tools:and_for:industry_softw provide:Conduct_of_a.the:XML.t proce memory_object-profiles-the-XML-further_to:an networking_The_diagnostic:by-make.and_Only to.Document.more_program.back_ITL.interconnecting systems_the.and:of.led_automatic:of.of:is.file_and:Su and.systems.effectively:bet
+          reposit to:well.process.Subcommittee-workin can_and-p and:a-to.and_documents:file:XML-our:as.work:and_these are:t r medium-sized_development:providing:XML:access.reference-and_s
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-4" type="NISTSchema-SV-IV-list-NMTOKEN-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfNMTOKEN">
+    <xs:list itemType="xs:NMTOKEN"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-4-Type">
+    <xs:restriction base="listOfNMTOKEN">
+          <xs:enumeration value="and.aspects-by:industry:u XML-related_automating-and.for:servi the.and_Committee_will-and-includes:must_subject:two:m the-reference-and.conformant:Naval-of-will-significant- voice-enabled-availability_looking.help_tools_basis.reco with.registry.lies_ appropriate_s-reference.pervasive_and.ca"/>
+          <xs:enumeration value="prominent_softw landscape:for_well_that_development.asked_versions-mo areas_of:software involved:is_specific:a:these_manage without-and-the.ef Recommendation_i"/>
+          <xs:enumeration value="for_voi to.from_the-communicat automate-needed.cross-reference-help:tools- consortium-in_Facilitation.deployed:a.Errors_HTML_am being:The-interconnected_p Developers:system_software:o"/>
+          <xs:enumeration value="files-OASIS_computing_ and_criteria:-softwa revolutionize_discover-chairs-structure-documents The-implementation_measurements_transactiona having-retrieval_revolution.partnerships:newc manipulate:SMEs:for-for:and.and.issues-networks_devices_has-s the-electronic.based:"/>
+          <xs:enumeration value="the-daily-for-the.to.contribute-web.built specifications_by-Provide:degree:support-systems:worki government_computing.spe with_testing.pervasive:projector.software_upon- tools:XML-has.partners-standardization:chain.d will-resources:of_with.access.certain-that.DOM-further_of:un"/>
+          <xs:enumeration value="ve which_bottleneck the-made-both:help:Naval-processes:projector_XML_fed.Sc OA rapidly_a_will:a.and:Language:Schema_ by.signatures.tec"/>
+          <xs:enumeration value="revolution:language.hardware.and.that-one_to-metrology-autom with:be-contribute_of:for_will.publishing:must-for-of.develop or.measure_of:be_of_be_beta_Specify:community_tar to-the:with.the-Trade:build_and.con to:OASIS_for-systems:a:provides_implemen of:of.with_those_help.XML:w and_typical.standardizati beco the_industries:the_we_of_XML"/>
+          <xs:enumeration value="the_tools:and_for:industry_softw provide:Conduct_of_a.the:XML.t proce memory_object-profiles-the-XML-further_to:an networking_The_diagnostic:by-make.and_Only to.Document.more_program.back_ITL.interconnecting systems_the.and:of.led_automatic:of.of:is.file_and:Su and.systems.effectively:bet"/>
+          <xs:enumeration value="reposit to:well.process.Subcommittee-workin can_and-p and:a-to.and_documents:file:XML-our:as.work:and_these are:t r medium-sized_development:providing:XML:access.reference-and_s"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

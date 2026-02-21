@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en-US">
+<head>
+  <title>NIST tests for W3C XML Schema 1.0, Second Edition Part 2: Datatypes</title>
+  <link href="./base.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<p class="navbar"><a href="http://www.w3.org/"><img alt="W3C"
+ src="http://www.w3.org/Icons/w3c_home.png" border="0"></a> <a
+ href="http://www.w3.org/Architecture/" shape="rect" rel="in-domain"><img
+ height="48" alt="Architecture Domain"
+ src="http://www.w3.org/Icons/arch.png" width="212" border="0"></a> <a
+ href="http://www.nist.gov/"><img height="45"
+ alt="National Institute of Standards and Technology"
+ src="http://www.nist.gov/itl/div897/images/nist_home.gif" width="231"
+ border="0"></a><br>
+<small><a href="http://www.w3.org/XML/Schema">About XML Schema</a>
+&middot; <a href="http://www.w3.org/XML/2004/xml-schema-test-suite/schemafaq.html">XML Schema Test Suite
+FAQ</a> &middot; Members only resource: <a
+ href="http://www.w3.org/XML/Group/Schemas">XML Schema Working Group</a></small></p>
+
+<h1>NIST Test Report for XML Schema 1.0, Second Edition Part 2: Datatypes</h1>
+
+
+<dl>
+	<dt><b>This version:</b></dt>
+	<dd>14 January 2004</dd>
+</dl>
+<dl>
+	<dt><b>Contributor:</b></dt>
+	<dd>NIST <a href="http://www.nist.gov">&lt;http://www.nist.gov&gt;</a></dd>
+</dl>
+<dl>
+	<dt><b>Editors:</b></dt>
+	<dd>John Tebbutt, NIST<a href="mailto:tebbutt@nist.gov">&lt;tebbutt@nist.gov&gt;</a></dd>
+</dl>
+
+
+<h2>Atomic Datatypes</h2>
+<IMG alt="Diagram of built-in type hierarchy" src="atomicDataTypes.gif" useMap="#atomicTypeImage" border="0" >
+<map name="atomicTypeImage">
+<area shape="RECT" alt="duration" coords="39,22,90,40" href="atomic-duration.html" title="duration">
+<area shape="RECT" alt="dateTime" coords="95,22,153,40" href="atomic-dateTime.html" title="dateTime">
+<area shape="RECT" alt="time" coords="157,22,189,40" href="atomic-time.html" title="time">
+<area shape="RECT" alt="date" coords="193,22,223,40" href="atomic-date.html" title="date">
+<area shape="RECT" alt="gYearMonth" coords="227,22,303,40" href="atomic-gYearMonth.html" title="gYearMonth">
+<area shape="RECT" alt="gYear" coords="308,22,348,40" href="atomic-gYear.html" title="gYear">
+<area shape="RECT" alt="gMonthDay" coords="351,22,423,40" href="atomic-gMonthDay.html" title="gMonthDay">
+<area shape="RECT" alt="gDay" coords="428,22,463,40" href="atomic-gDay.html" title="gDay">
+<area shape="RECT" alt="gMonth" coords="468,22,517,40" href="atomic-gMonth.html" title="gMonth">
+<area shape="RECT" alt="boolean" coords="49,54,99,72" href="atomic-boolean.html" title="boolean">
+<area shape="RECT" alt="base64Binary" coords="104,54,188,72" href="atomic-base64Binary.html" title="base64Binary">
+<area shape="RECT" alt="hexBinary" coords="193,54,256,72" href="atomic-hexBinary.html" title="hexBinary">
+<area shape="RECT" alt="float" coords="270,54,299,72" href="atomic-float.html" title="float">
+<area shape="RECT" alt="double" coords="304,54,348,72" href="atomic-double.html" title="double">
+<area shape="RECT" alt="anyURI" coords="351,54,399,72" href="atomic-anyURI.html" title="anyURI">
+<area shape="RECT" alt="QName" coords="404,54,452,72" href="atomic-QName.html" title="QName"><!-- <area shape="rect" alt="NOTATION" coords="554,193,627,214" href="atomic-NOTATION.html" title="NOTATION"> -->
+<area shape="RECT" alt="string" coords="13,79,51,98" href="atomic-string.html" title="string">
+<area shape="RECT" alt="decimal" coords="242,79,293,98" href="atomic-decimal.html" title="decimal">
+<area shape="RECT" alt="normalizedString" coords="13,110,115,129" href="atomic-normalizedString.html" title="normalizedString">
+<area shape="RECT" alt="integer" coords="242,110,286,128" href="atomic-integer.html" title="integer">
+<area shape="RECT" alt="token" coords="13,141,51,160" href="atomic-token.html" title="token">
+<area shape="RECT" alt="nonPositiveInteger" coords="242,141,352,160" href="atomic-nonPositiveInteger.html" title="nonPositiveInteger">
+<area shape="RECT" alt="long" coords="381,141,411,160" href="atomic-long.html" title="long">
+<area shape="RECT" alt="nonNegativeInteger" coords="428,141,543,160" href="atomic-nonNegativeInteger.html" title="nonNegativeInteger">
+<area shape="RECT" alt="language" coords="167,172,224,190" href="atomic-language.html" title="language">
+<area shape="RECT" alt="Name" coords="13,172,52,190" href="atomic-Name.html" title="Name">
+<area shape="RECT" alt="NMTOKEN" coords="83,172,155,190" href="atomic-NMTOKEN.html" title="NMTOKEN">
+<area shape="RECT" alt="negativeInteger" coords="241,172,333,190" href="atomic-negativeInteger.html" title="negativeInteger">
+<area shape="RECT" alt="int" coords="387,172,407,190" href="atomic-int.html" title="int">
+<area shape="RECT" alt="unsignedLong" coords="429,172,514,190" href="atomic-unsignedLong.html" title="unsignedLong">
+<area shape="RECT" alt="positiveInteger" coords="519,172,607,190" href="atomic-positiveInteger.html" title="positiveInteger">
+<area shape="RECT" alt="NCName" coords="13,194,70,212" href="atomic-NCName.html" title="NCName"><!-- <area shape="rect" alt="NMTOKENS" coords="132,437,205,458" href="atomic-NMTOKENS.html" title="NMTOKENS"> -->
+<area shape="RECT" alt="short" coords="381,194,417,212" href="atomic-short.html" title="short">
+<area shape="RECT" alt="unsignedInt" coords="429,194,501,212" href="atomic-unsignedInt.html" title="unsignedInt">
+<area shape="RECT" alt="ID" coords="20,216,39,234" href="atomic-ID.html" title="ID"><!-- <area shape="rect" alt="IDREF" coords="76,498,123,518" href="atomic-IDREF.html" title="IDREF"> --><!-- <area shape="rect" alt="ENTITY" coords="140,498,196,518" href="atomic-ENTITY.html" title="ENTITY"> -->
+<area shape="RECT" alt="byte" coords="381,216,413,234" href="atomic-byte.html" title="byte">
+<area shape="RECT" alt="unsignedShort" coords="429,216,517,234" href="atomic-unsignedShort.html" title="unsignedShort"><!-- <area shape="rect" alt="IDREFS" coords="72,539,127,559" href="atomic-IDREFS.html" title="IDREFS"> --><!-- <area shape="rect" alt="ENTITIES" coords="132,539,204,559" href="atomic-ENTITIES.html" title="ENTITIES"> -->
+<area shape="RECT" alt="unsignedByte" coords="429,233,513,256" href="atomic-unsignedByte.html" title="unsignedByte">
+<area shape="RECT" alt ="Built-in Datatypes.html" title="Built-in Datatypes" coords="0,0,0,0">
+</map>
+
+
+<h2>List Datatypes</h2>
+<IMG alt="Diagram of built-in type hierarchy" src="listDataTypes.gif" useMap="#listTypeImage" border="0" >
+<map name="listTypeImage">
+<area shape="RECT" alt="duration" coords="39,22,90,40" href="list-duration.html" title="duration">
+<area shape="RECT" alt="dateTime" coords="95,22,153,40" href="list-dateTime.html" title="dateTime">
+<area shape="RECT" alt="time" coords="157,22,189,40" href="list-time.html" title="time">
+<area shape="RECT" alt="date" coords="193,22,223,40" href="list-date.html" title="date">
+<area shape="RECT" alt="gYearMonth" coords="227,22,303,40" href="list-gYearMonth.html" title="gYearMonth">
+<area shape="RECT" alt="gYear" coords="308,22,348,40" href="list-gYear.html" title="gYear">
+<area shape="RECT" alt="gMonthDay" coords="351,22,423,40" href="list-gMonthDay.html" title="gMonthDay">
+<area shape="RECT" alt="gDay" coords="428,22,463,40" href="list-gDay.html" title="gDay">
+<area shape="RECT" alt="gMonth" coords="468,22,517,40" href="list-gMonth.html" title="gMonth">
+<area shape="RECT" alt="boolean" coords="49,54,99,72" href="list-boolean.html" title="boolean">
+<area shape="RECT" alt="base64Binary" coords="104,54,188,72" href="list-base64Binary.html" title="base64Binary">
+<area shape="RECT" alt="hexBinary" coords="193,54,256,72" href="list-hexBinary.html" title="hexBinary">
+<area shape="RECT" alt="float" coords="270,54,299,72" href="list-float.html" title="float">
+<area shape="RECT" alt="double" coords="304,54,348,72" href="list-double.html" title="double">
+<area shape="RECT" alt="anyURI" coords="351,54,399,72" href="list-anyURI.html" title="anyURI">
+<area shape="RECT" alt="QName" coords="404,54,452,72" href="list-QName.html" title="QName"><!-- <area shape="rect" alt="NOTATION" coords="554,193,627,214" href="list-NOTATION.html" title="NOTATION"> -->
+<area shape="RECT" alt="string" coords="13,79,51,98" href="list-string.html" title="string">
+<area shape="RECT" alt="decimal" coords="242,79,293,98" href="list-decimal.html" title="decimal">
+<area shape="RECT" alt="normalizedString" coords="13,110,115,129" href="list-normalizedString.html" title="normalizedString">
+<area shape="RECT" alt="integer" coords="242,110,286,128" href="list-integer.html" title="integer">
+<area shape="RECT" alt="token" coords="13,141,51,160" href="list-token.html" title="token">
+<area shape="RECT" alt="nonPositiveInteger" coords="242,141,352,160" href="list-nonPositiveInteger.html" title="nonPositiveInteger">
+<area shape="RECT" alt="long" coords="381,141,411,160" href="list-long.html" title="long">
+<area shape="RECT" alt="nonNegativeInteger" coords="428,141,543,160" href="list-nonNegativeInteger.html" title="nonNegativeInteger">
+<area shape="RECT" alt="language" coords="167,172,224,190" href="list-language.html" title="language">
+<area shape="RECT" alt="Name" coords="13,172,52,190" href="list-Name.html" title="Name">
+<area shape="RECT" alt="NMTOKEN" coords="83,172,155,190" href="list-NMTOKEN.html" title="NMTOKEN">
+<area shape="RECT" alt="NMTOKENS" coords="80,194,158,212" href="list-NMTOKENS.html" title="NMTOKENS">
+<area shape="RECT" alt="negativeInteger" coords="241,172,333,190" href="list-negativeInteger.html" title="negativeInteger">
+<area shape="RECT" alt="int" coords="387,172,407,190" href="list-int.html" title="int">
+<area shape="RECT" alt="unsignedLong" coords="429,172,514,190" href="list-unsignedLong.html" title="unsignedLong">
+<area shape="RECT" alt="positiveInteger" coords="519,172,607,190" href="list-positiveInteger.html" title="positiveInteger">
+<area shape="RECT" alt="NCName" coords="13,194,70,212" href="list-NCName.html" title="NCName"><!-- <area shape="rect" alt="NMTOKENS" coords="132,437,205,458" href="list-NMTOKENS.html" title="NMTOKENS"> -->
+<area shape="RECT" alt="short" coords="381,194,417,212" href="list-short.html" title="short">
+<area shape="RECT" alt="unsignedInt" coords="429,194,501,212" href="list-unsignedInt.html" title="unsignedInt">
+<area shape="RECT" alt="ID" coords="20,216,39,234" href="list-ID.html" title="ID"><!-- <area shape="rect" alt="IDREF" coords="76,498,123,518" href="list-IDREF.html" title="IDREF"> --><!-- <area shape="rect" alt="ENTITY" coords="140,498,196,518" href="list-ENTITY.html" title="ENTITY"> -->
+<area shape="RECT" alt="byte" coords="381,216,413,234" href="list-byte.html" title="byte">
+<area shape="RECT" alt="unsignedShort" coords="429,216,517,234" href="list-unsignedShort.html" title="unsignedShort"><!-- <area shape="rect" alt="IDREFS" coords="72,539,127,559" href="list-IDREFS.html" title="IDREFS"> --><!-- <area shape="rect" alt="ENTITIES" coords="132,539,204,559" href="list-ENTITIES.html" title="ENTITIES"> -->
+<area shape="RECT" alt="unsignedByte" coords="429,233,513,256" href="list-unsignedByte.html" title="unsignedByte">
+<area shape="RECT" alt ="Built-in Datatypes.html" title="Built-in Datatypes" coords="0,0,0,0">
+</map>
+
+<h2>Union Datatypes</h2>
+<ul>
+	<li><A href="union-anyURI.html">union-anyURI-float</a>
+	<li><A href="union-duration.html">union-duration-decimal</a>
+	<li><A href="union-gMonthDay.html">union-gMonthDay-gMonthYear</a>
+	<li><A href="union-short.html">union-short-gYear</a></li>
+</ul>
+
+<hr />
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<td align="left">
+<address>
+	<small>
+		<a href="mailto:tony.cincotta@nist.gov">Tony Cincotta</a>, NIST<br />
+		<a href="mailto:david_e3@verifone.com">David Ezell</a>, National Association of Convenience Stores, chair<br />
+		<a href="mailto:cmsmcq@uic.edu">C.M. Sperberg-McQueen</a>, W3C, staff contact
+	</small>
+</address>		
+		</td>
+		<td align="right" valign="top">
+      <a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" border="0"/></a>		
+		</td>
+	</tr>
+</table>
+
+
+</body>
+</html>

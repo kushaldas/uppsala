@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-short-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-short-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-short-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-short-enumeration-3,
+      which is derived by restriction of a list with itemType short
+      by facet enumeration with values of:
+          959 31 743 -6 -56 -3 182 -4697 -48 67
+          -9594 -6640 -616 745 -32768 -525 -42 26747 -2118 -67
+          -674 26883 -97 32767 -878 -32768 257
+          8 53 21 -8232 -5211 333 108 -24
+          -686 956 207 15 -9007 -32768 32767 53
+          8901 66 24875 7604 -6 -6037 -738
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-short-enumeration-3" type="NISTSchema-SV-IV-list-short-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfshort">
+    <xs:list itemType="xs:short"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-short-enumeration-3-Type">
+    <xs:restriction base="listOfshort">
+          <xs:enumeration value="959 31 743 -6 -56 -3 182 -4697 -48 67"/>
+          <xs:enumeration value="-9594 -6640 -616 745 -32768 -525 -42 26747 -2118 -67"/>
+          <xs:enumeration value="-674 26883 -97 32767 -878 -32768 257"/>
+          <xs:enumeration value="8 53 21 -8232 -5211 333 108 -24"/>
+          <xs:enumeration value="-686 956 207 15 -9007 -32768 32767 53"/>
+          <xs:enumeration value="8901 66 24875 7604 -6 -6037 -738"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

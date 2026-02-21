@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)modelGroup00101m1.xsd
+   generated from: @(#)modelGroup00101m.jmpp	1.2 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="modelGroup"
+  targetNamespace="modelGroup">
+
+     <xsd:complexType name="A">
+          <xsd:group ref="G1"/>
+     </xsd:complexType>
+
+     <xsd:element name="a" type="A" />
+
+     <xsd:group name="G1">
+          <xsd:all>
+               <xsd:element name="c" type="xsd:int" />
+               <xsd:element name="date" type="xsd:date" />
+          </xsd:all>
+     </xsd:group>
+
+</xsd:schema>
+

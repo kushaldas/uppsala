@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-minLength-1-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-minLength-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-minLength-1
+    xmlns="NISTSchema-SV-IV-list-string-minLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-minLength-1-NS NISTSchema-SV-IV-list-string-minLength-1.xsd">664_The_These_Street_For_Availability_Partners_,_WV_17208 84_Particularly_Language_Street_Assuring_Interoperability_And_,_NM_17208 76825_Transforming_Web_Street_Designed_Computing_Applications_,_KS_17208 454_Must_Will_Street_Provided_Distributed_Embedded_,_IA_17208 494_Database_Enabling_Street_And_Tool_And_,_AR_17208 6116_Issues_Versions_Street_The_Come_The_,_DC_17208 26_Manipulate_Must_Street_Transact_Four_Standardization_,_AK_17208 663_And_As_Street_It_Compliant_Of_,_NH_17208</NISTSchema-SV-IV-list-string-minLength-1>

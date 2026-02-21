@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd008.xsd	1.3 03/10/10
+
+-->
+
+<!--
+	HIGHLIGHT OF THIS TEST
+	======================
+	- abstract element and element substitution group.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="generic" minOccurs="0" />
+				<xs:element name="restricted" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="long" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="generic">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="facet" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="facet">
+		<xs:sequence>
+			<xs:element name="annotation" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="value" use="required"/>
+	</xs:complexType>
+	
+	<xs:element name="facet" type="facet" abstract="true"/>
+	
+	<xs:element name="yesNo" substitutionGroup="facet">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="facet">
+					<xs:sequence>
+						<xs:element name="annotation" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="value" type="xs:boolean" use="required"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="longType">
+		<xs:complexContent>
+			<xs:restriction base="facet">
+				<xs:sequence>
+					<xs:element name="annotation" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="value" type="xs:long" use="required"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:element name="long" substitutionGroup="facet" type="longType"/>
+	
+	<xs:element name="int" substitutionGroup="long">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="longType">
+					<xs:sequence>
+						<xs:element name="annotation" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="value" type="xs:int" use="required"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

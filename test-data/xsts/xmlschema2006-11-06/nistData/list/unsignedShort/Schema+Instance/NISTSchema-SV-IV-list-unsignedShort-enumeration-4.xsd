@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-unsignedShort-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-unsignedShort-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-unsignedShort-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-unsignedShort-enumeration-4,
+      which is derived by restriction of a list with itemType unsignedShort
+      by facet enumeration with values of:
+          849 8668 444 9419 31 9716 28 65
+          80 1 2828 2897 8345 65535 9093
+          8759 2803 57173 193 16638 90 1173 49760 543 3457
+          80 7445 3433 28494 22 86 530 945 65535
+          1917 446 51111 72 39 890 745 15
+          50944 288 4230 65535 424 632 63172 6232
+          2777 34 2802 13 9650 13135
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-unsignedShort-enumeration-4" type="NISTSchema-SV-IV-list-unsignedShort-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfunsignedShort">
+    <xs:list itemType="xs:unsignedShort"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-unsignedShort-enumeration-4-Type">
+    <xs:restriction base="listOfunsignedShort">
+          <xs:enumeration value="849 8668 444 9419 31 9716 28 65"/>
+          <xs:enumeration value="80 1 2828 2897 8345 65535 9093"/>
+          <xs:enumeration value="8759 2803 57173 193 16638 90 1173 49760 543 3457"/>
+          <xs:enumeration value="80 7445 3433 28494 22 86 530 945 65535"/>
+          <xs:enumeration value="1917 446 51111 72 39 890 745 15"/>
+          <xs:enumeration value="50944 288 4230 65535 424 632 63172 6232"/>
+          <xs:enumeration value="2777 34 2802 13 9650 13135"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

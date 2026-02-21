@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AU_attrDecl00101m1.xml
+   generated from: @(#)AU_attrDecl00101m.jmpp	1.4 02/11/19
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrUse/attrDecl AU_attrDecl00101m1_p.xsd"
+      xmlns:td="AttrUse/attrDecl">
+
+   <td:elementWithAttr td:number="157"/>
+</td:root>
+

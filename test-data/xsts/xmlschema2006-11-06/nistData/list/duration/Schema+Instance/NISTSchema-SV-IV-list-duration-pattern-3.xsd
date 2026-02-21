@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-IV-list-duration-pattern-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-duration-pattern-3-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-duration-pattern-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-duration-pattern-3,
+      which is derived by restriction of a list with item type duration
+      by facet pattern with a value of: P18\d\dY1\dM\d0DT0\dH\d1M3\dS P\d\d87Y0\dM0\dDT\d3H4\dM\d7S P\d\d19Y0\dM\d6DT\d6H3\dM1\dS P19\d\dY\d5M0\dDT\d0H\d5M\d5S P19\d\dY1\dM\d3DT\d4H5\dM3\dS P\d\d22Y0\dM\d9DT1\dH2\dM\d1S P\d\d66Y\d2M\d1DT1\dH3\dM2\dS P\d\d20Y\d6M0\dDT\d5H1\dM\d7S P17\d\dY\d1M\d4DT1\dH\d3M\d4S P19\d\dY0\dM1\dDT0\dH4\dM4\dS
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-IV-list-duration-pattern-3" type="nist:NISTSchema-SV-IV-list-duration-pattern-3-Type"/>
+
+  <simpleType name="listOfduration">
+    <list itemType="duration"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-IV-list-duration-pattern-3-Type">
+    <restriction base="nist:listOfduration">
+      <pattern value="P18\d\dY1\dM\d0DT0\dH\d1M3\dS P\d\d87Y0\dM0\dDT\d3H4\dM\d7S P\d\d19Y0\dM\d6DT\d6H3\dM1\dS P19\d\dY\d5M0\dDT\d0H\d5M\d5S P19\d\dY1\dM\d3DT\d4H5\dM3\dS P\d\d22Y0\dM\d9DT1\dH2\dM\d1S P\d\d66Y\d2M\d1DT1\dH3\dM2\dS P\d\d20Y\d6M0\dDT\d5H1\dM\d7S P17\d\dY\d1M\d4DT1\dH\d3M\d4S P19\d\dY0\dM1\dDT0\dH4\dM4\dS"/>
+    </restriction>
+  </simpleType>
+
+</schema>

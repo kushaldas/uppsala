@@ -1,0 +1,54 @@
+<?xml version='1.0'?>
+<ts:testSuite xmlns:ts="http://www.w3.org/XML/2004/xml-schema-test-suite/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.w3.org/XML/2004/xml-schema-test-suite/ nistMeta/AnnotatedTSSchema.xsd" name="TS_2006" releaseDate="2007-06-15" schemaVersion="W3C XML Schema 1.0 2nd edition">
+ <ts:annotation>
+  <ts:documentation>The entire contents of this directory and all its
+sub-directories are &#169; copyright World Wide Web Consortium 2006, 2007, and
+are made available under the terms of the W3C DOCUMENT NOTICE AND LICENSE,
+available online at
+http://www.w3.org/Consortium/Legal/copyright-documents-19990405.html.</ts:documentation>
+  <ts:documentation>The first testSet was contributed by NIST in 2004.  It was
+published in the previous release of the suite, and is included here
+unchanged.</ts:documentation>
+  <ts:documentation>The second testSet is an updated and extended version of
+one originally contributed by Sun in 2004.</ts:documentation>
+ <ts:documentation>The next twelve testSets were all contributed by Sun in
+2006.</ts:documentation>
+  <ts:documentation>The next 17 testSets were contributed by Microsoft in
+2006. They supersede and significantly extend the Microsoft contribution
+of 2004.</ts:documentation>
+  <ts:documentation>The final test set was contributed by Boeing in 2007.</ts:documentation>
+ </ts:annotation>
+ <ts:testSetRef xlink:href="nistMeta/NISTXMLSchemaDatatypes.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/suntest.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/AGroupDef.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/AttrDecl.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/AttrUse.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/CType.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/ElemDecl.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/IdConstrDefs.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/MGroup.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/MGroupDef.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/Notation.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/SType.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/Schema.testSet"/>
+ <ts:testSetRef xlink:href="sunMeta/Wildcard.testSet"/>
+ <ts:testSetRef xlink:href="msMeta/Additional_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Annotations_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/AttributeGroup_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Attribute_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/ComplexType_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/DataTypes_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Element_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Errata10_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Group_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/IdentityConstraint_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/ModelGroups_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Notations_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Particles_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Regex_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Schema_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/SimpleType_w3c.xml"/>
+ <ts:testSetRef xlink:href="msMeta/Wildcards_w3c.xml"/>
+ <ts:testSetRef xlink:href="boeingMeta/BoeingXSDTestSet.testSet"/>
+ 
+</ts:testSuite>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-float-whiteSpace-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-float-whiteSpace-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-float-whiteSpace-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-float-whiteSpace-1,
+      which is derived by restriction of built-in type float
+      by facet whiteSpace with a value of: collapse
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-atomic-float-whiteSpace-1" type="NISTSchema-SV-IV-atomic-float-whiteSpace-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-float-whiteSpace-1-Type">
+    <xs:restriction base="xs:float">
+      <xs:whiteSpace value="collapse"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

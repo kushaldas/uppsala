@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd004.n02.xml	1.3 02/12/25
+
+-->
+
+<foo:root
+	xmlns:foo="foo"
+	xmlns:bar="bar"
+	xmlns:zot="zot">
+	
+	<foo:skipOther>
+		<foo:root />
+	</foo:skipOther>
+	
+</foo:root>

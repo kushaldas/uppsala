@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00301m.xsd
+   generated from: @(#)idConstrDefs00301m.jmpp	1.1 02/04/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/identityConstraintDefs"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/identityConstraintDefs">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+              <xsd:element name="Element" type="xsd:ID"/>
+              <xsd:element name="ElementRef" type="xsd:IDREF"/>
+              <xsd:element name="ElementRefs" type="xsd:IDREFS"/>
+          </xsd:choice>
+      </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

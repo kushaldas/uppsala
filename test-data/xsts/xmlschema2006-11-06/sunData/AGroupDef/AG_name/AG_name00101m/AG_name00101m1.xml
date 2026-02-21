@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AG_name00101m1.xml
+   generated from: @(#)AG_name00101m.jmpp	1.4 02/11/19
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrGroup/name AG_name00101m1_p.xsd"
+      xmlns:td="AttrGroup/name">
+
+   <td:elementWithAttr number="157"/>
+</td:root>
+

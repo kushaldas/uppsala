@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-atomic-hexBinary-length-4-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-atomic-hexBinary-length-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-atomic-hexBinary-length-4
+    xmlns="NISTSchema-SV-IV-atomic-hexBinary-length-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-atomic-hexBinary-length-4-NS NISTSchema-SV-IV-atomic-hexBinary-length-4.xsd">61647361677962727668716261676e776777676764666a697478706f656f6d646d72696f7474796b74627672716470636d71617073617767626e697569746164776d6870</NISTSchema-SV-IV-atomic-hexBinary-length-4>

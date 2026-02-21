@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-gMonthDay-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-gMonthDay-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-gMonthDay-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-gMonthDay-enumeration-4,
+      which is derived by restriction of built-in type gMonthDay
+      by facet enumeration with values of:
+          --07-17
+          --08-11
+          --06-27
+          --11-23
+          --12-01
+          --02-23
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-gMonthDay-enumeration-4" type="NISTSchema-SV-II-atomic-gMonthDay-enumeration-4-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-gMonthDay-enumeration-4-Type">
+    <xs:restriction base="xs:gMonthDay">
+          <xs:enumeration value="--07-17"/>
+          <xs:enumeration value="--08-11"/>
+          <xs:enumeration value="--06-27"/>
+          <xs:enumeration value="--11-23"/>
+          <xs:enumeration value="--12-01"/>
+          <xs:enumeration value="--02-23"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

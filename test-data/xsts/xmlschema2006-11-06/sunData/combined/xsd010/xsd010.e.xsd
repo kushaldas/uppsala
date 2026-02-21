@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+Ident: @(#)xsd010.e.xsd	1.3 03/10/10
+
+-->
+
+<!--
+	HIGHLIGHT OF THIS TEST
+	======================
+	- cyclic substitution group (3 hop cycle).
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:foo="foo"
+		targetNamespace="foo"
+		elementFormDefault="qualified">
+	
+	<element name="foo" substitutionGroup="foo:bar">
+		<complexType>
+			<sequence>
+				<any />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="bar" substitutionGroup="foo:zot">
+		<complexType>
+			<sequence>
+				<any />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="zot" substitutionGroup="foo:foo">
+		<complexType>
+			<sequence>
+				<any />
+			</sequence>
+		</complexType>
+	</element>
+	
+</schema>

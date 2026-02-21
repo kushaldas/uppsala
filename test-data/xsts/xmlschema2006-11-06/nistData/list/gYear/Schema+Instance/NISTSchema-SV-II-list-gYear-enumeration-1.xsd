@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-gYear-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-gYear-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gYear-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gYear-enumeration-1,
+      which is derived by restriction of a list with itemType gYear
+      by facet enumeration with values of:
+          1997 1977 2006 2006 1979 1982 1970
+          2011 2028 1979 2004 2014 1989
+          1995 2023 1991 2026 2005 2013 1979 1970 2007
+          1974 1989 2021 1983 1972 2019 2007 2015 2002 1982
+          2028 1989 2029 1998 2011
+          2026 2019 2010 2001 1984
+          2015 1971 1999 2011 2015 2014 1992 1989 2019
+          1982 1973 1973 1996 1990 1985 1980 2008
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-gYear-enumeration-1" type="NISTSchema-SV-II-list-gYear-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfgYear">
+    <xs:list itemType="xs:gYear"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-gYear-enumeration-1-Type">
+    <xs:restriction base="listOfgYear">
+          <xs:enumeration value="1997 1977 2006 2006 1979 1982 1970"/>
+          <xs:enumeration value="2011 2028 1979 2004 2014 1989"/>
+          <xs:enumeration value="1995 2023 1991 2026 2005 2013 1979 1970 2007"/>
+          <xs:enumeration value="1974 1989 2021 1983 1972 2019 2007 2015 2002 1982"/>
+          <xs:enumeration value="2028 1989 2029 1998 2011"/>
+          <xs:enumeration value="2026 2019 2010 2001 1984"/>
+          <xs:enumeration value="2015 1971 1999 2011 2015 2014 1992 1989 2019"/>
+          <xs:enumeration value="1982 1973 1973 1996 1990 1985 1980 2008"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

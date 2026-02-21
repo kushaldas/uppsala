@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AU_attrDecl00101m1_p.xsd
+   generated from: @(#)AU_attrDecl00101m.jmpp	1.4 02/11/19
+
+-->
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="AttrUse/attrDecl"
+	xmlns:tn="AttrUse/attrDecl">
+
+	<xsd:element name="root"/>
+	<xsd:attribute name="number" type="xsd:integer"/>
+
+	<xsd:element name="elementWithAttr">
+	  <xsd:complexType>
+	    <xsd:attribute ref="tn:number" use="required"/>
+	  </xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+

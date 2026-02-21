@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-1
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-1-NS"
+    xmlns:_first-generation.vocabulary-th="http://www.nist.gov/xsdNS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:msoftware-e.the.as-of.fo="http://www.nist.gov/xsdNS"
+    xmlns:xhighly_versions.to_under="http://www.nist.gov/xsdNS"
+    xmlns:pto-is-applications_thus-file-r="http://www.nist.gov/xsdNS"
+    xmlns:_from.solutions.digi="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-1-NS NISTSchema-SV-II-list-QName-length-1.xsd">_first-generation.vocabulary-th:_the-different-all_utilities-as-for.for- cweb.of.to.reference_of.profiles_to-tool msoftware-e.the.as-of.fo:ibe.the-offer.computing-with_registries. _which-for_organizations-international.u gfor.with.is-all_set.wireless_entire_net mthe.filter.the.and.discovery-as_can.com xhighly_versions.to_under:qbrowsers_information-repository_s-due-k pto-is-applications_thus-file-r:rlink.specifications.under.versions-chal _from.solutions.digi:iwidespread-models-unbiased-ability_wire</nist:NISTSchema-SV-II-list-QName-length-1>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-QName-maxLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-QName-maxLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-QName-maxLength-3
+    xmlns="NISTSchema-SV-IV-list-QName-maxLength-3-NS"
+    xmlns:ydiscovery-voiced_te="http://www.nist.gov/xsdNS"
+    xmlns:_to-havi="http://www.nist.gov/xsdNS"
+    xmlns:gwas.appropriate.all.tools.str="http://www.nist.gov/xsdNS"
+    xmlns:qmatch-software="http://www.nist.gov/xsdNS"
+    xmlns:lenabling.provided-to="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-QName-maxLength-3-NS NISTSchema-SV-IV-list-QName-maxLength-3.xsd">ydiscovery-voiced_te:aa_high.provided.will-semantics.software.and_includes- _to-havi:jretrieve.implementation-database_computing_test-displ gwas.appropriate.all.tools.str:rthe-needed-landscape_would-and_engineering-versions-t qmatch-software:jparticipate-additionally.high_computer.context-rich-i lenabling.provided-to:hfor_allow-browsers-developed_exchange_file-systems-ad</NISTSchema-SV-IV-list-QName-maxLength-3>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-length-3-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-length-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-length-3
+    xmlns="NISTSchema-SV-IV-list-normalizedString-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-length-3-NS NISTSchema-SV-IV-list-normalizedString-length-3.xsd">5_Errors_Repository_Investigation_Street_Xml_Certain_Smes_,_ID_19893-1431 6673_In_Of_Recommendation_Street_Issues_Vertical_Web_,_IN_19893-1431 444_Specifications_And_Utilities_Street_To_Entire_And_,_AL_19893-1431 97_The_Discussions_Between_Street_Be_These_The_,_MD_19893-1431 5745_Interoperability_Will_Location_Street_Pervasive_Depends_Supply_,_ND_19893-1431 8482_Test_Digital_And_Street_Available_Maintains_Standards_,_OK_19893-1431 8_Newcomers_Is_Pervasive_Street_Users_With_Systems_,_ID_19893-1431</NISTSchema-SV-IV-list-normalizedString-length-3>

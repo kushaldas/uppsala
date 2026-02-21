@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)modelGroup00102m4.xsd
+   generated from: @(#)modelGroup00102m.jmpp	1.2 02/08/22
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="modelGroup"
+  targetNamespace="modelGroup">
+
+     <xsd:element name="a" type="xsd:string" />
+
+     <xsd:group name="G1">
+          <xsd:choice>
+               <xsd:element name="c" type="xsd:int" />
+          </xsd:choice>
+          <xsd:choice>
+               <xsd:element name="date" type="xsd:date" />
+          </xsd:choice>
+     </xsd:group>
+
+</xsd:schema>
+

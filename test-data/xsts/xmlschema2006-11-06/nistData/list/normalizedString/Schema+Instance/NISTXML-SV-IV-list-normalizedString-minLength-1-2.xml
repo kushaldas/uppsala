@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-1
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-1-NS NISTSchema-SV-IV-list-normalizedString-minLength-1.xsd">4_Advancement_Dom_Street_In_And_Issues_,_ID_19881-1358 263_Simulation_Committee_Street_Information_Shift_Additionally_,_OK_19881-1358 89238_Match_And_Street_Transmit_Schemas_Has_,_IN_19881-1358 42_Partners_Enable_Street_And_With_Eliminate_,_FL_19881-1358 4647_Define_Database_Street_Included_By_Of_,_CO_19881-1358 43412_Be_In_Street_Ec_The_Testing_,_RI_19881-1358 14_Under_Needed_Street_Pc_Concepts_Of_,_WV_19881-1358 5_To_Communications_Street_Community_Adoption_An_,_NC_19881-1358 59_Tools_Repositories_Street_The_Wireless_Oasis_,_IN_19881-1358</NISTSchema-SV-IV-list-normalizedString-minLength-1>

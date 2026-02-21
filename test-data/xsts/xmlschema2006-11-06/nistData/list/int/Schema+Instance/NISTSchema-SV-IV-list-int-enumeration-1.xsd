@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-int-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-int-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-int-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-int-enumeration-1,
+      which is derived by restriction of a list with itemType int
+      by facet enumeration with values of:
+          89920 -270 -654 8059163 5902 -9583334
+          14874707 4781 8716603 7782 8189 -23191 -8611110 -98 8967801
+          7482 -903433 328395 -965698 -52 -4 -86
+          97 83231 -2451 12 -670313 -74235 -275 -960
+          -78262 77262644 -524610911 840393 58 30 86197727
+          -905267 -764266 -29391 35795 28 559
+          -40634337 33389 -4712 -8370 -5448132 2844582 3335 754313570 -8363613 -539
+          928863 -9724 916 -2147483648 -18032 58482838
+          95 -56 -2158094 -45 -886060 85760821 -44951970
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-int-enumeration-1" type="NISTSchema-SV-IV-list-int-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfint">
+    <xs:list itemType="xs:int"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-int-enumeration-1-Type">
+    <xs:restriction base="listOfint">
+          <xs:enumeration value="89920 -270 -654 8059163 5902 -9583334"/>
+          <xs:enumeration value="14874707 4781 8716603 7782 8189 -23191 -8611110 -98 8967801"/>
+          <xs:enumeration value="7482 -903433 328395 -965698 -52 -4 -86"/>
+          <xs:enumeration value="97 83231 -2451 12 -670313 -74235 -275 -960"/>
+          <xs:enumeration value="-78262 77262644 -524610911 840393 58 30 86197727"/>
+          <xs:enumeration value="-905267 -764266 -29391 35795 28 559"/>
+          <xs:enumeration value="-40634337 33389 -4712 -8370 -5448132 2844582 3335 754313570 -8363613 -539"/>
+          <xs:enumeration value="928863 -9724 916 -2147483648 -18032 58482838"/>
+          <xs:enumeration value="95 -56 -2158094 -45 -886060 85760821 -44951970"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-3-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-3
+    xmlns="NISTSchema-SV-II-list-token-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-3-NS NISTSchema-SV-II-list-token-maxLength-3.xsd">282_The_Oasis_Cost_The_Street_These_Use_Commerce_,_KS_11825-1730 95_Oasis_Paradigm_If_Xml_Street_Effort_Will_Management_,_CT_11825-1730 22_And_Supply_Looking_Oasis_Street_Also_Tools_Be_,_SC_11825-1730 4_Daily_Highly_To_Web_Street_Global_As_Build_,_MS_11825-1730 8234_Xsl_Certain_Xml_Tests_Street_As_Partners_For_,_GA_11825-1730 5_Possible_Time_Is_Of_Street_Simplest_Testing_All_,_VA_11825-1730 559_To_Use_File_Pervasive_Street_For_The_As_,_WA_11825-1730 534_On_Set_With_The_Street_As_Service_Develop_,_IN_11825-1730 3934_Using_Our_Life_Conferences_Street_Automate_Industry_Build_,_NV_11825-1730</NISTSchema-SV-II-list-token-maxLength-3>

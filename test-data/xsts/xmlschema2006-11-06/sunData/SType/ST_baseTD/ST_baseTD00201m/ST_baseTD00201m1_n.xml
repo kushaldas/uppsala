@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_baseTD00201m1_n.xml
+   generated from: @(#)ST_baseTD00201m.jmpp	1.1 02/02/28
+
+-->
+
+
+<test
+    xmlns="ST_baseTD"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ST_baseTD ST_baseTD00201m.xsd">aaa</test>
+

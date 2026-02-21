@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-2
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-2-NS NISTSchema-SV-II-list-normalizedString-length-2.xsd">45386_For_Xml_Screen_Of_And_Street_Must_Publishing_With_,_MT_10413 5884_This_These_To_And_Which_Street_Emerging_And_Analysis_,_MN_10413 13_Specifications_Needs_Reference_The_Is_Street_Defines_Sensors_Back_,_SC_10413 98_Enabling_Investigations_Tools_Information_Investigators_Street_Oasis_Repository_Specifications_,_WV_10413 76_Investigations_Products_Thus_An_Depends_Street_Dom_This_Alike_,_MS_10413 3_As_Files_For_Interoperability_Popular_Street_Defining_Its_And_,_AL_10413 5_Community_Defines_Chains_Registry_Xml_Street_Browsers_Oasis_The_,_AR_10413 3559_Of_To_Interconnecting_Technology_Advanced_Street_To_Support_Tools_,_KY_10413 59_Manipulation_Provide_Execution_Both_And_Street_Specifications_The_Chairs_,_DE_10413</NISTSchema-SV-II-list-normalizedString-length-2>

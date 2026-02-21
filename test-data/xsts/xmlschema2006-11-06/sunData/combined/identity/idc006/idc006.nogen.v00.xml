@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)idc006.nogen.v00.xml	1.4 03/10/10
+
+-->
+
+<p:root xmlns:p="http://www.publishing.org">
+
+	<p:keys>
+		<p:a>
+			<p:a>
+				<p:b id="id1">
+					<p:b id="id2" />
+				</p:b>
+			</p:a>
+		</p:a>
+	</p:keys>
+	
+	<p:keyref>id1</p:keyref>
+	<p:keyref>id2</p:keyref>
+</p:root>

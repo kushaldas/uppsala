@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)substGrpExcl00401m4.xsd
+   generated from: @(#)substGrpExcl00401m.jmpp	1.4 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/substGroupExclusions"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/substGroupExclusions"
+  elementFormDefault="qualified"
+  finalDefault="extension"  
+  >
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="Head" maxOccurs="unbounded"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Head" type="HeadType"/>
+
+  <xsd:complexType name="HeadType">
+      <xsd:sequence>
+          <xsd:element name="Ear"/>
+          <xsd:element name="Eye"/>
+      </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>
+

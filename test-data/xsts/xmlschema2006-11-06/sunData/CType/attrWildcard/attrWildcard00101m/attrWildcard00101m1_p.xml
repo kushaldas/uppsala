@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)attrWildcard00101m1_p.xml
+   generated from: @(#)attrWildcard00101m.jmpp	1.2 02/08/22
+
+-->
+
+
+<test:a
+    xmlns:test="attrWildcard"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="attrWildcard attrWildcard00101m1.xsd" a1="1" a2="2">
+<b>123</b>
+</test:a>
+

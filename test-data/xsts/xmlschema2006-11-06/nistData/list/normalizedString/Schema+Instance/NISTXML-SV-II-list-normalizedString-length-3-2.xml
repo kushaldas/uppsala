@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-3
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-3-NS NISTSchema-SV-II-list-normalizedString-length-3.xsd">642_Enterprises_Registry_And_Smes_Street_Designed_One_,_VA_12306-1802 638_File_First_And_Standards_Street_Further_Systems_,_VT_12306-1802 44_Conduct_From_Prototypes_The_Street_Building_To_,_WV_12306-1802 18_From_Developed_Retrieves_Participants_Street_Provided_Industry_,_OK_12306-1802 23446_Compatibility_For_Although_Complete_Street_Fine_Used_,_SD_12306-1802 267_Community_Smes_Result_Effectively_Street_User_Complete_,_ME_12306-1802 877_And_Computed_Regard_Investigation_Street_The_Through_,_ID_12306-1802 853_The_Retrieval_Chairing_To_Street_Are_Conformance_,_VA_12306-1802 66_Emerging_Would_And_Tests_Street_Errors_The_,_MN_12306-1802</NISTSchema-SV-II-list-normalizedString-length-3>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NCName-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NCName-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NCName-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NCName-enumeration-5,
+      which is derived by restriction of a list with itemType NCName
+      by facet enumeration with values of:
+          _stand ok wwell_manipula nbuild.project.having-to_ win.for_a-templates-information_will_part uan
+          lfact_well_ dcriteria_life.also- ag_is.throughout-provide_the-the.and.neutral uapplication-investigations-commerce.of_filter-becoming-indus xof-that.in-
+          iaccom ksuccess bmany_to.a_the.the.must_an neffectively-organizations.applications-users jdevelopment-both.templates.key.the_sensor ithe_due_that.tools.tools-of_documents_for-and.brow xaccess
+          adonate.led.advanced-business_via-international_computing-a xbandwidth_must.over-proto jas_to_file _to.computing-electronic-neutral.international_ _browsers-include_specification_regist _to-add ctools.versions-subject-and-dis
+          _popular_specifications. ra_registry_and-of.electronic.their.r _be.and.unbiase oportable-for- fand-the_the_that-of.enable.fine _tests _for_sta
+          nretrieval_for.and_other- pregard-appropriate.recommendation_medium-siz yusing_use_language.documents.the_looking.by.working nfind-devices-between-and_ fmethods_reference-profiles_not_it vthe_academia.only.and-management_f ythat-ambiguities_and_within-transa
+          mpartnerships-interoperability.s-act_with_emerging_addr qthese-bot lnew.between_language_help.prototype- _for.technology_developed_signatures-in. ris_that.advanced_investigation_information.for-recent_compat _web-key-software.and-world-of.data.filter_tremendous- hmediums gin.type.specificatio nof-partic
+          mcreation-its-electronic-of-is-c qversions-a.project-of-to.aid_tools_review-rigorous-upon-ke ybe.be.am tcompatibility.large.with.set-uses.documents-test.manufa qfile_industry_the- jas.and.the_e_ensure_allow_enterprises_world.an _related.includes.within_effective-partici uprocessors_standardization-a_with-and.in.into.r ufro
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NCName-enumeration-5" type="NISTSchema-SV-IV-list-NCName-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfNCName">
+    <xs:list itemType="xs:NCName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NCName-enumeration-5-Type">
+    <xs:restriction base="listOfNCName">
+          <xs:enumeration value="_stand ok wwell_manipula nbuild.project.having-to_ win.for_a-templates-information_will_part uan"/>
+          <xs:enumeration value="lfact_well_ dcriteria_life.also- ag_is.throughout-provide_the-the.and.neutral uapplication-investigations-commerce.of_filter-becoming-indus xof-that.in-"/>
+          <xs:enumeration value="iaccom ksuccess bmany_to.a_the.the.must_an neffectively-organizations.applications-users jdevelopment-both.templates.key.the_sensor ithe_due_that.tools.tools-of_documents_for-and.brow xaccess"/>
+          <xs:enumeration value="adonate.led.advanced-business_via-international_computing-a xbandwidth_must.over-proto jas_to_file _to.computing-electronic-neutral.international_ _browsers-include_specification_regist _to-add ctools.versions-subject-and-dis"/>
+          <xs:enumeration value="_popular_specifications. ra_registry_and-of.electronic.their.r _be.and.unbiase oportable-for- fand-the_the_that-of.enable.fine _tests _for_sta"/>
+          <xs:enumeration value="nretrieval_for.and_other- pregard-appropriate.recommendation_medium-siz yusing_use_language.documents.the_looking.by.working nfind-devices-between-and_ fmethods_reference-profiles_not_it vthe_academia.only.and-management_f ythat-ambiguities_and_within-transa"/>
+          <xs:enumeration value="mpartnerships-interoperability.s-act_with_emerging_addr qthese-bot lnew.between_language_help.prototype- _for.technology_developed_signatures-in. ris_that.advanced_investigation_information.for-recent_compat _web-key-software.and-world-of.data.filter_tremendous- hmediums gin.type.specificatio nof-partic"/>
+          <xs:enumeration value="mcreation-its-electronic-of-is-c qversions-a.project-of-to.aid_tools_review-rigorous-upon-ke ybe.be.am tcompatibility.large.with.set-uses.documents-test.manufa qfile_industry_the- jas.and.the_e_ensure_allow_enterprises_world.an _related.includes.within_effective-partici uprocessors_standardization-a_with-and.in.into.r ufro"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

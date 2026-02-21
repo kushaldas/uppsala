@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-anyURI-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-anyURI-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-anyURI-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-anyURI-enumeration-1,
+      which is derived by restriction of built-in type anyURI
+      by facet enumeration with values of:
+          http://Theiste.com
+          mailto:@prov.org
+          ftp://h.com
+          mailto:devic@manipulationandabilityspecifica.gov
+          http://www.systemswebi.teroperabi.itybeandof.hic.edu
+          gopher://Conformance.up.com
+          telnet://f.org
+          http://www.asseries.gov
+          telnet://wit.edu
+          ftp://ftp.atheconstit.entOASISre.rie.net
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-anyURI-enumeration-1" type="NISTSchema-SV-IV-atomic-anyURI-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-anyURI-enumeration-1-Type">
+    <xs:restriction base="xs:anyURI">
+          <xs:enumeration value="http://Theiste.com"/>
+          <xs:enumeration value="mailto:@prov.org"/>
+          <xs:enumeration value="ftp://h.com"/>
+          <xs:enumeration value="mailto:devic@manipulationandabilityspecifica.gov"/>
+          <xs:enumeration value="http://www.systemswebi.teroperabi.itybeandof.hic.edu"/>
+          <xs:enumeration value="gopher://Conformance.up.com"/>
+          <xs:enumeration value="telnet://f.org"/>
+          <xs:enumeration value="http://www.asseries.gov"/>
+          <xs:enumeration value="telnet://wit.edu"/>
+          <xs:enumeration value="ftp://ftp.atheconstit.entOASISre.rie.net"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

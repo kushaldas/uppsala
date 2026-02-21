@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00503m1.xsd
+   generated from: @(#)name00503m.jmpp	1.6 04/01/14
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/name">
+
+  <xsd:element name="root"/>
+
+  <xsd:element name="Global1">
+      <xsd:simpleType>
+          <xsd:restriction base="xsd:boolean">
+              <xsd:pattern value="false"/>
+          </xsd:restriction>
+      </xsd:simpleType>
+  </xsd:element>
+
+  <xsd:element name="Global2">
+      <xsd:simpleType>
+          <xsd:restriction base="xsd:boolean">
+              <xsd:pattern value="false"/>
+          </xsd:restriction>
+      </xsd:simpleType>
+  </xsd:element>
+
+</xsd:schema>

@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd004.v00.xml	1.4 03/10/10
+
+-->
+
+<foo:root
+	xmlns:foo="foo"
+	xmlns:bar="bar"
+	xmlns:zot="zot">
+	
+	<foo:skipAny>
+		<foo:root>
+			<foo:child />
+			<bar:nocheck>
+				<zot:nocheck />
+			</bar:nocheck>
+			mixed is also allowed?
+		</foo:root>
+	</foo:skipAny>
+	
+	<foo:laxAny>
+		<foo:undeclared>
+			<bar:a />
+			<undefined />
+		</foo:undeclared>
+	</foo:laxAny>
+	
+	<foo:strictAny>
+		<bar:c />
+		<zot:b />
+		<zot:c />
+	</foo:strictAny>
+	
+	<foo:skipOther>
+		<undeclared xmlns="bob" />
+		<anyThing xmlns="nowhere" />
+		<asLongAsInOtherNS xmlns="other1"/>
+		<zot:a>
+			<zot:a />
+		</zot:a>
+	</foo:skipOther>
+	
+	<foo:laxLocal>
+		<undeclaredOnly />
+		<butLaxlyValidated />
+	</foo:laxLocal>
+	
+	<foo:strictTarget>
+		<foo:root />
+		<foo:root />
+		<foo:root />
+	</foo:strictTarget>
+	
+	<foo:skipBar>
+		<bar:everything />
+		<bar:in />
+		<bar:bar />
+		<bar:a>
+			<bar:ignore />
+		</bar:a>
+	</foo:skipBar>
+</foo:root>

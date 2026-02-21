@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)nillable00401m1.xsd
+   generated from: @(#)nillable00401m.jmpp	1.4 02/12/09
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/nillable"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/nillable">
+
+  <xsd:element name="root"/>
+
+  <xsd:element name="Global" nillable="true"/>
+
+</xsd:schema>

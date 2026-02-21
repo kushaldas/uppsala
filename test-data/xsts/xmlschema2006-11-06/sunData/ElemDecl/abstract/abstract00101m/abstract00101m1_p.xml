@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)abstract00101m1_p.xml
+   generated from: @(#)abstract00101m.jmpp	1.4 02/11/15
+
+-->
+
+
+<root
+  xmlns="ElemDecl/abstract"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/abstract abstract00101m.xsd">
+    
+    <Member1><Ear/><Eye/></Member1>
+
+    <Member1><Ear/><Eye/></Member1>
+
+
+</root>
+    

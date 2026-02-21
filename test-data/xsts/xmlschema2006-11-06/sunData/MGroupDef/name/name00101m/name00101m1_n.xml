@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m1_n.xml
+   generated from: @(#)name00101m.jmpp	1.3 02/12/02
+
+-->
+
+
+<test:a
+    xmlns:test="name"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="name name00101m1.xsd">
+<c>abc</c>
+</test:a>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-gMonthDay-pattern-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-gMonthDay-pattern-3-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gMonthDay-pattern-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gMonthDay-pattern-3,
+      which is derived by restriction of a list with item type gMonthDay
+      by facet pattern with a value of: --\d2-0\d --0\d-1\d --1\d-0\d --\d4-\d4 --\d7-\d9 --0\d-\d9 --0\d-\d3 --0\d-\d4 --\d3-2\d --0\d-2\d
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-gMonthDay-pattern-3" type="nist:NISTSchema-SV-II-list-gMonthDay-pattern-3-Type"/>
+
+  <simpleType name="listOfgMonthDay">
+    <list itemType="gMonthDay"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-gMonthDay-pattern-3-Type">
+    <restriction base="nist:listOfgMonthDay">
+      <pattern value="--\d2-0\d --0\d-1\d --1\d-0\d --\d4-\d4 --\d7-\d9 --0\d-\d9 --0\d-\d3 --0\d-\d4 --\d3-2\d --0\d-2\d"/>
+    </restriction>
+  </simpleType>
+
+</schema>

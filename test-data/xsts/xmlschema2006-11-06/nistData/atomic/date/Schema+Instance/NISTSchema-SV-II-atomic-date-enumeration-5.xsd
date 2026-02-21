@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-date-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-date-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-date-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-date-enumeration-5,
+      which is derived by restriction of built-in type date
+      by facet enumeration with values of:
+          2021-08-02
+          1979-08-30
+          1978-11-27
+          1988-03-05
+          2019-10-13
+          1988-10-15
+          1982-07-19
+          2021-06-12
+          2010-08-11
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-date-enumeration-5" type="NISTSchema-SV-II-atomic-date-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-date-enumeration-5-Type">
+    <xs:restriction base="xs:date">
+          <xs:enumeration value="2021-08-02"/>
+          <xs:enumeration value="1979-08-30"/>
+          <xs:enumeration value="1978-11-27"/>
+          <xs:enumeration value="1988-03-05"/>
+          <xs:enumeration value="2019-10-13"/>
+          <xs:enumeration value="1988-10-15"/>
+          <xs:enumeration value="1982-07-19"/>
+          <xs:enumeration value="2021-06-12"/>
+          <xs:enumeration value="2010-08-11"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

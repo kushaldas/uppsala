@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00101m1_p.xml
+   generated from: @(#)AD_name00101m.jmpp	1.5 02/12/26
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrDecl/name AD_name00101m1.xsd"
+      xmlns:td="AttrDecl/name"
+      >
+<!-- Positive variant begin -->
+   <td:elementWithAttr td:price="12.33"/>
+<!-- Positive variant end   -->
+
+<!-- Negative variant begin - -
+   <td:elementWithAttr price="12.33"/>
+ - - Negative variant end   -->
+</td:root>
+

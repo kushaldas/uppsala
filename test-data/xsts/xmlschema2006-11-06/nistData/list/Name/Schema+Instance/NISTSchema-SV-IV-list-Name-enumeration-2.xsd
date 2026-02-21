@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-Name-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-Name-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-Name-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-Name-enumeration-2,
+      which is derived by restriction of a list with itemType Name
+      by facet enumeration with values of:
+          kare-health:the:testing:discover.as-tune_applic hnetworking_and:many:repository-d :the.versions:from:to rprojec :respect:langu :leadership:information:acting: _with:these.each.and:provide-is-well_by.and.and-si :widely:effectively:health:partners_as_from.this_pico-cell
+          mto-and:groups-provides:with.security:constituent_in.of_ hor:cross-over:software:such-and.key-tremendous:will:tools:r mtre :this-tools:computer _to:applications-key.security_raised_addressing:fo _in.an ris:2000.analysis:having.are.specific cemerging-inclu qparticular_m
+          obe-them fand-recommending:a_collaborate.communication.is_s.h bbandwidth-vendors.specific:if.emergin la-with:execution:a:etc.the:software:referen qacademia:on_specification _for.collaborate-first:participating_recommending-the.leader ythus-the_implementations-who.provide.of:be:eliminated_ba
+          ithe-degre juse_measurements-standards_meas rcertain:software:is:the:documents:the-bet uof-provides_computing-create.of:world_to:file :for_file_software-enterprises.manipulation-developing xrevolutionize_many:computer-for:the.all
+          hprocess.bottlenecks_process_registry-commerce-as _syntax:would-deployed.back_proc maddressing.which-technical.e_is vto:by:with-embedded.many_academia.com cwill mto.as-hampered:the:our.in-house-areas-the.ability.a_ena :has_must_created-the_automatically_proces ithe:specific.manage_maintained.the.other_to.dependabi
+          uto.the.support_leadership_tools.and_and:the-also gto-of.must.and.of_signatures-which.are.cre _as-for-conformant. fmemory.all-engineering.issues_the-of.industries. d2000:profile-system :and.with:provide-the:tools_devices_having:related_print.made-a :accessible-the.for-tests_and.the.the-industry:called
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-Name-enumeration-2" type="NISTSchema-SV-IV-list-Name-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfName">
+    <xs:list itemType="xs:Name"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-Name-enumeration-2-Type">
+    <xs:restriction base="listOfName">
+          <xs:enumeration value="kare-health:the:testing:discover.as-tune_applic hnetworking_and:many:repository-d :the.versions:from:to rprojec :respect:langu :leadership:information:acting: _with:these.each.and:provide-is-well_by.and.and-si :widely:effectively:health:partners_as_from.this_pico-cell"/>
+          <xs:enumeration value="mto-and:groups-provides:with.security:constituent_in.of_ hor:cross-over:software:such-and.key-tremendous:will:tools:r mtre :this-tools:computer _to:applications-key.security_raised_addressing:fo _in.an ris:2000.analysis:having.are.specific cemerging-inclu qparticular_m"/>
+          <xs:enumeration value="obe-them fand-recommending:a_collaborate.communication.is_s.h bbandwidth-vendors.specific:if.emergin la-with:execution:a:etc.the:software:referen qacademia:on_specification _for.collaborate-first:participating_recommending-the.leader ythus-the_implementations-who.provide.of:be:eliminated_ba"/>
+          <xs:enumeration value="ithe-degre juse_measurements-standards_meas rcertain:software:is:the:documents:the-bet uof-provides_computing-create.of:world_to:file :for_file_software-enterprises.manipulation-developing xrevolutionize_many:computer-for:the.all"/>
+          <xs:enumeration value="hprocess.bottlenecks_process_registry-commerce-as _syntax:would-deployed.back_proc maddressing.which-technical.e_is vto:by:with-embedded.many_academia.com cwill mto.as-hampered:the:our.in-house-areas-the.ability.a_ena :has_must_created-the_automatically_proces ithe:specific.manage_maintained.the.other_to.dependabi"/>
+          <xs:enumeration value="uto.the.support_leadership_tools.and_and:the-also gto-of.must.and.of_signatures-which.are.cre _as-for-conformant. fmemory.all-engineering.issues_the-of.industries. d2000:profile-system :and.with:provide-the:tools_devices_having:related_print.made-a :accessible-the.for-tests_and.the.the-industry:called"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

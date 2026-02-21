@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-2
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-2-NS NISTSchema-SV-II-list-normalizedString-length-2.xsd">596_As_Provide_Standards_Of_Screen_Street_Applications_About_Known_,_AR_18895 749_Software_Will_Manufacturers_Participants_And_Street_Issues_Widely_The_,_NV_18895 37_Lies_Pervasive_Choices_And_Be_Street_Markup_Act_The_,_NV_18895 4_Appropriate_Or_Commerce_It_User_Street_Pervasive_For_Ability_,_NV_18895 2722_As_Joint_The_Sensors_The_Street_And_Xml_Prototype_,_AK_18895 813_Availability_Such_Of_Of_Information_Street_Oasis_Appropriate_Cpu_,_WY_18895 3_Variety_Further_Files_For_Specification_Street_Registries_Such_Nature_,_MN_18895 2746_Tools_Ensure_Link_Be_Provided_Street_Information_For_Extensible_,_NY_18895 528_Recommendations_Advancement_The_Means_Provided_Street_Be_Heterogeneous_Pervasive_,_NE_18895</NISTSchema-SV-II-list-normalizedString-length-2>

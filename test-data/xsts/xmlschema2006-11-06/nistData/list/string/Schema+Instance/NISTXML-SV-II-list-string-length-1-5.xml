@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-length-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-length-1
+    xmlns="NISTSchema-SV-II-list-string-length-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-length-1-NS NISTSchema-SV-II-list-string-length-1.xsd">15_Review_Xml_Also_Object_Street_Standards_Specifications_,_RI_14836-1914 553_Tools_Of_Soc_By_Street_Library_Vertical_,_OH_14836-1914 3782_Measure_Pervasive_Individual_Has_Street_For_Computing_,_NY_14836-1914 15676_Of_Devices_The_Upon_Street_With_And_,_OK_14836-1914 43_Techniques_Dom_Through_Development_Street_With_Quality_,_DC_14836-1914 967_Those_Service_Methods_Less_Street_Technical_Tools_,_MT_14836-1914 6_Via_Nsrl_The_Additionally_Street_Provide_Be_,_AR_14836-1914 28_Both_Of_Fed_Using_Street_Into_Schema_,_MN_14836-1914 54524_Provide_And_This_Multidisciplinary_Street_File_An_,_SC_14836-1914 692_Information_Profile_Ec_Including_Street_Rapidly_And_,_SD_14836-1914</NISTSchema-SV-II-list-string-length-1>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NMTOKENS-minLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NMTOKENS-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NMTOKENS-minLength-5
+    xmlns="NISTSchema-SV-II-list-NMTOKENS-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NMTOKENS-minLength-5-NS NISTSchema-SV-II-list-NMTOKENS-minLength-5.xsd">U.Jini_organizations-achieved-and_by.partnerships_conformant to:between-the:of.and_for.be_indication_transmit-file_adopti application_recent-of.for.files-for.is:debug_test.ebXML-of_i digital-revisions_bottlenecks_Therefore:Work-well:files-with repository:OASIS.unbiased.memory:as.data:and-of.Organization created:and:of:SOC-used:automatic:lacking:networks.first-ret concepts-and:Model-object:developed:to_DOM:degree_and-an-EXi work.service.of.to:documents-only.further.a:a.as-using-to_co</NISTSchema-SV-II-list-NMTOKENS-minLength-5>

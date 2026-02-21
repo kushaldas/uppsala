@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-unsignedByte-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-IV-list-unsignedByte-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-unsignedByte-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-unsignedByte-enumeration-4,
+      which is derived by restriction of a list with itemType unsignedByte
+      by facet enumeration with values of:
+          68 9 255 17 84 28
+          32 255 19 33 7 10 36 37 11
+          3 9 31 56 81 11 255 10 92
+          255 57 86 3 48 17
+          85 255 41 33 28 44
+          47 255 91 217 8 90 11
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-unsignedByte-enumeration-4" type="NISTSchema-SV-IV-list-unsignedByte-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfunsignedByte">
+    <xs:list itemType="xs:unsignedByte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-unsignedByte-enumeration-4-Type">
+    <xs:restriction base="listOfunsignedByte">
+          <xs:enumeration value="68 9 255 17 84 28"/>
+          <xs:enumeration value="32 255 19 33 7 10 36 37 11"/>
+          <xs:enumeration value="3 9 31 56 81 11 255 10 92"/>
+          <xs:enumeration value="255 57 86 3 48 17"/>
+          <xs:enumeration value="85 255 41 33 28 44"/>
+          <xs:enumeration value="47 255 91 217 8 90 11"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

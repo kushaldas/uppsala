@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00110m7.xsd
+   generated from: @(#)AD_name00110m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="str00Aಂ" type="xsd:string"/>
+            <xsd:attribute name="str10-ಂ" type="xsd:string"/>
+            <xsd:attribute name="str20ಃ" type="xsd:string"/>
+            <xsd:attribute name="str01Aಾ" type="xsd:string"/>
+            <xsd:attribute name="str11-ು" type="xsd:string"/>
+            <xsd:attribute name="str21ೄ" type="xsd:string"/>
+            <xsd:attribute name="str02Aೆ" type="xsd:string"/>
+            <xsd:attribute name="str12-ೇ" type="xsd:string"/>
+            <xsd:attribute name="str22ೈ" type="xsd:string"/>
+            <xsd:attribute name="str03Aೊ" type="xsd:string"/>
+            <xsd:attribute name="str13-ೋ" type="xsd:string"/>
+            <xsd:attribute name="str23್" type="xsd:string"/>
+            <xsd:attribute name="str04Aೕ" type="xsd:string"/>
+            <xsd:attribute name="str14-ೕ" type="xsd:string"/>
+            <xsd:attribute name="str24ೖ" type="xsd:string"/>
+            <xsd:attribute name="str05Aം" type="xsd:string"/>
+            <xsd:attribute name="str15-ം" type="xsd:string"/>
+            <xsd:attribute name="str25ഃ" type="xsd:string"/>
+            <xsd:attribute name="str06Aാ" type="xsd:string"/>
+            <xsd:attribute name="str16-ീ" type="xsd:string"/>
+            <xsd:attribute name="str26ൃ" type="xsd:string"/>
+            <xsd:attribute name="str07Aെ" type="xsd:string"/>
+            <xsd:attribute name="str17-േ" type="xsd:string"/>
+            <xsd:attribute name="str27ൈ" type="xsd:string"/>
+            <xsd:attribute name="str08Aൊ" type="xsd:string"/>
+            <xsd:attribute name="str18-ോ" type="xsd:string"/>
+            <xsd:attribute name="str28്" type="xsd:string"/>
+            <xsd:attribute name="str09Aൗ" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

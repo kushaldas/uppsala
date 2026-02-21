@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-5
+    xmlns="NISTSchema-SV-II-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-5-NS NISTSchema-SV-II-list-string-maxLength-5.xsd">78743_To_Significant_Street_Know_,_WI_13398 3728_Language_Hoc_Street_With_,_VA_13398 712_As_Between_Street_The_,_WI_13398 67_That_That_Street_With_,_KY_13398 6672_Repository_Conformance_Street_And_,_MI_13398 725_Sun_An_Street_Partnership_,_AR_13398 6675_Pervasive_Further_Street_Of_,_MD_13398 283_Industry_The_Street_Dom_,_RI_13398 76_Recommendation_Oasis_Street_Discussions_,_NE_13398 58217_Will_Among_Street_Bottlenecks_,_FL_13398 5687_Be_Voiced_Street_The_,_SC_13398 4967_Document_Disseminate_Street_Widespread_,_LA_13398 3377_And_Extensible_Street_Among_,_WY_13398 694_To_With_Street_Are_,_RI_13398 24_And_Software_Street_These_,_NH_13398 2428_Gain_Facilitates_Street_Adoption_,_NJ_13398 4642_Vocabularies_The_Street_And_,_CO_13398 6_Constituent_Ability_Street_Community_,_OK_13398 67_In_Such_Street_And_,_SD_13398 444_Manipulation_Prototype_Street_Allows_,_NV_13398</NISTSchema-SV-II-list-string-maxLength-5>

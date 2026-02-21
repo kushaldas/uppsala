@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-nonNegativeInteger-enumeration-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3
+    xmlns="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3-NS NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3.xsd">408456622715 29646740452220787 363317991155844 14663 8089866209 509364835466092 320419 58146673286</NISTSchema-SV-II-list-nonNegativeInteger-enumeration-3>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-5
+    xmlns="NISTSchema-SV-II-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-5-NS NISTSchema-SV-II-list-token-maxLength-5.xsd">736_Measure_Interoperability_By_Work_Street_Xml_And_,_TX_15479-1172 982_First_Can_These_Stimulus_Street_To_Component_,_OR_15479-1172 272_Implementation_Structured_Technology_To_Street_Particularly_Of_,_WY_15479-1172 6543_Object_This_To_Of_Street_Which_Of_,_NM_15479-1172 131_Community_Challenges_Control_Manipulate_Street_Led_Set_,_NM_15479-1172 387_Reference_Industry_Filter_Standard_Street_Provide_International_,_PA_15479-1172 5413_The_As_Distributed_Interoperable_Street_Health_Hampered_,_TX_15479-1172 67_Advancement_Of_Significant_Oasis_Street_Influence_Are_,_OR_15479-1172 82218_And_Advanced_Xml_To_Street_Utilize_Gain_,_AZ_15479-1172 5933_Be_This_Electronic_Consortiums_Street_Original_Are_,_AK_15479-1172 215_And_By_Testing_Of_Street_The_The_,_ME_15479-1172 12_For_Is_The_We_Street_Organizations_To_,_OK_15479-1172 444_Asked_Be_Via_Industry_Street_As_Is_,_KY_15479-1172</NISTSchema-SV-II-list-token-maxLength-5>

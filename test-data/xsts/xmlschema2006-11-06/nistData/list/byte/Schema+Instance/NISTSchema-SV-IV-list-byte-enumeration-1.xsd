@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-byte-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-byte-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-byte-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-byte-enumeration-1,
+      which is derived by restriction of a list with itemType byte
+      by facet enumeration with values of:
+          50 -128 70 66 -99 -37 31 -6
+          -128 127 -6 -4 -98 52 -45 -114
+          127 49 86 -6 -64 -7 76 -128 -34
+          127 -43 -15 -126 -14 -63 -128 94
+          126 -77 -53 8 -4 127 -74 -128 -2
+          -38 -6 9 -80 -128 127 -68
+          -89 40 -2 -59 6 -128 -70 19 -9
+          -128 74 -95 27 -86 63 127 75
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-byte-enumeration-1" type="NISTSchema-SV-IV-list-byte-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfbyte">
+    <xs:list itemType="xs:byte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-byte-enumeration-1-Type">
+    <xs:restriction base="listOfbyte">
+          <xs:enumeration value="50 -128 70 66 -99 -37 31 -6"/>
+          <xs:enumeration value="-128 127 -6 -4 -98 52 -45 -114"/>
+          <xs:enumeration value="127 49 86 -6 -64 -7 76 -128 -34"/>
+          <xs:enumeration value="127 -43 -15 -126 -14 -63 -128 94"/>
+          <xs:enumeration value="126 -77 -53 8 -4 127 -74 -128 -2"/>
+          <xs:enumeration value="-38 -6 9 -80 -128 127 -68"/>
+          <xs:enumeration value="-89 40 -2 -59 6 -128 -70 19 -9"/>
+          <xs:enumeration value="-128 74 -95 27 -86 63 127 75"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

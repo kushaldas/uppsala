@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-length-2-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-length-2
+    xmlns="NISTSchema-SV-II-list-normalizedString-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-length-2-NS NISTSchema-SV-II-list-normalizedString-length-2.xsd">21_Soc_In_Street_No_Software_,_AZ_16672-1711 455_Computing_Benefits_Street_Early_Therefore_,_FL_16672-1711 647_As_Vertical_Street_Xml_Information_,_MD_16672-1711 57811_Base_Can_Street_Its_International_,_AL_16672-1711 72_The_Quality_Street_Files_The_,_MS_16672-1711 568_Of_Respect_Street_Of_Organizations_,_CA_16672-1711 48959_Market_And_Street_To_The_,_NJ_16672-1711 375_Specifications_Create_Street_The_Tools_,_RI_16672-1711 48238_Those_Acting_Street_Of_The_,_WV_16672-1711 6_The_Among_Street_Most_Well_,_AK_16672-1711</NISTSchema-SV-II-list-normalizedString-length-2>

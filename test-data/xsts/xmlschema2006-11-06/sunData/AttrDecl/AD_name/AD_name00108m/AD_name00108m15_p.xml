@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00108m15_p.xml
+   generated from: @(#)AD_name00108m.jmpp	1.3 02/11/14
+
+-->
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:td="AttrDecl/name"
+    xsi:schemaLocation="AttrDecl/name AD_name00108m15.xsd"
+    str00Aະ="a"
+    str01Aາ="a"
+    str11-າ="b"
+    str21ຳ="c"
+    str02Aຽ="a"
+    str03Aເ="a"
+    str13-ໂ="b"
+    str23ໄ="c"
+    str04Aཀ="a"
+    str14-གྷ="b"
+    str24ཇ="c"
+    str05Aཉ="a"
+    str15-ཙ="b"
+    str25ཀྵ="c"
+    str06Aᄀ="a"
+    str07Aᄂ="a"
+    str17-ᄂ="b"
+    str27ᄃ="c"
+    str08Aᄅ="a"
+    str18-ᄆ="b"
+    str28ᄇ="c"
+    str09Aᄉ="a"
+/>

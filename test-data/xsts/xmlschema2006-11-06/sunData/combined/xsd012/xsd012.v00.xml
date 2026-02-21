@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd012.v00.xml	1.3 02/12/25
+
+-->
+
+<root xmlns="foo">
+	<mixed>
+		abcdef
+	</mixed>
+	
+	<mixed>
+		<a /> mi <b /> xed <c/> content
+	</mixed>
+	
+	<elementOnly>
+		<a/><b/><a/>
+	</elementOnly>
+</root>

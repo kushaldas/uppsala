@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00302m3_p.xml
+   generated from: @(#)targetNS00302m.jmpp	1.4 02/11/19
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/targetNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/targetNS targetNS00302m3.xsd">
+
+<!-- Positive variant begin -->
+  <test:Local/>
+<!-- Positive variant end   -->
+<!-- Negative variant begin - -
+  <Local/>
+ - - Negative variant end   -->
+
+</test:root>

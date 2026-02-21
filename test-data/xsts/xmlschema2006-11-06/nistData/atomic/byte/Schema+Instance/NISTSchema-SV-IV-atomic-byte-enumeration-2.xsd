@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-byte-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-byte-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-byte-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-byte-enumeration-2,
+      which is derived by restriction of built-in type byte
+      by facet enumeration with values of:
+          9
+          127
+          64
+          -81
+          3
+          -7
+          -93
+          50
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-byte-enumeration-2" type="NISTSchema-SV-IV-atomic-byte-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-byte-enumeration-2-Type">
+    <xs:restriction base="xs:byte">
+          <xs:enumeration value="9"/>
+          <xs:enumeration value="127"/>
+          <xs:enumeration value="64"/>
+          <xs:enumeration value="-81"/>
+          <xs:enumeration value="3"/>
+          <xs:enumeration value="-7"/>
+          <xs:enumeration value="-93"/>
+          <xs:enumeration value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

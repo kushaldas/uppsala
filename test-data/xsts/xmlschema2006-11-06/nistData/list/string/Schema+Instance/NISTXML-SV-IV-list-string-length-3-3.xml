@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-length-3-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-length-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-length-3
+    xmlns="NISTSchema-SV-IV-list-string-length-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-length-3-NS NISTSchema-SV-IV-list-string-length-3.xsd">41_Electronic_Are_Contributor_To_Street_To_Is_,_WY_18312 42_Using_Structure_With_Interoperability_Street_Can_Technology_,_GA_18312 9_Way_To_In_To_Street_For_Precise_,_MA_18312 5734_Of_Although_Made_The_Street_The_Processes_,_AK_18312 277_Naval_Organizations_To_Standardization_Street_Experimental_Tune_,_MT_18312 7494_Pervasive_With_And_Community_Street_Further_To_,_LA_18312 3875_Object_Target_The_Test_Street_Partner_Be_,_VT_18312</NISTSchema-SV-IV-list-string-length-3>

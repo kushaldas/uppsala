@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<!--
+Ident: @(#)xsd003b.n01.xml	1.3 02/12/25
+
+-->
+
+<!-- @gAtt is redefined to allow yes/no only -->
+<root xmlns="foo" foo:gAtt="joe" xmlns:foo="foo">
+	<in />
+	<out />
+	<tail />
+</root>

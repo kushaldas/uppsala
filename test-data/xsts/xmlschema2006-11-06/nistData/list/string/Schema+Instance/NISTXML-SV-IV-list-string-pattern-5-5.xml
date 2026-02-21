@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-pattern-5-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-pattern-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-pattern-5
+    xmlns="NISTSchema-SV-IV-list-string-pattern-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-pattern-5-NS NISTSchema-SV-IV-list-string-pattern-5.xsd">6347_Discovery_Street_And_,_NH_17435-1843 2174_Test_Registry_Street_Coordinate_Create_Early_,_WA_16376 5919_In_Street_Must_,_KY_11348 1_Interoperability_Pervasive_Including_Partner_Street_Including_Conformance_,_OK_14973 67_This_Street_Of_Of_,_HI_16518-1410 41846_Web_Enough_On_Street_Web_And_Processes_,_OH_10254-1649 24_Which_Maintained_Street_Testing_,_NC_17642 2844_Daily_Environments_The_Are_Structured_Street_Structured_Including_,_GA_18742 6_The_Applications_Street_Simplest_For_Industry_,_GA_17310-1594</NISTSchema-SV-IV-list-string-pattern-5>

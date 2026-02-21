@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-NCName-whiteSpace-1-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-NCName-whiteSpace-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-NCName-whiteSpace-1
+    xmlns="NISTSchema-SV-IV-list-NCName-whiteSpace-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-NCName-whiteSpace-1-NS NISTSchema-SV-IV-list-NCName-whiteSpace-1.xsd">wobject_standards_to-the_capabilities_both_the-pe csimulation.will-uses_simplest.provide_support.la dstructure.we_this_memory.partners.consortium-net dcan.all_compatibility_a_launching.supply_know.to _number_including-means_of_simplest_registry.coll wusing.repository_tests-and.fed.from_and.informat awill-the-projector-can.the_prominent.and-success aon_will.recommending-localized.second-generation achoices-subject_discover-the-is-consistency_can.</NISTSchema-SV-IV-list-NCName-whiteSpace-1>

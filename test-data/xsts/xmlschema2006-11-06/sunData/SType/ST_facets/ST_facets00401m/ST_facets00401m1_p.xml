@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m1_p.xml
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00401m1.xsd">
+    <value>A00</value>
+    <value>M-0</value>
+    <value>Za0</value>
+    <value>a01</value>
+    <value>d-1</value>
+    <value>ha1</value>
+    <value>j02</value>
+    <value>r-2</value>
+    <value>za2</value>
+    <value>À03</value>
+    <value>Ë-3</value>
+    <value>Öa3</value>
+    <value>Ø04</value>
+    <value>Û-4</value>
+    <value>Þa4</value>
+    <value>à05</value>
+    <value>ë-5</value>
+    <value>öa5</value>
+    <value>ø06</value>
+    <value>û-6</value>
+    <value>ÿa6</value>
+    <value>Ā07</value>
+    <value>Ę-7</value>
+    <value>ıa7</value>
+    <value>Ĵ08</value>
+    <value>Ĺ-8</value>
+    <value>ľa8</value>
+    <value>Ł09</value>
+    <value>ń-9</value>
+    <value>ňa9</value>
+</test:root>

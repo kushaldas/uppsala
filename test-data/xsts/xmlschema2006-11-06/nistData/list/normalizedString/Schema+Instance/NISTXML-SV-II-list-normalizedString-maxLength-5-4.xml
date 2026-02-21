@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-5-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-5
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd">323_And_Back_Street_Software_Computing_It_,_WY_14045 471_Specifications_Used_Street_Is_Files_To_,_UT_14045 24_The_For_Street_Documents_Industries_Development_,_MT_14045 156_Include_In_Street_Primary_Can_Discovery_,_WY_14045 73645_Computing_This_Street_Supply_Language_By_,_MO_14045 2715_Ability_Software_Street_In_To_In_,_ND_14045 1886_Known_Electronic_Street_More_Who_Repository_,_VT_14045 371_Microsystems_Information_Street_Law_Java_Ambiguities_,_AR_14045 64247_Specifications_Retrieve_Street_These_And_Facilitation_,_SD_14045 2782_Devices_Systems_Street_Security_Localized_To_,_KY_14045 36_Supply_Issues_Street_National_Reference_With_,_RI_14045 4798_Correction_Measurements_Street_International_Provides_Build_,_MI_14045 6574_Information_Of_Street_And_The_Be_,_DC_14045 93_Of_Automatic_Street_With_In_Constituent_,_IA_14045 6389_Through_Libraries_Street_Industry_And_The_,_WY_14045 678_Oasis_Effective_Street_An_Technologies_Individual_,_LA_14045</NISTSchema-SV-II-list-normalizedString-maxLength-5>

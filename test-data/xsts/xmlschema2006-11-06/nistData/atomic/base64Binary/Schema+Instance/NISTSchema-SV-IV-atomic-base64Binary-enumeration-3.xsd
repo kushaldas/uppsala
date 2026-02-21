@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-base64Binary-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-base64Binary-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-base64Binary-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-base64Binary-enumeration-3,
+      which is derived by restriction of built-in type base64Binary
+      by facet enumeration with values of:
+          eGJjeXJjbHVjcXJlbHZhbmRzamthcmprbXZydGV4Z3hoZXZtcXZ0bmx0dnh4dGRvd2ZxcmtqY2s=
+          cXNraWVxYWN1ZXh5b3F0dmRnZ2ZnbGl2eGRsdGk=
+          cnVmZGRucWV5c3ZsZ2ZzdGVyZHlyb2VtaGFtb211cG50eHN3
+          cnVia21pZ3d3cWF5dHlvZGtrY2tvZXF4dmRkZmthZmNwamp1ZGRvcGRrdndnZnJmdGttdnVoZ3I=
+          YnVuanVxZnh0aXhzYmpjeHFmcXNxd3lrYmtjdnRrd2lqbXh3aG9xdmphdnVnampkeWdndGx1dXBzYmlnanY=
+          YnZ0cGVzYXlwZ2lvc3NoYWZodWNxb3B1cGt5Y2NudGpueXlhd29wdXFhY25qZXl1dm5ydGFn
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-base64Binary-enumeration-3" type="NISTSchema-SV-IV-atomic-base64Binary-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-base64Binary-enumeration-3-Type">
+    <xs:restriction base="xs:base64Binary">
+          <xs:enumeration value="eGJjeXJjbHVjcXJlbHZhbmRzamthcmprbXZydGV4Z3hoZXZtcXZ0bmx0dnh4dGRvd2ZxcmtqY2s="/>
+          <xs:enumeration value="cXNraWVxYWN1ZXh5b3F0dmRnZ2ZnbGl2eGRsdGk="/>
+          <xs:enumeration value="cnVmZGRucWV5c3ZsZ2ZzdGVyZHlyb2VtaGFtb211cG50eHN3"/>
+          <xs:enumeration value="cnVia21pZ3d3cWF5dHlvZGtrY2tvZXF4dmRkZmthZmNwamp1ZGRvcGRrdndnZnJmdGttdnVoZ3I="/>
+          <xs:enumeration value="YnVuanVxZnh0aXhzYmpjeHFmcXNxd3lrYmtjdnRrd2lqbXh3aG9xdmphdnVnampkeWdndGx1dXBzYmlnanY="/>
+          <xs:enumeration value="YnZ0cGVzYXlwZ2lvc3NoYWZodWNxb3B1cGt5Y2NudGpueXlhd29wdXFhY25qZXl1dm5ydGFn"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

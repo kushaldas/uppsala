@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-unsignedInt-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-unsignedInt-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-unsignedInt-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-unsignedInt-enumeration-3,
+      which is derived by restriction of a list with itemType unsignedInt
+      by facet enumeration with values of:
+          147421 266 720769 15238931 172933 689921 168178 114955
+          253 1813 352989250 33635 72237 75297797 95161 601646 4294967295
+          39246234 62307075 5021498 68771 644811 556630 87482065 65580182 23013
+          64 91 8002815 478279250 788100
+          6577598 65939516 67021555 917 85 417 25830279 3464
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-unsignedInt-enumeration-3" type="NISTSchema-SV-IV-list-unsignedInt-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfunsignedInt">
+    <xs:list itemType="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-unsignedInt-enumeration-3-Type">
+    <xs:restriction base="listOfunsignedInt">
+          <xs:enumeration value="147421 266 720769 15238931 172933 689921 168178 114955"/>
+          <xs:enumeration value="253 1813 352989250 33635 72237 75297797 95161 601646 4294967295"/>
+          <xs:enumeration value="39246234 62307075 5021498 68771 644811 556630 87482065 65580182 23013"/>
+          <xs:enumeration value="64 91 8002815 478279250 788100"/>
+          <xs:enumeration value="6577598 65939516 67021555 917 85 417 25830279 3464"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

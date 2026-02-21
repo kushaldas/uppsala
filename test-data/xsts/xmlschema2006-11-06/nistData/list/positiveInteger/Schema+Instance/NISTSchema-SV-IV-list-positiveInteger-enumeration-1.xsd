@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-positiveInteger-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-list-positiveInteger-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-positiveInteger-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-positiveInteger-enumeration-1,
+      which is derived by restriction of a list with itemType positiveInteger
+      by facet enumeration with values of:
+          1575798599863973 42174707 12410014840 252904576560 33219175859080518 37701 29068349988289
+          64 6984 59 285239443538 7866981 24624797137
+          565467866919 972 4327596870990 5154282988077 2046666004977433 991920197 89358 447048
+          369 56985853448421741 258015257420720622 45246 769564420944 40611
+          977292709371 5 6242042144261218 7800598 7597143273961 766431014 7904391 223 57656479048 7786
+          4522 7229985631824 808483974 60582462205768 790819 89263015725603245
+          87 670 31 328935 3892233 8601666482973 1918237 1393704 590410
+          323 813798217 99993112533 71580 8800288569544 144357519164634018 2564934601075239 20644746077383735 11822 86282866
+          3599312 21643806524602 736880573042 11327504 475281241 53425218284081865 83 1216585797747 61244939864454
+          8 25583362 185067 6779320361011916 55708 75 212157564637204587
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-positiveInteger-enumeration-1" type="NISTSchema-SV-IV-list-positiveInteger-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfpositiveInteger">
+    <xs:list itemType="xs:positiveInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-positiveInteger-enumeration-1-Type">
+    <xs:restriction base="listOfpositiveInteger">
+          <xs:enumeration value="1575798599863973 42174707 12410014840 252904576560 33219175859080518 37701 29068349988289"/>
+          <xs:enumeration value="64 6984 59 285239443538 7866981 24624797137"/>
+          <xs:enumeration value="565467866919 972 4327596870990 5154282988077 2046666004977433 991920197 89358 447048"/>
+          <xs:enumeration value="369 56985853448421741 258015257420720622 45246 769564420944 40611"/>
+          <xs:enumeration value="977292709371 5 6242042144261218 7800598 7597143273961 766431014 7904391 223 57656479048 7786"/>
+          <xs:enumeration value="4522 7229985631824 808483974 60582462205768 790819 89263015725603245"/>
+          <xs:enumeration value="87 670 31 328935 3892233 8601666482973 1918237 1393704 590410"/>
+          <xs:enumeration value="323 813798217 99993112533 71580 8800288569544 144357519164634018 2564934601075239 20644746077383735 11822 86282866"/>
+          <xs:enumeration value="3599312 21643806524602 736880573042 11327504 475281241 53425218284081865 83 1216585797747 61244939864454"/>
+          <xs:enumeration value="8 25583362 185067 6779320361011916 55708 75 212157564637204587"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

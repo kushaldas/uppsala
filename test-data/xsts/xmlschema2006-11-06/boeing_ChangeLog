@@ -1,0 +1,10 @@
+Move all ipo-N directories to ipoN
+
+fix one href pointer in testSet
+
+No missing targets:
+ > for f in *.testSet; do lxprintf -e instanceDocument '%s\n' '@xlink:href' $f | while read r; do if [ \! -s $r ]; then echo $f x $r; fi ; done ; done
+ > for f in *.testSet; do lxprintf -e schemaDocument '%s\n' '@xlink:href' $f | while read r; do if [ \! -s $r ]; then echo $f x $r; fi ; done ; done
+
+XSV is happy with all the tests:
+ > lxviewport -q testGroup ~/work/xml/xmlschema/testing/runTest.sh BoeingXSDTestSet.testSet > /tmp/bt.xml

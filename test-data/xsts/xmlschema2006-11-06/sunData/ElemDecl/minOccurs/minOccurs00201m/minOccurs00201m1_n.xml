@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)minOccurs00201m1_n.xml
+   generated from: @(#)minOccurs00201m.jmpp	1.4 02/11/19
+
+-->
+
+<root
+    xmlns="ElemDecl/minOccurs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/minOccurs minOccurs00201m.xsd">
+
+<!-- Positive variant begin - -
+    <Local>2</Local>
+ - - Positive variant end   -->
+
+</root>

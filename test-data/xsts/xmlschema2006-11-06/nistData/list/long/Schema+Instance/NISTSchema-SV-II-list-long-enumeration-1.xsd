@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-long-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-long-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-long-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-long-enumeration-1,
+      which is derived by restriction of a list with itemType long
+      by facet enumeration with values of:
+          -30423860657612178 91930 -37330789 -321395455568762 -2497170774
+          -6063506463 3087255146 -520413 98 31405611224118 9642259040312
+          -970549572265 4371810602314 -4 100625045 869620213689168 505880365499 824998
+          -5395 -29119492289 9083490 78474286 5825934082959 27271199 952954 -76321447 -398320121006037863
+          -214346 -6234436566946 16452016493880 -9671118259 -313024005375 21958509479 768883981063105292
+          -2 -1255589830807309 -856782164339261 -76 -5714617 -316765424682270 -6249 2737650
+          -277444508135659 -976844395026657 -35689438017027552 -52836774002692 985 884990411 -79248194720 -3045498496212 -14238
+          -49207392887123 -8258 -1973194578353354 -5226743750 -5285421022 -58970151728529152 8420 -43465106026
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-long-enumeration-1" type="NISTSchema-SV-II-list-long-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOflong">
+    <xs:list itemType="xs:long"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-long-enumeration-1-Type">
+    <xs:restriction base="listOflong">
+          <xs:enumeration value="-30423860657612178 91930 -37330789 -321395455568762 -2497170774"/>
+          <xs:enumeration value="-6063506463 3087255146 -520413 98 31405611224118 9642259040312"/>
+          <xs:enumeration value="-970549572265 4371810602314 -4 100625045 869620213689168 505880365499 824998"/>
+          <xs:enumeration value="-5395 -29119492289 9083490 78474286 5825934082959 27271199 952954 -76321447 -398320121006037863"/>
+          <xs:enumeration value="-214346 -6234436566946 16452016493880 -9671118259 -313024005375 21958509479 768883981063105292"/>
+          <xs:enumeration value="-2 -1255589830807309 -856782164339261 -76 -5714617 -316765424682270 -6249 2737650"/>
+          <xs:enumeration value="-277444508135659 -976844395026657 -35689438017027552 -52836774002692 985 884990411 -79248194720 -3045498496212 -14238"/>
+          <xs:enumeration value="-49207392887123 -8258 -1973194578353354 -5226743750 -5285421022 -58970151728529152 8420 -43465106026"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

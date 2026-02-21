@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-normalizedString-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-normalizedString-maxLength-5
+    xmlns="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-normalizedString-maxLength-5-NS NISTSchema-SV-II-list-normalizedString-maxLength-5.xsd">652_Web_Particularly_That_Street_Utilities_Which_,_MT_19252 8_Advancement_Computing_Generation_Street_The_Accelerate_,_RI_19252 5273_Accomplish_Same_All_Street_Database_Define_,_WA_19252 3891_Draft_Exercise_Of_Street_Distributed_For_,_WI_19252 7788_Base_Testing_That_Street_Computers_Service_,_MN_19252 6_Software_Testing_Test_Street_Of_These_,_SC_19252 59_Use_Following_Infrastructure_Street_And_For_,_AK_19252 252_Soc_Targeted_The_Street_Build_Test_,_IN_19252 6553_Filter_Registry_To_Street_Print_With_,_TN_19252 87_As_Vocabulary_Communication_Street_Act_Of_,_MA_19252 7_Availability_Will_To_Street_That_Software_,_AL_19252 5248_About_And_Other_Street_Addressing_In_,_WV_19252</NISTSchema-SV-II-list-normalizedString-maxLength-5>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-length-2-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-length-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-length-2
+    xmlns="NISTSchema-SV-II-list-string-length-2-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-length-2-NS NISTSchema-SV-II-list-string-length-2.xsd">3684_Creates_From_Project_Help_Depends_Street_Well_And_,_ND_18189 584_An_And_The_Within_Compatibility_Street_Of_Electronic_,_GA_18189 63_The_Will_Developers_Of_Capabilities_Street_Manual_Use_,_SC_18189 37_Is_The_And_Groups_Versions_Street_Services_Applications_,_IL_18189 24_Documents_And_Performance_Internet_Ebxml_Street_Trade_Criteria_,_MA_18189 33356_Applications_Constituent_In_Screen_Original_Street_The_Standardization_,_WV_18189 54_Key_To_Prominent_Are_Of_Street_Related_Intuitive_,_KS_18189 32_Working_In_The_Offer_To_Street_Conformance_And_,_MI_18189 8839_Xml_Users_Its_Performance_The_Street_Recommendation_Both_,_IN_18189 68_Simulation_As_Software_Must_Of_Street_Semantics_Of_,_AK_18189</NISTSchema-SV-II-list-string-length-2>

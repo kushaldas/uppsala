@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedInt-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedInt-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedInt-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedInt-enumeration-1,
+      which is derived by restriction of a list with itemType unsignedInt
+      by facet enumeration with values of:
+          9382666 2470206 88310841 8114992 84134766 675 2283 31356845 7430589
+          57 2 6552181 85 55042 7682 536138
+          1882714 2683898667 730 9613597 757851 6728448
+          65930 27 474 971183240 48164040
+          65 427734894 7508507 778 1 318878072 401678 25
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedInt-enumeration-1" type="NISTSchema-SV-II-list-unsignedInt-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfunsignedInt">
+    <xs:list itemType="xs:unsignedInt"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedInt-enumeration-1-Type">
+    <xs:restriction base="listOfunsignedInt">
+          <xs:enumeration value="9382666 2470206 88310841 8114992 84134766 675 2283 31356845 7430589"/>
+          <xs:enumeration value="57 2 6552181 85 55042 7682 536138"/>
+          <xs:enumeration value="1882714 2683898667 730 9613597 757851 6728448"/>
+          <xs:enumeration value="65930 27 474 971183240 48164040"/>
+          <xs:enumeration value="65 427734894 7508507 778 1 318878072 401678 25"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

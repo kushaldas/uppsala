@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)final00101m4.xsd
+   generated from: @(#)final00101m.jmpp	1.3 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns="final"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="final">
+
+     <xsd:element name="b" type="xsd:string" />
+
+     <xsd:complexType name="A" final="restriction">
+          <xsd:sequence>
+               <xsd:element name="c" type="xsd:string" />
+          </xsd:sequence>
+     </xsd:complexType>
+
+     <xsd:complexType name="B">
+          <xsd:complexContent>
+               <xsd:restriction base="A">
+                    <xsd:sequence>
+                         <xsd:element name="c" type="xsd:string" maxOccurs="2"/>
+                    </xsd:sequence>
+               </xsd:restriction>
+          </xsd:complexContent>
+     </xsd:complexType>
+</xsd:schema>
+

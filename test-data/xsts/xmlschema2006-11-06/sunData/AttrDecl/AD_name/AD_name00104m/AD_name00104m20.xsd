@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m20.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="Ὓ00" type="xsd:integer"/>
+            <xsd:attribute name="Ὕ10" type="xsd:integer"/>
+            <xsd:attribute name="Ὗ20" type="xsd:integer"/>
+            <xsd:attribute name="Ὦ21" type="xsd:integer"/>
+            <xsd:attribute name="ώ22" type="xsd:integer"/>
+            <xsd:attribute name="ᾰ30" type="xsd:integer"/>
+            <xsd:attribute name="ᾰ31" type="xsd:integer"/>
+            <xsd:attribute name="ᾱ32" type="xsd:integer"/>
+            <xsd:attribute name="Ᾰ40" type="xsd:integer"/>
+            <xsd:attribute name="Ᾱ41" type="xsd:integer"/>
+            <xsd:attribute name="Ά42" type="xsd:integer"/>
+            <xsd:attribute name="Ὲ50" type="xsd:integer"/>
+            <xsd:attribute name="Έ51" type="xsd:integer"/>
+            <xsd:attribute name="Ή52" type="xsd:integer"/>
+            <xsd:attribute name="ῐ60" type="xsd:integer"/>
+            <xsd:attribute name="ῐ61" type="xsd:integer"/>
+            <xsd:attribute name="ῑ62" type="xsd:integer"/>
+            <xsd:attribute name="Ῐ70" type="xsd:integer"/>
+            <xsd:attribute name="Ῑ71" type="xsd:integer"/>
+            <xsd:attribute name="Ί72" type="xsd:integer"/>
+            <xsd:attribute name="ῠ80" type="xsd:integer"/>
+            <xsd:attribute name="ῠ81" type="xsd:integer"/>
+            <xsd:attribute name="ῡ82" type="xsd:integer"/>
+            <xsd:attribute name="ῥ90" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

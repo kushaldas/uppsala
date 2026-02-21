@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-time-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-time-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-time-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-time-enumeration-4,
+      which is derived by restriction of built-in type time
+      by facet enumeration with values of:
+          08:50:27
+          09:36:04
+          15:17:44
+          03:09:02
+          00:12:41
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-time-enumeration-4" type="NISTSchema-SV-II-atomic-time-enumeration-4-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-time-enumeration-4-Type">
+    <xs:restriction base="xs:time">
+          <xs:enumeration value="08:50:27"/>
+          <xs:enumeration value="09:36:04"/>
+          <xs:enumeration value="15:17:44"/>
+          <xs:enumeration value="03:09:02"/>
+          <xs:enumeration value="00:12:41"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

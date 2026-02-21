@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-4-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-4
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-4-NS NISTSchema-SV-IV-list-normalizedString-minLength-4.xsd">77_Of_Is_Versions_Street_These_Furthermore_,_MI_19431-1469 144_Standardization_Industry_Industry_Street_The_Industries_,_VA_19431-1469 553_Repository_Development_For_Street_Of_Will_,_DC_19431-1469 99_Oasis_To_High_Street_Design_Respect_,_MI_19431-1469 79_Over_Type_The_Street_Organizations_Challenges_,_LA_19431-1469 884_Applications_For_Technical_Street_Services_Memory_,_FL_19431-1469 85_Filter_The_And_Street_Used_Conference_,_WI_19431-1469 55875_Led_Standards_Software_Street_Specifications_Partner_,_SC_19431-1469 2325_Extensible_Many_Manipulate_Street_Widespread_For_,_IA_19431-1469 8335_More_Manufacturers_Subcommittees_Street_Containing_Rich_,_AZ_19431-1469</NISTSchema-SV-IV-list-normalizedString-minLength-4>

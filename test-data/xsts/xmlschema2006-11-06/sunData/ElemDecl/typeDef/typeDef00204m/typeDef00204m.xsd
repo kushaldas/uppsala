@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00204m.xsd
+   generated from: @(#)typeDef00204m.jmpp	1.4 02/11/15
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="Head" type="xsd:boolean"/>
+
+  <xsd:element name="root" substitutionGroup="Head"/>
+
+</xsd:schema>

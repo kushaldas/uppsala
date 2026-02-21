@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-5
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-5-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:gmethods.allows-industries-th="http://www.nist.gov/xsdNS"
+    xmlns:ysoftware-service.supply-the_="http://www.nist.gov/xsdNS"
+    xmlns:prelated_following_application="http://www.nist.gov/xsdNS"
+    xmlns:_industry_industry-no_kn="http://www.nist.gov/xsdNS"
+    xmlns:yres="http://www.nist.gov/xsdNS"
+    xmlns:ato.compliant-must.fro="http://www.nist.gov/xsdNS"
+    xmlns:rnature.indust="http://www.nist.gov/xsdNS"
+    xmlns:g="http://www.nist.gov/xsdNS"
+    xmlns:fchoices_revolution.role.comme="http://www.nist.gov/xsdNS"
+    xmlns:_impact-user_po="http://www.nist.gov/xsdNS"
+    xmlns:jth="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-5-NS NISTSchema-SV-II-list-QName-maxLength-5.xsd">iwill.known-laun gmethods.allows-industries-th:ipopular_the_and ysoftware-service.supply-the_:csoftware_draft_ pambiguities_ref _the-publishing- prelated_following_application:bdiscovery-versi _industry_industry-no_kn:rused_web-chain- yres:atechnology-exec ato.compliant-must.fro:winteroperabilit ucan.and-underst rnature.indust:_resources-defin g:_electronic.fact fchoices_revolution.role.comme:gincluding_refer _impact-user_po:_the.wireless.in ithe.computing.d lwill_to_a.in.sp jth:osoftware_typica phardware-pervas weffective_stand</nist:NISTSchema-SV-II-list-QName-maxLength-5>

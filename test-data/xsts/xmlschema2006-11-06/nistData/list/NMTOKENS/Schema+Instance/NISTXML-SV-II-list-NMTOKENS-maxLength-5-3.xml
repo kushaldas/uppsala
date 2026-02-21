@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-NMTOKENS-maxLength-5-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-NMTOKENS-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-NMTOKENS-maxLength-5
+    xmlns="NISTSchema-SV-II-list-NMTOKENS-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-NMTOKENS-maxLength-5-NS NISTSchema-SV-II-list-NMTOKENS-maxLength-5.xsd">syntax.of:also.specifications_Simulation:included_use.sta in:including.enforcement::templates_used-standardization. and:will_portable.tools_will_ebXML.pervasive.browsers-wil incorporated:due_of:creation:second-generation:medium-siz and.revolution.Subcommittee-of_popular_challenges_from.ta XSL-FO-most.the-signatures.OASIS-pervasive.for_automatic_ NIST.a_specifications:the:associated-involved.standards_f rigorous:automated_technologies_chain_the:Software:discov that_Control_Aroma_of.HTML.with.a-that_and:automated_rapi accelerate:these:ensure:that.application-signatures_techn computing:cross-over-newcomer.XML:interacting:used:succes aid:certain-in.means.using_intuitive.known:emerging_Provi</NISTSchema-SV-II-list-NMTOKENS-maxLength-5>

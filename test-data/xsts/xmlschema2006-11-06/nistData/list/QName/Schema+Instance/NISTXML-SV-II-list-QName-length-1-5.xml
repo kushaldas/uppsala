@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-length-1-5.xml
+      Description: XML instance number 5 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-length-1.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-length-1
+    xmlns:nist="NISTSchema-SV-II-list-QName-length-1-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:ya="http://www.nist.gov/xsdNS"
+    xmlns:pin_repos="http://www.nist.gov/xsdNS"
+    xmlns:nof.issues-set_in="http://www.nist.gov/xsdNS"
+    xmlns:jto-industry.="http://www.nist.gov/xsdNS"
+    xmlns:vo="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-length-1-NS NISTSchema-SV-II-list-QName-length-1.xsd">glies-in-of-a_a-testing.a.files-program-security.computing_our_ ya:kmany.for_of-files-including_all_systems_four_on.included_stand pin_repos:cpervasive_can-the_throughout-law-information_at-a_prominent-is qnetworks_as_using-discussions_technical.the_utilities.the-and- nthe-developing.file_and.manual-the-more_information.the-can-kn _the.and.program-is_are-about-the.and_information_to-pages_adve nof.issues-set_in:rreviewed.partners-will.use-high.testing_that_has_in.industries jto-industry.:vprecise.prototype-heterogeneous_more.electronic.the_software.o vo:dof_among_devices-this.was.define-language.to.nature.computing_ _will-criteria.key-to-with_business-implementation-meets.these-</nist:NISTSchema-SV-II-list-QName-length-1>

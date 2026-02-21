@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.1.v.xml	1.3 03/10/10
+
+-->
+
+			<tn:root xmlns:tn="foo" xmlns:dc="http://purl.org/dc/elements/1.1/">
+				<tn:key id="12"/>
+				<tn:ref> 12 </tn:ref>
+			</tn:root>

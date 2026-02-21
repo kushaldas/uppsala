@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)targetNS00201m.xsd
+   generated from: @(#)targetNS00201m.jmpp	1.2 02/04/04
+
+-->
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="number" type="xsd:decimal"/>
+
+</xsd:schema>

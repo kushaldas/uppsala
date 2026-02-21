@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-string-maxLength-4-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-string-maxLength-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-string-maxLength-4
+    xmlns="NISTSchema-SV-II-list-string-maxLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-string-maxLength-4-NS NISTSchema-SV-II-list-string-maxLength-4.xsd">4_Information_And_Industry_Language_Participate_Street_The_,_FL_13557 8859_Ad_By_Technologies_For_Industry_Street_Defining_,_TN_13557 2582_Nsrl_Participate_Tests_Technologies_That_Street_Conferences_,_AK_13557 78_The_Led_Of_Resides_Compatibility_Street_Mediums_,_DC_13557 159_Both_The_Project_Automated_For_Street_For_,_AK_13557 37_With_The_Computing_Of_Digital_Street_And_,_WV_13557 46314_Of_The_The_Effectively_The_Street_And_,_MN_13557 59_Of_Make_Adoption_Is_Each_Street_Systems_,_DC_13557 76_Has_To_The_Reach_Shift_Street_Versions_,_VA_13557</NISTSchema-SV-II-list-string-maxLength-4>

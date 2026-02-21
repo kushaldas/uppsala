@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKEN-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKEN-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKEN-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKEN-enumeration-2,
+      which is derived by restriction of a list with itemType NMTOKEN
+      by facet enumeration with values of:
+          XML-related.our_information.are-already:displaying.th and.automated_the_these-and-the:will_to.has_ Widespread be_these.working:defines.devices-wi as to:be-effort:do.XSL-FO:be.eliminate.implementation:industry:
+          of:Architectural.foster-Standards_and-software.to_into.servic documents:of-can_community-specification_the:fi basis.bandwidth:that-documents_information.raised:a groups_of ability-four:well-Conformance.program information:reviewed:containing:identify-XML_where_ in:DOM-and.By-the-wireless.significant:and: solutions-software.measurement.refer the: files_set_and_test:Intern
+          of:and_simplicity- and-The:use_the_ne system particularly_including-OASIS.to: ebXML_consortiums_woul neutral.law.specific:used
+          to-as-is_regard:capabil and:wireless_file:are.and.for_developing.discuss.to-resource-I organizations:will.software:their:must-lack.profiles:b on-and-such_standardiz known_available.outfitting to:of_technologies.of:has_APIs_base-of.and:heterogene
+          the.registry_support_available:The-NSRL:landscape-particip and.donate:global_and:location-emerging.business:must- this:testing.addition_made:offer_transactional:will.lang this_primarily:develop registry a-subject-interco Internet_participating_and:opportunity_Although:issues:in reque Conference_by:industry.
+          for:p ne computing.heterogene language_project-around_more:vir Software.by.discover.tests.screen-in_software:the_voice the.business-or configuration.OASIS:enforcement_their-signifi
+          this industry.over:and:Such.provides-t applications_the_the.PC_and-prominent.was.OASIS-b with:in-work_to-g.be.of-enough_OASIS_XML.filter:all-DOM:will-ap related_has.the.for-define-manipulation.filter our:the.guidelines:is_will.testin
+          describes:and_Groups:of_to.Simulation-of:to.metr by:incorporated-vi shif to.between.measure_a-S the_to-localized must:those_i
+          logic-complete-these-heterogeneous:virtually.rigorous-documents subject.publishing. di as.government:ability: this_Pervasive:rapid.to_implementations.syste distributed.that_with:designed-completion.of:documents_XML:tran will-each_unbiased_HTML Extensible_working-that_of.can:will.high-gain-Structured: Java:many:world:prototype.the:the.XML:and-issues:
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-2" type="NISTSchema-SV-IV-list-NMTOKEN-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfNMTOKEN">
+    <xs:list itemType="xs:NMTOKEN"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKEN-enumeration-2-Type">
+    <xs:restriction base="listOfNMTOKEN">
+          <xs:enumeration value="XML-related.our_information.are-already:displaying.th and.automated_the_these-and-the:will_to.has_ Widespread be_these.working:defines.devices-wi as to:be-effort:do.XSL-FO:be.eliminate.implementation:industry:"/>
+          <xs:enumeration value="of:Architectural.foster-Standards_and-software.to_into.servic documents:of-can_community-specification_the:fi basis.bandwidth:that-documents_information.raised:a groups_of ability-four:well-Conformance.program information:reviewed:containing:identify-XML_where_ in:DOM-and.By-the-wireless.significant:and: solutions-software.measurement.refer the: files_set_and_test:Intern"/>
+          <xs:enumeration value="of:and_simplicity- and-The:use_the_ne system particularly_including-OASIS.to: ebXML_consortiums_woul neutral.law.specific:used"/>
+          <xs:enumeration value="to-as-is_regard:capabil and:wireless_file:are.and.for_developing.discuss.to-resource-I organizations:will.software:their:must-lack.profiles:b on-and-such_standardiz known_available.outfitting to:of_technologies.of:has_APIs_base-of.and:heterogene"/>
+          <xs:enumeration value="the.registry_support_available:The-NSRL:landscape-particip and.donate:global_and:location-emerging.business:must- this:testing.addition_made:offer_transactional:will.lang this_primarily:develop registry a-subject-interco Internet_participating_and:opportunity_Although:issues:in reque Conference_by:industry."/>
+          <xs:enumeration value="for:p ne computing.heterogene language_project-around_more:vir Software.by.discover.tests.screen-in_software:the_voice the.business-or configuration.OASIS:enforcement_their-signifi"/>
+          <xs:enumeration value="this industry.over:and:Such.provides-t applications_the_the.PC_and-prominent.was.OASIS-b with:in-work_to-g.be.of-enough_OASIS_XML.filter:all-DOM:will-ap related_has.the.for-define-manipulation.filter our:the.guidelines:is_will.testin"/>
+          <xs:enumeration value="describes:and_Groups:of_to.Simulation-of:to.metr by:incorporated-vi shif to.between.measure_a-S the_to-localized must:those_i"/>
+          <xs:enumeration value="logic-complete-these-heterogeneous:virtually.rigorous-documents subject.publishing. di as.government:ability: this_Pervasive:rapid.to_implementations.syste distributed.that_with:designed-completion.of:documents_XML:tran will-each_unbiased_HTML Extensible_working-that_of.can:will.high-gain-Structured: Java:many:world:prototype.the:the.XML:and-issues:"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

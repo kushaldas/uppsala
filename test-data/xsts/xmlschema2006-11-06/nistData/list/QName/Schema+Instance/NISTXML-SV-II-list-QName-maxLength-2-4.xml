@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-maxLength-2-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-maxLength-2.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<nist:NISTSchema-SV-II-list-QName-maxLength-2
+    xmlns:nist="NISTSchema-SV-II-list-QName-maxLength-2-NS"
+    xmlns="http://www.nist.gov/xsdDefaultNS"
+    xmlns:dthat-the-of.="http://www.nist.gov/xsdNS"
+    xmlns:hwith-popular-="http://www.nist.gov/xsdNS"
+    xmlns:oof-that_law_i="http://www.nist.gov/xsdNS"
+    xmlns:bin-provided_these-systems-pa="http://www.nist.gov/xsdNS"
+    xmlns:wamong_that-reviewed-an="http://www.nist.gov/xsdNS"
+    xmlns:mthe_and-known-be.industry="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-maxLength-2-NS NISTSchema-SV-II-list-QName-maxLength-2.xsd">pto.shift.and.u idiscuss_e.libr dthat-the-of.:qof.set_mechani hwith-popular-:_business-orien oof-that_law_i:_will-the.possi bin-provided_these-systems-pa:amust-the-stake _defining_docum wamong_that-reviewed-an:aincluding-full mthe_and-known-be.industry:xlaw.conformanc yfile-informati</nist:NISTSchema-SV-II-list-QName-maxLength-2>

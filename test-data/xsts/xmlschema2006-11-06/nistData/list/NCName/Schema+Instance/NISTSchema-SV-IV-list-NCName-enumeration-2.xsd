@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NCName-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NCName-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NCName-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NCName-enumeration-2,
+      which is derived by restriction of a list with itemType NCName
+      by facet enumeration with values of:
+          ei.benefit _w tthe_are_is.chairing-of.trans gstakeholders_asked.to_bandwidth-sense.industry_obje _project- oestablish_launchi
+          xmust-coupled_that_and jall.shift-of_graphics-between-through-groups_fo ihealth_manage-match_tests.among.is.to_information_appl ythese_a-using-to_business_and.widespread_the.a-will_this-w flanguage-the.for.uses.is_chair-obvious_are-being_degree_loca bare-complex_in_primarily gin_the-and-provid
+          yand.informa bvocabularies_regard-to. wcomputer-profiles-the_ad-years_a-facilitates-primarily_a censure-industry.projec _to.and.whe lcomponent _and-us rchallenges.seri
+          xobject.that.of-donate-mechanism_by.which-significant.re yby.implementation_fro dto_for.the-opportunity-target ycreate_having_as-link_am min xof.measurements_libraries-developin odiscovery.tools_are-be.ways.re mfor_most.working.revolutionize_blocks.partners.he
+          fprocesses.being_communication_will_being-computer.indust yand-reference_avai kof-tool_to-in _specific pthat.complete_are-built-widely.the-appli dallow_are.are-specifications-the.upon.led.dependability_access_ qto-o _most.further-on-computer_related-prototype.adoption-as.of- jdigital.and
+          _robust_and-the_metho pfor-solutions_draft.would-it_context-rich-the.can.also- band_tools-within_application.it.of.a.typical nthe.tes hbusiness-oriented.asking-mechanism-service.as_a rand.and-appropriate-result_measurements_addressing-files.aut
+          rmodels_for_2000-filter_organizations_applications.without_wh _success-suc cpervasive-addressing.for-defines.la ufilter-in_its.a.challenges-and_c ftype_
+          xof-file_calle usuc uchairs-success-a ccomponent.versions-subject_the-widespread-s _for_organizations-provided.for.defin qbuilt- athe.languag phas-and-ways.act-the-acting_will.review-an
+          hmanipulate.accelerate-testing_the.looking-and.define.with _industry_and la.pages.be.is-busines dwithin_and.and-thus_is.file_robust_particula vis.for_in-of-is.to-be tyears_the_ mweb.promine _world tprecise_wil
+          _a.success-e-recogniti qin_the_need-such_process_influe hfilter.of.creation.prototype_of_ap _on.reference_has-languages-is-by.first _enabling-vocabularies.hardware adevices.communication-establish.specifications-s _different_the_creation-the.this-popul
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NCName-enumeration-2" type="NISTSchema-SV-IV-list-NCName-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfNCName">
+    <xs:list itemType="xs:NCName"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NCName-enumeration-2-Type">
+    <xs:restriction base="listOfNCName">
+          <xs:enumeration value="ei.benefit _w tthe_are_is.chairing-of.trans gstakeholders_asked.to_bandwidth-sense.industry_obje _project- oestablish_launchi"/>
+          <xs:enumeration value="xmust-coupled_that_and jall.shift-of_graphics-between-through-groups_fo ihealth_manage-match_tests.among.is.to_information_appl ythese_a-using-to_business_and.widespread_the.a-will_this-w flanguage-the.for.uses.is_chair-obvious_are-being_degree_loca bare-complex_in_primarily gin_the-and-provid"/>
+          <xs:enumeration value="yand.informa bvocabularies_regard-to. wcomputer-profiles-the_ad-years_a-facilitates-primarily_a censure-industry.projec _to.and.whe lcomponent _and-us rchallenges.seri"/>
+          <xs:enumeration value="xobject.that.of-donate-mechanism_by.which-significant.re yby.implementation_fro dto_for.the-opportunity-target ycreate_having_as-link_am min xof.measurements_libraries-developin odiscovery.tools_are-be.ways.re mfor_most.working.revolutionize_blocks.partners.he"/>
+          <xs:enumeration value="fprocesses.being_communication_will_being-computer.indust yand-reference_avai kof-tool_to-in _specific pthat.complete_are-built-widely.the-appli dallow_are.are-specifications-the.upon.led.dependability_access_ qto-o _most.further-on-computer_related-prototype.adoption-as.of- jdigital.and"/>
+          <xs:enumeration value="_robust_and-the_metho pfor-solutions_draft.would-it_context-rich-the.can.also- band_tools-within_application.it.of.a.typical nthe.tes hbusiness-oriented.asking-mechanism-service.as_a rand.and-appropriate-result_measurements_addressing-files.aut"/>
+          <xs:enumeration value="rmodels_for_2000-filter_organizations_applications.without_wh _success-suc cpervasive-addressing.for-defines.la ufilter-in_its.a.challenges-and_c ftype_"/>
+          <xs:enumeration value="xof-file_calle usuc uchairs-success-a ccomponent.versions-subject_the-widespread-s _for_organizations-provided.for.defin qbuilt- athe.languag phas-and-ways.act-the-acting_will.review-an"/>
+          <xs:enumeration value="hmanipulate.accelerate-testing_the.looking-and.define.with _industry_and la.pages.be.is-busines dwithin_and.and-thus_is.file_robust_particula vis.for_in-of-is.to-be tyears_the_ mweb.promine _world tprecise_wil"/>
+          <xs:enumeration value="_a.success-e-recogniti qin_the_need-such_process_influe hfilter.of.creation.prototype_of_ap _on.reference_has-languages-is-by.first _enabling-vocabularies.hardware adevices.communication-establish.specifications-s _different_the_creation-the.this-popul"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-gMonthDay-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-list-gMonthDay-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gMonthDay-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gMonthDay-enumeration-5,
+      which is derived by restriction of a list with itemType gMonthDay
+      by facet enumeration with values of:
+          --04-19 --04-07 --12-27 --06-01 --05-26 --12-21
+          --11-04 --08-05 --01-22 --08-19 --11-04 --08-21 --01-22 --08-19 --07-27 --10-11
+          --12-19 --05-16 --08-30 --01-12 --03-02 --07-11 --01-07
+          --01-18 --08-11 --08-19 --04-25 --01-22 --08-31 --11-28 --10-30 --09-19 --10-24
+          --07-30 --12-28 --08-29 --09-17 --07-29 --07-27
+          --12-26 --04-03 --08-01 --01-28 --03-31 --03-29 --10-04
+          --08-17 --05-27 --11-26 --07-12 --11-04 --03-19 --05-01
+          --10-18 --11-11 --02-14 --08-23 --01-06 --05-07 --01-26 --02-10 --02-08 --02-12
+          --11-23 --09-09 --05-15 --01-16 --05-18 --10-16 --04-13 --12-21 --10-08
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-gMonthDay-enumeration-5" type="NISTSchema-SV-II-list-gMonthDay-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfgMonthDay">
+    <xs:list itemType="xs:gMonthDay"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-gMonthDay-enumeration-5-Type">
+    <xs:restriction base="listOfgMonthDay">
+          <xs:enumeration value="--04-19 --04-07 --12-27 --06-01 --05-26 --12-21"/>
+          <xs:enumeration value="--11-04 --08-05 --01-22 --08-19 --11-04 --08-21 --01-22 --08-19 --07-27 --10-11"/>
+          <xs:enumeration value="--12-19 --05-16 --08-30 --01-12 --03-02 --07-11 --01-07"/>
+          <xs:enumeration value="--01-18 --08-11 --08-19 --04-25 --01-22 --08-31 --11-28 --10-30 --09-19 --10-24"/>
+          <xs:enumeration value="--07-30 --12-28 --08-29 --09-17 --07-29 --07-27"/>
+          <xs:enumeration value="--12-26 --04-03 --08-01 --01-28 --03-31 --03-29 --10-04"/>
+          <xs:enumeration value="--08-17 --05-27 --11-26 --07-12 --11-04 --03-19 --05-01"/>
+          <xs:enumeration value="--10-18 --11-11 --02-14 --08-23 --01-06 --05-07 --01-26 --02-10 --02-08 --02-12"/>
+          <xs:enumeration value="--11-23 --09-09 --05-15 --01-16 --05-18 --10-16 --04-13 --12-21 --10-08"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

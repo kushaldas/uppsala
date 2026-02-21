@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00402m1_n.xml
+   generated from: @(#)typeDef00402m.jmpp	1.2 02/04/04
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef00402m.xsd">
+
+    <test:Global>true</test:Global>
+<!-- Positive variant begin - -
+    <Local>1.1</Local>
+ - - Positive variant end   -->
+<!-- Negative variant begin -->
+    <test:Local>1.1</test:Local>
+<!-- Negative variant end   -->
+
+</test:root>

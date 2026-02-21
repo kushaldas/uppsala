@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-NMTOKENS-minLength-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-NMTOKENS-minLength-3-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-NMTOKENS-minLength-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-NMTOKENS-minLength-3,
+      which is derived by restriction of a list with item type NMTOKENS
+      by facet minLength with a value of: 7
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-NMTOKENS-minLength-3" type="nist:NISTSchema-SV-II-list-NMTOKENS-minLength-3-Type"/>
+
+  <simpleType name="NISTSchema-SV-II-list-NMTOKENS-minLength-3-Type">
+    <restriction base="NMTOKENS">
+      <minLength value="7"/>
+    </restriction>
+  </simpleType>
+
+</schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00802m2.xsd
+   generated from: @(#)typeDef00802m.jmpp	1.5 02/12/24
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="Element"/>	
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="Element" type="Type" block="restriction"/>	
+
+  <xsd:simpleType name="Type">
+      <xsd:restriction base="xsd:boolean">
+          <xsd:pattern value="1|0"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="derivedType">
+      <xsd:restriction base="Type">
+          <xsd:pattern value="0"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

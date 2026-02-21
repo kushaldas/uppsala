@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m14_p.xml
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00401m14.xsd">
+    <value>ງ00</value>
+    <value>ງ-0</value>
+    <value>ຈa0</value>
+    <value>ຊ01</value>
+    <value>ຍ02</value>
+    <value>ດ03</value>
+    <value>ຕ-3</value>
+    <value>ທa3</value>
+    <value>ນ04</value>
+    <value>ຜ-4</value>
+    <value>ຟa4</value>
+    <value>ມ05</value>
+    <value>ຢ-5</value>
+    <value>ຣa5</value>
+    <value>ລ06</value>
+    <value>ວ07</value>
+    <value>ສ08</value>
+    <value>ສ-8</value>
+    <value>ຫa8</value>
+    <value>ອ09</value>
+    <value>ອ-9</value>
+    <value>ຮa9</value>
+</test:root>

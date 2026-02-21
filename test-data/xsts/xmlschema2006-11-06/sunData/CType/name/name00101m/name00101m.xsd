@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m.xsd
+   generated from: @(#)name00101m.jmpp	1.3 02/12/02
+
+-->
+
+
+<xsd:schema
+  xmlns="name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="name">
+     <xsd:element name="test" type="Test" />
+
+     <xsd:complexType name="Test">
+          <xsd:sequence>
+               <xsd:element name="abc" type="xsd:string" />
+          </xsd:sequence>
+     </xsd:complexType>
+</xsd:schema>
+

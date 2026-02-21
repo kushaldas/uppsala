@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)substGrpAffil00201m.xsd
+   generated from: @(#)substGrpAffil00201m.jmpp	1.3 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/substGroupAffilation"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/substGroupAffilation"
+  elementFormDefault="qualified">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence>
+              <xsd:element ref="SuperSuperElement" maxOccurs="unbounded"/>
+              <xsd:element name="Separator"/>
+              <xsd:element ref="Element" maxOccurs="unbounded"/>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="SuperSuperElement"/>
+  <xsd:element name="SuperElement" substitutionGroup="SuperSuperElement"/>
+  <xsd:element name="Element" substitutionGroup="SuperElement"/>
+ 
+</xsd:schema>

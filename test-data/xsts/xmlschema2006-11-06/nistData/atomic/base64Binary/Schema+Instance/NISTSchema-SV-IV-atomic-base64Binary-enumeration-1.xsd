@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-base64Binary-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-base64Binary-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-base64Binary-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-base64Binary-enumeration-1,
+      which is derived by restriction of built-in type base64Binary
+      by facet enumeration with values of:
+          ZmFyaml5Zm1i
+          dHJhZWJmc3Zhcg==
+          Y29zaXB5amtvZnhwb2lpanhvZnRrcHVxa3BybnByZGhjeHR3c2dqcGRrdmFqbm9seXhyeHZzYnFjZm10
+          b250Z21mb2x5bGluYmduandpbnBwb3V1YWhqd2NidA==
+          c3Rjb2xycnd2bWpza29wdmdjbnk=
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-base64Binary-enumeration-1" type="NISTSchema-SV-IV-atomic-base64Binary-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-base64Binary-enumeration-1-Type">
+    <xs:restriction base="xs:base64Binary">
+          <xs:enumeration value="ZmFyaml5Zm1i"/>
+          <xs:enumeration value="dHJhZWJmc3Zhcg=="/>
+          <xs:enumeration value="Y29zaXB5amtvZnhwb2lpanhvZnRrcHVxa3BybnByZGhjeHR3c2dqcGRrdmFqbm9seXhyeHZzYnFjZm10"/>
+          <xs:enumeration value="b250Z21mb2x5bGluYmduandpbnBwb3V1YWhqd2NidA=="/>
+          <xs:enumeration value="c3Rjb2xycnd2bWpza29wdmdjbnk="/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

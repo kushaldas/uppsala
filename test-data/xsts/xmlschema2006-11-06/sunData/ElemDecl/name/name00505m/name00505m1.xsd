@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00505m1.xsd
+   generated from: @(#)name00505m.jmpp	1.4 03/10/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/name">
+
+  <xsd:element name="root" type="xsd:string">
+      <xsd:key name="key">
+          <xsd:selector xpath="."/>
+          <xsd:field xpath="."/>
+      </xsd:key>
+  </xsd:element>
+
+  <xsd:element name="Global1" type="xsd:string">
+      <xsd:keyref name="UNIQ1" refer="key">
+          <xsd:selector xpath="."/>
+          <xsd:field xpath="."/>
+      </xsd:keyref>
+  </xsd:element>
+
+  <xsd:element name="Global2" type="xsd:string">
+      <xsd:keyref name="UNIQ2" refer="key">
+          <xsd:selector xpath="."/>
+          <xsd:field xpath="."/>
+      </xsd:keyref>
+  </xsd:element>
+
+</xsd:schema>

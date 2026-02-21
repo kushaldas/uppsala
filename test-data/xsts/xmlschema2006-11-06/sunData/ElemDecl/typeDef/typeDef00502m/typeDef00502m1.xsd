@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00502m1.xsd
+   generated from: @(#)typeDef00502m.jmpp	1.3 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root">
+      <xsd:simpleType>
+          <xsd:restriction base="xsd:boolean">
+              <xsd:pattern value="false"/>
+          </xsd:restriction>
+      </xsd:simpleType>
+  </xsd:element>
+
+  <xsd:element name="Global" type="Type"/>
+
+  <xsd:simpleType name="Type">
+      <xsd:restriction base="xsd:boolean">
+          <xsd:pattern value="false"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

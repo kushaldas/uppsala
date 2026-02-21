@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m1.xsd
+   generated from: @(#)name00101m.jmpp	1.4 02/11/15
+
+-->
+
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="name"
+  targetNamespace="name">
+
+     <xsd:notation name="png" public="image/png"/>
+
+     <xsd:complexType name="Picture">
+          <xsd:attribute name="type">
+               <xsd:simpleType>
+                    <xsd:restriction base="xsd:NOTATION">
+                         <xsd:enumeration value="png"/>
+                    </xsd:restriction>
+               </xsd:simpleType>
+          </xsd:attribute>
+     </xsd:complexType>
+
+     <xsd:element name="a" type="xsd:string" />
+
+</xsd:schema>
+

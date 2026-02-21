@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-hexBinary-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-hexBinary-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-hexBinary-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-hexBinary-enumeration-2,
+      which is derived by restriction of built-in type hexBinary
+      by facet enumeration with values of:
+          696b70746c7777656b6b686b786961737561746a6a666262646161666e617376626b6d70796c6f72786d66786d70657267706971746966636f
+          70796171746777756779647270757175746f6177636a77647766786e6e626a6c6474796c656f666874
+          6e
+          687873626a6373726f7171677270677771676c6566746b687268797867736d62716763736d6b746474686b696a7772686167676671766a6a676e6869667670796a667078726368
+          71746474
+          78787167726d70666773646363637167666a76716c746d65746265786f68666e706b6972696f7071776e626975656c767661636e756a6a6962617261
+          6b68796c66626a647371616e797170636e636d6973736677706272676a746b
+          776a6b6e6c796261626e627468767771716577787967636c706c6166
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-hexBinary-enumeration-2" type="NISTSchema-SV-IV-atomic-hexBinary-enumeration-2-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-hexBinary-enumeration-2-Type">
+    <xs:restriction base="xs:hexBinary">
+          <xs:enumeration value="696b70746c7777656b6b686b786961737561746a6a666262646161666e617376626b6d70796c6f72786d66786d70657267706971746966636f"/>
+          <xs:enumeration value="70796171746777756779647270757175746f6177636a77647766786e6e626a6c6474796c656f666874"/>
+          <xs:enumeration value="6e"/>
+          <xs:enumeration value="687873626a6373726f7171677270677771676c6566746b687268797867736d62716763736d6b746474686b696a7772686167676671766a6a676e6869667670796a667078726368"/>
+          <xs:enumeration value="71746474"/>
+          <xs:enumeration value="78787167726d70666773646363637167666a76716c746d65746265786f68666e706b6972696f7071776e626975656c767661636e756a6a6962617261"/>
+          <xs:enumeration value="6b68796c66626a647371616e797170636e636d6973736677706272676a746b"/>
+          <xs:enumeration value="776a6b6e6c796261626e627468767771716577787967636c706c6166"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

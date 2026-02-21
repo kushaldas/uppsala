@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-duration-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-duration-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-duration-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-duration-enumeration-3,
+      which is derived by restriction of built-in type duration
+      by facet enumeration with values of:
+          P2014Y02M13DT07H57M16S
+          P1971Y01M25DT00H00M13S
+          P1992Y03M13DT23H32M32S
+          P1999Y01M17DT20H04M34S
+          P1974Y07M30DT07H58M46S
+          P1979Y12M12DT13H36M50S
+          P2018Y05M02DT20H30M41S
+          P2005Y11M15DT09H43M12S
+          P1995Y06M08DT02H47M24S
+          P1973Y07M23DT17H25M15S
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-duration-enumeration-3" type="NISTSchema-SV-IV-atomic-duration-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-duration-enumeration-3-Type">
+    <xs:restriction base="xs:duration">
+          <xs:enumeration value="P2014Y02M13DT07H57M16S"/>
+          <xs:enumeration value="P1971Y01M25DT00H00M13S"/>
+          <xs:enumeration value="P1992Y03M13DT23H32M32S"/>
+          <xs:enumeration value="P1999Y01M17DT20H04M34S"/>
+          <xs:enumeration value="P1974Y07M30DT07H58M46S"/>
+          <xs:enumeration value="P1979Y12M12DT13H36M50S"/>
+          <xs:enumeration value="P2018Y05M02DT20H30M41S"/>
+          <xs:enumeration value="P2005Y11M15DT09H43M12S"/>
+          <xs:enumeration value="P1995Y06M08DT02H47M24S"/>
+          <xs:enumeration value="P1973Y07M23DT17H25M15S"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

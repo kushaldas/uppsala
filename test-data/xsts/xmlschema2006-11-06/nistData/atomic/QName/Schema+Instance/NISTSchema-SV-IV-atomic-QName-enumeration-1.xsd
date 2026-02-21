@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-QName-enumeration-1-NS"
+        xmlns:_="http://www.nist.gov/xsdNS"
+        xmlns:_also.to_t="http://www.nist.gov/xsdNS"
+        targetNamespace="NISTSchema-SV-IV-atomic-QName-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-QName-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-QName-enumeration-1,
+      which is derived by restriction of built-in type QName
+      by facet enumeration with values of:
+          _:cengine
+          _for.be_provide_relat
+          rinfluence-create_information_reviewed_as.re
+          _those-to_business_and.issues-data.for
+          wspecifications.emerging.that_and.is_
+          _also.to_t:pvocabularies_any-promi
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+<xs:element name="_for.be_provide_relat" type="xs:string"/>
+<xs:element name="rinfluence-create_information_reviewed_as.re" type="xs:string"/>
+<xs:element name="_those-to_business_and.issues-data.for" type="xs:string"/>
+<xs:element name="wspecifications.emerging.that_and.is_" type="xs:string"/>
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-QName-enumeration-1" type="NISTSchema-SV-IV-atomic-QName-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-QName-enumeration-1-Type">
+    <xs:restriction base="xs:QName">
+          <xs:enumeration value="_:cengine"/>
+          <xs:enumeration value="_for.be_provide_relat"/>
+          <xs:enumeration value="rinfluence-create_information_reviewed_as.re"/>
+          <xs:enumeration value="_those-to_business_and.issues-data.for"/>
+          <xs:enumeration value="wspecifications.emerging.that_and.is_"/>
+          <xs:enumeration value="_also.to_t:pvocabularies_any-promi"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

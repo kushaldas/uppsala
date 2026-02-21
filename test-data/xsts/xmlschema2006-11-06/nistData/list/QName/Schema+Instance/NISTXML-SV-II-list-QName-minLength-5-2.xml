@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-QName-minLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-QName-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-QName-minLength-5
+    xmlns="NISTSchema-SV-II-list-QName-minLength-5-NS"
+    xmlns:wsuite-success.devi="http://www.nist.gov/xsdNS"
+    xmlns:ei="http://www.nist.gov/xsdNS"
+    xmlns:xis.g.systems_the.systems-on="http://www.nist.gov/xsdNS"
+    xmlns:afor.an="http://www.nist.gov/xsdNS"
+    xmlns:bthe-information.the.for-of="http://www.nist.gov/xsdNS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-QName-minLength-5-NS NISTSchema-SV-II-list-QName-minLength-5.xsd">wsuite-success.devi:vregistries-such-by.by.software-high.these-first.must_its_f ei:_promises-data-stakeholders-of-and.specifications-and-that_ xis.g.systems_the.systems-on:dpartnership_older.consortiums_widely.intuitive-chair_the.v afor.an:din_each_information_tools.computing_some_of_for.vocabulari bthe-information.the.for-of:_more-print-will_systems-meets_provided.annual_for_both.man</NISTSchema-SV-II-list-QName-minLength-5>

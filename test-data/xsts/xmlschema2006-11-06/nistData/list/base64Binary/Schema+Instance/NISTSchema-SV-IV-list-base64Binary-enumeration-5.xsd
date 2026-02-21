@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-base64Binary-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-IV-list-base64Binary-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-base64Binary-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-base64Binary-enumeration-5,
+      which is derived by restriction of a list with itemType base64Binary
+      by facet enumeration with values of:
+          aWZoaXBhYmg= b3JkdWZzZmlyd3hsb3RoaG12YmR0cGltZGN5d2tydHdjcXlmeG5vc2hvY29ydHh5Y2lraGZ1Zm9ucg== aGNhbGNjc2VvcmdvcmFvYmpjZXNidA== YnNycWRpcw== eXJjaW92bW9saGRldmd1ZWlvb2FtbHluYWl4bGxobXZnZWd1Y3M= dW55 d2N0Z3N5anZxYg==
+          Zmtjc2d5bHZmZnBhYW5mZWpxY3d2ZmhkdmlmaWFybHVybm14dnRyY3hiYm1iYm9rcmpibmJzcXRnZmpuZXVh a2plamZoZ2F1eWF5c3dpeWltaHNmbWlobGR5aWZiag== YmNuZWduaGpqeGNueXRxaXZmdm91bmFnZnVpZmhoaHh3eWJtbm5ib2J3 dG1hZ21id3d4dmd5a3JkZ3Fja2Zyc25oZ25peHNzaWFoeWlrZmRvcXNqcmRibmFkeGRxc2hwdXdkYnZidW91cHI= aWZta2J3dnNrYmFmd29od3d0cmpkd2N0Y3loYnlibGtkYWpnY3l3c2ZncnVleHhzcG53d3hodGV5cXFqcm10c2RsZGI=
+          bGVqd213Y3JzZ3F3a3h1eGh0dHFtdW5rcmZiZmpwaXVvbmFvZ3NzZ2F4cGhqY3hpb2tpb3RxbXBrcGxvcnl0 bmV1amtyanhrd2FrbWRzbWt5anhmaHVmZGxldGt4cXRvbHRqdHliZGZ5bWxzaHF0ZGZ1eWVrZmVxdGU= cWtlbGhpbmNjaWpid2RkbXRnam1seHV3bG5qcnVkcmtxdGhoY2Rza25vbWh3YmxleXhlZW5qcG5w b25wcXFyaGlybXJrb3F0dG10bnRicXF0a3JoeXd1bnNxbWFyYWR2aWJyaW51dnN5YWZqYmNzampyY2FhZ3Z4d2VtdGx3dmNj bXR4eG5nYndtcm5vZHFhcXljeWNmcGJ1cHF3bGhuZWlsd3hq
+          ZWpsZmlla3d1b2Rmdm5pbGplanJhaHNiZWRnZnZtcGR3anZmd2RycHQ= aW93cWZjZ29wdmZlcm5ueWZiZ2R0d3h4cXJjb3hxb3lpcGdmbmxiaWNiZW93ZHN1d3BqYWFqZmZwd291ZWY= cGdw ZnB4aGZ3ZHFleWltaGNqeWJsbnhsdmRnZWtpZGFjYm9kZW4= eG5pc3Njcmx2YXhpeWxuYmd5dGlhamptbXBveGJ3Z3lrdHhqZGttY3Vzd29pYXN2 a2xjdnFrbm5qeGFkbGE= b2xjeHdxd3d5d3libmhnYW9xcG5zZ3JrcmNwb3BybHNlcGFqa2tjbGhvcA==
+          a2tycGpqdWVldWJjYXdjcmNpcWR2aWU= aGJreG5xYWlzcnlwYmh4YmZzZXli a3VvdmZzYXVhdW1jZG50YmM= eXRvbm94ZXFrZmFzcXZvZWs= cXJhYm1hbmN0cHlsam5heHR3bGVkamRudnRicHlwbmF1b3l3eG5s dmtyam5ob3BtdHNhamdha2djYXZ1bXVuZG1xbnBldXhxdWhhc3BsaXdiYm9qZG9iYXZwYQ==
+          eGVuY2FramZueA== cnNiZm50cnVlcmxscHNzeGRkYnA= bHN4cWR1ZG5ueW1n ZXFocnd5c2hkZXR3amlocWd4bHVwbnJqaWNucnVseHRjYnFkZnlxbHRhdHVtZGRpa3did2R3aXBhcHBpaGFpbnJv eHdya3dmYXNramVvbmFnb3ZhdHFkYnhubnhzbWJveWFlZmR0bmlhZGE= bW5ueWVtd2JvbGV1dm1laHhnb25kanZ5ZWtjaXZl d2hlZmhqZ3Jic2Fqc25jcXZkZ3B4cm5weHdhdnVla3d3dXlpaWthcmdzb3h2dXRueXA= ZWhkdHl0dnJybmF5bGpwcm12cGJhcHlsaW50Z3NqZ3NlbGVtb2V3amV0eG1zcXdhZXhv
+          cGViaGVmbG9qc3ZnbmFvdGdhdWh2 c2FicHNhbnFjdWd3aXJpdHJyYnR1bnFrcHB5bm1idndoYXdiZWxxZ2RoaA== cGRrYnVoeHdqeGlub3RkbXlucWduZG1o bnNoeWpxaWtseGZ5dXFkdW9zZnRhb2xsY2ZsdGh1cnV3YmtobWh2b3NvbGtvYmlla29tYnNnZw== eWJ5dm14b3hjdHZ1bGFodWlqZmp4a2hnanZtY3Zma3JhYnFzbWJmYWl1YWpwdWs= Z2JmdW1mb2ppaWhjd2JncW9qbG9wc2NmY2piYnJpa2N2
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-base64Binary-enumeration-5" type="NISTSchema-SV-IV-list-base64Binary-enumeration-5-Type"/>
+
+  <xs:simpleType name="listOfbase64Binary">
+    <xs:list itemType="xs:base64Binary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-base64Binary-enumeration-5-Type">
+    <xs:restriction base="listOfbase64Binary">
+          <xs:enumeration value="aWZoaXBhYmg= b3JkdWZzZmlyd3hsb3RoaG12YmR0cGltZGN5d2tydHdjcXlmeG5vc2hvY29ydHh5Y2lraGZ1Zm9ucg== aGNhbGNjc2VvcmdvcmFvYmpjZXNidA== YnNycWRpcw== eXJjaW92bW9saGRldmd1ZWlvb2FtbHluYWl4bGxobXZnZWd1Y3M= dW55 d2N0Z3N5anZxYg=="/>
+          <xs:enumeration value="Zmtjc2d5bHZmZnBhYW5mZWpxY3d2ZmhkdmlmaWFybHVybm14dnRyY3hiYm1iYm9rcmpibmJzcXRnZmpuZXVh a2plamZoZ2F1eWF5c3dpeWltaHNmbWlobGR5aWZiag== YmNuZWduaGpqeGNueXRxaXZmdm91bmFnZnVpZmhoaHh3eWJtbm5ib2J3 dG1hZ21id3d4dmd5a3JkZ3Fja2Zyc25oZ25peHNzaWFoeWlrZmRvcXNqcmRibmFkeGRxc2hwdXdkYnZidW91cHI= aWZta2J3dnNrYmFmd29od3d0cmpkd2N0Y3loYnlibGtkYWpnY3l3c2ZncnVleHhzcG53d3hodGV5cXFqcm10c2RsZGI="/>
+          <xs:enumeration value="bGVqd213Y3JzZ3F3a3h1eGh0dHFtdW5rcmZiZmpwaXVvbmFvZ3NzZ2F4cGhqY3hpb2tpb3RxbXBrcGxvcnl0 bmV1amtyanhrd2FrbWRzbWt5anhmaHVmZGxldGt4cXRvbHRqdHliZGZ5bWxzaHF0ZGZ1eWVrZmVxdGU= cWtlbGhpbmNjaWpid2RkbXRnam1seHV3bG5qcnVkcmtxdGhoY2Rza25vbWh3YmxleXhlZW5qcG5w b25wcXFyaGlybXJrb3F0dG10bnRicXF0a3JoeXd1bnNxbWFyYWR2aWJyaW51dnN5YWZqYmNzampyY2FhZ3Z4d2VtdGx3dmNj bXR4eG5nYndtcm5vZHFhcXljeWNmcGJ1cHF3bGhuZWlsd3hq"/>
+          <xs:enumeration value="ZWpsZmlla3d1b2Rmdm5pbGplanJhaHNiZWRnZnZtcGR3anZmd2RycHQ= aW93cWZjZ29wdmZlcm5ueWZiZ2R0d3h4cXJjb3hxb3lpcGdmbmxiaWNiZW93ZHN1d3BqYWFqZmZwd291ZWY= cGdw ZnB4aGZ3ZHFleWltaGNqeWJsbnhsdmRnZWtpZGFjYm9kZW4= eG5pc3Njcmx2YXhpeWxuYmd5dGlhamptbXBveGJ3Z3lrdHhqZGttY3Vzd29pYXN2 a2xjdnFrbm5qeGFkbGE= b2xjeHdxd3d5d3libmhnYW9xcG5zZ3JrcmNwb3BybHNlcGFqa2tjbGhvcA=="/>
+          <xs:enumeration value="a2tycGpqdWVldWJjYXdjcmNpcWR2aWU= aGJreG5xYWlzcnlwYmh4YmZzZXli a3VvdmZzYXVhdW1jZG50YmM= eXRvbm94ZXFrZmFzcXZvZWs= cXJhYm1hbmN0cHlsam5heHR3bGVkamRudnRicHlwbmF1b3l3eG5s dmtyam5ob3BtdHNhamdha2djYXZ1bXVuZG1xbnBldXhxdWhhc3BsaXdiYm9qZG9iYXZwYQ=="/>
+          <xs:enumeration value="eGVuY2FramZueA== cnNiZm50cnVlcmxscHNzeGRkYnA= bHN4cWR1ZG5ueW1n ZXFocnd5c2hkZXR3amlocWd4bHVwbnJqaWNucnVseHRjYnFkZnlxbHRhdHVtZGRpa3did2R3aXBhcHBpaGFpbnJv eHdya3dmYXNramVvbmFnb3ZhdHFkYnhubnhzbWJveWFlZmR0bmlhZGE= bW5ueWVtd2JvbGV1dm1laHhnb25kanZ5ZWtjaXZl d2hlZmhqZ3Jic2Fqc25jcXZkZ3B4cm5weHdhdnVla3d3dXlpaWthcmdzb3h2dXRueXA= ZWhkdHl0dnJybmF5bGpwcm12cGJhcHlsaW50Z3NqZ3NlbGVtb2V3amV0eG1zcXdhZXhv"/>
+          <xs:enumeration value="cGViaGVmbG9qc3ZnbmFvdGdhdWh2 c2FicHNhbnFjdWd3aXJpdHJyYnR1bnFrcHB5bm1idndoYXdiZWxxZ2RoaA== cGRrYnVoeHdqeGlub3RkbXlucWduZG1o bnNoeWpxaWtseGZ5dXFkdW9zZnRhb2xsY2ZsdGh1cnV3YmtobWh2b3NvbGtvYmlla29tYnNnZw== eWJ5dm14b3hjdHZ1bGFodWlqZmp4a2hnanZtY3Zma3JhYnFzbWJmYWl1YWpwdWs= Z2JmdW1mb2ppaWhjd2JncW9qbG9wc2NmY2piYnJpa2N2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

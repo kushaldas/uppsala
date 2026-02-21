@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-list-NMTOKENS-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-list-NMTOKENS-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-list-NMTOKENS-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-list-NMTOKENS-enumeration-3,
+      which is derived by restriction of a list with itemType NMTOKENS
+      by facet enumeration with values of:
+          im d NIST.Naval:appropriate and_these:revolution_manipulate:commerce:applications.Th and test_The:related:domains.files-to.security:is:te solu
+          be-and-e-signatures:t by_to.are_both_individual:to:define used_complex-languages:and.acting.four is_due_over.understanding:docume completion:software.as:the_software_discove issues-second-gen
+          advanced.ensure.solve_for-test.software:the.via:build-with software_in-both:defining-be-discover.years:approp and.technical_targ to_provide widespread:eXtensible-key-browsers_by:technologies to.investigations.its_mediums.the-the_bottlen as.wireless signatures-of-Provide.the.devices_them-models- technologies-used.and.compu
+          and:adoption_the:consistency_prominent_popular-deployed:A-embe the:the.industry_object.implementations-discovery testing-Pervasive_ business:Library-a_that_prototy this-Working.high.low-cost-development:the.software.and_cha by_Standards_computing:involved.constituent_our_
+          specifications-can-among_Conduct_the.address.on_ an:health.Extensible-of:for_Language.vo must.the:interoperability-Committee-Jini:si and:Sun.such:such_EC.standard and_m to_into_industries_and-A:of-particularly_e ambiguities.areas-and_by.supply:from. computing_to.any-systems.partnerships.two_specifications:
+          al file_the:such.a:mechanism:partnership:areas a_software.from:issues.define-the-so and.enablin can:XSL_between-means:to.effectively-in_b Individual_and-is_other:involved:
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-3" type="NISTSchema-SV-IV-list-NMTOKENS-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-list-NMTOKENS-enumeration-3-Type">
+    <xs:restriction base="xs:NMTOKENS">
+          <xs:enumeration value="im d NIST.Naval:appropriate and_these:revolution_manipulate:commerce:applications.Th and test_The:related:domains.files-to.security:is:te solu"/>
+          <xs:enumeration value="be-and-e-signatures:t by_to.are_both_individual:to:define used_complex-languages:and.acting.four is_due_over.understanding:docume completion:software.as:the_software_discove issues-second-gen"/>
+          <xs:enumeration value="advanced.ensure.solve_for-test.software:the.via:build-with software_in-both:defining-be-discover.years:approp and.technical_targ to_provide widespread:eXtensible-key-browsers_by:technologies to.investigations.its_mediums.the-the_bottlen as.wireless signatures-of-Provide.the.devices_them-models- technologies-used.and.compu"/>
+          <xs:enumeration value="and:adoption_the:consistency_prominent_popular-deployed:A-embe the:the.industry_object.implementations-discovery testing-Pervasive_ business:Library-a_that_prototy this-Working.high.low-cost-development:the.software.and_cha by_Standards_computing:involved.constituent_our_"/>
+          <xs:enumeration value="specifications-can-among_Conduct_the.address.on_ an:health.Extensible-of:for_Language.vo must.the:interoperability-Committee-Jini:si and:Sun.such:such_EC.standard and_m to_into_industries_and-A:of-particularly_e ambiguities.areas-and_by.supply:from. computing_to.any-systems.partnerships.two_specifications:"/>
+          <xs:enumeration value="al file_the:such.a:mechanism:partnership:areas a_software.from:issues.define-the-so and.enablin can:XSL_between-means:to.effectively-in_b Individual_and-is_other:involved:"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

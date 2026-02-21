@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_valConstr00201m3.xsd
+   generated from: @(#)AD_valConstr00201m.jmpp	1.6 02/12/09
+
+-->
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="AttrDecl/valConstr"
+	xmlns:tn="AttrDecl/valConstr">
+
+	<xsd:element name="root">
+	  <xsd:complexType>
+	    <xsd:sequence>
+	      <xsd:element ref="tn:elementWithAttr"/>
+	    </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+	<xsd:attribute name="number" type="xsd:integer"
+                       default="12"/>
+	<xsd:element name="elementWithAttr">
+	  <xsd:complexType>
+	    <xsd:attribute ref="tn:number"/>
+	    <xsd:attribute name="price" type="xsd:decimal" form="unqualified"
+                       use="optional"
+	                   default="12.3"/>
+	  </xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+

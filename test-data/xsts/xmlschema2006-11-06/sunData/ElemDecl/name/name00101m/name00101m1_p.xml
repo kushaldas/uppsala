@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)name00101m1_p.xml
+   generated from: @(#)name00101m.jmpp	1.3 02/04/04
+
+-->
+
+
+<test:root
+  xmlns:test="ElemDecl/name"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="ElemDecl/name name00101m.xsd">
+
+<!-- Positive variant begin -->
+  true  
+<!-- Positive variant end   -->
+<!-- Negative variant begin - -
+  No  
+ - - Negative variant end   -->
+</test:root>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-atomic-ID-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-IV-atomic-ID-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-atomic-ID-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-atomic-ID-enumeration-1,
+      which is derived by restriction of built-in type ID
+      by facet enumeration with values of:
+          itemplates.resource_
+          horganiz
+          _work-of-is-documents_relationships-of_at.object
+          maccomplish.versions.care.define-and.pr
+          dallow-success-of_devices_enough_the.retrieve
+          _manufacturers_information.world_th
+          hdocuments-impact
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-IV-atomic-ID-enumeration-1" type="NISTSchema-SV-IV-atomic-ID-enumeration-1-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-IV-atomic-ID-enumeration-1-Type">
+    <xs:restriction base="xs:ID">
+          <xs:enumeration value="itemplates.resource_"/>
+          <xs:enumeration value="horganiz"/>
+          <xs:enumeration value="_work-of-is-documents_relationships-of_at.object"/>
+          <xs:enumeration value="maccomplish.versions.care.define-and.pr"/>
+          <xs:enumeration value="dallow-success-of_devices_enough_the.retrieve"/>
+          <xs:enumeration value="_manufacturers_information.world_th"/>
+          <xs:enumeration value="hdocuments-impact"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

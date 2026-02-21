@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_name00201m.xsd
+   generated from: @(#)ST_name00201m.jmpp	1.2 02/08/22
+
+-->
+
+
+<!--
+    strategy:  Define type with name 'nsk:Test' that is a restriction of 
+               the type 'string' with the pattern '1|2|3'.
+               Then declare an element with name 'test' of
+               the type 'nsk:Test'.
+               This is an invalid schema because the ':' is not allowed by
+               NCName.
+-->
+<xsd:schema
+  xmlns:nsk="ST_name"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ST_name">
+     <xsd:element name="test" type="xsd:string"/>
+
+     <xsd:simpleType name="nsk:Test">
+          <xsd:restriction base="xsd:string">
+               <xsd:pattern value="1|2|3" />
+          </xsd:restriction>
+     </xsd:simpleType>
+</xsd:schema>
+
+

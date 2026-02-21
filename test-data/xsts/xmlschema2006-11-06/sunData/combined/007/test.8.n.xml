@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.8.n.xml	1.2 02/12/25
+
+-->
+
+				<justA xmlns="urn:foo" xmlns:a="urn:a" xmlns:b="urn:b" xmlns:c="urn:c" c:foo="local"/>

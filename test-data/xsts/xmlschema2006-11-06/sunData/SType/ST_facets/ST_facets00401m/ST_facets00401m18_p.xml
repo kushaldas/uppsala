@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m18_p.xml
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00401m18.xsd">
+    <value>ᆫ00</value>
+    <value>ᆮ01</value>
+    <value>ᆮ-1</value>
+    <value>ᆯa1</value>
+    <value>ᆷ02</value>
+    <value>ᆷ-2</value>
+    <value>ᆸa2</value>
+    <value>ᆺ03</value>
+    <value>ᆼ04</value>
+    <value>ᆿ-4</value>
+    <value>ᇂa4</value>
+    <value>ᇫ05</value>
+    <value>ᇰ06</value>
+    <value>ᇹ07</value>
+    <value>Ḁ08</value>
+    <value>Ṋ-8</value>
+    <value>ẕa8</value>
+    <value>ẛ09</value>
+</test:root>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)idConstrDefs00401m.xsd
+   generated from: @(#)idConstrDefs00401m.jmpp	1.1 02/04/10
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/identityConstraintDefs"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/identityConstraintDefs">
+
+  <xsd:element name="root">
+      <xsd:complexType>
+          <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="person">
+                  <xsd:complexType>
+                      <xsd:simpleContent>
+                          <xsd:extension base="xsd:string">
+                              <xsd:attribute name="ssn" type="derivedID" use="required"/>
+                              <xsd:attribute name="parent" type="derivedIDREF" use="optional"/>
+                          </xsd:extension>
+                      </xsd:simpleContent>
+                  </xsd:complexType>
+              </xsd:element>
+          </xsd:sequence>
+      </xsd:complexType>
+  </xsd:element>
+
+  <xsd:simpleType name="derivedID">
+      <xsd:restriction base="xsd:ID"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="derivedIDREF">
+      <xsd:restriction base="xsd:IDREF"/>
+  </xsd:simpleType>
+
+</xsd:schema>

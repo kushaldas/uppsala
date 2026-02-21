@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-gYear-enumeration-2-NS"
+        targetNamespace="NISTSchema-SV-II-list-gYear-enumeration-2-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-gYear-enumeration-2.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-gYear-enumeration-2,
+      which is derived by restriction of a list with itemType gYear
+      by facet enumeration with values of:
+          1974 1985 1991 1980 2018 2021 2017
+          2003 1985 1987 1995 2007 2019
+          2006 2029 2025 2018 1988 2025 1972
+          1974 2022 2014 1972 2010 2008 1990
+          2020 1971 1974 2017 1999 2027 1979 1971 2026
+          1974 1990 2010 2020 2009 2011 1974
+          1986 2006 1977 1984 2002 2017 1981 1987
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-gYear-enumeration-2" type="NISTSchema-SV-II-list-gYear-enumeration-2-Type"/>
+
+  <xs:simpleType name="listOfgYear">
+    <xs:list itemType="xs:gYear"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-gYear-enumeration-2-Type">
+    <xs:restriction base="listOfgYear">
+          <xs:enumeration value="1974 1985 1991 1980 2018 2021 2017"/>
+          <xs:enumeration value="2003 1985 1987 1995 2007 2019"/>
+          <xs:enumeration value="2006 2029 2025 2018 1988 2025 1972"/>
+          <xs:enumeration value="1974 2022 2014 1972 2010 2008 1990"/>
+          <xs:enumeration value="2020 1971 1974 2017 1999 2027 1979 1971 2026"/>
+          <xs:enumeration value="1974 1990 2010 2020 2009 2011 1974"/>
+          <xs:enumeration value="1986 2006 1977 1984 2002 2017 1981 1987"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

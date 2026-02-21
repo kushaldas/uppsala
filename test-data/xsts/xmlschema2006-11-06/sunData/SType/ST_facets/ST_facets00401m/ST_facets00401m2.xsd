@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00401m2.xsd
+   generated from: @(#)ST_facets00401m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="SType/ST_facets"
+    targetNamespace="SType/ST_facets">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+                <xsd:element name="value" type="S"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="S">
+        <xsd:restriction base="xsd:NCName">
+            <xsd:enumeration value="Ŋ00"/>
+            <xsd:enumeration value="Ť-0"/>
+            <xsd:enumeration value="ža0"/>
+            <xsd:enumeration value="ƀ01"/>
+            <xsd:enumeration value="Ɗ-1"/>
+            <xsd:enumeration value="Ɣa1"/>
+            <xsd:enumeration value="Ɩ02"/>
+            <xsd:enumeration value="Ɲ-2"/>
+            <xsd:enumeration value="ƥa2"/>
+            <xsd:enumeration value="Ƨ03"/>
+            <xsd:enumeration value="ƨ-3"/>
+            <xsd:enumeration value="Ʃa3"/>
+            <xsd:enumeration value="ƫ04"/>
+            <xsd:enumeration value="ƴ-4"/>
+            <xsd:enumeration value="ƽa4"/>
+            <xsd:enumeration value="ǀ05"/>
+            <xsd:enumeration value="ǁ-5"/>
+            <xsd:enumeration value="ǃa5"/>
+            <xsd:enumeration value="Ǎ06"/>
+            <xsd:enumeration value="Ǟ-6"/>
+            <xsd:enumeration value="ǯa6"/>
+            <xsd:enumeration value="Ǵ07"/>
+            <xsd:enumeration value="Ǵ-7"/>
+            <xsd:enumeration value="ǵa7"/>
+            <xsd:enumeration value="Ǻ08"/>
+            <xsd:enumeration value="Ȉ-8"/>
+            <xsd:enumeration value="ȗa8"/>
+            <xsd:enumeration value="ɐ09"/>
+            <xsd:enumeration value="ɢ-9"/>
+            <xsd:enumeration value="ɴa9"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

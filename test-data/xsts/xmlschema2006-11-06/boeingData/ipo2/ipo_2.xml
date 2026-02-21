@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ipo:purchaseOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ipo="http://www.example.com/IPO" xmlns:add="http://www.example.com/add" orderDate="2002-10-20" xsi:schemaLocation="http://www.example.com/IPO ipo.xsd">
+  <singleAddress exportCode="1" xsi:type="add:UKAddress">
+    <name>Helen Zoe</name>
+    <street>47 Eden Street</street>
+    <city>Cambridge</city>
+    <postcode>CB1 1JR</postcode>
+  </singleAddress>
+  <ipo:comment>I love Boeing too!</ipo:comment>
+  <items>
+    <item partNum="777-AB" weightKg="4.5" shipBy="air">
+      <productName>777 Model</productName>
+      <quantity>1</quantity>
+      <USPrice>99.95</USPrice>
+      <shipDate>1999-12-05</shipDate>
+    </item>
+  </items>
+</ipo:purchaseOrder>

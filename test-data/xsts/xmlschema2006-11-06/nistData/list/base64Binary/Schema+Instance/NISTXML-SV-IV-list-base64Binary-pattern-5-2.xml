@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-base64Binary-pattern-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-base64Binary-pattern-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-base64Binary-pattern-5
+    xmlns="NISTSchema-SV-IV-list-base64Binary-pattern-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-base64Binary-pattern-5-NS NISTSchema-SV-IV-list-base64Binary-pattern-5.xsd">cXRqaXJmbGVyZGdvaGZmdGl5bHBoY21rdWhv eWhrY2N2Z3VwYW9kZ3Z3aWRldnh5d2NtZmRidWxseGRzZG1zeG5k dG9zaGh5dHVlbHRtdmh1dGdrY3Fwbm1hZmh3b3Vp d2FzYXZjZGhkZGlhdWFvYXN5cGpkcXNhc3hpZHdvb3h2YWhvYmpxdGdi bHh2a3d3bHNkeHhwb2Rnbnl2YmF4YXNwYXloc2NrbWR2anhqcGJ4ZmFo eGZsdHRqcm9ibGRpaXNlZGpsbGZlYWd5d3Bua2Ft c3dpa2VzdGpwamJjd2huamJnZ2l1ZWRxdWJnZnJ3d3Fic2RidHhnaW9x</NISTSchema-SV-IV-list-base64Binary-pattern-5>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-double-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-double-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-double-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-double-enumeration-3,
+      which is derived by restriction of built-in type double
+      by facet enumeration with values of:
+          4.9E-324
+          4.0820793024851395E-245
+          3.8230588179392781E-166
+          2.6979669918834709E-87
+          2.0834987530951218E-8
+          1.8962326902306018E71
+          2.0638057320113563E150
+          2.0453110403825455E229
+          1.7976931348623157E308
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-double-enumeration-3" type="NISTSchema-SV-II-atomic-double-enumeration-3-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-double-enumeration-3-Type">
+    <xs:restriction base="xs:double">
+          <xs:enumeration value="4.9E-324"/>
+          <xs:enumeration value="4.0820793024851395E-245"/>
+          <xs:enumeration value="3.8230588179392781E-166"/>
+          <xs:enumeration value="2.6979669918834709E-87"/>
+          <xs:enumeration value="2.0834987530951218E-8"/>
+          <xs:enumeration value="1.8962326902306018E71"/>
+          <xs:enumeration value="2.0638057320113563E150"/>
+          <xs:enumeration value="2.0453110403825455E229"/>
+          <xs:enumeration value="1.7976931348623157E308"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

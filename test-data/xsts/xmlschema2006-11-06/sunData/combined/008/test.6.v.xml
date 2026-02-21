@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ident: @(#)test.6.v.xml	1.2 02/12/25
+
+-->
+
+				<foo:restriction xmlns:foo="urn:foo" xmlns:a="urn:a" xmlns:b="urn:b" xmlns:c="urn:c" a:xxx="xxx"/>

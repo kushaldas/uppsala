@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-unsignedByte-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-II-list-unsignedByte-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-unsignedByte-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-unsignedByte-enumeration-3,
+      which is derived by restriction of a list with itemType unsignedByte
+      by facet enumeration with values of:
+          66 255 4 97 74 50 8 84 71
+          167 93 26 39 255 29 43 24 81
+          255 72 38 105 94 96 82
+          255 1 16 34 44 9
+          255 43 243 103 73 21
+          255 79 6 16 90 53 41
+          255 8 35 4 77 63 250 73
+          4 33 34 255 51 7 48 65
+          255 38 9 61 16 64 41 113 80
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-unsignedByte-enumeration-3" type="NISTSchema-SV-II-list-unsignedByte-enumeration-3-Type"/>
+
+  <xs:simpleType name="listOfunsignedByte">
+    <xs:list itemType="xs:unsignedByte"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-unsignedByte-enumeration-3-Type">
+    <xs:restriction base="listOfunsignedByte">
+          <xs:enumeration value="66 255 4 97 74 50 8 84 71"/>
+          <xs:enumeration value="167 93 26 39 255 29 43 24 81"/>
+          <xs:enumeration value="255 72 38 105 94 96 82"/>
+          <xs:enumeration value="255 1 16 34 44 9"/>
+          <xs:enumeration value="255 43 243 103 73 21"/>
+          <xs:enumeration value="255 79 6 16 90 53 41"/>
+          <xs:enumeration value="255 8 35 4 77 63 250 73"/>
+          <xs:enumeration value="4 33 34 255 51 7 48 65"/>
+          <xs:enumeration value="255 38 9 61 16 64 41 113 80"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

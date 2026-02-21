@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef01202m1_p.xml
+   generated from: @(#)typeDef01202m.jmpp	1.2 02/08/22
+
+-->
+
+<root
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xsi:noNamespaceSchemaLocation="typeDef01202m1.xsd"
+    xsi:nil="true"
+    xsi:type="xsd:string"
+    />

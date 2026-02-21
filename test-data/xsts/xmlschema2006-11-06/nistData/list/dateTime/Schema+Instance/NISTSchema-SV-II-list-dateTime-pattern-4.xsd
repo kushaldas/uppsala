@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:nist="NISTSchema-SV-II-list-dateTime-pattern-4-NS"
+        targetNamespace="NISTSchema-SV-II-list-dateTime-pattern-4-NS">
+
+  <annotation>
+    <documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-dateTime-pattern-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-dateTime-pattern-4,
+      which is derived by restriction of a list with item type dateTime
+      by facet pattern with a value of: 19\d\d-1\d-1\dT1\d:\d8:4\d 17\d\d-\d0-0\dT\d7:\d7:2\d 17\d\d-\d6-\d2T1\d:\d2:\d1 \d\d90-\d5-\d8T1\d:\d0:\d3 18\d\d-\d0-2\dT0\d:3\d:2\d \d\d66-0\d-\d0T\d1:2\d:4\d
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </documentation>
+  </annotation>
+
+  <element name="NISTSchema-SV-II-list-dateTime-pattern-4" type="nist:NISTSchema-SV-II-list-dateTime-pattern-4-Type"/>
+
+  <simpleType name="listOfdateTime">
+    <list itemType="dateTime"/>
+  </simpleType>
+
+  <simpleType name="NISTSchema-SV-II-list-dateTime-pattern-4-Type">
+    <restriction base="nist:listOfdateTime">
+      <pattern value="19\d\d-1\d-1\dT1\d:\d8:4\d 17\d\d-\d0-0\dT\d7:\d7:2\d 17\d\d-\d6-\d2T1\d:\d2:\d1 \d\d90-\d5-\d8T1\d:\d0:\d3 18\d\d-\d0-2\dT0\d:3\d:2\d \d\d66-0\d-\d0T\d1:2\d:4\d"/>
+    </restriction>
+  </simpleType>
+
+</schema>

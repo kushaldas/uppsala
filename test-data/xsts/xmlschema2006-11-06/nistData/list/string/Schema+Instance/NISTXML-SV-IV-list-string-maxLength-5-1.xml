@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-maxLength-5.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-maxLength-5
+    xmlns="NISTSchema-SV-IV-list-string-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-maxLength-5-NS NISTSchema-SV-IV-list-string-maxLength-5.xsd">75_We_Methods_To_Hardware_Street_Use_To_,_MN_13557 88255_To_Partnerships_Browsers_The_Street_Methods_Well_,_IA_13557 63244_Additionally_Are_Collaborate_File_Street_Been_Language_,_TX_13557 4_Object_Standard_Original_And_Street_And_And_,_WV_13557 32_Are_Key_In_Other_Street_And_Already_,_OK_13557 77_Project_Our_Simulation_Oasis_Street_Ensure_Both_,_UT_13557 7577_Dom_Organizations_Different_And_Street_Unbiased_Any_,_WA_13557 52665_Allow_For_Language_Xml_Street_Xml_For_,_ID_13557 5151_Use_Popular_And_Creation_Street_To_Addressing_,_FL_13557</NISTSchema-SV-IV-list-string-maxLength-5>

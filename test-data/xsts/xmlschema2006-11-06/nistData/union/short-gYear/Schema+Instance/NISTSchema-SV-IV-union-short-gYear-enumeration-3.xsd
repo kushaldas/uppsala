@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-IV-union-short-gYear-enumeration-3-NS"
+        targetNamespace="NISTSchema-SV-IV-union-short-gYear-enumeration-3-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-IV-union-short-gYear-enumeration-3.xsd
+      This schema specifies a datatype, NISTSchema-SV-IV-union-short-gYear-enumeration-3,
+      which is derived by restriction of a union of built-in types 
+      short and gYear
+      by facet enumeration with values of:
+          1978
+          1988
+          -13234
+          -1
+          509
+          36
+          -167
+          1974
+          -17213
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:element name="NISTSchema-SV-IV-union-short-gYear-enumeration-3" type="NISTSchema-SV-IV-union-short-gYear-enumeration-3-Type"/>
+
+  <xs:simpleType name="unionOf-short-gYear">
+    <xs:union memberTypes="xs:short xs:gYear"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-IV-union-short-gYear-enumeration-3-Type">
+    <xs:restriction base="unionOf-short-gYear">
+          <xs:enumeration value="1978"/>
+          <xs:enumeration value="1988"/>
+          <xs:enumeration value="-13234"/>
+          <xs:enumeration value="-1"/>
+          <xs:enumeration value="509"/>
+          <xs:enumeration value="36"/>
+          <xs:enumeration value="-167"/>
+          <xs:enumeration value="1974"/>
+          <xs:enumeration value="-17213"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

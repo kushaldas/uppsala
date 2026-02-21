@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_name00104m17.xsd
+   generated from: @(#)AD_name00104m.jmpp	1.3 02/11/14
+
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="AttrDecl/name">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:attribute name="ᅟ00" type="xsd:integer"/>
+            <xsd:attribute name="ᅠ01" type="xsd:integer"/>
+            <xsd:attribute name="ᅡ02" type="xsd:integer"/>
+            <xsd:attribute name="ᅣ10" type="xsd:integer"/>
+            <xsd:attribute name="ᅥ20" type="xsd:integer"/>
+            <xsd:attribute name="ᅧ30" type="xsd:integer"/>
+            <xsd:attribute name="ᅩ40" type="xsd:integer"/>
+            <xsd:attribute name="ᅭ50" type="xsd:integer"/>
+            <xsd:attribute name="ᅭ51" type="xsd:integer"/>
+            <xsd:attribute name="ᅮ52" type="xsd:integer"/>
+            <xsd:attribute name="ᅲ60" type="xsd:integer"/>
+            <xsd:attribute name="ᅲ61" type="xsd:integer"/>
+            <xsd:attribute name="ᅳ62" type="xsd:integer"/>
+            <xsd:attribute name="ᅵ70" type="xsd:integer"/>
+            <xsd:attribute name="ᆞ80" type="xsd:integer"/>
+            <xsd:attribute name="ᆨ90" type="xsd:integer"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
+

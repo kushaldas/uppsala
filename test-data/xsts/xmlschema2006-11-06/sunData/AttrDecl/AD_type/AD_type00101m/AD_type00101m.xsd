@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_type00101m.xsd
+   generated from: @(#)AD_type00101m.jmpp	1.4 02/12/09
+
+-->
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="AttrDecl/type"
+	xmlns:tn="AttrDecl/type">
+
+	<xsd:element name="root">
+	  <xsd:complexType>
+	    <xsd:sequence>
+	      <xsd:element ref="tn:elementWithAttr"/>
+	    </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+	<xsd:attribute name="number" type="xsd:integer"/>
+
+	<xsd:element name="elementWithAttr">
+	  <xsd:complexType>
+	    <xsd:attribute ref="tn:number"/>
+	    <xsd:attribute name="price" type="xsd:decimal" form="unqualified"/>
+	  </xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4-NS"
+        targetNamespace="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4,
+      which is derived by restriction of a list with itemType nonNegativeInteger
+      by facet enumeration with values of:
+          5587654966699 8396 9276 526507762239 8702563413821584 52876464 66206356036 3542532303799 942601792092312
+          8 2250466914706831 231925038941 12392583539604 610760185964 75 82773756 5878937907619208 724933627809 48053467288980078
+          853 888083 922 58065980752 2776272184531343 4845013533 9913266632277 79362994071406400 4474
+          17 5824088079 75064 32 4594768891421753 918004 7427540718 77811400881
+          661 857188847816272 44430588288 412289 7665963 561998552 75 55952720097
+          42298726045 64878 6779 927 69358047303 1596992983 974 3060096421721859 8489
+          981326294 716793548066905 7765299307045192 4639458540481395 76229305815 257411238521112 63768 9788596049964695 3675922194 42067376729222
+          1588000850214382 762899865720 9616831 9036262327 489 2504632640
+          52285628 5002601111296 882008744122 6649004 4965054 2016042 62399946 187815
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4" type="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4-Type"/>
+
+  <xs:simpleType name="listOfnonNegativeInteger">
+    <xs:list itemType="xs:nonNegativeInteger"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-nonNegativeInteger-enumeration-4-Type">
+    <xs:restriction base="listOfnonNegativeInteger">
+          <xs:enumeration value="5587654966699 8396 9276 526507762239 8702563413821584 52876464 66206356036 3542532303799 942601792092312"/>
+          <xs:enumeration value="8 2250466914706831 231925038941 12392583539604 610760185964 75 82773756 5878937907619208 724933627809 48053467288980078"/>
+          <xs:enumeration value="853 888083 922 58065980752 2776272184531343 4845013533 9913266632277 79362994071406400 4474"/>
+          <xs:enumeration value="17 5824088079 75064 32 4594768891421753 918004 7427540718 77811400881"/>
+          <xs:enumeration value="661 857188847816272 44430588288 412289 7665963 561998552 75 55952720097"/>
+          <xs:enumeration value="42298726045 64878 6779 927 69358047303 1596992983 974 3060096421721859 8489"/>
+          <xs:enumeration value="981326294 716793548066905 7765299307045192 4639458540481395 76229305815 257411238521112 63768 9788596049964695 3675922194 42067376729222"/>
+          <xs:enumeration value="1588000850214382 762899865720 9616831 9036262327 489 2504632640"/>
+          <xs:enumeration value="52285628 5002601111296 882008744122 6649004 4965054 2016042 62399946 187815"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

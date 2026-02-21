@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-Name-maxLength-5-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-Name-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-Name-maxLength-5
+    xmlns="NISTSchema-SV-II-list-Name-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-Name-maxLength-5-NS NISTSchema-SV-II-list-Name-maxLength-5.xsd">:issues-partnerships_law_in-areas_application:target _organization.manipulate_must:set_security.and_softw rorganizations.and:widespread-degree.of_analysis_the _the-a:in_specification-using:effort-will:.mechanism tprint:and:project.reviewed_file-etc:is:is_are-to_ty mhave:the:recommending-both.2000-reviewed.time-compu xuse:match.this-a.large.on-as-to:2000:investigation_ _wireless:the_to.and:also:review_enabling:with:signi _for.objects:can:requesting-nature:of_that.consisten lto_will.is_and:alike.two_to.and:networking:criteria tand:software:images.g.of:this_automate-with_these-i :diagnostic:and.uses-signatures_systems-and_computin qconformance.e:the.transactions.will_computing.web.t</NISTSchema-SV-II-list-Name-maxLength-5>

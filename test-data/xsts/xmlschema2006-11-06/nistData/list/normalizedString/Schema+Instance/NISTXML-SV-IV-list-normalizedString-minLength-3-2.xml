@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-normalizedString-minLength-3-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-normalizedString-minLength-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-normalizedString-minLength-3
+    xmlns="NISTSchema-SV-IV-list-normalizedString-minLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-normalizedString-minLength-3-NS NISTSchema-SV-IV-list-normalizedString-minLength-3.xsd">5886_Challenges_Aspects_Be_Sensors_Exchange_Street_Be_Graphics_,_CT_15017-1928 57_Development_An_Wireless_Technical_Them_Street_Testing_Individual_,_KY_15017-1928 38_That_If_Those_And_And_Street_Of_Systems_,_NY_15017-1928 9_Including_And_Naval_Methods_The_Street_Fact_Constituent_,_WY_15017-1928 77_Able_Quality_Retrieval_The_Xml_Street_Partnerships_Language_,_DC_15017-1928 64_And_Using_Quality_Profile_This_Street_Consortium_From_,_RI_15017-1928 35_Development_Choices_Exist_As_Revolution_Street_These_Information_,_DC_15017-1928 28_Interoperable_And_Of_Government_And_Street_Tools_Led_,_NC_15017-1928</NISTSchema-SV-IV-list-normalizedString-minLength-3>

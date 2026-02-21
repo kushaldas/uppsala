@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint00402m8.xsd
+   generated from: @(#)valueConstraint00402m.jmpp	1.4 02/11/19
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root"/>
+
+  <xsd:element name="E" type="answer" fixed="false" />
+
+  <xsd:simpleType name="answer">
+      <xsd:restriction base="xsd:boolean">
+          <xsd:pattern value="true"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-maxLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-maxLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-maxLength-5
+    xmlns="NISTSchema-SV-II-list-token-maxLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-maxLength-5-NS NISTSchema-SV-II-list-token-maxLength-5.xsd">7496_Provided_Additionally_And_To_Street_Ensure_Computing_,_NV_19351 8842_Stimulus_Will_Reach_Nist_Street_Environment_Database_,_CO_19351 4_Technology_The_And_For_Street_Build_These_,_CA_19351 56586_Must_Filter_Donate_In_Street_The_Industry_,_AL_19351 8495_Development_Is_Other_Help_Street_Two_Discussions_,_OR_19351 5_To_Retrieves_Academia_Tools_Street_Including_Language_,_CO_19351 999_Availability_The_And_Oasis_Street_And_Computing_,_GA_19351 715_And_And_These_Logic_Street_Discovery_Challenges_,_AK_19351 6785_Including_Mechanism_Of_Advent_Street_With_Signatures_,_IN_19351 1847_Partnerships_Measurements_Including_Has_Street_Further_The_,_DC_19351 3_Pervasive_Oasis_Standards_Visibly_Street_To_Information_,_OK_19351 765_The_Internet_Information_Define_Street_Schema_Xml_,_KY_19351 674_With_National_Is_Vendors_Street_Than_These_,_WV_19351 83_To_The_Community_Of_Street_Processes_Industry_,_MI_19351 4_Different_Used_Disseminate_Entire_Street_Between_In_,_OH_19351 1533_Schema_In_Soc_Service_Street_Is_Automatically_,_TN_19351 766_From_And_An_The_Street_Between_Building_,_SD_19351 87_Registries_Any_Issues_For_Street_Without_Investigators_,_ID_19351 1598_Made_And_International_Tools_Street_Organization_Known_,_ME_19351 2898_If_Other_From_Effort_Street_And_For_,_MI_19351</NISTSchema-SV-II-list-token-maxLength-5>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00301m1_n.xml
+   generated from: @(#)ST_facets00301m.jmpp	1.1 02/10/10
+
+-->
+
+<test
+    xmlns="SType/ST_facets"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="SType/ST_facets ST_facets00301m.xsd">3,14</test>
+

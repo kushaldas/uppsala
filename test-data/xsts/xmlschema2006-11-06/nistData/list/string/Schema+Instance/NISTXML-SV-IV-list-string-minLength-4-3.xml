@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-string-minLength-4-3.xml
+      Description: XML instance number 3 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-string-minLength-4.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-string-minLength-4
+    xmlns="NISTSchema-SV-IV-list-string-minLength-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-string-minLength-4-NS NISTSchema-SV-IV-list-string-minLength-4.xsd">33263_Sun_Reputation_Do_Street_Over_Reproduced_,_IN_16075 376_Discover_Technical_Related_Street_By_To_,_MO_16075 1_Available_Led_Computed_Street_Reference_Organization_,_DC_16075 4777_For_In_Build_Street_Documents_To_,_NH_16075 3_Will_Supply_An_Street_Other_And_,_MO_16075 8763_Quality_The_Information_Street_Microsystems_Efforts_,_KS_16075 7826_Voiced_Between_Advancement_Street_Partnerships_Implementation_,_CT_16075 32_To_To_These_Street_Possible_Industry_,_MI_16075 42_Industry_Developing_Achieved_Street_Conference_Systems_,_KY_16075 56516_Creates_Paradigm_Security_Street_Discover_Has_,_CT_16075</NISTSchema-SV-IV-list-string-minLength-4>

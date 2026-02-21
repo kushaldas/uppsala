@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-hexBinary-enumeration-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-hexBinary-enumeration-3.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-hexBinary-enumeration-3
+    xmlns="NISTSchema-SV-IV-list-hexBinary-enumeration-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-hexBinary-enumeration-3-NS NISTSchema-SV-IV-list-hexBinary-enumeration-3.xsd">6d61 72726679616f61756c73706f7561676b61657575626c736769756965656379686764796f6d74766663646a75786a626e796269766868766570756767646b7575686a79657163706e 6e6b67 6d666767696d796d6764747169686870637765686563736168797469 6d6c6b7279767770666a7175786f69756862756976706672726f78646c676578636c6b6370726267647362766f6e69796c6e676b676d706e7772646d6b65766d726c6174746e 686d646966646a7167666674736277666b65716f6d70737874746263686d6b6d716b7163726c676a63796177646e686f6263726f6275656169756c6d7275</NISTSchema-SV-IV-list-hexBinary-enumeration-3>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-dateTime-pattern-4-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-dateTime-pattern-4.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-dateTime-pattern-4
+    xmlns="NISTSchema-SV-II-list-dateTime-pattern-4-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-dateTime-pattern-4-NS NISTSchema-SV-II-list-dateTime-pattern-4.xsd">1833-08-23T31:24:33 1989-02-14T16:11:44 1804-04-21T42:33:47 1888-06-02T34:18:00 1930-03-01T24:11:15 1854-11-04T09:56:17</NISTSchema-SV-II-list-dateTime-pattern-4>

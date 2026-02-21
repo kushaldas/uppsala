@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-IV-list-base64Binary-minLength-1-2.xml
+      Description: XML instance number 2 in a series of 5.
+      Schema location:
+      NISTSchema-SV-IV-list-base64Binary-minLength-1.xsd
+      This instance is intended to be valid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-IV-list-base64Binary-minLength-1
+    xmlns="NISTSchema-SV-IV-list-base64Binary-minLength-1-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-IV-list-base64Binary-minLength-1-NS NISTSchema-SV-IV-list-base64Binary-minLength-1.xsd">dmJ5eXdlc3RkZnFocHJreHlpeXhzZ21pa2t4aW1uZmxkbmpkbmh3d3J5YXNjdHlw eXB2d3F1Y2xtbnltcnBjbHF3Y3BtaWhyb21mbWl5bGdla2p3c3RqaGR5eXRxaWJ4 bWR0eXdjbmVteHJpdmlramd2ZGFndm1sbGRkY2l5YnNweGV1amlweWR0amlvcnZ3 Z3RyZnBlbXVlZm9uZHFqcXlpYWhwa2lrc3NyaWFqaWVnYWRzcnNiaXNwYWlwanFk Y3hqaHRuZXh0cmZxcnl1Y2xoc3B1eWd1cXB3am5teXVuaHNwb3dmcWNyZWN4aWht cWV5cG9zYWppYnR1Ym5weWJveGZ3Z3BoeXBtaW5kYXltaXdneGpldXBtdXhrZGxr b2l1ZXVzeWVydGNpeWh4b3FibWRhaWtsZWpyaW9oZ2l1dW5tbnhodGp1Y2d5eGRn</NISTSchema-SV-IV-list-base64Binary-minLength-1>

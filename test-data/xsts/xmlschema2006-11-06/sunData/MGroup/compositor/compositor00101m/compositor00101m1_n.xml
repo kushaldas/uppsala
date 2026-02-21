@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)compositor00101m1_n.xml
+   generated from: @(#)compositor00101m.jmpp	1.2 04/01/14
+
+-->
+
+<test:a
+    xmlns:test="compositor"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="compositor compositor00101m1.xsd">
+<time>12:30:00</time>
+<name>J. Lee</name>
+</test:a>

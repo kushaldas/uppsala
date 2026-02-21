@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00901m1.xsd
+   generated from: @(#)typeDef00901m.jmpp	1.2 02/09/06
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/typeDef"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/typeDef">
+
+  <xsd:element name="root" type="xsd:boolean"/>
+
+  <xsd:simpleType name="Type">
+      <xsd:restriction base="xsd:boolean">
+          <xsd:pattern value="true|1"/>
+      </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

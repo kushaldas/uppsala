@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)AD_targetNS00101m2_n.xml
+   generated from: @(#)AD_targetNS00101m.jmpp	1.5 02/12/26
+
+-->
+
+
+<td:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="AttrDecl/targetNS AD_targetNS00101m.xsd"
+      xmlns:td="AttrDecl/targetNS"
+      xmlns:tNOT="AttrDecl/targetNS-NOT"
+      >
+   <td:elementWithAttr tNOT:price="12.33"/>
+</td:root>
+

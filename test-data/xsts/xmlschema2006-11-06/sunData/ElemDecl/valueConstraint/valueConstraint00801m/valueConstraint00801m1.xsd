@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)valueConstraint00801m1.xsd
+   generated from: @(#)valueConstraint00801m.jmpp	1.2 02/08/22
+
+-->
+
+<xsd:schema
+  xmlns="ElemDecl/valueConstraint"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="ElemDecl/valueConstraint">
+
+  <xsd:element name="root" fixed="alpha beta"/>
+
+  <xsd:complexType name="Text" mixed="true"/>
+
+</xsd:schema>

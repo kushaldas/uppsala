@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)ST_facets00501m20_p.xml
+   generated from: @(#)ST_facets00501m.jmpp	1.3 02/11/14
+
+-->
+
+<test:root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:test="SType/ST_facets"
+    xsi:schemaLocation="SType/ST_facets ST_facets00501m20.xsd">
+    <value>a00Ὓ</value>
+    <value>a10Ὕ</value>
+    <value>a20Ὗ</value>
+    <value>a2-Ὦ</value>
+    <value>a2Aώ</value>
+    <value>a30ᾰ</value>
+    <value>a3-ᾰ</value>
+    <value>a3Aᾱ</value>
+    <value>a40Ᾰ</value>
+    <value>a4-Ᾱ</value>
+    <value>a4AΆ</value>
+    <value>a50Ὲ</value>
+    <value>a5-Έ</value>
+    <value>a5AΉ</value>
+    <value>a60ῐ</value>
+    <value>a6-ῐ</value>
+    <value>a6Aῑ</value>
+    <value>a70Ῐ</value>
+    <value>a7-Ῑ</value>
+    <value>a7AΊ</value>
+    <value>a80ῠ</value>
+    <value>a8-ῠ</value>
+    <value>a8Aῡ</value>
+    <value>a90ῥ</value>
+</test:root>

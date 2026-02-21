@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Ident: @(#)typeDef00801m3_n.xml
+   generated from: @(#)typeDef00801m.jmpp	1.5 02/12/24
+
+-->
+
+<test:root
+    xmlns:test="ElemDecl/typeDef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ElemDecl/typeDef typeDef00801m3.xsd">
+
+    <Element xsi:type="test:derivedType" value="false" value1="true"/>
+
+</test:root>

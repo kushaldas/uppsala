@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!--
+Ident: @(#)idc001.nogen.n00.xml	1.4 03/10/10
+
+-->
+
+<bc:BookCatalogue xmlns:bc="http://www.publishing.org"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation=
+                              "http://www.publishing.org
+                               idc001.nogen.xsd">
+        <bc:Book>
+                <bc:Title>My Life and Times</bc:Title>
+                <bc:Author>Paul McCartney</bc:Author>
+                <bc:ISBN>94303-12021-43892</bc:ISBN>
+                <bc:Publisher>McMillin Publishing</bc:Publisher>
+                <bc:Date>1998</bc:Date>
+        </bc:Book>
+        <bc:Book>
+                <bc:Title>My Life and Times</bc:Title>
+                <bc:Author>Paul McCartney</bc:Author>
+                <bc:ISBN>94303-12021-43892</bc:ISBN>
+                <bc:Publisher>McMillin Publishing</bc:Publisher>
+                <bc:Date>1998</bc:Date>
+        </bc:Book>
+        <bc:Book>
+                <bc:Author>Richard Bach</bc:Author>
+                <bc:Title>Illusions The Adventures of a Reluctant Messiah</bc:Title>
+                <bc:Date>1977</bc:Date>
+                <bc:ISBN>0-440-34319-4</bc:ISBN>
+                <bc:Publisher>Dell Publishing Co.</bc:Publisher>
+        </bc:Book>
+        <bc:Book>
+                <bc:Publisher>Harper &amp; Row</bc:Publisher>
+                <bc:ISBN>0-06-064831-7</bc:ISBN>
+                <bc:Date>1954</bc:Date>
+                <bc:Author>J. Krishnamurti</bc:Author>
+                <bc:Title>The First and Last Freedom</bc:Title>
+        </bc:Book>
+</bc:BookCatalogue>

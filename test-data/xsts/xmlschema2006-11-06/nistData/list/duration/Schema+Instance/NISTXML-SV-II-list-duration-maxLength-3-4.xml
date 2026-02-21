@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-duration-maxLength-3-4.xml
+      Description: XML instance number 4 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-duration-maxLength-3.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-duration-maxLength-3
+    xmlns="NISTSchema-SV-II-list-duration-maxLength-3-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-duration-maxLength-3-NS NISTSchema-SV-II-list-duration-maxLength-3.xsd">P1924Y05M24DT10H54M13S P1824Y05M21DT11H53M33S P1824Y05M21DT15H55M43S P2024Y05M20DT12H51M03S P1924Y05M25DT16H51M23S P2024Y05M21DT17H56M43S P1924Y05M25DT17H57M33S P1924Y05M25DT10H54M43S P1824Y05M26DT17H56M13S P1724Y05M27DT18H50M33S</NISTSchema-SV-II-list-duration-maxLength-3>

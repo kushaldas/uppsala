@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-list-int-enumeration-1-NS"
+        targetNamespace="NISTSchema-SV-II-list-int-enumeration-1-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-list-int-enumeration-1.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-list-int-enumeration-1,
+      which is derived by restriction of a list with itemType int
+      by facet enumeration with values of:
+          64968934 -344472 -4202512 22900 -8306 14633196 2147483647 86 -80
+          -5 -50586 4124 -688376 -2147483648 -5757837 -1430 2028 67030
+          -5420 -25 140222 -8485972 -20364320 96208 -462205
+          736111 4598 75 -471334726 -685 96580 -43460 -3132 501
+          -897 -462 27 -486641 -91
+          -13 880 -124088074 -257324518 2250 270897653 -345
+          47 8836 2624699 31 -2032891 5 -2147483648 509808 678355 2147483647
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-list-int-enumeration-1" type="NISTSchema-SV-II-list-int-enumeration-1-Type"/>
+
+  <xs:simpleType name="listOfint">
+    <xs:list itemType="xs:int"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="NISTSchema-SV-II-list-int-enumeration-1-Type">
+    <xs:restriction base="listOfint">
+          <xs:enumeration value="64968934 -344472 -4202512 22900 -8306 14633196 2147483647 86 -80"/>
+          <xs:enumeration value="-5 -50586 4124 -688376 -2147483648 -5757837 -1430 2028 67030"/>
+          <xs:enumeration value="-5420 -25 140222 -8485972 -20364320 96208 -462205"/>
+          <xs:enumeration value="736111 4598 75 -471334726 -685 96580 -43460 -3132 501"/>
+          <xs:enumeration value="-897 -462 27 -486641 -91"/>
+          <xs:enumeration value="-13 880 -124088074 -257324518 2250 270897653 -345"/>
+          <xs:enumeration value="47 8836 2624699 31 -2032891 5 -2147483648 509808 678355 2147483647"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

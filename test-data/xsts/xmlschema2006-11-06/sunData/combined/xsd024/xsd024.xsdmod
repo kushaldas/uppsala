@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		elementFormDefault="qualified">
+	
+	<xs:element name="root" type="complexType"/>
+	
+	<xs:complexType name="complexType">
+		<xs:group ref="group" />
+		<xs:attributeGroup ref="attGroup"/>
+	</xs:complexType>
+	
+	<xs:attributeGroup name="attGroup">
+		<xs:attribute ref="att"/>
+	</xs:attributeGroup>
+	
+	<xs:attribute name="att" type="simpleType"/>
+	
+	<xs:simpleType name="simpleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="yes"/>
+			<xs:enumeration value="no"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:group name="group">
+		<xs:sequence>
+			<xs:element ref="root" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

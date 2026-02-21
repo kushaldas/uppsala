@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Date: Jan 13, 2004.
+
+      File name: NISTXML-SV-II-list-token-minLength-5-1.xml
+      Description: XML instance number 1 in a series of 5.
+      Schema location:
+      NISTSchema-SV-II-list-token-minLength-5.xsd
+      This instance is intended to be invalid with
+      regard to the defining schema.
+-->
+
+<NISTSchema-SV-II-list-token-minLength-5
+    xmlns="NISTSchema-SV-II-list-token-minLength-5-NS"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="NISTSchema-SV-II-list-token-minLength-5-NS NISTSchema-SV-II-list-token-minLength-5.xsd">93725_Computer_Business_Role_And_Language_Street_Popular_Users_Provide_,_DE_16084 7657_That_To_Ensure_Fact_Such_Street_Are_All_Addressing_,_IL_16084 2298_Dom_Systems_From_Suite_Computing_Street_Based_Industry_Having_,_CA_16084 2_Be_Manufacturers_Exchange_Environments_Manipulation_Street_Oasis_Schema_For_,_IN_16084 6_To_And_Promises_Completion_Pervasive_Street_Developers_Specifications_For_,_MO_16084 38575_The_Available_Provides_Body_Vendors_Street_Language_Becoming_Original_,_CA_16084 2232_All_Computing_Xml_An_The_Street_Same_Conformant_Robust_,_NE_16084 1544_Microsystems_Graphical_Testing_Helping_Within_Street_Portable_Using_Must_,_UT_16084</NISTSchema-SV-II-list-token-minLength-5>

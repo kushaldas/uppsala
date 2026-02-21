@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="NISTSchema-SV-II-atomic-anyURI-enumeration-5-NS"
+        targetNamespace="NISTSchema-SV-II-atomic-anyURI-enumeration-5-NS">
+
+  <xs:annotation>
+    <xs:documentation>
+      The National Institute of Standards and Technology.
+      Conformance test for W3C XML Schema Part 2: Datatypes.
+      Created Jan 13, 2004.
+
+      File: NISTSchema-SV-II-atomic-anyURI-enumeration-5.xsd
+      This schema specifies a datatype, NISTSchema-SV-II-atomic-anyURI-enumeration-5,
+      which is derived by restriction of built-in type anyURI
+      by facet enumeration with values of:
+          telnet://arereposito.yassociate.andAPIscon.orti.org
+          telnet://ofandtechno.ogiessens.org
+          telnet://specificMar.upfilerepo.itoryisfor.rovidecrea.ionT.gov
+          ftp://ftp.asthea.org
+          telnet://locationava.lablealack.gov
+          ftp://suiteutiliz.testab.edu
+          news://Co.net
+          gopher://aofOASIScre.tetemplate.comm.edu
+          http://testseameet.itssimu.edu
+      This schema is intended to be valid with
+      regard to the schema for schemas.
+    </xs:documentation>
+  </xs:annotation>
+
+
+
+  <xs:element name="NISTSchema-SV-II-atomic-anyURI-enumeration-5" type="NISTSchema-SV-II-atomic-anyURI-enumeration-5-Type"/>
+
+  <xs:simpleType name="NISTSchema-SV-II-atomic-anyURI-enumeration-5-Type">
+    <xs:restriction base="xs:anyURI">
+          <xs:enumeration value="telnet://arereposito.yassociate.andAPIscon.orti.org"/>
+          <xs:enumeration value="telnet://ofandtechno.ogiessens.org"/>
+          <xs:enumeration value="telnet://specificMar.upfilerepo.itoryisfor.rovidecrea.ionT.gov"/>
+          <xs:enumeration value="ftp://ftp.asthea.org"/>
+          <xs:enumeration value="telnet://locationava.lablealack.gov"/>
+          <xs:enumeration value="ftp://suiteutiliz.testab.edu"/>
+          <xs:enumeration value="news://Co.net"/>
+          <xs:enumeration value="gopher://aofOASIScre.tetemplate.comm.edu"/>
+          <xs:enumeration value="http://testseameet.itssimu.edu"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
