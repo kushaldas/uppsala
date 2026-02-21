@@ -929,7 +929,7 @@ fn parse_misc(
             );
             doc.append_child(parent, id);
         } else if cursor.starts_with("<!DOCTYPE") {
-            parse_doctype(cursor, entities)?;
+            parse_doctype(cursor, doc, entities)?;
         } else {
             break;
         }
@@ -939,7 +939,13 @@ fn parse_misc(
 
 /// Parse a DOCTYPE declaration, including internal subset.
 /// Collects general entity declarations for use in document content.
-fn parse_doctype(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()> {
+/// Stores the raw DOCTYPE text in the document for round-trip fidelity.
+fn parse_doctype(
+    cursor: &mut Cursor,
+    doc: &mut Document,
+    entities: &mut EntityMap,
+) -> XmlResult<()> {
+    let start_pos = cursor.pos;
     cursor.expect("<!DOCTYPE")?;
 
     // Must have whitespace after <!DOCTYPE
@@ -1002,6 +1008,8 @@ fn parse_doctype(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()>
 
     // Must end with >
     cursor.expect(">")?;
+    // Capture the raw DOCTYPE text for round-trip serialization
+    doc.doctype = Some(cursor.input[start_pos..cursor.pos].to_string());
     Ok(())
 }
 

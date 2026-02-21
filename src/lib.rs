@@ -13,14 +13,16 @@ pub mod dom;
 pub mod error;
 pub mod namespace;
 pub mod parser;
+pub mod writer;
 pub mod xpath;
 pub mod xsd;
 pub mod xsd_regex;
 
-pub use dom::{Attribute, Document, Element, NodeId, NodeKind, QName};
+pub use dom::{Attribute, Document, Element, NodeId, NodeKind, QName, XmlWriteOptions};
 pub use error::{XmlError, XmlResult};
 pub use namespace::NamespaceResolver;
 pub use parser::Parser;
+pub use writer::XmlWriter;
 pub use xpath::XPathEvaluator;
 pub use xsd::XsdValidator;
 

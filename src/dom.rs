@@ -200,6 +200,9 @@ pub struct Document {
     root: NodeId,
     /// Optional XML declaration.
     pub xml_declaration: Option<XmlDeclaration>,
+    /// Raw DOCTYPE declaration text, preserved verbatim for round-trip fidelity.
+    /// e.g. `<!DOCTYPE root SYSTEM "root.dtd">` or `<!DOCTYPE html>`.
+    pub doctype: Option<String>,
     /// Attribute nodes for each element, keyed by element NodeId.
     /// These are virtual nodes used by XPath attribute axis traversal.
     pub(crate) attribute_nodes: HashMap<NodeId, Vec<NodeId>>,
@@ -219,6 +222,7 @@ impl Document {
             nodes: vec![root_node],
             root: NodeId(0),
             xml_declaration: None,
+            doctype: None,
             attribute_nodes: HashMap::new(),
         }
     }
@@ -605,94 +609,199 @@ impl Document {
 
     // ─── Serialization ───
 
-    /// Serialize the document back to an XML string.
+    /// Serialize the document back to an XML string (compact, no indentation).
     pub fn to_xml(&self) -> String {
         let mut output = String::new();
-        if let Some(decl) = &self.xml_declaration {
-            output.push_str("<?xml version=\"");
-            output.push_str(&decl.version);
-            output.push('"');
-            if let Some(enc) = &decl.encoding {
-                output.push_str(" encoding=\"");
-                output.push_str(enc);
-                output.push('"');
-            }
-            if let Some(sa) = decl.standalone {
-                output.push_str(" standalone=\"");
-                output.push_str(if sa { "yes" } else { "no" });
-                output.push('"');
-            }
-            output.push_str("?>");
-        }
-        for child in self.children(self.root) {
-            self.serialize_node(child, &mut output);
-        }
+        // write_document_to cannot fail when writing to String
+        self.write_document_to(&mut output, &XmlWriteOptions::default())
+            .unwrap();
         output
     }
 
-    fn serialize_node(&self, id: NodeId, out: &mut String) {
+    /// Serialize the document with formatting options.
+    pub fn to_xml_with_options(&self, opts: &XmlWriteOptions) -> String {
+        let mut output = String::new();
+        self.write_document_to(&mut output, opts).unwrap();
+        output
+    }
+
+    /// Serialize a single node (and its subtree) to an XML string.
+    ///
+    /// Useful for extracting XML fragments without the XML declaration or DOCTYPE.
+    pub fn node_to_xml(&self, id: NodeId) -> String {
+        let mut output = String::new();
+        self.write_node_to(id, &mut output, &XmlWriteOptions::default(), 0, false)
+            .unwrap();
+        output
+    }
+
+    /// Serialize a single node (and its subtree) with formatting options.
+    pub fn node_to_xml_with_options(&self, id: NodeId, opts: &XmlWriteOptions) -> String {
+        let mut output = String::new();
+        self.write_node_to(id, &mut output, opts, 0, false).unwrap();
+        output
+    }
+
+    /// Write the entire document to any `io::Write` sink (file, socket, Vec<u8>, etc.)
+    /// without intermediate String allocation.
+    pub fn write_to(&self, writer: &mut dyn std::io::Write) -> std::io::Result<()> {
+        let opts = XmlWriteOptions::default();
+        self.write_to_with_options(writer, &opts)
+    }
+
+    /// Write the entire document to an `io::Write` sink with formatting options.
+    pub fn write_to_with_options(
+        &self,
+        writer: &mut dyn std::io::Write,
+        opts: &XmlWriteOptions,
+    ) -> std::io::Result<()> {
+        let mut adapter = IoWriteAdapter { inner: writer };
+        self.write_document_to(&mut adapter, opts)
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))
+    }
+
+    /// Internal: write the full document (declaration + DOCTYPE + nodes) to a `fmt::Write` sink.
+    fn write_document_to(&self, out: &mut dyn fmt::Write, opts: &XmlWriteOptions) -> fmt::Result {
+        if let Some(decl) = &self.xml_declaration {
+            out.write_str("<?xml version=\"")?;
+            out.write_str(&decl.version)?;
+            out.write_char('"')?;
+            if let Some(enc) = &decl.encoding {
+                out.write_str(" encoding=\"")?;
+                out.write_str(enc)?;
+                out.write_char('"')?;
+            }
+            if let Some(sa) = decl.standalone {
+                out.write_str(" standalone=\"")?;
+                out.write_str(if sa { "yes" } else { "no" })?;
+                out.write_char('"')?;
+            }
+            out.write_str("?>")?;
+        }
+        if let Some(dt) = &self.doctype {
+            out.write_str(dt)?;
+        }
+        for child in self.children(self.root) {
+            self.write_node_to(child, out, opts, 0, opts.indent.is_some())?;
+        }
+        Ok(())
+    }
+
+    /// Internal: write a single node and its subtree to a `fmt::Write` sink.
+    ///
+    /// `indent_self` — if true, write indentation before this node (set by parent
+    /// when it detects element-only content during pretty-printing).
+    fn write_node_to(
+        &self,
+        id: NodeId,
+        out: &mut dyn fmt::Write,
+        opts: &XmlWriteOptions,
+        depth: usize,
+        indent_self: bool,
+    ) -> fmt::Result {
         match self.node_kind(id) {
             Some(NodeKind::Element(elem)) => {
-                out.push('<');
-                out.push_str(&elem.name.prefixed_name());
+                if indent_self {
+                    write_indent(out, opts, depth)?;
+                }
+                out.write_char('<')?;
+                out.write_str(&elem.name.prefixed_name())?;
                 // Namespace declarations
                 for (prefix, uri) in &elem.namespace_declarations {
                     if prefix.is_empty() {
-                        out.push_str(" xmlns=\"");
+                        out.write_str(" xmlns=\"")?;
                     } else {
-                        out.push_str(" xmlns:");
-                        out.push_str(prefix);
-                        out.push_str("=\"");
+                        out.write_str(" xmlns:")?;
+                        out.write_str(prefix)?;
+                        out.write_str("=\"")?;
                     }
-                    out.push_str(&escape_attr(uri));
-                    out.push('"');
+                    write_escaped_attr(out, uri)?;
+                    out.write_char('"')?;
                 }
                 // Attributes
                 for attr in &elem.attributes {
-                    out.push(' ');
-                    out.push_str(&attr.name.prefixed_name());
-                    out.push_str("=\"");
-                    out.push_str(&escape_attr(&attr.value));
-                    out.push('"');
+                    out.write_char(' ')?;
+                    out.write_str(&attr.name.prefixed_name())?;
+                    out.write_str("=\"")?;
+                    write_escaped_attr(out, &attr.value)?;
+                    out.write_char('"')?;
                 }
                 let children = self.children(id);
                 if children.is_empty() {
-                    out.push_str("/>");
-                } else {
-                    out.push('>');
-                    for child in children {
-                        self.serialize_node(child, out);
+                    if opts.expand_empty_elements {
+                        out.write_str("></")?;
+                        out.write_str(&elem.name.prefixed_name())?;
+                        out.write_char('>')?;
+                    } else {
+                        out.write_str("/>")?;
                     }
-                    out.push_str("</");
-                    out.push_str(&elem.name.prefixed_name());
-                    out.push('>');
+                } else {
+                    out.write_char('>')?;
+                    // Determine if this is "element-only" content for pretty-printing.
+                    // If any child is text or CDATA, we treat it as mixed content
+                    // and do NOT insert newlines/indent (to preserve whitespace semantics).
+                    let element_only = opts.indent.is_some()
+                        && children.iter().all(|&cid| {
+                            !matches!(
+                                self.node_kind(cid),
+                                Some(NodeKind::Text(_)) | Some(NodeKind::CData(_))
+                            )
+                        });
+                    if element_only {
+                        out.write_char('\n')?;
+                    }
+                    for child in &children {
+                        self.write_node_to(*child, out, opts, depth + 1, element_only)?;
+                    }
+                    if element_only {
+                        write_indent(out, opts, depth)?;
+                    }
+                    out.write_str("</")?;
+                    out.write_str(&elem.name.prefixed_name())?;
+                    out.write_char('>')?;
+                }
+                // Trailing newline after the document element when pretty-printing
+                if indent_self {
+                    out.write_char('\n')?;
                 }
             }
             Some(NodeKind::Text(text)) => {
-                out.push_str(&escape_text(text));
+                write_escaped_text(out, text)?;
             }
             Some(NodeKind::CData(text)) => {
-                out.push_str("<![CDATA[");
-                out.push_str(text);
-                out.push_str("]]>");
+                out.write_str("<![CDATA[")?;
+                out.write_str(text)?;
+                out.write_str("]]>")?;
             }
             Some(NodeKind::Comment(text)) => {
-                out.push_str("<!--");
-                out.push_str(text);
-                out.push_str("-->");
+                if indent_self {
+                    write_indent(out, opts, depth)?;
+                }
+                out.write_str("<!--")?;
+                out.write_str(text)?;
+                out.write_str("-->")?;
+                if indent_self {
+                    out.write_char('\n')?;
+                }
             }
             Some(NodeKind::ProcessingInstruction(pi)) => {
-                out.push_str("<?");
-                out.push_str(&pi.target);
-                if let Some(data) = &pi.data {
-                    out.push(' ');
-                    out.push_str(data);
+                if indent_self {
+                    write_indent(out, opts, depth)?;
                 }
-                out.push_str("?>");
+                out.write_str("<?")?;
+                out.write_str(&pi.target)?;
+                if let Some(data) = &pi.data {
+                    out.write_char(' ')?;
+                    out.write_str(data)?;
+                }
+                out.write_str("?>")?;
+                if indent_self {
+                    out.write_char('\n')?;
+                }
             }
             Some(NodeKind::Document) => {
                 for child in self.children(id) {
-                    self.serialize_node(child, out);
+                    self.write_node_to(child, out, opts, depth, indent_self)?;
                 }
             }
             Some(NodeKind::Attribute(_, _)) => {
@@ -700,6 +809,7 @@ impl Document {
             }
             None => {}
         }
+        Ok(())
     }
 }
 
@@ -709,31 +819,120 @@ impl Default for Document {
     }
 }
 
-/// Escape special characters in text content.
-fn escape_text(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for c in s.chars() {
-        match c {
-            '&' => out.push_str("&amp;"),
-            '<' => out.push_str("&lt;"),
-            '>' => out.push_str("&gt;"),
-            _ => out.push(c),
-        }
+impl fmt::Display for Document {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.write_document_to(f, &XmlWriteOptions::default())
     }
-    out
 }
 
-/// Escape special characters in attribute values.
-fn escape_attr(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for c in s.chars() {
-        match c {
-            '&' => out.push_str("&amp;"),
-            '<' => out.push_str("&lt;"),
-            '>' => out.push_str("&gt;"),
-            '"' => out.push_str("&quot;"),
-            _ => out.push(c),
+// ─── Serialization options ───
+
+/// Options controlling XML serialization output format.
+#[derive(Debug, Clone)]
+pub struct XmlWriteOptions {
+    /// Indentation string per level (e.g. `"  "`, `"\t"`).
+    /// `None` means compact output with no extra whitespace.
+    pub indent: Option<String>,
+    /// Use `<foo></foo>` instead of `<foo/>` for empty elements.
+    /// Required for W3C Canonical XML (C14N).
+    pub expand_empty_elements: bool,
+}
+
+impl XmlWriteOptions {
+    /// Compact output: no indentation, self-closing empty elements.
+    pub fn compact() -> Self {
+        XmlWriteOptions {
+            indent: None,
+            expand_empty_elements: false,
         }
     }
-    out
+
+    /// Pretty-printed output with the given indentation string.
+    pub fn pretty(indent: impl Into<String>) -> Self {
+        XmlWriteOptions {
+            indent: Some(indent.into()),
+            expand_empty_elements: false,
+        }
+    }
+
+    /// Set whether empty elements use expanded form (`<foo></foo>`).
+    pub fn with_expand_empty_elements(mut self, expand: bool) -> Self {
+        self.expand_empty_elements = expand;
+        self
+    }
+}
+
+impl Default for XmlWriteOptions {
+    fn default() -> Self {
+        Self::compact()
+    }
+}
+
+// ─── Escaping and helpers ───
+
+/// Write indentation for the given depth.
+fn write_indent(out: &mut dyn fmt::Write, opts: &XmlWriteOptions, depth: usize) -> fmt::Result {
+    if let Some(ref indent) = opts.indent {
+        for _ in 0..depth {
+            out.write_str(indent)?;
+        }
+    }
+    Ok(())
+}
+
+/// Write text content with XML escaping to a `fmt::Write` sink.
+///
+/// Per XML 1.0 and C14N rules:
+/// - `&` → `&amp;`
+/// - `<` → `&lt;`
+/// - `>` → `&gt;`
+/// - `\r` → `&#xD;` (preserves CR on round-trip; XML parser normalizes CR)
+fn write_escaped_text(out: &mut dyn fmt::Write, s: &str) -> fmt::Result {
+    for c in s.chars() {
+        match c {
+            '&' => out.write_str("&amp;")?,
+            '<' => out.write_str("&lt;")?,
+            '>' => out.write_str("&gt;")?,
+            '\r' => out.write_str("&#xD;")?,
+            _ => out.write_char(c)?,
+        }
+    }
+    Ok(())
+}
+
+/// Write attribute value with XML escaping to a `fmt::Write` sink.
+///
+/// Per XML 1.0 and C14N rules:
+/// - `&` → `&amp;`
+/// - `<` → `&lt;`
+/// - `>` → `&gt;`
+/// - `"` → `&quot;`
+/// - `\t` → `&#x9;` (preserves tab; XML parser normalizes to space)
+/// - `\n` → `&#xA;` (preserves newline; XML parser normalizes to space)
+/// - `\r` → `&#xD;` (preserves CR; XML parser normalizes CR)
+fn write_escaped_attr(out: &mut dyn fmt::Write, s: &str) -> fmt::Result {
+    for c in s.chars() {
+        match c {
+            '&' => out.write_str("&amp;")?,
+            '<' => out.write_str("&lt;")?,
+            '>' => out.write_str("&gt;")?,
+            '"' => out.write_str("&quot;")?,
+            '\t' => out.write_str("&#x9;")?,
+            '\n' => out.write_str("&#xA;")?,
+            '\r' => out.write_str("&#xD;")?,
+            _ => out.write_char(c)?,
+        }
+    }
+    Ok(())
+}
+
+/// Adapter that allows writing to an `io::Write` via the `fmt::Write` trait.
+struct IoWriteAdapter<'a> {
+    inner: &'a mut dyn std::io::Write,
+}
+
+impl<'a> fmt::Write for IoWriteAdapter<'a> {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.inner.write_all(s.as_bytes()).map_err(|_| fmt::Error)
+    }
 }
