@@ -1146,18 +1146,10 @@ fn select_axis(axis: &Axis, node: NodeId, doc: &Document<'_>) -> Vec<NodeId> {
             }
             result
         }
-        Axis::Following => {
-            collect_following(doc, node)
-        }
-        Axis::Preceding => {
-            collect_preceding(doc, node)
-        }
-        Axis::Attribute => {
-            doc.get_attribute_nodes(node).to_vec()
-        }
-        Axis::Namespace => {
-            Vec::new()
-        }
+        Axis::Following => collect_following(doc, node),
+        Axis::Preceding => collect_preceding(doc, node),
+        Axis::Attribute => doc.get_attribute_nodes(node).to_vec(),
+        Axis::Namespace => Vec::new(),
     }
 }
 

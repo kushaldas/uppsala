@@ -10,8 +10,11 @@ use std::borrow::Cow;
 
 use crate::dom::{Document, NodeId, NodeKind};
 
-/// Well-known namespace URIs.
+/// The XML namespace URI (`http://www.w3.org/XML/1998/namespace`),
+/// bound to the `xml` prefix by definition.
 pub const XML_NAMESPACE: &str = "http://www.w3.org/XML/1998/namespace";
+/// The XMLNS namespace URI (`http://www.w3.org/2000/xmlns/`),
+/// bound to the `xmlns` prefix by definition.
 pub const XMLNS_NAMESPACE: &str = "http://www.w3.org/2000/xmlns/";
 
 /// A single namespace scope that maps prefixes to namespace URIs.
@@ -133,7 +136,10 @@ impl<'a> Default for NamespaceResolver<'a> {
 
 /// Build a `NamespaceResolver` from a document by walking from a node up to
 /// the root, collecting all in-scope namespace declarations.
-pub fn build_resolver_for_node<'a>(doc: &'a Document<'a>, node_id: NodeId) -> NamespaceResolver<'a> {
+pub fn build_resolver_for_node<'a>(
+    doc: &'a Document<'a>,
+    node_id: NodeId,
+) -> NamespaceResolver<'a> {
     let mut resolver = NamespaceResolver::new();
 
     // Collect ancestor chain (from root down to the node)
@@ -180,7 +186,10 @@ mod tests {
     fn test_resolve_default_namespace() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare(Cow::Owned(String::new()), Cow::Owned("http://example.com/default".to_string()));
+        resolver.declare(
+            Cow::Owned(String::new()),
+            Cow::Owned("http://example.com/default".to_string()),
+        );
         assert_eq!(
             resolver.resolve_default().map(|c| &**c),
             Some("http://example.com/default")
@@ -191,23 +200,44 @@ mod tests {
     fn test_scope_shadowing() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare(Cow::Owned("ns".to_string()), Cow::Owned("http://first.com".to_string()));
-        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://first.com"));
+        resolver.declare(
+            Cow::Owned("ns".to_string()),
+            Cow::Owned("http://first.com".to_string()),
+        );
+        assert_eq!(
+            resolver.resolve("ns").map(|c| &**c),
+            Some("http://first.com")
+        );
 
         resolver.push_scope();
-        resolver.declare(Cow::Owned("ns".to_string()), Cow::Owned("http://second.com".to_string()));
-        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://second.com"));
+        resolver.declare(
+            Cow::Owned("ns".to_string()),
+            Cow::Owned("http://second.com".to_string()),
+        );
+        assert_eq!(
+            resolver.resolve("ns").map(|c| &**c),
+            Some("http://second.com")
+        );
 
         resolver.pop_scope();
-        assert_eq!(resolver.resolve("ns").map(|c| &**c), Some("http://first.com"));
+        assert_eq!(
+            resolver.resolve("ns").map(|c| &**c),
+            Some("http://first.com")
+        );
     }
 
     #[test]
     fn test_undeclare_default_namespace() {
         let mut resolver = NamespaceResolver::new();
         resolver.push_scope();
-        resolver.declare(Cow::Owned(String::new()), Cow::Owned("http://example.com".to_string()));
-        assert_eq!(resolver.resolve_default().map(|c| &**c), Some("http://example.com"));
+        resolver.declare(
+            Cow::Owned(String::new()),
+            Cow::Owned("http://example.com".to_string()),
+        );
+        assert_eq!(
+            resolver.resolve_default().map(|c| &**c),
+            Some("http://example.com")
+        );
 
         resolver.push_scope();
         resolver.declare(Cow::Owned(String::new()), Cow::Owned(String::new()));

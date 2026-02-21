@@ -25,38 +25,51 @@ pub enum XmlError {
 /// A parse error with location information.
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParseError {
+    /// Human-readable description of the error.
     pub message: String,
+    /// Line number where the error was detected (1-based).
     pub line: usize,
+    /// Column number where the error was detected (1-based).
     pub column: usize,
 }
 
 /// A well-formedness constraint violation.
 #[derive(Debug, Clone, PartialEq)]
 pub struct WellFormednessError {
+    /// Human-readable description of the violation.
     pub message: String,
+    /// Line number where the violation was detected (1-based).
     pub line: usize,
+    /// Column number where the violation was detected (1-based).
     pub column: usize,
 }
 
 /// A namespace constraint violation.
 #[derive(Debug, Clone, PartialEq)]
 pub struct NamespaceError {
+    /// Human-readable description of the namespace error.
     pub message: String,
+    /// Line number where the error was detected (1-based).
     pub line: usize,
+    /// Column number where the error was detected (1-based).
     pub column: usize,
 }
 
 /// An XPath evaluation error.
 #[derive(Debug, Clone, PartialEq)]
 pub struct XPathError {
+    /// Human-readable description of the XPath error.
     pub message: String,
 }
 
 /// An XSD validation error.
 #[derive(Debug, Clone, PartialEq)]
 pub struct ValidationError {
+    /// Human-readable description of the validation failure.
     pub message: String,
+    /// Line number in the instance document, if available.
     pub line: Option<usize>,
+    /// Column number in the instance document, if available.
     pub column: Option<usize>,
 }
 
@@ -104,6 +117,7 @@ impl fmt::Display for ValidationError {
 }
 
 impl XmlError {
+    /// Create a [`ParseError`] with the given message and source location.
     pub fn parse(message: impl Into<String>, line: usize, column: usize) -> Self {
         XmlError::Parse(ParseError {
             message: message.into(),
@@ -112,6 +126,7 @@ impl XmlError {
         })
     }
 
+    /// Create a [`WellFormednessError`] with the given message and source location.
     pub fn well_formedness(message: impl Into<String>, line: usize, column: usize) -> Self {
         XmlError::WellFormedness(WellFormednessError {
             message: message.into(),
@@ -120,6 +135,7 @@ impl XmlError {
         })
     }
 
+    /// Create a [`NamespaceError`] with the given message and source location.
     pub fn namespace(message: impl Into<String>, line: usize, column: usize) -> Self {
         XmlError::Namespace(NamespaceError {
             message: message.into(),
@@ -128,12 +144,14 @@ impl XmlError {
         })
     }
 
+    /// Create an [`XPathError`] with the given message.
     pub fn xpath(message: impl Into<String>) -> Self {
         XmlError::XPath(XPathError {
             message: message.into(),
         })
     }
 
+    /// Create a [`ValidationError`] with the given message (no source location).
     pub fn validation(message: impl Into<String>) -> Self {
         XmlError::Validation(ValidationError {
             message: message.into(),

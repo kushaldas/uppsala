@@ -1,21 +1,97 @@
 //! # Uppsala
 //!
-//! A pure Rust XML parser and DOM library implementing:
+//! A **zero-dependency** pure Rust XML library implementing the core XML stack
+//! from parsing through schema validation.
 //!
 //! - **XML 1.0 (Fifth Edition)** parsing and well-formedness checking
 //! - **Namespaces in XML 1.0 (Third Edition)** with prefix resolution and scoping
-//! - **XML Information Set (Infoset)** DOM representation
-//! - **DOM tree mutation** (insert, remove, replace nodes)
-//! - **XPath 1.0** document navigation
+//! - **Arena-based DOM** with tree mutation (insert, remove, replace nodes)
+//! - **XPath 1.0** evaluation (all axes, core functions, predicates)
 //! - **XML Schema (XSD) 1.1** validation (structures + datatypes)
+//! - **XSD regex engine** for pattern facets (custom NFA matcher)
+//! - **Serialization** with round-trip fidelity, pretty-printing, and streaming output
+//! - **[`XmlWriter`]** for imperative XML construction without a DOM
+//! - **UTF-16 auto-detection** (LE/BE with or without BOM)
+//!
+//! # Quick Start
+//!
+//! ## Parsing and querying
+//!
+//! ```
+//! use uppsala::{parse, NodeId, XPathEvaluator};
+//! use uppsala::xpath::XPathValue;
+//!
+//! let xml = r#"<library>
+//!   <book category="fiction"><title>Dune</title></book>
+//!   <book category="science"><title>Cosmos</title></book>
+//! </library>"#;
+//!
+//! let mut doc = parse(xml).unwrap();
+//!
+//! // DOM traversal
+//! let titles = doc.get_elements_by_tag_name("title");
+//! assert_eq!(titles.len(), 2);
+//!
+//! // XPath queries
+//! doc.prepare_xpath();
+//! let eval = XPathEvaluator::new();
+//! let root = doc.root();
+//! if let Ok(XPathValue::NodeSet(nodes)) =
+//!     eval.evaluate(&doc, root, "//book[@category='fiction']/title")
+//! {
+//!     assert_eq!(doc.text_content_deep(nodes[0]), "Dune");
+//! }
+//! ```
+//!
+//! ## XSD validation
+//!
+//! ```
+//! use uppsala::{parse, XsdValidator};
+//!
+//! let schema_xml = r#"
+//! <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+//!   <xs:element name="age" type="xs:positiveInteger"/>
+//! </xs:schema>"#;
+//!
+//! let schema_doc = parse(schema_xml).unwrap();
+//! let validator = XsdValidator::from_schema(&schema_doc).unwrap();
+//!
+//! let doc = parse("<age>25</age>").unwrap();
+//! assert!(validator.validate(&doc).is_empty());
+//!
+//! let doc = parse("<age>-5</age>").unwrap();
+//! assert!(!validator.validate(&doc).is_empty());
+//! ```
+//!
+//! ## Building XML
+//!
+//! ```
+//! use uppsala::XmlWriter;
+//!
+//! let mut w = XmlWriter::new();
+//! w.write_declaration();
+//! w.start_element("root", &[("xmlns", "urn:example")]);
+//! w.text("hello");
+//! w.end_element("root");
+//!
+//! assert!(w.into_string().contains("<root"));
+//! ```
 
+/// Arena-based DOM representation of XML documents.
 pub mod dom;
+/// Error types: [`XmlError`], [`XmlResult`], and per-domain error structs.
 pub mod error;
+/// Namespace prefix resolution with scope stack.
 pub mod namespace;
+/// XML 1.0 (Fifth Edition) recursive-descent parser.
 pub mod parser;
+/// Imperative [`XmlWriter`] for streaming XML construction.
 pub mod writer;
+/// XPath 1.0 evaluation engine.
 pub mod xpath;
+/// XML Schema (XSD) validation.
 pub mod xsd;
+/// XSD regular expression engine for pattern facets.
 pub mod xsd_regex;
 
 pub use dom::{Attribute, Document, Element, NodeId, NodeKind, QName, XmlWriteOptions};

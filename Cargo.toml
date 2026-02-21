@@ -3,7 +3,15 @@ name = "uppsala"
 version = "0.1.0"
 edition = "2021"
 description = "A pure Rust XML parser, DOM, namespace, XPath, and XSD validation library"
-license = "MIT"
+license = "BSD-2-Clause"
+keywords = ["xml", "dom", "xpath", "xsd", "validation", "parser"]
+repository = "https://github.com/kushaldas/uppsala"
+readme = "README.md"
+categories = ["parser-implementations", "encoding", "web-programming"]
+exclude = ["test-data/", "perf.data"]
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 

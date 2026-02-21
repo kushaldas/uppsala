@@ -847,7 +847,11 @@ impl XsdValidator {
             if let Some(NodeKind::Element(child_elem)) = doc.node_kind(child) {
                 // Look up child element in global declarations
                 let key_with_ns = (
-                    child_elem.name.namespace_uri.as_deref().map(|s| s.to_string()),
+                    child_elem
+                        .name
+                        .namespace_uri
+                        .as_deref()
+                        .map(|s| s.to_string()),
                     child_elem.name.local_name.to_string(),
                 );
                 let key_no_ns = (None, child_elem.name.local_name.to_string());
@@ -979,8 +983,10 @@ impl XsdValidator {
                             // Look up in global attribute declarations
                             let key = (attr_ns_str.clone(), attr.name.local_name.to_string());
                             let global_decl = self.global_attributes.get(&key).or_else(|| {
-                                let key2 =
-                                    (self.target_namespace.clone(), attr.name.local_name.to_string());
+                                let key2 = (
+                                    self.target_namespace.clone(),
+                                    attr.name.local_name.to_string(),
+                                );
                                 self.global_attributes.get(&key2)
                             });
                             match global_decl {
@@ -1657,8 +1663,10 @@ impl XsdValidator {
                         namespace_constraint,
                         process_contents,
                     } => {
-                        if wildcard_allows_namespace(namespace_constraint, elem.name.namespace_uri.as_deref())
-                        {
+                        if wildcard_allows_namespace(
+                            namespace_constraint,
+                            elem.name.namespace_uri.as_deref(),
+                        ) {
                             // Consume as many wildcard-matching elements as allowed
                             let max = match p.max_occurs {
                                 MaxOccurs::Bounded(n) => n as usize,

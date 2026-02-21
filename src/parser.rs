@@ -97,7 +97,14 @@ impl Parser {
                         cursor.column(),
                     ));
                 }
-                parse_element(&mut cursor, &mut doc, root_id, &mut ns_resolver, &entities, &mut entity_cache)?;
+                parse_element(
+                    &mut cursor,
+                    &mut doc,
+                    root_id,
+                    &mut ns_resolver,
+                    &entities,
+                    &mut entity_cache,
+                )?;
                 found_root = true;
             } else {
                 // Non-whitespace text outside root element
@@ -139,17 +146,18 @@ struct Cursor<'a> {
 
 impl<'a> Cursor<'a> {
     fn new(input: &'a str) -> Self {
-        Cursor {
-            input,
-            pos: 0,
-        }
+        Cursor { input, pos: 0 }
     }
 
     /// Compute line number (1-based) from current byte position.
     /// Only called in error paths and node allocation, not in the hot parse loop.
     #[inline(never)]
     fn line(&self) -> usize {
-        self.input.as_bytes()[..self.pos].iter().filter(|&&b| b == b'\n').count() + 1
+        self.input.as_bytes()[..self.pos]
+            .iter()
+            .filter(|&&b| b == b'\n')
+            .count()
+            + 1
     }
 
     /// Compute column number (1-based) from current byte position.
@@ -327,9 +335,9 @@ fn parse_name<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
     let bytes = cursor.input.as_bytes();
 
     // Validate first character
-    let &first = bytes.get(start).ok_or_else(|| {
-        XmlError::parse("Expected XML name", cursor.line(), cursor.column())
-    })?;
+    let &first = bytes
+        .get(start)
+        .ok_or_else(|| XmlError::parse("Expected XML name", cursor.line(), cursor.column()))?;
 
     let mut pos = if first < 0x80 {
         if !is_ascii_name_start(first) {
@@ -666,7 +674,11 @@ fn parse_reference(cursor: &mut Cursor) -> XmlResult<String> {
 }
 
 /// Parse a character or entity reference with custom entity resolution.
-fn parse_reference_with_entities(cursor: &mut Cursor, entities: &EntityMap, entity_cache: &mut EntityCache) -> XmlResult<String> {
+fn parse_reference_with_entities(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_cache: &mut EntityCache,
+) -> XmlResult<String> {
     cursor.expect("&")?;
     let after_amp = cursor.peek_byte();
     if after_amp == Some(b'#') {
@@ -1764,7 +1776,8 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
                 break;
             }
             Some('&') => {
-                let resolved = parse_reference_with_entities(cursor, entities, &mut EntityCache::new())?;
+                let resolved =
+                    parse_reference_with_entities(cursor, entities, &mut EntityCache::new())?;
                 value.push_str(&resolved);
             }
             Some('<') => {
@@ -2257,7 +2270,14 @@ fn parse_content<'a>(
     }
 
     impl TextBuf {
-        fn flush<'a>(self, input: &'a str, doc: &mut Document<'a>, parent: NodeId, byte_pos: usize, end_pos: usize) {
+        fn flush<'a>(
+            self,
+            input: &'a str,
+            doc: &mut Document<'a>,
+            parent: NodeId,
+            byte_pos: usize,
+            end_pos: usize,
+        ) {
             match self {
                 TextBuf::Empty => {}
                 TextBuf::Borrowed { start } => {
@@ -2594,7 +2614,10 @@ mod tests {
         let doc2 = Parser::with_namespace_aware(false).parse(input).unwrap();
         let root2 = doc2.document_element().unwrap();
         let elem2 = doc2.element(root2).unwrap();
-        assert!(matches!(elem2.name.local_name, Cow::Borrowed(_)), "Expected borrowed name");
+        assert!(
+            matches!(elem2.name.local_name, Cow::Borrowed(_)),
+            "Expected borrowed name"
+        );
         let _ = elem; // suppress unused warning
     }
 }

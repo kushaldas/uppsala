@@ -532,7 +532,11 @@ fn idc_resolve_prefix(doc: &Document, node: NodeId, prefix: &str) -> Option<Stri
     let mut current = Some(node);
     while let Some(n) = current {
         if let Some(elem) = doc.element(n) {
-            if let Some((_, uri)) = elem.namespace_declarations.iter().find(|(p, _)| &**p == prefix) {
+            if let Some((_, uri)) = elem
+                .namespace_declarations
+                .iter()
+                .find(|(p, _)| &**p == prefix)
+            {
                 return Some(uri.to_string());
             }
         }

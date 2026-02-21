@@ -110,8 +110,11 @@ impl<'a> Attribute<'a> {
 /// The XML declaration (`<?xml version="1.0" encoding="UTF-8"?>`).
 #[derive(Debug, Clone, PartialEq)]
 pub struct XmlDeclaration<'a> {
+    /// The XML version (e.g. `"1.0"`).
     pub version: Cow<'a, str>,
+    /// The declared encoding (e.g. `"UTF-8"`), if specified.
     pub encoding: Option<Cow<'a, str>>,
+    /// The standalone declaration, if specified (`true` for `"yes"`, `false` for `"no"`).
     pub standalone: Option<bool>,
 }
 
@@ -129,7 +132,9 @@ impl<'a> XmlDeclaration<'a> {
 /// A processing instruction (`<?target data?>`).
 #[derive(Debug, Clone, PartialEq)]
 pub struct ProcessingInstruction<'a> {
+    /// The PI target name (e.g. `"xml-stylesheet"`).
     pub target: Cow<'a, str>,
+    /// The PI data string, if any.
     pub data: Option<Cow<'a, str>>,
 }
 
@@ -243,7 +248,11 @@ impl<'a> Element<'a> {
     pub fn into_static(self) -> Element<'static> {
         Element {
             name: self.name.into_static(),
-            attributes: self.attributes.into_iter().map(|a| a.into_static()).collect(),
+            attributes: self
+                .attributes
+                .into_iter()
+                .map(|a| a.into_static())
+                .collect(),
             namespace_declarations: self
                 .namespace_declarations
                 .into_iter()
@@ -522,7 +531,11 @@ impl<'a> Document<'a> {
         if self.input.is_empty() || byte_pos == 0 {
             return 1;
         }
-        self.input.as_bytes()[..byte_pos].iter().filter(|&&b| b == b'\n').count() + 1
+        self.input.as_bytes()[..byte_pos]
+            .iter()
+            .filter(|&&b| b == b'\n')
+            .count()
+            + 1
     }
 
     /// Get the source column of a node (computed lazily from byte position).
@@ -856,7 +869,7 @@ impl<'a> Document<'a> {
         output
     }
 
-    /// Write the entire document to any `io::Write` sink (file, socket, Vec<u8>, etc.)
+    /// Write the entire document to any `io::Write` sink (file, socket, `Vec<u8>`, etc.)
     /// without intermediate String allocation.
     pub fn write_to(&self, writer: &mut dyn std::io::Write) -> std::io::Result<()> {
         let opts = XmlWriteOptions::default();
