@@ -1,0 +1,10 @@
+[package]
+name = "uppsala"
+version = "0.1.0"
+edition = "2021"
+description = "A pure Rust XML parser, DOM, namespace, XPath, and XSD validation library"
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
