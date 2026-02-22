@@ -13,6 +13,10 @@ use super::wildcard::{
     intersect_namespace_constraints, stricter_process_contents, union_namespace_constraints,
 };
 
+/// Type alias for substitution group maps: head element key -> vec of member element keys.
+pub(super) type SubstitutionGroupMap =
+    HashMap<(Option<String>, String), Vec<(Option<String>, String)>>;
+
 /// An XSD validator that holds a compiled schema and validates documents against it.
 ///
 /// Built from a parsed XSD schema document via [`XsdValidator::from_schema`] or
@@ -42,8 +46,7 @@ pub struct XsdValidator {
     pub(super) enforce_qname_length_facets: bool,
     /// Substitution group membership: head_key -> vec of member keys (transitive).
     /// Each key is (namespace, local_name).
-    pub(super) substitution_groups:
-        HashMap<(Option<String>, String), Vec<(Option<String>, String)>>,
+    pub(super) substitution_groups: SubstitutionGroupMap,
 }
 
 /// An element declaration parsed from the schema.
@@ -367,6 +370,7 @@ pub(crate) struct SimpleTypeDef {
 /// primitive types (string, boolean, decimal, float, double, etc.) and
 /// derived types (integer, long, int, short, byte, etc.).
 #[derive(Debug, Clone, PartialEq)]
+#[allow(clippy::upper_case_acronyms)]
 pub(crate) enum BuiltInType {
     String,
     Boolean,

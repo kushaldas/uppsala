@@ -2100,8 +2100,7 @@ fn parse_element<'a>(
                 ));
             }
             ns_decls.push((Cow::Borrowed(""), attr_value));
-        } else if attr_name.starts_with("xmlns:") {
-            let prefix = &attr_name[6..];
+        } else if let Some(prefix) = attr_name.strip_prefix("xmlns:") {
             if prefix == "xmlns" {
                 return Err(XmlError::namespace(
                     "The prefix 'xmlns' must not be declared",
@@ -2174,7 +2173,7 @@ fn parse_element<'a>(
             })?;
             Some(uri.clone())
         } else {
-            resolver.resolve_default().map(|uri| uri.clone())
+            resolver.resolve_default().cloned()
         };
         // prefix and local_name are slices of tag_name which is Cow::Borrowed from input
         QName {
@@ -2311,7 +2310,7 @@ fn parse_content<'a>(
             }
         }
 
-        fn switch_to_owned<'a>(&mut self, input: &'a str, end_pos: usize) {
+        fn switch_to_owned(&mut self, input: &str, end_pos: usize) {
             match self {
                 TextBuf::Empty => {
                     *self = TextBuf::Owned(String::new());

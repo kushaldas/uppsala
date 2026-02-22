@@ -262,10 +262,8 @@ fn idc_select_nodes(doc: &Document, context: NodeId, selector: &str) -> Vec<Node
             let mut descendants = Vec::new();
             idc_collect_descendants(doc, context, &mut descendants);
             for desc in descendants {
-                if idc_match_steps(doc, context, desc, &steps, 0) {
-                    if !results.contains(&desc) {
-                        results.push(desc);
-                    }
+                if idc_match_steps(doc, context, desc, &steps, 0) && !results.contains(&desc) {
+                    results.push(desc);
                 }
             }
         } else {
@@ -433,9 +431,8 @@ fn idc_evaluate_field(
         return (Some(trimmed.to_string()), 1, Some(node));
     }
 
-    if field.starts_with('@') {
+    if let Some(attr_name) = field.strip_prefix('@') {
         // Attribute
-        let attr_name = &field[1..];
         // Handle pipe-separated (union) attribute fields like "@id|@id|..."
         // Take just the first one since they're all the same
         let attr_name = if let Some(pipe) = attr_name.find('|') {

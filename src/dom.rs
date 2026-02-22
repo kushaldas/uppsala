@@ -821,19 +821,15 @@ impl<'a> Document<'a> {
             if let Some(p) = self.nodes.get_mut(prev_id.0) {
                 p.next_sibling = Some(new_child);
             }
-        } else {
-            if let Some(p) = self.nodes.get_mut(parent.0) {
-                p.first_child = Some(new_child);
-            }
+        } else if let Some(p) = self.nodes.get_mut(parent.0) {
+            p.first_child = Some(new_child);
         }
         if let Some(next_id) = next {
             if let Some(n) = self.nodes.get_mut(next_id.0) {
                 n.prev_sibling = Some(new_child);
             }
-        } else {
-            if let Some(p) = self.nodes.get_mut(parent.0) {
-                p.last_child = Some(new_child);
-            }
+        } else if let Some(p) = self.nodes.get_mut(parent.0) {
+            p.last_child = Some(new_child);
         }
         // Detach old_child
         if let Some(oc) = self.nodes.get_mut(old_child.0) {
@@ -859,20 +855,16 @@ impl<'a> Document<'a> {
                 if let Some(p) = self.nodes.get_mut(prev_id.0) {
                     p.next_sibling = next;
                 }
-            } else {
-                if let Some(p) = self.nodes.get_mut(parent_id.0) {
-                    p.first_child = next;
-                }
+            } else if let Some(p) = self.nodes.get_mut(parent_id.0) {
+                p.first_child = next;
             }
             // Update next sibling or parent's last_child
             if let Some(next_id) = next {
                 if let Some(n) = self.nodes.get_mut(next_id.0) {
                     n.prev_sibling = prev;
                 }
-            } else {
-                if let Some(p) = self.nodes.get_mut(parent_id.0) {
-                    p.last_child = prev;
-                }
+            } else if let Some(p) = self.nodes.get_mut(parent_id.0) {
+                p.last_child = prev;
             }
             // Clear the detached node's links
             if let Some(node) = self.nodes.get_mut(id.0) {
@@ -980,7 +972,7 @@ impl<'a> Document<'a> {
     ) -> std::io::Result<()> {
         let mut adapter = IoWriteAdapter { inner: writer };
         self.write_document_to(&mut adapter, opts)
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))
+            .map_err(|e| std::io::Error::other(e.to_string()))
     }
 
     /// Internal: write the full document (declaration + DOCTYPE + nodes) to a `fmt::Write` sink.

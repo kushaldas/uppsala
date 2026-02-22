@@ -23,7 +23,11 @@
 /// - If 'T' is present, at least one time component must follow it
 /// - Numbers must be non-negative integers (except seconds which may have fractional part)
 pub(crate) fn is_valid_duration(s: &str) -> bool {
-    let s = if s.starts_with('-') { &s[1..] } else { s };
+    let s = if let Some(stripped) = s.strip_prefix('-') {
+        stripped
+    } else {
+        s
+    };
     if !s.starts_with('P') || s.len() < 2 {
         return false;
     }
@@ -104,7 +108,11 @@ pub(crate) fn is_valid_duration(s: &str) -> bool {
 /// (BCE dates) is permitted. Timezone suffix is optional.
 pub(crate) fn is_valid_gyear(s: &str) -> bool {
     let s = strip_timezone(s);
-    let s = if s.starts_with('-') { &s[1..] } else { s };
+    let s = if let Some(stripped) = s.strip_prefix('-') {
+        stripped
+    } else {
+        s
+    };
     s.len() >= 4 && s.chars().all(|c| c.is_ascii_digit())
 }
 
@@ -113,8 +121,8 @@ pub(crate) fn is_valid_gyear(s: &str) -> bool {
 /// Year must be at least 4 digits, month must be 01-12.
 pub(crate) fn is_valid_gyearmonth(s: &str) -> bool {
     let s = strip_timezone(s);
-    let (s, _neg) = if s.starts_with('-') {
-        (&s[1..], true)
+    let (s, _neg) = if let Some(stripped) = s.strip_prefix('-') {
+        (stripped, true)
     } else {
         (s, false)
     };
@@ -198,7 +206,7 @@ fn max_days_for_month_year(month: u32, year: u32) -> u32 {
 ///
 /// A year is a leap year if divisible by 4, except centuries unless also divisible by 400.
 fn is_leap_year(year: u32) -> bool {
-    (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
+    (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400)
 }
 
 /// Validate gMonthDay format: --MM-DD[Z|(+|-)hh:mm]
@@ -442,8 +450,8 @@ pub(crate) fn is_valid_time(s: &str) -> bool {
 ///
 /// Returns the time string without any timezone suffix.
 fn strip_time_timezone(s: &str) -> &str {
-    if s.ends_with('Z') {
-        return &s[..s.len() - 1];
+    if let Some(stripped) = s.strip_suffix('Z') {
+        return stripped;
     }
     // Look for timezone offset: +hh:mm or -hh:mm at the end
     // A timezone offset has the form [+-]dd:dd at the end (6 chars)
@@ -463,8 +471,8 @@ fn strip_time_timezone(s: &str) -> &str {
 /// MS tests: gYearMonth003, gYear006, gMonthDay003, gDay003, gMonth004 —
 /// the old `pos > 8` heuristic failed for short types like gYear, gDay.
 pub(crate) fn strip_timezone(s: &str) -> &str {
-    if s.ends_with('Z') {
-        return &s[..s.len() - 1];
+    if let Some(stripped) = s.strip_suffix('Z') {
+        return stripped;
     }
     // Check for +hh:mm or -hh:mm at the end (exactly 6 chars: [+-]dd:dd)
     if s.len() >= 6 {

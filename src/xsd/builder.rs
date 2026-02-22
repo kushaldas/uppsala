@@ -322,7 +322,7 @@ impl XsdValidator {
         // An element E is a member of head H if:
         //   - E.substitutionGroup == H (direct), or
         //   - E.substitutionGroup == M where M is a member of H (transitive)
-        for (member_key, _) in &direct_head {
+        for member_key in direct_head.keys() {
             // Walk up the chain from member to find all heads
             let mut current = member_key.clone();
             let mut chain = vec![member_key.clone()];
@@ -331,7 +331,7 @@ impl XsdValidator {
                 validator
                     .substitution_groups
                     .entry(head.clone())
-                    .or_insert_with(Vec::new)
+                    .or_default()
                     .push(member_key.clone());
                 current = head.clone();
                 // Prevent infinite loops

@@ -212,22 +212,20 @@ pub(crate) fn validate_builtin_value(
             let v = text.trim();
             let valid = if v == "INF" || v == "-INF" || v == "NaN" {
                 true
+            } else if v.eq_ignore_ascii_case("inf")
+                || v.eq_ignore_ascii_case("nan")
+                || v.eq_ignore_ascii_case("-nan")
+                || v.eq_ignore_ascii_case("+nan")
+                || v == "+INF"
+                || v == "+inf"
+                || v == "infinity"
+                || v == "+infinity"
+                || v == "-infinity"
+                || v.eq_ignore_ascii_case("infinity")
+            {
+                false
             } else {
-                if v.eq_ignore_ascii_case("inf")
-                    || v.eq_ignore_ascii_case("nan")
-                    || v.eq_ignore_ascii_case("-nan")
-                    || v.eq_ignore_ascii_case("+nan")
-                    || v == "+INF"
-                    || v == "+inf"
-                    || v == "infinity"
-                    || v == "+infinity"
-                    || v == "-infinity"
-                    || v.eq_ignore_ascii_case("infinity")
-                {
-                    false
-                } else {
-                    v.parse::<f64>().is_ok()
-                }
+                v.parse::<f64>().is_ok()
             };
             if !valid {
                 errors.push(ValidationError {
@@ -412,7 +410,7 @@ pub(crate) fn validate_builtin_value(
         // MS test: hexBinary003 — strip internal whitespace before validation
         BuiltInType::HexBinary => {
             let v: String = text.chars().filter(|c| !c.is_whitespace()).collect();
-            if v.len() % 2 != 0 || !v.chars().all(|c| c.is_ascii_hexdigit()) {
+            if !v.len().is_multiple_of(2) || !v.chars().all(|c| c.is_ascii_hexdigit()) {
                 errors.push(ValidationError {
                     message: format!("'{}' is not valid hexBinary", text),
                     line: Some(doc.node_line(node)),
@@ -424,7 +422,7 @@ pub(crate) fn validate_builtin_value(
             let v: String = text.chars().filter(|c| !c.is_whitespace()).collect();
             let is_valid = if v.is_empty() {
                 true
-            } else if v.len() % 4 != 0 {
+            } else if !v.len().is_multiple_of(4) {
                 false
             } else {
                 let pad_count = v.chars().rev().take_while(|&c| c == '=').count();

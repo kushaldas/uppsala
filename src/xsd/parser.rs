@@ -39,6 +39,7 @@ use super::XS_NAMESPACE;
 /// - Inline `<xs:complexType>` or `<xs:simpleType>` children
 /// - `substitutionGroup` attribute resolution
 /// - Identity constraint children (`xs:key`, `xs:unique`, `xs:keyref`)
+#[allow(clippy::too_many_arguments)]
 pub(super) fn parse_element_decl(
     doc: &Document,
     node: NodeId,
@@ -352,6 +353,7 @@ pub(super) fn parse_builtin_type(name: &str) -> Option<BuiltInType> {
 /// Handles direct compositor children (`sequence`, `choice`, `all`),
 /// `group` references, `attribute`/`attributeGroup`/`anyAttribute`,
 /// and `simpleContent`/`complexContent` with `extension`/`restriction`.
+#[allow(clippy::too_many_arguments)]
 pub(super) fn parse_complex_type(
     doc: &Document,
     node: NodeId,
@@ -532,11 +534,8 @@ pub(super) fn parse_complex_type(
                                         // Track base type for block checking
                                         // Type references always resolve against the schema target namespace
                                         let base_ref = resolve_type_name(base, schema_target_ns);
-                                        match &base_ref {
-                                            TypeRef::Named(ns, ln) => {
-                                                base_type = Some((ns.clone(), ln.clone()));
-                                            }
-                                            _ => {}
+                                        if let TypeRef::Named(ns, ln) = &base_ref {
+                                            base_type = Some((ns.clone(), ln.clone()));
                                         }
                                         content = ContentModel::SimpleContent(Box::new(base_ref));
                                     }
@@ -766,11 +765,7 @@ pub(super) fn parse_attribute_group_def(
                     // Check if this is an attribute reference
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let ref_ns = if ref_name.contains(':') {
-                            target_ns.clone()
-                        } else {
-                            target_ns.clone()
-                        };
+                        let ref_ns = target_ns.clone();
                         let key = (ref_ns, local_name.to_string());
                         if let Some(global_attr) = global_attributes.get(&key) {
                             // Use the global attribute declaration but allow
@@ -831,6 +826,7 @@ pub(super) fn parse_attribute_group_def(
 /// Parse a top-level `<xs:group>` definition (model group definition).
 ///
 /// A model group contains exactly one compositor child: `sequence`, `choice`, or `all`.
+#[allow(clippy::too_many_arguments)]
 pub(super) fn parse_model_group_def(
     doc: &Document,
     node: NodeId,
@@ -935,6 +931,7 @@ pub(super) fn strip_prefix(qname: &str) -> &str {
 /// vector of `Particle` values.
 ///
 /// Handles nested `element`, `sequence`, `choice`, `group` references, and `any` wildcards.
+#[allow(clippy::too_many_arguments)]
 fn parse_particles(
     doc: &Document,
     node: NodeId,

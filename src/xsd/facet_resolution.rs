@@ -9,15 +9,18 @@ use std::collections::HashMap;
 
 use super::types::{BuiltInType, ContentModel, Facet, Particle, ParticleKind, TypeDef, TypeRef};
 
+/// Type alias for resolved item facets map: (namespace, local_name) -> (base_type, facets).
+type ResolvedItemsMap = HashMap<(Option<String>, String), (BuiltInType, Vec<Facet>)>;
+
 /// Resolve list item facets for an inline SimpleTypeDef within a TypeRef.
 /// Also recurses into inline ComplexTypeDefs to resolve their content model particles.
 pub(super) fn resolve_inline_list_item_facets(
     type_ref: &mut TypeRef,
-    resolved_items: &HashMap<(Option<String>, String), (BuiltInType, Vec<Facet>)>,
+    resolved_items: &ResolvedItemsMap,
     schema_ns: &Option<String>,
 ) {
-    match type_ref {
-        TypeRef::Inline(td) => match td.as_mut() {
+    if let TypeRef::Inline(td) = type_ref {
+        match td.as_mut() {
             TypeDef::Simple(st) => {
                 if st.is_list {
                     if let Some(item_name) = &st._item_type_local {
@@ -32,15 +35,14 @@ pub(super) fn resolve_inline_list_item_facets(
             TypeDef::Complex(ct) => {
                 resolve_content_model_list_item_facets(&mut ct.content, resolved_items, schema_ns);
             }
-        },
-        _ => {}
+        }
     }
 }
 
 /// Resolve list item facets in all inline types within a content model's particles.
 pub(super) fn resolve_content_model_list_item_facets(
     content: &mut ContentModel,
-    resolved_items: &HashMap<(Option<String>, String), (BuiltInType, Vec<Facet>)>,
+    resolved_items: &ResolvedItemsMap,
     schema_ns: &Option<String>,
 ) {
     match content {
@@ -57,7 +59,7 @@ pub(super) fn resolve_content_model_list_item_facets(
 /// Resolve list item facets in all particles recursively.
 fn resolve_particles_list_item_facets(
     particles: &mut [Particle],
-    resolved_items: &HashMap<(Option<String>, String), (BuiltInType, Vec<Facet>)>,
+    resolved_items: &ResolvedItemsMap,
     schema_ns: &Option<String>,
 ) {
     for particle in particles.iter_mut() {

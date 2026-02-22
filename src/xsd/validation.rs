@@ -33,7 +33,7 @@ enum XsiTypeResult {
     /// A built-in XSD type like xs:string, xs:int, etc.
     BuiltIn(BuiltInType),
     /// A named type definition from the schema.
-    Named(TypeDef),
+    Named(Box<TypeDef>),
     /// The xsi:type QName could not be resolved.
     NotFound(String),
 }
@@ -209,12 +209,12 @@ impl XsdValidator {
         // Try looking up in schema types
         let key = (type_ns.clone(), local_name.to_string());
         if let Some(td) = self.types.get(&key) {
-            return Some(XsiTypeResult::Named(td.clone()));
+            return Some(XsiTypeResult::Named(Box::new(td.clone())));
         }
         // Also try without namespace
         let key_no_ns = (None, local_name.to_string());
         if let Some(td) = self.types.get(&key_no_ns) {
-            return Some(XsiTypeResult::Named(td.clone()));
+            return Some(XsiTypeResult::Named(Box::new(td.clone())));
         }
 
         Some(XsiTypeResult::NotFound(xsi_type_value.to_string()))
@@ -245,12 +245,7 @@ impl XsdValidator {
         let mut has_restriction_in_chain = false;
         let mut current = xsi_type;
 
-        loop {
-            let ct = match current {
-                TypeDef::Complex(ct) => ct,
-                TypeDef::Simple(_) => break,
-            };
-
+        while let TypeDef::Complex(ct) = current {
             let is_extension = match ct.derived_by_extension {
                 Some(true) => true,
                 Some(false) => false,
@@ -374,7 +369,7 @@ impl XsdValidator {
             TypeDef::Simple(st) => st.name.as_ref()?,
         };
         // Look for it in the types map
-        for (key, _val) in &self.types {
+        for key in self.types.keys() {
             if &key.1 == name {
                 return Some(key.clone());
             }
@@ -678,7 +673,7 @@ impl XsdValidator {
                 XsiTypeResult::Named(td) => {
                     // Check that xsi:type is the declared type or derived from it
                     if !self.is_type_derived_from_decl(&td, &decl.type_ref) {
-                        let type_name = match &td {
+                        let type_name = match td.as_ref() {
                             TypeDef::Complex(ct) => ct.name.as_deref().unwrap_or("anonymous"),
                             TypeDef::Simple(st) => st.name.as_deref().unwrap_or("anonymous"),
                         };
@@ -719,7 +714,7 @@ impl XsdValidator {
                         });
                         return;
                     }
-                    match td {
+                    match *td {
                         TypeDef::Complex(ct) => {
                             self.validate_complex_content(doc, node, &ct, errors);
                         }
@@ -727,9 +722,9 @@ impl XsdValidator {
                             // Simple type: element must not have child elements
                             if self.element_has_child_elements(doc, node) {
                                 errors.push(ValidationError {
-                                    message: format!(
+                                    message:
                                         "Element with simple xsi:type must not have child elements"
-                                    ),
+                                            .to_string(),
                                     line: Some(doc.node_line(node)),
                                     column: Some(doc.node_column(node)),
                                 });
@@ -1257,6 +1252,7 @@ impl XsdValidator {
     /// Each particle within the sequence has its own min/max occurs constraints.
     ///
     /// Returns the number of child elements consumed.
+    #[allow(clippy::too_many_arguments)]
     fn validate_sequence(
         &self,
         doc: &Document,
@@ -1489,6 +1485,7 @@ impl XsdValidator {
     /// Each repetition picks one matching alternative and consumes its elements.
     ///
     /// Returns the number of child elements consumed.
+    #[allow(clippy::too_many_arguments)]
     fn validate_choice(
         &self,
         doc: &Document,
@@ -1754,17 +1751,15 @@ impl XsdValidator {
             choice_reps += 1;
         }
 
-        if choice_reps < compositor_min {
-            if child_idx == 0 && errors.is_empty() {
-                // No children matched and no error was emitted yet
-                let any_optional = particles.iter().any(|p| p.min_occurs == 0);
-                if !any_optional && !particles.is_empty() {
-                    errors.push(ValidationError {
-                        message: "Expected one of the choice alternatives".to_string(),
-                        line: Some(doc.node_line(parent)),
-                        column: Some(doc.node_column(parent)),
-                    });
-                }
+        if choice_reps < compositor_min && child_idx == 0 && errors.is_empty() {
+            // No children matched and no error was emitted yet
+            let any_optional = particles.iter().any(|p| p.min_occurs == 0);
+            if !any_optional && !particles.is_empty() {
+                errors.push(ValidationError {
+                    message: "Expected one of the choice alternatives".to_string(),
+                    line: Some(doc.node_line(parent)),
+                    column: Some(doc.node_column(parent)),
+                });
             }
         }
 
