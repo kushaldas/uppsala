@@ -82,12 +82,16 @@ impl Parser {
                 break;
             }
             if cursor.starts_with("<!--") {
+                let start = cursor.pos;
                 let comment = parse_comment(&mut cursor)?;
-                let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+                let id = doc.alloc_node(NodeKind::Comment(comment), start);
+                doc.set_byte_end_pos(id, cursor.pos);
                 doc.append_child_unchecked(root_id, id);
             } else if cursor.starts_with("<?") {
+                let start = cursor.pos;
                 let pi = parse_pi(&mut cursor)?;
-                let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+                let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), start);
+                doc.set_byte_end_pos(id, cursor.pos);
                 doc.append_child_unchecked(root_id, id);
             } else if cursor.starts_with("<") {
                 if found_root {
@@ -123,6 +127,9 @@ impl Parser {
                 0,
             ));
         }
+
+        // Set document node end position to end of input
+        doc.set_byte_end_pos(root_id, input.len());
 
         Ok(doc)
     }
@@ -1071,12 +1078,16 @@ fn parse_misc<'a>(
             break;
         }
         if cursor.starts_with("<!--") {
+            let start = cursor.pos;
             let comment = parse_comment(cursor)?;
-            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+            let id = doc.alloc_node(NodeKind::Comment(comment), start);
+            doc.set_byte_end_pos(id, cursor.pos);
             doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<?") {
+            let start = cursor.pos;
             let pi = parse_pi(cursor)?;
-            let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+            let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), start);
+            doc.set_byte_end_pos(id, cursor.pos);
             doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<!DOCTYPE") {
             parse_doctype(cursor, doc, entities)?;
@@ -2217,6 +2228,7 @@ fn parse_element<'a>(
     // Self-closing?
     if cursor.peek_byte() == Some(b'/') {
         cursor.expect("/>")?;
+        doc.set_byte_end_pos(elem_id, cursor.pos);
         if let Some(resolver) = ns_resolver.as_mut() {
             resolver.pop_scope();
         }
@@ -2233,6 +2245,7 @@ fn parse_element<'a>(
     let end_tag_name = parse_name(cursor)?;
     cursor.skip_whitespace();
     cursor.expect(">")?;
+    doc.set_byte_end_pos(elem_id, cursor.pos);
 
     if *end_tag_name != *tag_name {
         return Err(XmlError::well_formedness(
@@ -2283,13 +2296,15 @@ fn parse_content<'a>(
                 TextBuf::Borrowed { start } => {
                     if start < end_pos {
                         let text = Cow::Borrowed(&input[start..end_pos]);
-                        let id = doc.alloc_node(NodeKind::Text(text), byte_pos);
+                        let id = doc.alloc_node(NodeKind::Text(text), start);
+                        doc.set_byte_end_pos(id, end_pos);
                         doc.append_child_unchecked(parent, id);
                     }
                 }
                 TextBuf::Owned(s) => {
                     if !s.is_empty() {
                         let id = doc.alloc_node(NodeKind::Text(Cow::Owned(s)), byte_pos);
+                        doc.set_byte_end_pos(id, end_pos);
                         doc.append_child_unchecked(parent, id);
                     }
                 }
@@ -2397,12 +2412,16 @@ fn parse_content<'a>(
                         text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
                         text_buf = TextBuf::Empty;
                         if cursor.starts_with("<![CDATA[") {
+                            let start = cursor.pos;
                             let cdata = parse_cdata(cursor)?;
-                            let id = doc.alloc_node(NodeKind::CData(cdata), cursor.pos);
+                            let id = doc.alloc_node(NodeKind::CData(cdata), start);
+                            doc.set_byte_end_pos(id, cursor.pos);
                             doc.append_child_unchecked(parent, id);
                         } else if cursor.starts_with("<!--") {
+                            let start = cursor.pos;
                             let comment = parse_comment(cursor)?;
-                            let id = doc.alloc_node(NodeKind::Comment(comment), cursor.pos);
+                            let id = doc.alloc_node(NodeKind::Comment(comment), start);
+                            doc.set_byte_end_pos(id, cursor.pos);
                             doc.append_child_unchecked(parent, id);
                         } else {
                             return Err(XmlError::well_formedness(
@@ -2415,8 +2434,10 @@ fn parse_content<'a>(
                     Some(b'?') => {
                         text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
                         text_buf = TextBuf::Empty;
+                        let start = cursor.pos;
                         let pi = parse_pi(cursor)?;
-                        let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), cursor.pos);
+                        let id = doc.alloc_node(NodeKind::ProcessingInstruction(pi), start);
+                        doc.set_byte_end_pos(id, cursor.pos);
                         doc.append_child_unchecked(parent, id);
                     }
                     _ => {

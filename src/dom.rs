@@ -295,6 +295,8 @@ pub(crate) struct NodeData<'a> {
     pub prev_sibling: Option<NodeId>,
     /// Byte position in the original input for lazy line/column computation.
     pub byte_pos: usize,
+    /// Byte position of the end of this node in the original input.
+    pub byte_end_pos: usize,
 }
 
 impl<'a> NodeData<'a> {
@@ -308,6 +310,7 @@ impl<'a> NodeData<'a> {
             next_sibling: self.next_sibling,
             prev_sibling: self.prev_sibling,
             byte_pos: self.byte_pos,
+            byte_end_pos: self.byte_end_pos,
         }
     }
 }
@@ -345,6 +348,7 @@ impl<'a> Document<'a> {
             next_sibling: None,
             prev_sibling: None,
             byte_pos: 0,
+            byte_end_pos: 0,
         };
         Document {
             nodes: vec![root_node],
@@ -391,8 +395,16 @@ impl<'a> Document<'a> {
             next_sibling: None,
             prev_sibling: None,
             byte_pos,
+            byte_end_pos: 0,
         });
         id
+    }
+
+    /// Set the byte end position of a node.
+    pub(crate) fn set_byte_end_pos(&mut self, id: NodeId, pos: usize) {
+        if let Some(node) = self.nodes.get_mut(id.0) {
+            node.byte_end_pos = pos;
+        }
     }
 
     /// Allocate virtual attribute nodes for an element.
@@ -577,6 +589,61 @@ impl<'a> Document<'a> {
             Some(nl_pos) => byte_pos - nl_pos,
             None => byte_pos + 1,
         }
+    }
+
+    /// Returns the byte range of a node in the original source text.
+    ///
+    /// The range spans from the opening `<` of the element (or start of text/comment/PI)
+    /// to the closing `>` of the end tag (or `/>` for self-closing elements).
+    ///
+    /// Returns `None` if the node was programmatically created (not parsed from source)
+    /// or if the node ID is invalid.
+    ///
+    /// # Example
+    /// ```
+    /// let xml = r#"<root><child>text</child></root>"#;
+    /// let doc = uppsala::parse(xml).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let child_id = doc.children(root)[0];
+    /// let range = doc.node_range(child_id).unwrap();
+    /// assert_eq!(&xml[range], "<child>text</child>");
+    /// ```
+    pub fn node_range(&self, id: NodeId) -> Option<std::ops::Range<usize>> {
+        let node = self.nodes.get(id.0)?;
+        if node.byte_end_pos == 0 && id.0 != 0 {
+            return None; // Programmatically created node
+        }
+        Some(node.byte_pos..node.byte_end_pos)
+    }
+
+    /// Returns the original source text of a node as a string slice.
+    ///
+    /// This is a convenience method equivalent to `&input[doc.node_range(id)?]`.
+    /// Returns the exact text from the original XML input that produced this node.
+    ///
+    /// Returns `None` if the node was programmatically created or the ID is invalid.
+    ///
+    /// # Example
+    /// ```
+    /// let xml = r#"<root><item id="1">hello</item></root>"#;
+    /// let doc = uppsala::parse(xml).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let item = doc.children(root)[0];
+    /// assert_eq!(doc.node_source(item).unwrap(), r#"<item id="1">hello</item>"#);
+    /// ```
+    pub fn node_source(&self, id: NodeId) -> Option<&'a str> {
+        let range = self.node_range(id)?;
+        if range.end > self.input.len() {
+            return None;
+        }
+        Some(&self.input[range])
+    }
+
+    /// Returns the original input text that was parsed to create this document.
+    ///
+    /// Returns an empty string for programmatically constructed documents.
+    pub fn input_text(&self) -> &'a str {
+        self.input
     }
 
     /// Get all descendant element nodes matching a local name.
