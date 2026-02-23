@@ -94,8 +94,8 @@ pub mod xsd;
 pub mod xsd_regex;
 
 pub use dom::{
-    Attribute, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName, XmlDeclaration,
-    XmlWriteOptions,
+    Attribute, ChildrenIter, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName,
+    XmlDeclaration, XmlWriteOptions,
 };
 pub use error::{
     NamespaceError, ParseError, ValidationError, WellFormednessError, XPathError, XmlError,

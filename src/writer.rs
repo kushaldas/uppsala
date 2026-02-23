@@ -128,6 +128,74 @@ impl XmlWriter {
         self.buf.push_str("/>");
     }
 
+    /// Open an element with attributes whose values implement `AsRef<str>`.
+    ///
+    /// This is a more flexible version of [`start_element`](Self::start_element)
+    /// that accepts owned `String` values directly, avoiding the need to build
+    /// a temporary `Vec<(&str, &str)>` when some values are computed.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use uppsala::XmlWriter;
+    ///
+    /// let mut w = XmlWriter::new();
+    /// let count = 42.to_string();
+    /// w.start_element_with("item", [("id", count.as_str()), ("type", "fixed")]);
+    /// w.end_element("item");
+    /// assert_eq!(w.into_string(), r#"<item id="42" type="fixed"></item>"#);
+    /// ```
+    pub fn start_element_with<I, K, V>(&mut self, name: &str, attrs: I)
+    where
+        I: IntoIterator<Item = (K, V)>,
+        K: AsRef<str>,
+        V: AsRef<str>,
+    {
+        self.buf.push('<');
+        self.buf.push_str(name);
+        for (key, val) in attrs {
+            self.buf.push(' ');
+            self.buf.push_str(key.as_ref());
+            self.buf.push_str("=\"");
+            write_escaped_attr_to_string(&mut self.buf, val.as_ref());
+            self.buf.push('"');
+        }
+        self.buf.push('>');
+    }
+
+    /// Write a self-closing empty element with generic attribute values.
+    ///
+    /// This is a more flexible version of [`empty_element`](Self::empty_element)
+    /// that accepts owned `String` values directly.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use uppsala::XmlWriter;
+    ///
+    /// let mut w = XmlWriter::new();
+    /// let id = 7.to_string();
+    /// w.empty_element_with("br", [("id", id.as_str())]);
+    /// assert_eq!(w.into_string(), r#"<br id="7"/>"#);
+    /// ```
+    pub fn empty_element_with<I, K, V>(&mut self, name: &str, attrs: I)
+    where
+        I: IntoIterator<Item = (K, V)>,
+        K: AsRef<str>,
+        V: AsRef<str>,
+    {
+        self.buf.push('<');
+        self.buf.push_str(name);
+        for (key, val) in attrs {
+            self.buf.push(' ');
+            self.buf.push_str(key.as_ref());
+            self.buf.push_str("=\"");
+            write_escaped_attr_to_string(&mut self.buf, val.as_ref());
+            self.buf.push('"');
+        }
+        self.buf.push_str("/>");
+    }
+
     /// Write an expanded empty element: `<name attr="val"></name>`.
     ///
     /// This is the form required by W3C Canonical XML (C14N).

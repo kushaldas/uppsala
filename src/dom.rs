@@ -82,6 +82,24 @@ impl<'a> QName<'a> {
         }
     }
 
+    /// Check whether this QName matches the given namespace URI and local name.
+    ///
+    /// Pass `Some("...")` for namespaced names or `None` for names without a
+    /// namespace.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use uppsala::QName;
+    /// let q = QName::with_namespace("urn:example", "Foo");
+    /// assert!(q.matches(Some("urn:example"), "Foo"));
+    /// assert!(!q.matches(Some("urn:other"), "Foo"));
+    /// assert!(!q.matches(None, "Foo"));
+    /// ```
+    pub fn matches(&self, namespace_uri: Option<&str>, local_name: &str) -> bool {
+        *self.local_name == *local_name && self.namespace_uri.as_deref() == namespace_uri
+    }
+
     /// Returns the prefixed form (e.g. `"soap:Envelope"`) or just the local name.
     pub fn prefixed_name(&self) -> Cow<'_, str> {
         match &self.prefix {
@@ -107,6 +125,25 @@ impl<'a> fmt::Display for QName<'a> {
             (Some(ns), None) => write!(f, "{{{}}}{}", ns, self.local_name),
             _ => write!(f, "{}", self.local_name),
         }
+    }
+}
+
+/// An iterator over the children of a node.
+///
+/// This is a zero-allocation alternative to [`Document::children()`] which
+/// returns a `Vec<NodeId>`. It walks the linked sibling chain directly.
+pub struct ChildrenIter<'d, 'a> {
+    doc: &'d Document<'a>,
+    next: Option<NodeId>,
+}
+
+impl<'d, 'a> Iterator for ChildrenIter<'d, 'a> {
+    type Item = NodeId;
+
+    fn next(&mut self) -> Option<NodeId> {
+        let id = self.next?;
+        self.next = self.doc.nodes.get(id.0).and_then(|n| n.next_sibling);
+        Some(id)
     }
 }
 
@@ -239,6 +276,24 @@ impl<'a> Element<'a> {
                     && a.name.namespace_uri.as_deref() == Some(namespace_uri)
             })
             .map(|a| &*a.value)
+    }
+
+    /// Check whether this element matches the given namespace URI and local name.
+    ///
+    /// Convenience wrapper around `self.name.matches(Some(ns), local)`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let xml = r#"<saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">x</saml:Issuer>"#;
+    /// let doc = uppsala::parse(xml).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let elem = doc.element(root).unwrap();
+    /// assert!(elem.matches_name_ns("urn:oasis:names:tc:SAML:2.0:assertion", "Issuer"));
+    /// assert!(!elem.matches_name_ns("urn:other", "Issuer"));
+    /// ```
+    pub fn matches_name_ns(&self, namespace_uri: &str, local_name: &str) -> bool {
+        self.name.matches(Some(namespace_uri), local_name)
     }
 
     /// Set or update an attribute. Returns the old value if the attribute already existed.
@@ -543,6 +598,64 @@ impl<'a> Document<'a> {
         }
     }
 
+    /// Get the text of an element's first Text or CDATA child, zero-copy.
+    ///
+    /// This is the common operation of reading the text inside an element like
+    /// `<Name>value</Name>`. Unlike [`text_content_deep`](Self::text_content_deep)
+    /// this does **not** allocate — it returns a borrowed `&str` from the
+    /// original parsed input.
+    ///
+    /// Returns `None` if the node has no text/CDATA children.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let doc = uppsala::parse("<name>hello</name>").unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// assert_eq!(doc.element_text(root), Some("hello"));
+    /// ```
+    pub fn element_text(&self, id: NodeId) -> Option<&str> {
+        let mut child = self.nodes.get(id.0).and_then(|n| n.first_child);
+        while let Some(cid) = child {
+            match self.node_kind(cid) {
+                Some(NodeKind::Text(t)) => return Some(t),
+                Some(NodeKind::CData(t)) => return Some(t),
+                _ => {}
+            }
+            child = self.nodes.get(cid.0).and_then(|n| n.next_sibling);
+        }
+        None
+    }
+
+    /// Get an attribute value by local name directly from a node ID.
+    ///
+    /// This is a convenience shortcut for `doc.element(id)?.get_attribute(name)`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let doc = uppsala::parse(r#"<item id="42" status="active"/>"#).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// assert_eq!(doc.get_attribute(root, "id"), Some("42"));
+    /// assert_eq!(doc.get_attribute(root, "missing"), None);
+    /// ```
+    pub fn get_attribute(&self, id: NodeId, local_name: &str) -> Option<&str> {
+        self.element(id)?.get_attribute(local_name)
+    }
+
+    /// Get an attribute value by namespace URI and local name directly from a node ID.
+    ///
+    /// This is a convenience shortcut for `doc.element(id)?.get_attribute_ns(ns, name)`.
+    pub fn get_attribute_ns(
+        &self,
+        id: NodeId,
+        namespace_uri: &str,
+        local_name: &str,
+    ) -> Option<&str> {
+        self.element(id)?
+            .get_attribute_ns(namespace_uri, local_name)
+    }
+
     /// Get the parent of a node.
     pub fn parent(&self, id: NodeId) -> Option<NodeId> {
         self.nodes.get(id.0).and_then(|n| n.parent)
@@ -557,6 +670,29 @@ impl<'a> Document<'a> {
             current = self.nodes.get(child_id.0).and_then(|n| n.next_sibling);
         }
         result
+    }
+
+    /// Return a zero-allocation iterator over the children of a node.
+    ///
+    /// This is more efficient than [`children()`](Self::children) when you
+    /// don't need the results as a `Vec`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let doc = uppsala::parse("<r><a/><b/><c/></r>").unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let names: Vec<&str> = doc.children_iter(root)
+    ///     .filter_map(|id| doc.element(id))
+    ///     .map(|e| e.name.local_name.as_ref())
+    ///     .collect();
+    /// assert_eq!(names, vec!["a", "b", "c"]);
+    /// ```
+    pub fn children_iter(&self, id: NodeId) -> ChildrenIter<'_, 'a> {
+        ChildrenIter {
+            doc: self,
+            next: self.nodes.get(id.0).and_then(|n| n.first_child),
+        }
     }
 
     /// Get the source line of a node (computed lazily from byte position).
@@ -697,6 +833,73 @@ impl<'a> Document<'a> {
         for child in self.children(id) {
             self.collect_elements_by_tag_name_ns(child, namespace_uri, local_name, results);
         }
+    }
+
+    /// Find the first direct child element matching a namespace URI and local name.
+    ///
+    /// Unlike [`get_elements_by_tag_name_ns`](Self::get_elements_by_tag_name_ns)
+    /// which searches all descendants, this only looks at immediate children.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let xml = r#"<r xmlns:a="urn:a"><a:x/><a:y/><a:x/></r>"#;
+    /// let doc = uppsala::parse(xml).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let x = doc.first_child_element_by_name_ns(root, "urn:a", "x");
+    /// assert!(x.is_some());
+    /// let elem = doc.element(x.unwrap()).unwrap();
+    /// assert_eq!(elem.name.local_name.as_ref(), "x");
+    /// ```
+    pub fn first_child_element_by_name_ns(
+        &self,
+        parent: NodeId,
+        namespace_uri: &str,
+        local_name: &str,
+    ) -> Option<NodeId> {
+        let mut child = self.nodes.get(parent.0).and_then(|n| n.first_child);
+        while let Some(cid) = child {
+            if let Some(elem) = self.element(cid) {
+                if elem.matches_name_ns(namespace_uri, local_name) {
+                    return Some(cid);
+                }
+            }
+            child = self.nodes.get(cid.0).and_then(|n| n.next_sibling);
+        }
+        None
+    }
+
+    /// Find all direct child elements matching a namespace URI and local name.
+    ///
+    /// Unlike [`get_elements_by_tag_name_ns`](Self::get_elements_by_tag_name_ns)
+    /// which searches all descendants, this only looks at immediate children.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let xml = r#"<r xmlns:a="urn:a"><a:x/><a:y/><a:x/></r>"#;
+    /// let doc = uppsala::parse(xml).unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let xs = doc.child_elements_by_name_ns(root, "urn:a", "x");
+    /// assert_eq!(xs.len(), 2);
+    /// ```
+    pub fn child_elements_by_name_ns(
+        &self,
+        parent: NodeId,
+        namespace_uri: &str,
+        local_name: &str,
+    ) -> Vec<NodeId> {
+        let mut result = Vec::new();
+        let mut child = self.nodes.get(parent.0).and_then(|n| n.first_child);
+        while let Some(cid) = child {
+            if let Some(elem) = self.element(cid) {
+                if elem.matches_name_ns(namespace_uri, local_name) {
+                    result.push(cid);
+                }
+            }
+            child = self.nodes.get(cid.0).and_then(|n| n.next_sibling);
+        }
+        result
     }
 
     /// Collect all text content of this node and its descendants (depth-first).
