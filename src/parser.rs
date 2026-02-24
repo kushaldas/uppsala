@@ -13,57 +13,6 @@ use crate::dom::{
 use crate::error::{XmlError, XmlResult};
 use crate::namespace::NamespaceResolver;
 
-/// Lookup table for fast byte classification in parse_content inner loop.
-/// 0 = normal ASCII (advance), 1 = stop byte (<, &, \r, ]), 2 = needs XML char validation.
-static CONTENT_SCAN: [u8; 256] = {
-    let mut t = [0u8; 256];
-    t[b'<' as usize] = 1;
-    t[b'&' as usize] = 1;
-    t[b'\r' as usize] = 1;
-    t[b']' as usize] = 1;
-    // Control chars < 0x20 (except TAB, LF, CR) need validation
-    let mut i = 0u8;
-    loop {
-        if i < 0x20 && i != 0x09 && i != 0x0A && i != 0x0D && t[i as usize] == 0 {
-            t[i as usize] = 2;
-        }
-        if i == 255 { break; }
-        i += 1;
-    }
-    // Non-ASCII bytes (0x80..=0xFF) need validation
-    let mut i = 0x80usize;
-    while i < 256 {
-        if t[i] == 0 { t[i] = 2; }
-        i += 1;
-    }
-    t
-};
-
-/// Lookup table for fast byte classification in attribute value scanning.
-/// 0 = normal ASCII (advance), 1 = stop byte (&, <), 2 = needs XML char validation.
-/// Quote characters are checked separately since they're dynamic (" or ').
-static ATTR_SCAN: [u8; 256] = {
-    let mut t = [0u8; 256];
-    t[b'&' as usize] = 1;
-    t[b'<' as usize] = 1;
-    // Control chars < 0x20 (except TAB, LF, CR) need validation
-    let mut i = 0u8;
-    loop {
-        if i < 0x20 && i != 0x09 && i != 0x0A && i != 0x0D && t[i as usize] == 0 {
-            t[i as usize] = 2;
-        }
-        if i == 255 { break; }
-        i += 1;
-    }
-    // Non-ASCII bytes (0x80..=0xFF) need validation
-    let mut i = 0x80usize;
-    while i < 256 {
-        if t[i] == 0 { t[i] = 2; }
-        i += 1;
-    }
-    t
-};
-
 /// A map of general entity names to their replacement text.
 type EntityMap = HashMap<String, String>;
 
@@ -634,37 +583,31 @@ fn parse_quoted_value_with_entities<'a>(
 
     let start = cursor.pos;
     // Fast path: scan ahead for the closing quote without encountering '&' or '<'
-    let mut fast_end = cursor.pos;
     let bytes = cursor.input.as_bytes();
     let qb = quote as u8;
-    let mut has_non_ascii_or_control = false;
-    while fast_end < bytes.len() {
-        let b = bytes[fast_end];
-        if b == qb {
-            // Clean: no entities, return borrowed slice
-            let text = &cursor.input[start..fast_end];
-            // Validate XML characters if we saw non-ASCII or control bytes
-            if has_non_ascii_or_control {
-                for c in text.chars() {
-                    if !is_xml_char(c) {
-                        return Err(XmlError::well_formedness(
-                            format!("Invalid XML character U+{:04X}", c as u32),
-                            cursor.line(),
-                            cursor.column(),
-                        ));
-                    }
-                }
-            }
-            cursor.pos = fast_end + 1; // +1 for closing quote
-            return Ok(Cow::Borrowed(text));
-        }
-        let class = ATTR_SCAN[b as usize];
-        if class == 1 { break; } // & or < — need slow path
-        if class == 2 { has_non_ascii_or_control = true; } // rare: non-ASCII or control
-        fast_end += 1;
-    }
+    let (advance, has_non_ascii_or_control) =
+        crate::simd::scan_attr_delimiters(&bytes[cursor.pos..], qb);
+    let fast_end = cursor.pos + advance;
     if fast_end >= bytes.len() {
         return Err(XmlError::UnexpectedEof);
+    }
+    // The scan stopped at the first occurrence of quote, '&', or '<'.
+    // If it's the closing quote, return the borrowed slice directly.
+    if bytes[fast_end] == qb {
+        let text = &cursor.input[start..fast_end];
+        if has_non_ascii_or_control {
+            for c in text.chars() {
+                if !is_xml_char(c) {
+                    return Err(XmlError::well_formedness(
+                        format!("Invalid XML character U+{:04X}", c as u32),
+                        cursor.line(),
+                        cursor.column(),
+                    ));
+                }
+            }
+        }
+        cursor.pos = fast_end + 1; // +1 for closing quote
+        return Ok(Cow::Borrowed(text));
     }
 
     // Slow path: copy what we have so far, then use bulk scanning between specials
@@ -2396,14 +2339,9 @@ fn parse_content<'a>(
         // Batch scan: find the next interesting byte (<, &, \r, ])
         let bytes = cursor.input.as_bytes();
         let scan_start = cursor.pos;
-        let mut i = scan_start;
-        let mut has_non_ascii_or_control = false;
-        while i < bytes.len() {
-            let class = CONTENT_SCAN[bytes[i] as usize];
-            if class == 1 { break; }           // stop byte: <, &, \r, ]
-            if class == 2 { has_non_ascii_or_control = true; } // rare: non-ASCII or control
-            i += 1;
-        }
+        let (advance, has_non_ascii_or_control) =
+            crate::simd::scan_content_delimiters(&bytes[scan_start..]);
+        let i = scan_start + advance;
 
         // Accumulate clean bytes in bulk
         if i > scan_start {

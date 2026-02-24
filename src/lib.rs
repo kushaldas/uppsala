@@ -92,6 +92,8 @@ pub mod xpath;
 pub mod xsd;
 /// XSD regular expression engine for pattern facets.
 pub mod xsd_regex;
+/// SIMD-accelerated byte scanning for parser hot loops.
+mod simd;
 
 pub use dom::{
     Attribute, ChildrenIter, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName,
