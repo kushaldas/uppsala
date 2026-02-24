@@ -15,9 +15,61 @@ even the regex engine used for XSD pattern facets.
 - **XPath 1.0** evaluation (all axes, functions, predicates, operators)
 - **XSD 1.1 validation** (structures + datatypes, 40+ built-in types)
 - **XSD regex engine** (custom NFA matcher for pattern facets)
+- **SIMD-accelerated parsing** (SSE2 on x86_64, scalar fallback elsewhere)
 - **Serialization** with round-trip fidelity, pretty-printing, and streaming output
 - **XmlWriter** for imperative XML construction without a DOM
 - **UTF-16 auto-detection** (LE/BE with or without BOM)
+
+## Conformance
+
+Uppsala is tested against the W3C conformance suites:
+
+| Suite | Pass Rate | Tests |
+|-------|-----------|-------|
+| W3C XML Conformance (not-wf) | 100% | 631/631 |
+| W3C XML Conformance (valid) | 100% | 531/531 |
+| W3C XML Conformance (invalid) | 100% | 46/46 |
+| W3C XSD -- NIST Datatypes | 100% | 19,217/19,217 |
+| W3C XSD -- Sun Combined | 100% | 199/199 |
+| W3C XSD -- MS DataTypes | 100% | 1,212/1,212 |
+
+In addition there are 274 hand-crafted tests covering XML parsing, namespaces,
+XPath evaluation, XSD validation, serialization round-trips, and source ranges.
+
+```bash
+# Run all tests
+cargo test
+
+# Run W3C XML Conformance Suite (~1208 tests)
+cargo test --test w3c_xmlconf
+
+# Run W3C XML Schema Test Suite (~20156 tests)
+cargo test --test w3c_xsts -- --nocapture
+```
+
+## Performance
+
+We need someone to do a full benchmark in a proper environment. The following is
+in an Ubuntu 24.04 VM.
+
+Uppsala uses SSE2 SIMD intrinsics on x86_64 to scan text content and attribute
+values 16 bytes at a time, with a scalar fallback for other architectures.
+Combined with lookup-table optimizations and zero-copy parsing, this makes it
+faster than roxmltree across all document sizes:
+
+| File | Size | vs roxmltree |
+|------|------|-------------|
+| gigantic.svg | 1.3 MB | **5.3x faster** |
+| text.xml | 126 KB | **9.3x faster** |
+| attributes.xml | 265 KB | **2.0x faster** |
+| medium.svg | 152 KB | **1.4x faster** |
+| huge.xml | 815 KB | **1.2x faster** |
+| SAML files | 3-11 KB | **1.5-1.8x faster** |
+
+Text-heavy documents benefit most from SIMD -- long runs of plain text between
+markup are scanned with minimal per-byte overhead.
+
+Is this really fast? Maybe, maybe not. But it is good enough for my use cases right now.
 
 ## Usage
 
@@ -25,7 +77,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-uppsala = "0.1"
+uppsala = "0.3"
 ```
 
 ### Parse and query
@@ -138,6 +190,7 @@ src/
   error.rs          XmlError enum, XmlResult type alias
   dom.rs            Arena-based DOM: Document, NodeId, QName, serialization
   parser.rs         XML 1.0 recursive-descent parser with full DTD internal subset
+  simd.rs           SSE2-accelerated byte scanning (content + attribute delimiters)
   namespace.rs      Namespace prefix resolution with scope stack
   writer.rs         XmlWriter imperative builder
   xpath.rs          XPath 1.0 lexer, parser, and evaluator
@@ -153,33 +206,6 @@ src/
     datetime.rs     Date/time/duration validation
     decimal.rs      Arbitrary-precision decimal comparison
   xsd_regex.rs      XSD regex pattern engine (custom NFA matcher)
-```
-
-## Conformance
-
-Uppsala is tested against the W3C conformance suites:
-
-| Suite | Pass Rate | Tests |
-|-------|-----------|-------|
-| W3C XML Conformance (not-wf) | 100% | 631/631 |
-| W3C XML Conformance (valid) | 100% | 531/531 |
-| W3C XML Conformance (invalid) | 100% | 46/46 |
-| W3C XSD -- NIST Datatypes | 100% | 19,217/19,217 |
-| W3C XSD -- Sun Combined | 100% | 199/199 |
-| W3C XSD -- MS DataTypes | 99.8% | 1,211/1,213 |
-
-In addition there are 256 hand-crafted tests covering XML parsing, namespaces,
-XPath evaluation, XSD validation, and serialization round-trips.
-
-```bash
-# Run all tests
-cargo test
-
-# Run W3C XML Conformance Suite (~1208 tests)
-cargo test --test w3c_xmlconf
-
-# Run W3C XML Schema Test Suite (~20156 tests)
-cargo test --test w3c_xsts -- --nocapture
 ```
 
 ## Examples
