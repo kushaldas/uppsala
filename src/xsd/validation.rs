@@ -804,6 +804,21 @@ impl XsdValidator {
             }
         }
 
+        // Check fixed-value constraint (raw lexical comparison, no whitespace normalization)
+        if let Some(ref fixed_value) = decl.fixed {
+            let text = doc.text_content_deep(node);
+            if text != *fixed_value {
+                errors.push(ValidationError {
+                    message: format!(
+                        "Element '{}' has fixed value '{}' but content is '{}'",
+                        decl.name, fixed_value, text
+                    ),
+                    line: Some(doc.node_line(node)),
+                    column: Some(doc.node_column(node)),
+                });
+            }
+        }
+
         // Evaluate identity constraints declared on this element
         if !decl.identity_constraints.is_empty() {
             self.evaluate_identity_constraints(doc, node, &decl.identity_constraints, errors);

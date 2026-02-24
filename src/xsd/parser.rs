@@ -79,6 +79,7 @@ pub(super) fn parse_element_decl(
     };
 
     let nillable = elem.get_attribute("nillable") == Some("true");
+    let fixed = elem.get_attribute("fixed").map(|s| s.to_string());
 
     // Parse block attribute (or use blockDefault)
     let (block_ext, block_rst) = if let Some(block) = elem.get_attribute("block") {
@@ -142,6 +143,7 @@ pub(super) fn parse_element_decl(
         is_ref: false,
         substitution_group: parse_substitution_group(elem, schema_target_ns),
         is_abstract: elem.get_attribute("abstract") == Some("true"),
+        fixed,
         identity_constraints: parse_identity_constraints(doc, node),
     })
 }
@@ -991,6 +993,7 @@ fn parse_particles(
                                 is_ref: true,
                                 substitution_group: None,
                                 is_abstract: false,
+                                fixed: None,
                                 identity_constraints: Vec::new(),
                             }),
                             min_occurs,

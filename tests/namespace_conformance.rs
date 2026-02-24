@@ -3,8 +3,6 @@
 //! Tests cover namespace declarations, prefix resolution, default namespaces,
 //! namespace scoping, undeclaration, and error cases.
 
-use uppsala::dom::NodeKind;
-
 // ─── Basic namespace declarations ────────────────────────
 
 #[test]
@@ -279,3 +277,4 @@ fn error_undeclared_prefix_on_attribute() {
         "Undeclared prefix on attribute should be an error"
     );
 }
+

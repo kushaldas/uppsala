@@ -23,7 +23,7 @@
 use std::path::Path;
 
 use crate::dom::{Document, NodeId, NodeKind};
-use crate::error::XmlResult;
+use crate::error::{XmlError, XmlResult};
 
 use super::parser::{
     parse_attribute_group_def, parse_complex_type, parse_model_group_def, parse_simple_type,
@@ -73,19 +73,35 @@ pub(super) fn process_schema_composition(
                     // Load and parse the external schema
                     let ext_str = match std::fs::read_to_string(&resolved_path) {
                         Ok(s) => s,
-                        Err(_) => continue, // Can't load — skip silently
+                        Err(_) => {
+                            if is_absolute_uri(schema_location) {
+                                return Err(XmlError::validation(format!(
+                                    "Cannot resolve {} schemaLocation '{}': absolute URI not supported",
+                                    if is_redefine { "redefine" } else { "include" },
+                                    schema_location
+                                )));
+                            }
+                            continue;
+                        }
                     };
                     let ext_doc = match crate::parse(&ext_str) {
                         Ok(d) => d,
-                        Err(_) => continue, // Can't parse — skip silently
+                        Err(_) => {
+                            if is_absolute_uri(schema_location) {
+                                return Err(XmlError::validation(format!(
+                                    "Cannot resolve {} schemaLocation '{}': absolute URI not supported",
+                                    if is_redefine { "redefine" } else { "include" },
+                                    schema_location
+                                )));
+                            }
+                            continue;
+                        }
                     };
 
                     // Build a sub-validator from the external schema
                     let ext_base_path = resolved_path.as_path();
-                    eprintln!("    DEBUG: Loading external schema: {:?}", resolved_path);
                     let ext_validator =
                         XsdValidator::from_schema_with_base_path(&ext_doc, Some(ext_base_path))?;
-                    eprintln!("    DEBUG: Loaded external schema OK");
 
                     // Determine the effective namespace for included declarations.
                     // "Chameleon include": if the external schema has no targetNamespace
@@ -96,13 +112,10 @@ pub(super) fn process_schema_composition(
 
                     // Merge declarations from external schema into our validator
                     merge_external_declarations(validator, &ext_validator, chameleon);
-                    eprintln!("    DEBUG: Merged external declarations");
 
                     // For xs:redefine, process inline redefinition children
                     if is_redefine {
-                        eprintln!("    DEBUG: Processing redefine children...");
                         process_redefine_children(schema_doc, child, validator)?;
-                        eprintln!("    DEBUG: Redefine children processed OK");
                     }
                 }
                 // xs:import — load an external schema with a different targetNamespace.
@@ -133,15 +146,12 @@ pub(super) fn process_schema_composition(
 
                     // Build a sub-validator from the external schema
                     let ext_base_path = resolved_path.as_path();
-                    eprintln!("    DEBUG: Importing external schema: {:?}", resolved_path);
                     let ext_validator =
                         XsdValidator::from_schema_with_base_path(&ext_doc, Some(ext_base_path))?;
-                    eprintln!("    DEBUG: Imported external schema OK");
 
                     // Import never uses chameleon fixup — the imported schema
                     // has its own targetNamespace which is preserved as-is.
                     merge_external_declarations(validator, &ext_validator, false);
-                    eprintln!("    DEBUG: Merged imported declarations");
                 }
                 _ => {}
             }
@@ -484,4 +494,22 @@ fn reresolve_types_after_redefine(validator: &mut XsdValidator) {
             validator.types.insert(key, TypeDef::Complex(ct));
         }
     }
+}
+
+/// Check if a string looks like an absolute URI (starts with a scheme per RFC 3986:
+/// `ALPHA *(ALPHA / DIGIT / "+" / "-" / ".") ":"`).
+fn is_absolute_uri(s: &str) -> bool {
+    let bytes = s.as_bytes();
+    if bytes.is_empty() || !bytes[0].is_ascii_alphabetic() {
+        return false;
+    }
+    for &b in &bytes[1..] {
+        if b == b':' {
+            return true;
+        }
+        if !b.is_ascii_alphanumeric() && b != b'+' && b != b'-' && b != b'.' {
+            return false;
+        }
+    }
+    false
 }

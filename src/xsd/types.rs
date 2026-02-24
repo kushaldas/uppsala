@@ -80,6 +80,9 @@ pub(crate) struct ElementDecl {
     pub(super) substitution_group: Option<(Option<String>, String)>,
     /// Whether this element is abstract (cannot appear directly in instances).
     pub(super) is_abstract: bool,
+    /// Fixed value constraint: if set, the element's text content must exactly
+    /// match this string (raw lexical comparison, no whitespace normalization).
+    pub(super) fixed: Option<String>,
     /// Identity constraints declared on this element.
     pub(super) identity_constraints: Vec<IdentityConstraint>,
 }

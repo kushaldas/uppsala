@@ -13,6 +13,57 @@ use crate::dom::{
 use crate::error::{XmlError, XmlResult};
 use crate::namespace::NamespaceResolver;
 
+/// Lookup table for fast byte classification in parse_content inner loop.
+/// 0 = normal ASCII (advance), 1 = stop byte (<, &, \r, ]), 2 = needs XML char validation.
+static CONTENT_SCAN: [u8; 256] = {
+    let mut t = [0u8; 256];
+    t[b'<' as usize] = 1;
+    t[b'&' as usize] = 1;
+    t[b'\r' as usize] = 1;
+    t[b']' as usize] = 1;
+    // Control chars < 0x20 (except TAB, LF, CR) need validation
+    let mut i = 0u8;
+    loop {
+        if i < 0x20 && i != 0x09 && i != 0x0A && i != 0x0D && t[i as usize] == 0 {
+            t[i as usize] = 2;
+        }
+        if i == 255 { break; }
+        i += 1;
+    }
+    // Non-ASCII bytes (0x80..=0xFF) need validation
+    let mut i = 0x80usize;
+    while i < 256 {
+        if t[i] == 0 { t[i] = 2; }
+        i += 1;
+    }
+    t
+};
+
+/// Lookup table for fast byte classification in attribute value scanning.
+/// 0 = normal ASCII (advance), 1 = stop byte (&, <), 2 = needs XML char validation.
+/// Quote characters are checked separately since they're dynamic (" or ').
+static ATTR_SCAN: [u8; 256] = {
+    let mut t = [0u8; 256];
+    t[b'&' as usize] = 1;
+    t[b'<' as usize] = 1;
+    // Control chars < 0x20 (except TAB, LF, CR) need validation
+    let mut i = 0u8;
+    loop {
+        if i < 0x20 && i != 0x09 && i != 0x0A && i != 0x0D && t[i as usize] == 0 {
+            t[i as usize] = 2;
+        }
+        if i == 255 { break; }
+        i += 1;
+    }
+    // Non-ASCII bytes (0x80..=0xFF) need validation
+    let mut i = 0x80usize;
+    while i < 256 {
+        if t[i] == 0 { t[i] = 2; }
+        i += 1;
+    }
+    t
+};
+
 /// A map of general entity names to their replacement text.
 type EntityMap = HashMap<String, String>;
 
@@ -36,7 +87,9 @@ impl Parser {
 
     /// Create a new parser with configurable namespace awareness.
     pub fn with_namespace_aware(namespace_aware: bool) -> Self {
-        Parser { namespace_aware }
+        Parser {
+            namespace_aware,
+        }
     }
 
     /// Parse an XML string into a [`Document`].
@@ -45,10 +98,8 @@ impl Parser {
         let mut doc = Document::new();
         doc.input = input;
 
-        // Pre-allocate based on input size estimates
-        let bytes = input.as_bytes();
-        let node_estimate = bytes.iter().filter(|&&b| b == b'<').count();
-        doc.nodes.reserve(node_estimate);
+        // Pre-allocate based on input size heuristic (avg ~40 bytes per element)
+        doc.nodes.reserve(input.len() / 40);
         let mut ns_resolver = if self.namespace_aware {
             Some(NamespaceResolver::new())
         } else {
@@ -607,13 +658,9 @@ fn parse_quoted_value_with_entities<'a>(
             cursor.pos = fast_end + 1; // +1 for closing quote
             return Ok(Cow::Borrowed(text));
         }
-        if b == b'&' || b == b'<' {
-            break; // Need slow path
-        }
-        // Track non-ASCII bytes (could contain U+FFFE/U+FFFF) and invalid control chars
-        if b >= 0x80 || (b < 0x20 && b != 0x09 && b != 0x0A && b != 0x0D) {
-            has_non_ascii_or_control = true;
-        }
+        let class = ATTR_SCAN[b as usize];
+        if class == 1 { break; } // & or < — need slow path
+        if class == 2 { has_non_ascii_or_control = true; } // rare: non-ASCII or control
         fast_end += 1;
     }
     if fast_end >= bytes.len() {
@@ -2352,16 +2399,10 @@ fn parse_content<'a>(
         let mut i = scan_start;
         let mut has_non_ascii_or_control = false;
         while i < bytes.len() {
-            let b = bytes[i];
-            match b {
-                b'<' | b'&' | b'\r' | b']' => break,
-                _ => {
-                    if b >= 0x80 || (b < 0x20 && b != 0x09 && b != 0x0A) {
-                        has_non_ascii_or_control = true;
-                    }
-                    i += 1;
-                }
-            }
+            let class = CONTENT_SCAN[bytes[i] as usize];
+            if class == 1 { break; }           // stop byte: <, &, \r, ]
+            if class == 2 { has_non_ascii_or_control = true; } // rare: non-ASCII or control
+            i += 1;
         }
 
         // Accumulate clean bytes in bulk
