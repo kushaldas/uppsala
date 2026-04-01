@@ -203,11 +203,6 @@ fn parse_identity_constraints(doc: &Document, elem_node: NodeId) -> Vec<Identity
                     }
                 }
 
-                eprintln!(
-                    "DEBUG: parsed identity constraint: kind={:?} name={} selector={} fields={:?} refer={:?}",
-                    kind, name, selector, fields, refer
-                );
-
                 constraints.push(IdentityConstraint {
                     name,
                     kind,

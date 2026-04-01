@@ -32,13 +32,6 @@ impl XsdValidator {
             }
 
             let selected = idc_select_nodes(doc, context_node, &constraint.selector);
-            eprintln!(
-                "DEBUG: identity constraint '{}' ({:?}): selector='{}' selected {} nodes",
-                constraint.name,
-                constraint.kind,
-                constraint.selector,
-                selected.len()
-            );
 
             let mut tuples: Vec<Vec<String>> = Vec::new();
 
@@ -163,23 +156,11 @@ impl XsdValidator {
 
             let referred_tuples = key_tables.get(refer_name);
             if referred_tuples.is_none() {
-                eprintln!(
-                    "DEBUG: keyref '{}' refers to '{}' which was not found in this scope",
-                    constraint.name, refer_name
-                );
                 continue;
             }
             let referred_tuples = referred_tuples.unwrap();
 
             let selected = idc_select_nodes(doc, context_node, &constraint.selector);
-            eprintln!(
-                "DEBUG: keyref '{}': selector='{}' selected {} nodes, referred key '{}' has {} tuples",
-                constraint.name,
-                constraint.selector,
-                selected.len(),
-                refer_name,
-                referred_tuples.len()
-            );
 
             for &sel_node in &selected {
                 let mut field_values: Vec<Option<String>> = Vec::new();
