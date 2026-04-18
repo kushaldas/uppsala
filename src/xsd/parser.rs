@@ -24,6 +24,7 @@ use std::collections::HashMap;
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::{XmlError, XmlResult};
 
+use super::debug_log;
 use super::types::{
     AttributeDecl, AttributeGroupDef, AttributeWildcard, BuiltInType, ComplexTypeDef, ContentModel,
     ElementDecl, Facet, IdentityConstraint, IdentityConstraintKind, MaxOccurs, ModelGroupDef,
@@ -203,8 +204,8 @@ fn parse_identity_constraints(doc: &Document, elem_node: NodeId) -> Vec<Identity
                     }
                 }
 
-                eprintln!(
-                    "DEBUG: parsed identity constraint: kind={:?} name={} selector={} fields={:?} refer={:?}",
+                debug_log!(
+                    "parsed identity constraint: kind={:?} name={} selector={} fields={:?} refer={:?}",
                     kind, name, selector, fields, refer
                 );
 

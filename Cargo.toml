@@ -13,6 +13,13 @@ exclude = ["test-data/", "perf.data"]
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg", "docsrs"]
 
+[features]
+default = []
+# Enable verbose `DEBUG: ...` traces on stderr. Off by default so library
+# output stays clean. Currently emitted by the XSD validator submodule
+# (identity constraint evaluation, attribute type resolution, etc.).
+debug-logging = []
+
 [dependencies]
 
 [dev-dependencies]

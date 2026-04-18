@@ -10,6 +10,7 @@ use std::collections::HashMap;
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::ValidationError;
 
+use super::debug_log;
 use super::types::{IdentityConstraint, IdentityConstraintKind, XsdValidator};
 
 impl XsdValidator {
@@ -32,8 +33,8 @@ impl XsdValidator {
             }
 
             let selected = idc_select_nodes(doc, context_node, &constraint.selector);
-            eprintln!(
-                "DEBUG: identity constraint '{}' ({:?}): selector='{}' selected {} nodes",
+            debug_log!(
+                "identity constraint '{}' ({:?}): selector='{}' selected {} nodes",
                 constraint.name,
                 constraint.kind,
                 constraint.selector,
@@ -163,8 +164,8 @@ impl XsdValidator {
 
             let referred_tuples = key_tables.get(refer_name);
             if referred_tuples.is_none() {
-                eprintln!(
-                    "DEBUG: keyref '{}' refers to '{}' which was not found in this scope",
+                debug_log!(
+                    "keyref '{}' refers to '{}' which was not found in this scope",
                     constraint.name, refer_name
                 );
                 continue;
@@ -172,8 +173,8 @@ impl XsdValidator {
             let referred_tuples = referred_tuples.unwrap();
 
             let selected = idc_select_nodes(doc, context_node, &constraint.selector);
-            eprintln!(
-                "DEBUG: keyref '{}': selector='{}' selected {} nodes, referred key '{}' has {} tuples",
+            debug_log!(
+                "keyref '{}': selector='{}' selected {} nodes, referred key '{}' has {} tuples",
                 constraint.name,
                 constraint.selector,
                 selected.len(),
