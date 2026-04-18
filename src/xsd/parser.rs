@@ -23,6 +23,7 @@ use std::collections::HashMap;
 
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::{XmlError, XmlResult};
+use crate::namespace::build_resolver_for_node;
 
 use super::debug_log;
 use super::types::{
@@ -973,12 +974,26 @@ fn parse_particles(
                     // Check if this is an element reference (<element ref="..."/>)
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        // Resolve namespace from prefix if present
-                        let ref_ns = if ref_name.contains(':') {
-                            // Prefixed ref — use schema target namespace
-                            schema_target_ns.clone()
+                        // Resolve namespace from prefix if present.
+                        //
+                        // For prefixed refs like "trm:ref", the prefix is
+                        // resolved via the in-scope namespace declarations on
+                        // the `<xs:element>` node — not the schema's own
+                        // targetNamespace. A prefix typically points to a
+                        // foreign namespace introduced via xs:import; using
+                        // the schema's target instead would silently rebind
+                        // the reference to the wrong namespace and cause
+                        // matching failures at validation time.
+                        //
+                        // For unprefixed refs the QName resolves to the
+                        // schema's target namespace per the XSD spec
+                        // (regardless of any default xmlns in scope).
+                        let ref_ns = if let Some(colon_idx) = ref_name.find(':') {
+                            let prefix = &ref_name[..colon_idx];
+                            build_resolver_for_node(doc, child)
+                                .resolve(prefix)
+                                .map(|uri| uri.to_string())
                         } else {
-                            // Unprefixed ref — use schema target namespace for qualified schemas
                             schema_target_ns.clone()
                         };
                         particles.push(Particle {
