@@ -137,3 +137,146 @@ Text with <i:ref term="x"/> and <o:b>bold</o:b> and <i:ref term="y"/>.
         errors
     );
 }
+
+/// Regression: `<xs:attribute ref="foreign:attr"/>` across an `xs:import`
+/// boundary. Before the fix, the prefix was stripped and the lookup keyed
+/// against the outer schema's targetNamespace, so the imported global
+/// attribute was never found and the `use="required"` constraint wasn't
+/// enforced.
+#[test]
+fn cross_namespace_attribute_ref_required() {
+    let dir = mkdir_unique("cross-ns-attr");
+
+    let inner = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:i="urn:test:inner"
+           targetNamespace="urn:test:inner"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:attribute name="lang" type="xs:string"/>
+</xs:schema>"#;
+    fs::write(dir.join("inner.xsd"), inner).unwrap();
+
+    let outer = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:i="urn:test:inner"
+           xmlns:o="urn:test:outer"
+           targetNamespace="urn:test:outer"
+           elementFormDefault="qualified">
+  <xs:import namespace="urn:test:inner" schemaLocation="inner.xsd"/>
+  <xs:element name="p">
+    <xs:complexType>
+      <xs:attribute ref="i:lang" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>"#;
+    let outer_path = dir.join("outer.xsd");
+    fs::write(&outer_path, outer).unwrap();
+
+    // Valid — attribute present.
+    let ok_instance =
+        r#"<o:p xmlns:o="urn:test:outer" xmlns:i="urn:test:inner" i:lang="en"/>"#;
+    let errors = validate(outer, &outer_path, ok_instance);
+    assert!(
+        errors.is_empty(),
+        "cross-namespace attribute ref should resolve, got: {:?}",
+        errors
+    );
+
+    // Invalid — required foreign attribute missing. Pre-fix this would
+    // ALSO have produced errors, but for the wrong reason (unresolved
+    // local-namespace decl, not the real `use="required"` violation).
+    let bad_instance = r#"<o:p xmlns:o="urn:test:outer"/>"#;
+    let errors = validate(outer, &outer_path, bad_instance);
+    fs::remove_dir_all(&dir).ok();
+    assert!(
+        !errors.is_empty(),
+        "missing required cross-namespace attribute should fail validation"
+    );
+}
+
+/// Regression: `<xs:attributeGroup ref="foreign:group"/>` across an
+/// `xs:import` boundary. Pre-fix, the prefix was ignored and the lookup
+/// keyed against the outer schema's targetNamespace, so the imported
+/// group's attributes were silently dropped from the effective attribute
+/// list — any required attributes declared in the group went unenforced.
+#[test]
+fn cross_namespace_attribute_group_ref() {
+    let dir = mkdir_unique("cross-ns-ag");
+
+    let inner = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:i="urn:test:inner"
+           targetNamespace="urn:test:inner"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:attributeGroup name="meta">
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:attributeGroup>
+</xs:schema>"#;
+    fs::write(dir.join("inner.xsd"), inner).unwrap();
+
+    let outer = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:i="urn:test:inner"
+           xmlns:o="urn:test:outer"
+           targetNamespace="urn:test:outer"
+           elementFormDefault="qualified">
+  <xs:import namespace="urn:test:inner" schemaLocation="inner.xsd"/>
+  <xs:element name="p">
+    <xs:complexType>
+      <xs:attributeGroup ref="i:meta"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>"#;
+    let outer_path = dir.join("outer.xsd");
+    fs::write(&outer_path, outer).unwrap();
+
+    // Missing imported required attribute must fail.
+    let bad_instance = r#"<o:p xmlns:o="urn:test:outer"/>"#;
+    let errors = validate(outer, &outer_path, bad_instance);
+    fs::remove_dir_all(&dir).ok();
+    assert!(
+        !errors.is_empty(),
+        "cross-namespace attributeGroup ref should contribute its required \
+         attributes to the effective attribute list; got no errors which \
+         means the group was silently dropped"
+    );
+}
+
+/// Negative: an undeclared prefix in a `ref=` attribute must no longer
+/// silently rebind to the schema's targetNamespace. Pre-fix, a typo like
+/// `ref="nobdy:foo"` would quietly resolve against the outer schema; this
+/// test pins the new fail-closed behaviour (lookup misses, particle does
+/// not match anything in the instance).
+#[test]
+fn undeclared_prefix_in_ref_fails_closed() {
+    let dir = mkdir_unique("undeclared-prefix");
+    let schema = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:m="urn:test:m"
+           targetNamespace="urn:test:m"
+           elementFormDefault="qualified">
+  <xs:element name="p">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nobdy:foo"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>"#;
+    let schema_path = dir.join("schema.xsd");
+    fs::write(&schema_path, schema).unwrap();
+
+    // Instance that would have accidentally matched pre-fix (an element
+    // `<m:foo/>` in targetNamespace) must now NOT match, because the ref
+    // resolves to no-namespace.
+    let instance = r#"<m:p xmlns:m="urn:test:m"><m:foo/></m:p>"#;
+    let errors = validate(schema, &schema_path, instance);
+    fs::remove_dir_all(&dir).ok();
+    assert!(
+        !errors.is_empty(),
+        "undeclared-prefix ref must fail closed; instead the particle \
+         silently matched an element in the wrong namespace"
+    );
+}

@@ -481,7 +481,8 @@ pub(super) fn parse_complex_type(
                     // Resolve xs:group ref to set content model
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let key = (schema_target_ns.clone(), local_name.to_string());
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, schema_target_ns);
+                        let key = (ref_ns, local_name.to_string());
                         // Track the unresolved reference for potential re-resolution after redefine
                         group_ref = Some(key.clone());
                         if let Some(mg) = model_groups.get(&key) {
@@ -504,7 +505,8 @@ pub(super) fn parse_complex_type(
                     // Resolve attributeGroup ref
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let key = (target_ns.clone(), local_name.to_string());
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, target_ns);
+                        let key = (ref_ns, local_name.to_string());
                         // Track the unresolved reference for potential re-resolution after redefine
                         attribute_group_refs.push(key.clone());
                         if let Some(ag) = attribute_groups.get(&key) {
@@ -633,10 +635,10 @@ pub(super) fn parse_complex_type(
                                                         gc_child_elem.get_attribute("ref")
                                                     {
                                                         let ag_local = strip_prefix(ref_name);
-                                                        let key = (
-                                                            target_ns.clone(),
-                                                            ag_local.to_string(),
+                                                        let ag_ns = resolve_ref_namespace(
+                                                            doc, gc_child, ref_name, target_ns,
                                                         );
+                                                        let key = (ag_ns, ag_local.to_string());
                                                         if let Some(ag) = attribute_groups.get(&key)
                                                         {
                                                             attributes.extend(
@@ -769,7 +771,7 @@ pub(super) fn parse_attribute_group_def(
                     // Check if this is an attribute reference
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let ref_ns = target_ns.clone();
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, target_ns);
                         let key = (ref_ns, local_name.to_string());
                         if let Some(global_attr) = global_attributes.get(&key) {
                             // Use the global attribute declaration but allow
@@ -801,7 +803,8 @@ pub(super) fn parse_attribute_group_def(
                     // Resolve attributeGroup ref (used in redefine self-references)
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let key = (target_ns.clone(), local_name.to_string());
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, target_ns);
+                        let key = (ref_ns, local_name.to_string());
                         if let Some(ag) = attribute_groups.get(&key) {
                             attributes.extend(ag.attributes.iter().cloned());
                             if let Some(ref ag_wc) = ag.wildcard {
@@ -931,6 +934,34 @@ pub(super) fn strip_prefix(qname: &str) -> &str {
     }
 }
 
+/// Resolve the namespace URI for a QName `ref=` attribute at an XSD node.
+///
+/// For prefixed refs (e.g. `"b:foo"`) the prefix is resolved against the
+/// in-scope namespace declarations on the `ref`-bearing node — typically the
+/// foreign namespace introduced via `xs:import`. For unprefixed refs the
+/// fallback namespace (usually the schema's `targetNamespace`) is returned.
+///
+/// This is the central namespace-resolution point for every `ref=` site in
+/// the schema parser: `xs:element ref`, `xs:attribute ref`, `xs:group ref`,
+/// and `xs:attributeGroup ref`. Keeping them all routed through this helper
+/// guarantees they stay in sync.
+pub(super) fn resolve_ref_namespace(
+    doc: &Document,
+    node: NodeId,
+    ref_name: &str,
+    fallback_ns: &Option<String>,
+) -> Option<String> {
+    match ref_name.find(':') {
+        Some(colon_idx) => {
+            let prefix = &ref_name[..colon_idx];
+            build_resolver_for_node(doc, node)
+                .resolve(prefix)
+                .map(|uri| uri.to_string())
+        }
+        None => fallback_ns.clone(),
+    }
+}
+
 /// Parse the children of a compositor (`sequence`, `choice`, `all`) into a
 /// vector of `Particle` values.
 ///
@@ -974,28 +1005,14 @@ fn parse_particles(
                     // Check if this is an element reference (<element ref="..."/>)
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        // Resolve namespace from prefix if present.
-                        //
-                        // For prefixed refs like "trm:ref", the prefix is
-                        // resolved via the in-scope namespace declarations on
-                        // the `<xs:element>` node — not the schema's own
-                        // targetNamespace. A prefix typically points to a
-                        // foreign namespace introduced via xs:import; using
-                        // the schema's target instead would silently rebind
-                        // the reference to the wrong namespace and cause
-                        // matching failures at validation time.
-                        //
-                        // For unprefixed refs the QName resolves to the
-                        // schema's target namespace per the XSD spec
-                        // (regardless of any default xmlns in scope).
-                        let ref_ns = if let Some(colon_idx) = ref_name.find(':') {
-                            let prefix = &ref_name[..colon_idx];
-                            build_resolver_for_node(doc, child)
-                                .resolve(prefix)
-                                .map(|uri| uri.to_string())
-                        } else {
-                            schema_target_ns.clone()
-                        };
+                        // Prefixed refs resolve via the in-scope namespace
+                        // declarations on the `<xs:element>` node (typically
+                        // a foreign namespace introduced via xs:import);
+                        // unprefixed refs fall back to the schema's target
+                        // namespace. Routed through the same helper as every
+                        // other `ref=` site in this module.
+                        let ref_ns =
+                            resolve_ref_namespace(doc, child, ref_name, schema_target_ns);
                         particles.push(Particle {
                             kind: ParticleKind::Element(ElementDecl {
                                 name: local_name.to_string(),
@@ -1072,7 +1089,8 @@ fn parse_particles(
                     // Resolve xs:group ref
                     if let Some(ref_name) = child_elem.get_attribute("ref") {
                         let local_name = strip_prefix(ref_name);
-                        let key = (schema_target_ns.clone(), local_name.to_string());
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, schema_target_ns);
+                        let key = (ref_ns, local_name.to_string());
                         if let Some(mg) = model_groups.get(&key) {
                             // Inline the model group's content as a particle
                             match &mg.content {
