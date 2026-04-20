@@ -10,10 +10,7 @@ fn test_node_range_element() {
         "<root><child>text</child></root>"
     );
     let child = doc.children(root)[0];
-    assert_eq!(
-        &xml[doc.node_range(child).unwrap()],
-        "<child>text</child>"
-    );
+    assert_eq!(&xml[doc.node_range(child).unwrap()], "<child>text</child>");
 }
 
 #[test]
@@ -117,7 +114,10 @@ fn test_node_range_nested_elements() {
     let a = doc.document_element().unwrap();
     let b = doc.children(a)[0];
     let c = doc.children(b)[0];
-    assert_eq!(&xml[doc.node_range(a).unwrap()], "<a><b><c>deep</c></b></a>");
+    assert_eq!(
+        &xml[doc.node_range(a).unwrap()],
+        "<a><b><c>deep</c></b></a>"
+    );
     assert_eq!(&xml[doc.node_range(b).unwrap()], "<b><c>deep</c></b>");
     assert_eq!(&xml[doc.node_range(c).unwrap()], "<c>deep</c>");
 }

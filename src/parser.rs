@@ -36,9 +36,7 @@ impl Parser {
 
     /// Create a new parser with configurable namespace awareness.
     pub fn with_namespace_aware(namespace_aware: bool) -> Self {
-        Parser {
-            namespace_aware,
-        }
+        Parser { namespace_aware }
     }
 
     /// Parse an XML string into a [`Document`].

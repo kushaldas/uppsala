@@ -188,11 +188,17 @@ fn namespace_declarations_map() {
     let root = doc.document_element().unwrap();
     let elem = doc.element(root).unwrap();
     assert_eq!(
-        elem.namespace_declarations.iter().find(|(p, _)| p.is_empty()).map(|(_, u)| &**u),
+        elem.namespace_declarations
+            .iter()
+            .find(|(p, _)| p.is_empty())
+            .map(|(_, u)| &**u),
         Some("http://default.com")
     );
     assert_eq!(
-        elem.namespace_declarations.iter().find(|(p, _)| &**p == "ns").map(|(_, u)| &**u),
+        elem.namespace_declarations
+            .iter()
+            .find(|(p, _)| &**p == "ns")
+            .map(|(_, u)| &**u),
         Some("http://ns.com")
     );
 }
@@ -277,4 +283,3 @@ fn error_undeclared_prefix_on_attribute() {
         "Undeclared prefix on attribute should be an error"
     );
 }
-
