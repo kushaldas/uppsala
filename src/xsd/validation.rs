@@ -14,6 +14,7 @@ use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::ValidationError;
 use crate::namespace::build_resolver_for_node;
 
+use super::debug_log;
 use super::builtins::{
     apply_whitespace_normalization, validate_builtin_value, validate_facet, validate_list_facet,
     whitespace_for_type,
@@ -922,8 +923,8 @@ impl XsdValidator {
 
             // Validate attribute values against their declared types
             for attr_decl in &effective_attrs {
-                eprintln!(
-                    "DEBUG: effective_attr name={} type_ref={:?}",
+                debug_log!(
+                    "effective_attr name={} type_ref={:?}",
                     attr_decl.name, attr_decl.type_ref
                 );
                 if let Some(attr) = elem
@@ -932,8 +933,8 @@ impl XsdValidator {
                     .find(|a| a.name.local_name == attr_decl.name)
                 {
                     let value = &attr.value;
-                    eprintln!(
-                        "DEBUG: validating attr {}={} against {:?}",
+                    debug_log!(
+                        "validating attr {}={} against {:?}",
                         attr_decl.name, value, attr_decl.type_ref
                     );
                     self.validate_attribute_value(value, &attr_decl.type_ref, doc, node, errors);
@@ -2040,14 +2041,14 @@ impl XsdValidator {
             TypeRef::Named(ns, name) => {
                 // Try to resolve the named type
                 let key = (ns.clone(), name.clone());
-                eprintln!(
-                    "DEBUG: validate_attribute_value Named key={:?} found={}",
+                debug_log!(
+                    "validate_attribute_value Named key={:?} found={}",
                     key,
                     self.types.contains_key(&key)
                 );
                 if let Some(TypeDef::Simple(st)) = self.types.get(&key) {
-                    eprintln!(
-                        "DEBUG: SimpleTypeDef base={:?} facets={:?}",
+                    debug_log!(
+                        "SimpleTypeDef base={:?} facets={:?}",
                         st.base, st.facets
                     );
                     if st.is_list {

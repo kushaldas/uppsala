@@ -19,6 +19,7 @@ use crate::dom::{Document, NodeKind};
 use crate::error::{XmlError, XmlResult};
 
 use super::composition::process_schema_composition;
+use super::debug_log;
 use super::facet_resolution::{
     resolve_content_model_list_item_facets, resolve_inline_list_item_facets,
 };
@@ -346,8 +347,8 @@ impl XsdValidator {
             members.sort_by(|a, b| a.1.cmp(&b.1).then_with(|| a.0.cmp(&b.0)));
             members.dedup();
         }
-        eprintln!(
-            "DEBUG: substitution_groups: {:?}",
+        debug_log!(
+            "substitution_groups: {:?}",
             validator.substitution_groups
         );
 

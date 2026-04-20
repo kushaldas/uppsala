@@ -29,6 +29,21 @@
 //! assert!(errors.is_empty());
 //! ```
 
+// ── Internal debug logging ───────────────────────────────────────────────────
+//
+// Trace logging used by the validator submodules during diagnosis. Enabled
+// only when the `debug-logging` Cargo feature is on so library output
+// stays clean by default.
+
+macro_rules! debug_log {
+    ($($arg:tt)*) => {{
+        #[cfg(feature = "debug-logging")]
+        { eprintln!("DEBUG: {}", format_args!($($arg)*)); }
+    }};
+}
+
+pub(crate) use debug_log;
+
 // Submodule declarations — each file contains a logical slice of the XSD validator.
 
 /// Arbitrary-precision decimal string comparison utilities.
