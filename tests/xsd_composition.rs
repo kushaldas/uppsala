@@ -174,8 +174,7 @@ fn cross_namespace_attribute_ref_required() {
     fs::write(&outer_path, outer).unwrap();
 
     // Valid — attribute present.
-    let ok_instance =
-        r#"<o:p xmlns:o="urn:test:outer" xmlns:i="urn:test:inner" i:lang="en"/>"#;
+    let ok_instance = r#"<o:p xmlns:o="urn:test:outer" xmlns:i="urn:test:inner" i:lang="en"/>"#;
     let errors = validate(outer, &outer_path, ok_instance);
     assert!(
         errors.is_empty(),

@@ -1011,8 +1011,7 @@ fn parse_particles(
                         // unprefixed refs fall back to the schema's target
                         // namespace. Routed through the same helper as every
                         // other `ref=` site in this module.
-                        let ref_ns =
-                            resolve_ref_namespace(doc, child, ref_name, schema_target_ns);
+                        let ref_ns = resolve_ref_namespace(doc, child, ref_name, schema_target_ns);
                         particles.push(Particle {
                             kind: ParticleKind::Element(ElementDecl {
                                 name: local_name.to_string(),

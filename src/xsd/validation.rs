@@ -14,11 +14,11 @@ use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::ValidationError;
 use crate::namespace::build_resolver_for_node;
 
-use super::debug_log;
 use super::builtins::{
     apply_whitespace_normalization, validate_builtin_value, validate_facet, validate_list_facet,
     whitespace_for_type,
 };
+use super::debug_log;
 use super::parser::parse_builtin_type;
 use super::types::*;
 use super::wildcard::wildcard_allows_namespace;
@@ -925,7 +925,8 @@ impl XsdValidator {
             for attr_decl in &effective_attrs {
                 debug_log!(
                     "effective_attr name={} type_ref={:?}",
-                    attr_decl.name, attr_decl.type_ref
+                    attr_decl.name,
+                    attr_decl.type_ref
                 );
                 if let Some(attr) = elem
                     .attributes
@@ -935,7 +936,9 @@ impl XsdValidator {
                     let value = &attr.value;
                     debug_log!(
                         "validating attr {}={} against {:?}",
-                        attr_decl.name, value, attr_decl.type_ref
+                        attr_decl.name,
+                        value,
+                        attr_decl.type_ref
                     );
                     self.validate_attribute_value(value, &attr_decl.type_ref, doc, node, errors);
                 }
@@ -2047,10 +2050,7 @@ impl XsdValidator {
                     self.types.contains_key(&key)
                 );
                 if let Some(TypeDef::Simple(st)) = self.types.get(&key) {
-                    debug_log!(
-                        "SimpleTypeDef base={:?} facets={:?}",
-                        st.base, st.facets
-                    );
+                    debug_log!("SimpleTypeDef base={:?} facets={:?}", st.base, st.facets);
                     if st.is_list {
                         let items: Vec<&str> = value.split_whitespace().collect();
                         if let Some(ref item_bt) = st.item_type {
