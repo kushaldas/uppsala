@@ -166,7 +166,8 @@ impl XsdValidator {
             if referred_tuples.is_none() {
                 debug_log!(
                     "keyref '{}' refers to '{}' which was not found in this scope",
-                    constraint.name, refer_name
+                    constraint.name,
+                    refer_name
                 );
                 continue;
             }

@@ -347,10 +347,7 @@ impl XsdValidator {
             members.sort_by(|a, b| a.1.cmp(&b.1).then_with(|| a.0.cmp(&b.0)));
             members.dedup();
         }
-        debug_log!(
-            "substitution_groups: {:?}",
-            validator.substitution_groups
-        );
+        debug_log!("substitution_groups: {:?}", validator.substitution_groups);
 
         // Resolution pass: propagate list type info from base types to derived types.
         // Types that restrict a list type inherit is_list and item_type.
