@@ -84,6 +84,8 @@ pub mod error;
 pub mod namespace;
 /// XML 1.0 (Fifth Edition) recursive-descent parser.
 pub mod parser;
+/// SIMD-accelerated byte scanning for parser hot loops.
+mod simd;
 /// Imperative [`XmlWriter`] for streaming XML construction.
 pub mod writer;
 /// XPath 1.0 evaluation engine.
@@ -92,8 +94,6 @@ pub mod xpath;
 pub mod xsd;
 /// XSD regular expression engine for pattern facets.
 pub mod xsd_regex;
-/// SIMD-accelerated byte scanning for parser hot loops.
-mod simd;
 
 pub use dom::{
     Attribute, ChildrenIter, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName,
