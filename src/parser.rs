@@ -20,23 +20,47 @@ type EntityMap = HashMap<String, String>;
 /// Key: entity name, Value: expanded text.
 type EntityCache = HashMap<String, String>;
 
+/// Default maximum element-nesting depth.
+///
+/// Sized well above legitimate XML (SOAP, XHTML, SVG, and XSLT documents in the
+/// wild rarely exceed ~50 levels) while staying comfortably within a 2 MiB
+/// thread stack (Rust's default worker-thread size) even under debug builds
+/// where per-frame overhead is inflated. Exposed via [`Parser::with_max_depth`].
+pub const DEFAULT_MAX_DEPTH: u32 = 128;
+
 /// The XML 1.0 parser.
 pub struct Parser {
     /// Whether to resolve namespaces during parsing.
     namespace_aware: bool,
+    /// Maximum allowed element-nesting depth. Enforced in `parse_element`
+    /// to prevent stack overflow on maliciously deep input.
+    max_depth: u32,
 }
 
 impl Parser {
-    /// Create a new parser with namespace awareness enabled.
+    /// Create a new parser with namespace awareness enabled and the default
+    /// maximum nesting depth ([`DEFAULT_MAX_DEPTH`]).
     pub fn new() -> Self {
         Parser {
             namespace_aware: true,
+            max_depth: DEFAULT_MAX_DEPTH,
         }
     }
 
-    /// Create a new parser with configurable namespace awareness.
+    /// Create a new parser with configurable namespace awareness. Uses the
+    /// default nesting-depth cap.
     pub fn with_namespace_aware(namespace_aware: bool) -> Self {
-        Parser { namespace_aware }
+        Parser {
+            namespace_aware,
+            max_depth: DEFAULT_MAX_DEPTH,
+        }
+    }
+
+    /// Override the maximum element-nesting depth. Returns `self` so it can
+    /// chain with other builder methods.
+    pub fn with_max_depth(mut self, max_depth: u32) -> Self {
+        self.max_depth = max_depth;
+        self
     }
 
     /// Parse an XML string into a [`Document`].
@@ -106,6 +130,8 @@ impl Parser {
                     &mut ns_resolver,
                     &entities,
                     &mut entity_cache,
+                    0,
+                    self.max_depth,
                 )?;
                 found_root = true;
             } else {
@@ -2046,6 +2072,12 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
 }
 
 /// Parse an element and its content recursively.
+///
+/// `depth` is the current nesting depth (0 for the document element); `max_depth`
+/// is the configured cap. When `depth >= max_depth` the parser returns an error
+/// instead of recursing further — this prevents stack overflow on maliciously
+/// deep input.
+#[allow(clippy::too_many_arguments)]
 fn parse_element<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
@@ -2053,7 +2085,16 @@ fn parse_element<'a>(
     ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    depth: u32,
+    max_depth: u32,
 ) -> XmlResult<NodeId> {
+    if depth >= max_depth {
+        return Err(XmlError::parse(
+            format!("Element nesting exceeds maximum depth of {}", max_depth),
+            cursor.line(),
+            cursor.column(),
+        ));
+    }
     let start_pos = cursor.pos;
 
     cursor.expect("<")?;
@@ -2225,7 +2266,16 @@ fn parse_element<'a>(
     cursor.expect(">")?;
 
     // Parse element content
-    parse_content(cursor, doc, elem_id, ns_resolver, entities, entity_cache)?;
+    parse_content(
+        cursor,
+        doc,
+        elem_id,
+        ns_resolver,
+        entities,
+        entity_cache,
+        depth,
+        max_depth,
+    )?;
 
     // Parse end tag
     cursor.expect("</")?;
@@ -2254,6 +2304,10 @@ fn parse_element<'a>(
 
 /// Parse element content (text, child elements, CDATA, comments, PIs).
 /// Uses lazy allocation: text content is borrowed from input when possible.
+///
+/// `depth` is the depth of the *parent* element; any child element parsed here
+/// will be at `depth + 1` and is checked against `max_depth`.
+#[allow(clippy::too_many_arguments)]
 fn parse_content<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
@@ -2261,6 +2315,8 @@ fn parse_content<'a>(
     ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    depth: u32,
+    max_depth: u32,
 ) -> XmlResult<()> {
     // Lazy text buffer: tracks start position for borrowing, switches to owned on entity/\r
     enum TextBuf {
@@ -2420,7 +2476,16 @@ fn parse_content<'a>(
                         // Child element
                         text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
                         text_buf = TextBuf::Empty;
-                        parse_element(cursor, doc, parent, ns_resolver, entities, entity_cache)?;
+                        parse_element(
+                            cursor,
+                            doc,
+                            parent,
+                            ns_resolver,
+                            entities,
+                            entity_cache,
+                            depth + 1,
+                            max_depth,
+                        )?;
                     }
                 }
             }
@@ -2616,5 +2681,53 @@ mod tests {
             "Expected borrowed name"
         );
         let _ = elem; // suppress unused warning
+    }
+
+    fn nested_xml(depth: usize) -> String {
+        let mut s = String::with_capacity(depth * 8);
+        for _ in 0..depth {
+            s.push_str("<a>");
+        }
+        s.push('x');
+        for _ in 0..depth {
+            s.push_str("</a>");
+        }
+        s
+    }
+
+    #[test]
+    fn test_depth_cap_rejects_deep_input() {
+        // 5 000-deep nesting would stack-overflow an unguarded recursive
+        // parser. The default cap stops it with a clean error.
+        let xml = nested_xml(5_000);
+        let err = Parser::new()
+            .parse(&xml)
+            .expect_err("deep input must be rejected");
+        assert!(
+            format!("{}", err).contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    #[test]
+    fn test_depth_within_cap_parses() {
+        // Well under DEFAULT_MAX_DEPTH — must parse without complaint.
+        let xml = nested_xml(100);
+        let doc = Parser::new().parse(&xml).expect("within cap must parse");
+        assert!(doc.document_element().is_some());
+    }
+
+    #[test]
+    fn test_custom_max_depth() {
+        let xml = nested_xml(10);
+        assert!(
+            Parser::new().with_max_depth(5).parse(&xml).is_err(),
+            "cap of 5 must reject 10-deep input"
+        );
+        assert!(
+            Parser::new().with_max_depth(20).parse(&xml).is_ok(),
+            "cap of 20 must admit 10-deep input"
+        );
     }
 }
