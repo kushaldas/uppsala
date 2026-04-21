@@ -94,12 +94,29 @@ struct UnicodeProperty {
     name: String,
 }
 
+/// Default maximum nesting depth of `(...)` groups plus character-class
+/// subtractions `[a-[b]]` in an XSD pattern. Real-world patterns rarely
+/// exceed 4-5 levels of nesting; 64 is generous headroom while
+/// preventing a pathologically-deep pattern from stack-overflowing the
+/// recursive-descent parser. Override via
+/// [`XsdRegex::compile_with_max_depth`].
+pub const DEFAULT_MAX_REGEX_GROUP_DEPTH: u32 = 64;
+
 impl XsdRegex {
-    /// Compile an XSD pattern string into a regex.
+    /// Compile an XSD pattern string into a regex using the default
+    /// group-nesting cap ([`DEFAULT_MAX_REGEX_GROUP_DEPTH`]).
     pub fn compile(pattern: &str) -> Result<Self, String> {
+        Self::compile_with_max_depth(pattern, DEFAULT_MAX_REGEX_GROUP_DEPTH)
+    }
+
+    /// Compile an XSD pattern with an explicit group-nesting cap. Useful
+    /// when the caller has their own budget (e.g. a stricter sandbox)
+    /// or legitimately needs to accept patterns deeper than the default
+    /// permits.
+    pub fn compile_with_max_depth(pattern: &str, max_depth: u32) -> Result<Self, String> {
         let chars: Vec<char> = pattern.chars().collect();
         let mut pos = 0;
-        let node = parse_alternation(&chars, &mut pos)?;
+        let node = parse_alternation(&chars, &mut pos, 0, max_depth)?;
         if pos < chars.len() {
             return Err(format!(
                 "Unexpected character '{}' at position {}",
@@ -122,11 +139,21 @@ impl XsdRegex {
 // ─── Parser ──────────────────────────────────────────────────────────────────
 
 /// Parse alternation: branch ('|' branch)*
-fn parse_alternation(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
-    let mut branches = vec![parse_sequence(chars, pos)?];
+///
+/// `depth` is the current `(...)` / `-[...]` nesting depth; `max_depth`
+/// is the configured cap (from [`XsdRegex::compile_with_max_depth`]).
+/// Together they let a pathological pattern fail with a clean error
+/// rather than stack-overflowing the process.
+fn parse_alternation(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
+    let mut branches = vec![parse_sequence(chars, pos, depth, max_depth)?];
     while *pos < chars.len() && chars[*pos] == '|' {
         *pos += 1;
-        branches.push(parse_sequence(chars, pos)?);
+        branches.push(parse_sequence(chars, pos, depth, max_depth)?);
     }
     if branches.len() == 1 {
         Ok(branches.pop().unwrap())
@@ -136,10 +163,15 @@ fn parse_alternation(chars: &[char], pos: &mut usize) -> Result<RegexNode, Strin
 }
 
 /// Parse a sequence of quantified atoms.
-fn parse_sequence(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
+fn parse_sequence(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
     let mut items = Vec::new();
     while *pos < chars.len() && chars[*pos] != '|' && chars[*pos] != ')' {
-        items.push(parse_quantified(chars, pos)?);
+        items.push(parse_quantified(chars, pos, depth, max_depth)?);
     }
     if items.len() == 1 {
         Ok(items.pop().unwrap())
@@ -149,8 +181,13 @@ fn parse_sequence(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> 
 }
 
 /// Parse an atom followed by an optional quantifier.
-fn parse_quantified(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
-    let atom = parse_atom(chars, pos)?;
+fn parse_quantified(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
+    let atom = parse_atom(chars, pos, depth, max_depth)?;
     if *pos < chars.len() {
         match chars[*pos] {
             '*' => {
@@ -241,14 +278,25 @@ fn parse_number(chars: &[char], pos: &mut usize) -> Result<usize, String> {
 }
 
 /// Parse a single atom: literal, '.', escape, group, or character class.
-fn parse_atom(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
+fn parse_atom(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
     if *pos >= chars.len() {
         return Err("Unexpected end of pattern".into());
     }
     match chars[*pos] {
         '(' => {
+            if depth >= max_depth {
+                return Err(format!(
+                    "Pattern group nesting exceeds maximum depth of {}",
+                    max_depth
+                ));
+            }
             *pos += 1;
-            let inner = parse_alternation(chars, pos)?;
+            let inner = parse_alternation(chars, pos, depth + 1, max_depth)?;
             if *pos < chars.len() && chars[*pos] == ')' {
                 *pos += 1;
                 Ok(inner)
@@ -257,7 +305,7 @@ fn parse_atom(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
             }
         }
         '[' => {
-            let cc = parse_char_class(chars, pos)?;
+            let cc = parse_char_class(chars, pos, depth, max_depth)?;
             Ok(RegexNode::CharClass(cc))
         }
         '.' => {
@@ -363,7 +411,12 @@ fn parse_escape(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
 }
 
 /// Parse a character class: [...]
-fn parse_char_class(chars: &[char], pos: &mut usize) -> Result<CharClass, String> {
+fn parse_char_class(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<CharClass, String> {
     *pos += 1; // skip '['
     let negated = if *pos < chars.len() && chars[*pos] == '^' {
         *pos += 1;
@@ -379,8 +432,14 @@ fn parse_char_class(chars: &[char], pos: &mut usize) -> Result<CharClass, String
     let subtraction = if *pos < chars.len() && chars[*pos] == '-' {
         // Look ahead: if next is '[', it's subtraction
         if *pos + 1 < chars.len() && chars[*pos + 1] == '[' {
+            if depth >= max_depth {
+                return Err(format!(
+                    "Character-class subtraction nesting exceeds maximum depth of {}",
+                    max_depth
+                ));
+            }
             *pos += 1; // skip '-'
-            let sub = parse_char_class(chars, pos)?;
+            let sub = parse_char_class(chars, pos, depth + 1, max_depth)?;
             Some(Box::new(sub))
         } else {
             // Trailing dash — treat as literal
@@ -1794,5 +1853,83 @@ mod tests {
         let re = XsdRegex::compile("a\\nb").unwrap();
         assert!(re.is_match("a\nb"));
         assert!(!re.is_match("ab"));
+    }
+
+    /// F-04: deeply nested `(...)` groups must be rejected cleanly
+    /// instead of stack-overflowing the recursive-descent parser.
+    #[test]
+    fn test_group_depth_cap_rejects_deep_nesting() {
+        let mut pat = String::new();
+        for _ in 0..500 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..500 {
+            pat.push(')');
+        }
+        let err = XsdRegex::compile(&pat).expect_err("deep nesting must be rejected");
+        assert!(
+            err.contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// F-04: same guard for character-class subtraction nesting.
+    #[test]
+    fn test_class_subtraction_depth_cap() {
+        let mut pat = String::new();
+        for _ in 0..500 {
+            pat.push_str("[a-");
+        }
+        pat.push_str("[a-z]");
+        for _ in 0..500 {
+            pat.push(']');
+        }
+        let err =
+            XsdRegex::compile(&pat).expect_err("deep class-subtraction nesting must be rejected");
+        assert!(
+            err.contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// Legitimate nesting well under the cap still compiles.
+    #[test]
+    fn test_moderate_group_nesting_still_compiles() {
+        // 10 levels of nesting is common in real schemas.
+        let mut pat = String::new();
+        for _ in 0..10 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..10 {
+            pat.push(')');
+        }
+        let re = XsdRegex::compile(&pat).expect("10-deep nesting must compile");
+        assert!(re.is_match("a"));
+    }
+
+    /// F-1 (review follow-up): custom cap via `compile_with_max_depth`
+    /// must fire at the configured value.
+    #[test]
+    fn test_compile_with_custom_max_depth() {
+        // 10-deep pattern: cap of 5 rejects, cap of 20 accepts.
+        let mut pat = String::new();
+        for _ in 0..10 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..10 {
+            pat.push(')');
+        }
+        assert!(
+            XsdRegex::compile_with_max_depth(&pat, 5).is_err(),
+            "cap of 5 must reject 10-deep pattern"
+        );
+        let re = XsdRegex::compile_with_max_depth(&pat, 20)
+            .expect("cap of 20 must admit 10-deep pattern");
+        assert!(re.is_match("a"));
     }
 }
