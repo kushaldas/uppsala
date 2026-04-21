@@ -279,3 +279,211 @@ fn undeclared_prefix_in_ref_fails_closed() {
          silently matched an element in the wrong namespace"
     );
 }
+
+/// F-10: a schema that uses `xs:include schemaLocation="/etc/passwd"` or
+/// any absolute path outside its own base directory must be rejected.
+/// Before the fix, the loader `std::fs::read_to_string`d the path verbatim.
+#[test]
+fn absolute_schema_location_is_rejected() {
+    let dir = std::env::temp_dir().join(format!(
+        "uppsala-f10-abs-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos(),
+    ));
+    fs::create_dir_all(&dir).unwrap();
+
+    // Put the "secret" schema OUTSIDE the schema's base directory.
+    let outside =
+        std::env::temp_dir().join(format!("uppsala-f10-outside-{}.xsd", std::process::id()));
+    fs::write(
+        &outside,
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="leaked" type="xs:string"/>
+</xs:schema>"#,
+    )
+    .unwrap();
+
+    // The schema we hand the validator tries to include it by absolute path.
+    let schema_path = dir.join("evil.xsd");
+    let schema = format!(
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="{}"/>
+  <xs:element name="x" type="xs:string"/>
+</xs:schema>"#,
+        outside.display()
+    );
+    fs::write(&schema_path, &schema).unwrap();
+
+    let schema_doc = uppsala::parse(&schema).unwrap();
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&schema_path));
+
+    let _ = fs::remove_dir_all(&dir);
+    let _ = fs::remove_file(&outside);
+
+    let err = built
+        .err()
+        .expect("absolute schemaLocation must be rejected");
+    let msg = format!("{}", err);
+    assert!(
+        msg.contains("escapes the schema's base directory")
+            || msg.contains("absolute URI not supported"),
+        "expected containment error, got: {}",
+        msg
+    );
+}
+
+/// F-10: `schemaLocation="../../../../etc/passwd"` that canonicalizes to
+/// a path outside the schema's directory must be rejected.
+#[test]
+fn parent_traversal_schema_location_is_rejected() {
+    let dir = mkdir_unique("f10-traversal");
+    let nested = dir.join("sub");
+    fs::create_dir_all(&nested).unwrap();
+
+    // "Secret" file lives in `dir` (one level up from `nested`).
+    let secret = dir.join("secret.xsd");
+    fs::write(
+        &secret,
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="secret" type="xs:string"/>
+</xs:schema>"#,
+    )
+    .unwrap();
+
+    // The schema's base dir is `nested/`; the include escapes upward.
+    let schema_path = nested.join("evil.xsd");
+    let schema = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="../secret.xsd"/>
+  <xs:element name="x" type="xs:string"/>
+</xs:schema>"#;
+    fs::write(&schema_path, schema).unwrap();
+
+    let schema_doc = uppsala::parse(schema).unwrap();
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&schema_path));
+    fs::remove_dir_all(&dir).ok();
+
+    assert!(
+        built.is_err(),
+        "`../` traversal out of schema base dir must be rejected"
+    );
+}
+
+/// F-10 positive control: an include within the same directory works fine.
+#[test]
+fn same_directory_include_is_allowed() {
+    let dir = mkdir_unique("f10-same-dir");
+
+    let inner_path = dir.join("inner.xsd");
+    fs::write(
+        &inner_path,
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="inner_leaf" type="xs:string"/>
+</xs:schema>"#,
+    )
+    .unwrap();
+
+    let schema_path = dir.join("outer.xsd");
+    let schema = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="inner.xsd"/>
+  <xs:element name="x" type="xs:string"/>
+</xs:schema>"#;
+    fs::write(&schema_path, schema).unwrap();
+
+    let schema_doc = uppsala::parse(schema).unwrap();
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&schema_path));
+    fs::remove_dir_all(&dir).ok();
+
+    let _validator = built.expect("same-dir include must be allowed");
+}
+
+/// F-11: a.xsd includes b.xsd which includes a.xsd. Before the fix this
+/// recursed until the thread stack overflowed. With the visited-paths
+/// set the second `xs:include` is short-circuited and the build succeeds.
+#[test]
+fn circular_include_terminates() {
+    let dir = mkdir_unique("f11-circular");
+
+    let a_path = dir.join("a.xsd");
+    let b_path = dir.join("b.xsd");
+    fs::write(
+        &a_path,
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="b.xsd"/>
+  <xs:element name="a_leaf" type="xs:string"/>
+</xs:schema>"#,
+    )
+    .unwrap();
+    fs::write(
+        &b_path,
+        r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="a.xsd"/>
+  <xs:element name="b_leaf" type="xs:string"/>
+</xs:schema>"#,
+    )
+    .unwrap();
+
+    let schema_src = fs::read_to_string(&a_path).unwrap();
+    let schema_doc = uppsala::parse(&schema_src).unwrap();
+    // Without the visited set this call recurses until SIGABRT.
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&a_path));
+    fs::remove_dir_all(&dir).ok();
+    assert!(
+        built.is_ok(),
+        "circular include must terminate cleanly, got: {:?}",
+        built.err()
+    );
+}
+
+/// F-11: include-nesting past `MAX_INCLUDE_DEPTH` errors with a clear
+/// message instead of exhausting the stack.
+#[test]
+fn deep_include_chain_rejected() {
+    let dir = mkdir_unique("f11-deep");
+    // 20 schemas each including the next one. Exceeds MAX_INCLUDE_DEPTH = 16.
+    let n = 20usize;
+    for i in 0..n {
+        let next = i + 1;
+        let body = if next < n {
+            format!(r#"<xs:include schemaLocation="s{}.xsd"/>"#, next)
+        } else {
+            String::new()
+        };
+        let path = dir.join(format!("s{}.xsd", i));
+        fs::write(
+            &path,
+            format!(
+                r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  {}
+  <xs:element name="e{}" type="xs:string"/>
+</xs:schema>"#,
+                body, i
+            ),
+        )
+        .unwrap();
+    }
+
+    let entry = dir.join("s0.xsd");
+    let schema_src = fs::read_to_string(&entry).unwrap();
+    let schema_doc = uppsala::parse(&schema_src).unwrap();
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&entry));
+    fs::remove_dir_all(&dir).ok();
+
+    let err = built.err().expect("20-deep include chain must be rejected");
+    assert!(
+        format!("{}", err).contains("nesting exceeds maximum depth"),
+        "expected include-depth error, got: {}",
+        err
+    );
+}

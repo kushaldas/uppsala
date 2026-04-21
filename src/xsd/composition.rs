@@ -20,7 +20,8 @@
 //! 5. **`reresolve_types_after_redefine`** updates complex types whose
 //!    group or attributeGroup references may have changed.
 
-use std::path::Path;
+use std::collections::HashSet;
+use std::path::{Path, PathBuf};
 
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::{XmlError, XmlResult};
@@ -33,19 +34,135 @@ use super::types::{
 };
 use super::XS_NAMESPACE;
 
+/// Maximum depth of `xs:include` / `xs:redefine` / `xs:import` nesting.
+///
+/// Real-world schemas rarely nest more than 2-3 levels (`A` imports `B`
+/// which imports `C`). 16 gives generous headroom while preventing the
+/// stack overflow a circular-include chain would otherwise trigger. Used
+/// in combination with a per-build visited-paths set so self-referential
+/// cycles short-circuit even earlier.
+pub(super) const MAX_INCLUDE_DEPTH: u8 = 16;
+
+/// State carried through recursive schema composition to detect cycles
+/// and enforce depth limits.
+pub(super) struct CompositionState {
+    /// Canonicalized absolute paths that have already been loaded during
+    /// this `from_schema_with_base_path` call. Reloads short-circuit so
+    /// `a.xsd` including `b.xsd` including `a.xsd` terminates cleanly.
+    pub(super) visited: HashSet<PathBuf>,
+    /// Current recursion depth. Incremented on each external schema
+    /// build; errors out when it reaches [`MAX_INCLUDE_DEPTH`].
+    pub(super) depth: u8,
+}
+
+impl CompositionState {
+    /// Fresh state, seeded with the top-level schema's canonical path so
+    /// the very first include won't try to re-load the outer document.
+    pub(super) fn new(base_path: Option<&Path>) -> Self {
+        let mut visited = HashSet::new();
+        if let Some(p) = base_path {
+            if let Ok(c) = p.canonicalize() {
+                visited.insert(c);
+            }
+        }
+        CompositionState { visited, depth: 0 }
+    }
+}
+
+/// Resolve a `schemaLocation` attribute to a filesystem path, applying
+/// F-10 containment, F-11 cycle detection, and the F-12 / TOCTOU fix in
+/// a single canonicalize step.
+///
+/// Returns:
+/// * `Ok(Some(canonical))` — load this path. The returned `PathBuf` has
+///   already been canonicalized (symlinks resolved), so the caller can
+///   pass it directly to `std::fs::read_to_string` without a race
+///   between the containment check and the read.
+/// * `Ok(None)` — silent-skip: either the target doesn't exist (matches
+///   pre-fix behaviour for relative `schemaLocation` typos) or the file
+///   was already loaded earlier in this build (cycle short-circuit).
+/// * `Err(...)` — reject: the target escapes the schema's base directory,
+///   or the attribute value is an absolute URI with a scheme we don't
+///   support (`http://`, `ftp://`, ...).
+fn resolve_include_path(
+    schema_location: &str,
+    base_dir: Option<&Path>,
+    canonical_base: Option<&Path>,
+    state: &mut CompositionState,
+    kind: &str,
+) -> XmlResult<Option<PathBuf>> {
+    let resolved_path = match base_dir {
+        Some(dir) => dir.join(schema_location),
+        None => PathBuf::from(schema_location),
+    };
+    let canonical = resolved_path.canonicalize().ok();
+
+    // F-10 containment check. When both canonicalized paths exist we
+    // require the resolved path to live under the base directory. When
+    // the target canonicalize fails we treat it as missing; the old
+    // `is_absolute_uri` error is still surfaced for http/ftp/... values
+    // that would never have loaded.
+    match (canonical_base, canonical.as_ref()) {
+        (Some(cb), Some(c)) if !c.starts_with(cb) => {
+            return Err(XmlError::validation(format!(
+                "Cannot resolve {} schemaLocation '{}': path escapes the schema's base directory",
+                kind, schema_location
+            )));
+        }
+        (Some(_), None) => {
+            if is_absolute_uri(schema_location) {
+                return Err(XmlError::validation(format!(
+                    "Cannot resolve {} schemaLocation '{}': absolute URI not supported",
+                    kind, schema_location
+                )));
+            }
+            return Ok(None);
+        }
+        _ => {}
+    }
+
+    // F-11 cycle detection keyed on the canonical path.
+    if let Some(ref c) = canonical {
+        if !state.visited.insert(c.clone()) {
+            return Ok(None);
+        }
+    }
+
+    // Prefer the canonical path for the subsequent read — that path has
+    // had its symlinks resolved, so a concurrent symlink swap cannot
+    // redirect the read outside the containment check we just passed.
+    // Fall back to the lexical `resolved_path` only when there's no
+    // containment to enforce (no base_dir), which is the pre-fix shape.
+    Ok(Some(canonical.unwrap_or(resolved_path)))
+}
+
 /// Process `xs:include`, `xs:redefine`, and `xs:import` elements in a schema
 /// document, loading external schemas and merging their declarations into the
 /// validator.
 ///
 /// Called during pass 0 of `from_schema_with_base_path` (only when a base path
 /// is available for resolving relative `schemaLocation` URIs).
+///
+/// `state` carries the visited-paths set and depth counter so circular
+/// includes terminate cleanly and pathological chains cannot stack-overflow.
 pub(super) fn process_schema_composition(
     schema_doc: &Document,
     schema_elem: NodeId,
     validator: &mut XsdValidator,
     base_path: Option<&Path>,
+    state: &mut CompositionState,
 ) -> XmlResult<()> {
+    if state.depth >= MAX_INCLUDE_DEPTH {
+        return Err(XmlError::validation(format!(
+            "Schema include/import/redefine nesting exceeds maximum depth of {}",
+            MAX_INCLUDE_DEPTH
+        )));
+    }
+
     let base_dir = base_path.and_then(|p| p.parent());
+    // Canonicalize the base once per call; reused as the containment
+    // anchor for every schemaLocation resolved in the loop below.
+    let canonical_base = base_dir.and_then(|b| b.canonicalize().ok());
 
     for child in schema_doc.children(schema_elem) {
         if let Some(NodeKind::Element(elem)) = schema_doc.node_kind(child) {
@@ -64,44 +181,43 @@ pub(super) fn process_schema_composition(
                         None => continue, // No schemaLocation, skip
                     };
 
-                    // Resolve the schema location relative to the base directory
-                    let resolved_path = match base_dir {
-                        Some(dir) => dir.join(schema_location),
-                        None => std::path::PathBuf::from(schema_location),
+                    // Resolve the schemaLocation to a canonical path,
+                    // enforcing F-10 containment, F-11 cycle detection,
+                    // and closing the TOCTOU window against concurrent
+                    // symlink swaps (F-12) in a single helper.
+                    let kind = if is_redefine { "redefine" } else { "include" };
+                    let canonical_path = match resolve_include_path(
+                        schema_location,
+                        base_dir,
+                        canonical_base.as_deref(),
+                        state,
+                        kind,
+                    )? {
+                        Some(p) => p,
+                        None => continue,
                     };
 
-                    // Load and parse the external schema
-                    let ext_str = match std::fs::read_to_string(&resolved_path) {
+                    // Load and parse the external schema from the
+                    // canonicalized path — symlinks already resolved,
+                    // so the read can't be redirected after the check.
+                    let ext_str = match std::fs::read_to_string(&canonical_path) {
                         Ok(s) => s,
-                        Err(_) => {
-                            if is_absolute_uri(schema_location) {
-                                return Err(XmlError::validation(format!(
-                                    "Cannot resolve {} schemaLocation '{}': absolute URI not supported",
-                                    if is_redefine { "redefine" } else { "include" },
-                                    schema_location
-                                )));
-                            }
-                            continue;
-                        }
+                        Err(_) => continue,
                     };
                     let ext_doc = match crate::parse(&ext_str) {
                         Ok(d) => d,
-                        Err(_) => {
-                            if is_absolute_uri(schema_location) {
-                                return Err(XmlError::validation(format!(
-                                    "Cannot resolve {} schemaLocation '{}': absolute URI not supported",
-                                    if is_redefine { "redefine" } else { "include" },
-                                    schema_location
-                                )));
-                            }
-                            continue;
-                        }
+                        Err(_) => continue,
                     };
 
-                    // Build a sub-validator from the external schema
-                    let ext_base_path = resolved_path.as_path();
-                    let ext_validator =
-                        XsdValidator::from_schema_with_base_path(&ext_doc, Some(ext_base_path))?;
+                    // Build a sub-validator from the external schema,
+                    // propagating the visited set and incrementing depth.
+                    state.depth += 1;
+                    let ext_validator = XsdValidator::from_schema_with_composition_state(
+                        &ext_doc,
+                        Some(&canonical_path),
+                        state,
+                    )?;
+                    state.depth -= 1;
 
                     // Determine the effective namespace for included declarations.
                     // "Chameleon include": if the external schema has no targetNamespace
@@ -128,26 +244,36 @@ pub(super) fn process_schema_composition(
                         None => continue, // No schemaLocation, skip (namespace-only import)
                     };
 
-                    // Resolve the schema location relative to the base directory
-                    let resolved_path = match base_dir {
-                        Some(dir) => dir.join(schema_location),
-                        None => std::path::PathBuf::from(schema_location),
+                    // Same resolve-then-read sequence as include/redefine.
+                    let canonical_path = match resolve_include_path(
+                        schema_location,
+                        base_dir,
+                        canonical_base.as_deref(),
+                        state,
+                        "import",
+                    )? {
+                        Some(p) => p,
+                        None => continue,
                     };
 
-                    // Load and parse the external schema
-                    let ext_str = match std::fs::read_to_string(&resolved_path) {
+                    // Load and parse the external schema.
+                    let ext_str = match std::fs::read_to_string(&canonical_path) {
                         Ok(s) => s,
-                        Err(_) => continue, // Can't load — skip silently
+                        Err(_) => continue,
                     };
                     let ext_doc = match crate::parse(&ext_str) {
                         Ok(d) => d,
-                        Err(_) => continue, // Can't parse — skip silently
+                        Err(_) => continue,
                     };
 
-                    // Build a sub-validator from the external schema
-                    let ext_base_path = resolved_path.as_path();
-                    let ext_validator =
-                        XsdValidator::from_schema_with_base_path(&ext_doc, Some(ext_base_path))?;
+                    // Build a sub-validator from the external schema.
+                    state.depth += 1;
+                    let ext_validator = XsdValidator::from_schema_with_composition_state(
+                        &ext_doc,
+                        Some(&canonical_path),
+                        state,
+                    )?;
+                    state.depth -= 1;
 
                     // Import never uses chameleon fixup — the imported schema
                     // has its own targetNamespace which is preserved as-is.
