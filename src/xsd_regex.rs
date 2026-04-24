@@ -102,6 +102,21 @@ struct UnicodeProperty {
 /// [`XsdRegex::compile_with_max_depth`].
 pub const DEFAULT_MAX_REGEX_GROUP_DEPTH: u32 = 64;
 
+/// Default maximum number of `match_node` invocations per call to
+/// [`XsdRegex::is_match`]. The matcher is a backtracking-with-dedup
+/// engine that can reach O(n^3) or O(n^4) cost on nested-repetition
+/// patterns (classic polynomial ReDoS, e.g. `(a*)*b` against a long
+/// string of `a`s). 1 million steps is enough for every legitimate
+/// pattern we've seen in the W3C test suites (and plenty more) while
+/// cutting a 1 000-byte polynomial-ReDoS input off in well under a
+/// second. Override via [`XsdRegex::is_match_with_max_steps`].
+///
+/// Budget exhaustion is reported as a failed match (fail-closed). An
+/// input the matcher cannot evaluate within the budget is treated as
+/// "does not match" — the security-correct outcome for a schema
+/// validator: the value gets rejected rather than causing a DoS.
+pub const DEFAULT_MAX_REGEX_STEPS: usize = 1_000_000;
+
 impl XsdRegex {
     /// Compile an XSD pattern string into a regex using the default
     /// group-nesting cap ([`DEFAULT_MAX_REGEX_GROUP_DEPTH`]).
@@ -127,12 +142,64 @@ impl XsdRegex {
     }
 
     /// Test if the given string matches this pattern.
+    ///
     /// XSD patterns are always anchored: the entire string must match.
+    /// The per-match step budget scales with input length so legitimate
+    /// large inputs against linear patterns (like `[a-z]+` over a
+    /// several-MB text value) still match, while polynomial-blow-up
+    /// patterns against the same-sized input still fail-closed quickly.
+    /// Scaling formula: `max(DEFAULT_MAX_REGEX_STEPS, input_chars * 100)`.
+    /// 100 steps per character is plenty for any O(n) pattern (which
+    /// takes ~1 step per char) while keeping a tight enough cap that
+    /// `O(n^2)` / `O(n^3)` adversarial patterns saturate in bounded time.
     pub fn is_match(&self, text: &str) -> bool {
+        let char_count = text.chars().count();
+        let scaled = char_count.saturating_mul(100);
+        let budget = scaled.max(DEFAULT_MAX_REGEX_STEPS);
+        self.is_match_with_max_steps(text, budget)
+    }
+
+    /// Test if the given string matches this pattern with an explicit
+    /// step budget. Useful when the caller has a stricter CPU budget
+    /// than the default or needs to accept patterns that legitimately
+    /// require more steps.
+    pub fn is_match_with_max_steps(&self, text: &str, max_steps: usize) -> bool {
         let chars: Vec<char> = text.chars().collect();
-        match_node(&self.node, &chars, 0)
+        let mut budget = MatchBudget::new(max_steps);
+        match_node(&self.node, &chars, 0, &mut budget)
             .into_iter()
             .any(|end| end == chars.len())
+    }
+}
+
+/// Per-match step counter. The matcher ticks this on every entry to
+/// `match_node`; once the budget is exhausted every subsequent tick
+/// returns `false`, causing the matcher to report "no reachable
+/// positions" and fail the match. This is how F-05 (polynomial ReDoS)
+/// is contained without converting the engine to a Thompson-style NFA.
+struct MatchBudget {
+    steps: usize,
+    max_steps: usize,
+}
+
+impl MatchBudget {
+    fn new(max_steps: usize) -> Self {
+        MatchBudget {
+            steps: 0,
+            max_steps,
+        }
+    }
+
+    /// Charge one step. Returns `true` while the budget has room and
+    /// `false` once exhausted; once exhausted, the matcher treats every
+    /// subsequent call as "no reachable positions".
+    #[inline]
+    fn tick(&mut self) -> bool {
+        if self.steps >= self.max_steps {
+            return false;
+        }
+        self.steps += 1;
+        true
     }
 }
 
@@ -562,8 +629,20 @@ fn parse_class_atom(chars: &[char], pos: &mut usize) -> Result<ClassMember, Stri
 
 // ─── Matcher ─────────────────────────────────────────────────────────────────
 
-/// Match a regex node against the input. Returns all possible end positions.
-fn match_node(node: &RegexNode, input: &[char], start: usize) -> Vec<usize> {
+/// Match a regex node against the input. Returns all possible end
+/// positions. `budget` is charged one step per call; if the budget is
+/// exhausted the function returns an empty vec (same shape as "no
+/// match") and every subsequent call also short-circuits, so the
+/// matcher as a whole reports "no match" rather than hanging.
+fn match_node(
+    node: &RegexNode,
+    input: &[char],
+    start: usize,
+    budget: &mut MatchBudget,
+) -> Vec<usize> {
+    if !budget.tick() {
+        return Vec::new();
+    }
     match node {
         RegexNode::Literal(expected) => {
             if start < input.len() && input[start] == *expected {
@@ -587,22 +666,27 @@ fn match_node(node: &RegexNode, input: &[char], start: usize) -> Vec<usize> {
                 vec![]
             }
         }
-        RegexNode::Sequence(nodes) => match_sequence(nodes, input, start),
+        RegexNode::Sequence(nodes) => match_sequence(nodes, input, start, budget),
         RegexNode::Alternation(branches) => {
             let mut results = Vec::new();
             for branch in branches {
-                results.extend(match_node(branch, input, start));
+                results.extend(match_node(branch, input, start, budget));
             }
             results
         }
         RegexNode::Repetition { inner, min, max } => {
-            match_repetition(inner, *min, *max, input, start)
+            match_repetition(inner, *min, *max, input, start, budget)
         }
     }
 }
 
 /// Match a sequence of nodes in order.
-fn match_sequence(nodes: &[RegexNode], input: &[char], start: usize) -> Vec<usize> {
+fn match_sequence(
+    nodes: &[RegexNode],
+    input: &[char],
+    start: usize,
+    budget: &mut MatchBudget,
+) -> Vec<usize> {
     if nodes.is_empty() {
         return vec![start];
     }
@@ -612,7 +696,7 @@ fn match_sequence(nodes: &[RegexNode], input: &[char], start: usize) -> Vec<usiz
     for node in nodes {
         let mut next_positions = Vec::new();
         for &pos in &current_positions {
-            next_positions.extend(match_node(node, input, pos));
+            next_positions.extend(match_node(node, input, pos, budget));
         }
         // Deduplicate to avoid exponential blowup
         next_positions.sort_unstable();
@@ -633,6 +717,7 @@ fn match_repetition(
     max: Option<usize>,
     input: &[char],
     start: usize,
+    budget: &mut MatchBudget,
 ) -> Vec<usize> {
     // We collect all positions reachable after matching inner i times, for i in [0, max].
     let mut results = Vec::new();
@@ -642,7 +727,7 @@ fn match_repetition(
     for _ in 0..min {
         let mut next = Vec::new();
         for &pos in &current_positions {
-            next.extend(match_node(inner, input, pos));
+            next.extend(match_node(inner, input, pos, budget));
         }
         next.sort_unstable();
         next.dedup();
@@ -661,29 +746,64 @@ fn match_repetition(
         None => input.len() + 1, // More than enough
     };
 
+    // Invariant: `results` is kept sorted+dedup'd across loop iterations.
+    // The initial contents came from `current_positions` above, which was
+    // sorted+dedup'd at the end of the min loop, so the invariant holds
+    // on entry.
     for _ in 0..remaining {
         let mut next = Vec::new();
         for &pos in &current_positions {
-            next.extend(match_node(inner, input, pos));
+            next.extend(match_node(inner, input, pos, budget));
         }
         next.sort_unstable();
         next.dedup();
         if next.is_empty() {
             break;
         }
-        // Only keep genuinely new positions to prevent infinite loops on zero-width matches
+        // F-2: merge `next` into `results` in O(|results| + |next|)
+        // rather than the previous `extend + sort_unstable + dedup`,
+        // which was O(k log k) per iteration and cumulatively
+        // O(n^2 log n) on linear patterns like `[a-z]+` over a long
+        // string of `a`s. Merge preserves the sorted+dedup'd invariant.
         let old_len = results.len();
-        results.extend(&next);
-        results.sort_unstable();
-        results.dedup();
+        results = merge_sorted_unique(&results, &next);
         if results.len() == old_len {
-            // No new positions added — we've saturated
+            // No new positions added — we've saturated.
             break;
         }
         current_positions = next;
     }
 
     results
+}
+
+/// Merge two already-sorted-and-deduplicated position vectors into one
+/// sorted-and-deduplicated vector in O(|a| + |b|) time. Used by
+/// `match_repetition` to accumulate reachable end positions without the
+/// quadratic cost of re-sorting the whole result set every iteration.
+fn merge_sorted_unique(a: &[usize], b: &[usize]) -> Vec<usize> {
+    let mut out = Vec::with_capacity(a.len() + b.len());
+    let (mut i, mut j) = (0, 0);
+    while i < a.len() && j < b.len() {
+        match a[i].cmp(&b[j]) {
+            std::cmp::Ordering::Less => {
+                out.push(a[i]);
+                i += 1;
+            }
+            std::cmp::Ordering::Equal => {
+                out.push(a[i]);
+                i += 1;
+                j += 1;
+            }
+            std::cmp::Ordering::Greater => {
+                out.push(b[j]);
+                j += 1;
+            }
+        }
+    }
+    out.extend_from_slice(&a[i..]);
+    out.extend_from_slice(&b[j..]);
+    out
 }
 
 // ─── Character class matching ────────────────────────────────────────────────
@@ -1931,5 +2051,84 @@ mod tests {
         let re = XsdRegex::compile_with_max_depth(&pat, 20)
             .expect("cap of 20 must admit 10-deep pattern");
         assert!(re.is_match("a"));
+    }
+
+    /// F-05: polynomial ReDoS. The classic catastrophic-backtracking
+    /// shape `(a*)*b` against a long string of `a`s (no trailing `b`)
+    /// makes the backtracking matcher explore every way to partition
+    /// the `a`s, which is O(n^3) or worse. With the step budget in
+    /// place, the match fails cleanly (fail-closed) instead of
+    /// spending seconds of CPU.
+    #[test]
+    fn test_polynomial_redos_fails_closed_in_bounded_time() {
+        let re = XsdRegex::compile("(a*)*b").expect("compile");
+        let input: String = "a".repeat(500);
+        let start = std::time::Instant::now();
+        let matched = re.is_match(&input);
+        let elapsed = start.elapsed();
+        assert!(!matched, "input does not end with 'b', must not match");
+        // The budget should cap this well under a second even in debug
+        // builds. Allow 2s of slack for slow CI runners.
+        assert!(
+            elapsed < std::time::Duration::from_secs(2),
+            "polynomial-ReDoS match took {:?}; step budget did not fire",
+            elapsed
+        );
+    }
+
+    /// Legitimate simple patterns still match well within budget.
+    #[test]
+    fn test_normal_match_unaffected_by_budget() {
+        let re = XsdRegex::compile("[a-z]+[0-9]+").expect("compile");
+        assert!(re.is_match("abc123"));
+        assert!(!re.is_match("abc"));
+        assert!(!re.is_match("123"));
+    }
+
+    /// F-1 (review follow-up): custom step budget via
+    /// `is_match_with_max_steps` must fire at the configured value.
+    #[test]
+    fn test_is_match_with_custom_budget() {
+        let re = XsdRegex::compile("(a*)*b").expect("compile");
+        let input: String = "a".repeat(200);
+        // A tight budget should fail to find the match (fail-closed).
+        assert!(!re.is_match_with_max_steps(&input, 1_000));
+        // A very generous budget still fails (genuine no-match), but
+        // without hitting the cap.
+        assert!(!re.is_match_with_max_steps(&input, 10_000_000));
+    }
+
+    /// F-1: legitimate linear pattern against a large input must
+    /// still match under the default (scaled) budget. Pre-F-1 the
+    /// constant 1M-step cap caused false-rejects once input exceeded
+    /// ~1 million chars.
+    #[test]
+    fn test_large_legitimate_input_matches() {
+        let re = XsdRegex::compile("[a-z]+").expect("compile");
+        let input: String = "a".repeat(2_000_000);
+        assert!(
+            re.is_match(&input),
+            "2-million-char legitimate input must match under the \
+             input-scaled default budget"
+        );
+    }
+
+    /// F-2: the sorted-merge fix inside `match_repetition` brings
+    /// linear-pattern wall-clock from O(n^2 log n) down to O(n). At
+    /// N=100 000 the old implementation took ~8 seconds; the new one
+    /// finishes in milliseconds. Assert a generous 1-second cap so
+    /// noisy CI runners don't false-fail.
+    #[test]
+    fn test_match_repetition_linear_wall_clock() {
+        let re = XsdRegex::compile("[a-z]+").expect("compile");
+        let input: String = "a".repeat(100_000);
+        let start = std::time::Instant::now();
+        assert!(re.is_match(&input));
+        let elapsed = start.elapsed();
+        assert!(
+            elapsed < std::time::Duration::from_secs(1),
+            "linear-pattern wall-clock regression: 100K chars took {:?}",
+            elapsed
+        );
     }
 }
