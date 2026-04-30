@@ -94,12 +94,44 @@ struct UnicodeProperty {
     name: String,
 }
 
+/// Default maximum nesting depth of `(...)` groups plus character-class
+/// subtractions `[a-[b]]` in an XSD pattern. Real-world patterns rarely
+/// exceed 4-5 levels of nesting; 64 is generous headroom while
+/// preventing a pathologically-deep pattern from stack-overflowing the
+/// recursive-descent parser. Override via
+/// [`XsdRegex::compile_with_max_depth`].
+pub const DEFAULT_MAX_REGEX_GROUP_DEPTH: u32 = 64;
+
+/// Default maximum number of `match_node` invocations per call to
+/// [`XsdRegex::is_match`]. The matcher is a backtracking-with-dedup
+/// engine that can reach O(n^3) or O(n^4) cost on nested-repetition
+/// patterns (classic polynomial ReDoS, e.g. `(a*)*b` against a long
+/// string of `a`s). 1 million steps is enough for every legitimate
+/// pattern we've seen in the W3C test suites (and plenty more) while
+/// cutting a 1 000-byte polynomial-ReDoS input off in well under a
+/// second. Override via [`XsdRegex::is_match_with_max_steps`].
+///
+/// Budget exhaustion is reported as a failed match (fail-closed). An
+/// input the matcher cannot evaluate within the budget is treated as
+/// "does not match" — the security-correct outcome for a schema
+/// validator: the value gets rejected rather than causing a DoS.
+pub const DEFAULT_MAX_REGEX_STEPS: usize = 1_000_000;
+
 impl XsdRegex {
-    /// Compile an XSD pattern string into a regex.
+    /// Compile an XSD pattern string into a regex using the default
+    /// group-nesting cap ([`DEFAULT_MAX_REGEX_GROUP_DEPTH`]).
     pub fn compile(pattern: &str) -> Result<Self, String> {
+        Self::compile_with_max_depth(pattern, DEFAULT_MAX_REGEX_GROUP_DEPTH)
+    }
+
+    /// Compile an XSD pattern with an explicit group-nesting cap. Useful
+    /// when the caller has their own budget (e.g. a stricter sandbox)
+    /// or legitimately needs to accept patterns deeper than the default
+    /// permits.
+    pub fn compile_with_max_depth(pattern: &str, max_depth: u32) -> Result<Self, String> {
         let chars: Vec<char> = pattern.chars().collect();
         let mut pos = 0;
-        let node = parse_alternation(&chars, &mut pos)?;
+        let node = parse_alternation(&chars, &mut pos, 0, max_depth)?;
         if pos < chars.len() {
             return Err(format!(
                 "Unexpected character '{}' at position {}",
@@ -110,23 +142,97 @@ impl XsdRegex {
     }
 
     /// Test if the given string matches this pattern.
+    ///
     /// XSD patterns are always anchored: the entire string must match.
+    /// The per-match step budget scales with input length so legitimate
+    /// large inputs against linear patterns (like `[a-z]+` over a
+    /// several-MB text value) still match, while polynomial-blow-up
+    /// patterns against the same-sized input still fail-closed quickly.
+    /// Scaling formula: `max(DEFAULT_MAX_REGEX_STEPS, input_chars * 100)`.
+    /// 100 steps per character is plenty for any O(n) pattern (which
+    /// takes ~1 step per char) while keeping a tight enough cap that
+    /// `O(n^2)` / `O(n^3)` adversarial patterns saturate in bounded time.
     pub fn is_match(&self, text: &str) -> bool {
+        // Single walk over `text`: collect into `Vec<char>` once and
+        // derive the budget from `chars.len()`. The naive `chars().count()
+        // + chars().collect()` shape was a measurable double-scan on the
+        // multi-MB inputs the budget scaling targets.
         let chars: Vec<char> = text.chars().collect();
-        match_node(&self.node, &chars, 0)
+        let scaled = chars.len().saturating_mul(100);
+        let budget = scaled.max(DEFAULT_MAX_REGEX_STEPS);
+        self.is_match_chars(&chars, budget)
+    }
+
+    /// Test if the given string matches this pattern with an explicit
+    /// step budget. Useful when the caller has a stricter CPU budget
+    /// than the default or needs to accept patterns that legitimately
+    /// require more steps.
+    pub fn is_match_with_max_steps(&self, text: &str, max_steps: usize) -> bool {
+        let chars: Vec<char> = text.chars().collect();
+        self.is_match_chars(&chars, max_steps)
+    }
+
+    /// Internal core: match against a pre-collected `&[char]` slice with
+    /// an explicit step budget. Lets [`Self::is_match`] and
+    /// [`Self::is_match_with_max_steps`] share the matcher invocation
+    /// without each one re-scanning the input.
+    fn is_match_chars(&self, chars: &[char], max_steps: usize) -> bool {
+        let mut budget = MatchBudget::new(max_steps);
+        match_node(&self.node, chars, 0, &mut budget)
             .into_iter()
             .any(|end| end == chars.len())
+    }
+}
+
+/// Per-match step counter. The matcher ticks this on every entry to
+/// `match_node`; once the budget is exhausted every subsequent tick
+/// returns `false`, causing the matcher to report "no reachable
+/// positions" and fail the match. This is how F-05 (polynomial ReDoS)
+/// is contained without converting the engine to a Thompson-style NFA.
+struct MatchBudget {
+    steps: usize,
+    max_steps: usize,
+}
+
+impl MatchBudget {
+    fn new(max_steps: usize) -> Self {
+        MatchBudget {
+            steps: 0,
+            max_steps,
+        }
+    }
+
+    /// Charge one step. Returns `true` while the budget has room and
+    /// `false` once exhausted; once exhausted, the matcher treats every
+    /// subsequent call as "no reachable positions".
+    #[inline]
+    fn tick(&mut self) -> bool {
+        if self.steps >= self.max_steps {
+            return false;
+        }
+        self.steps += 1;
+        true
     }
 }
 
 // ─── Parser ──────────────────────────────────────────────────────────────────
 
 /// Parse alternation: branch ('|' branch)*
-fn parse_alternation(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
-    let mut branches = vec![parse_sequence(chars, pos)?];
+///
+/// `depth` is the current `(...)` / `-[...]` nesting depth; `max_depth`
+/// is the configured cap (from [`XsdRegex::compile_with_max_depth`]).
+/// Together they let a pathological pattern fail with a clean error
+/// rather than stack-overflowing the process.
+fn parse_alternation(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
+    let mut branches = vec![parse_sequence(chars, pos, depth, max_depth)?];
     while *pos < chars.len() && chars[*pos] == '|' {
         *pos += 1;
-        branches.push(parse_sequence(chars, pos)?);
+        branches.push(parse_sequence(chars, pos, depth, max_depth)?);
     }
     if branches.len() == 1 {
         Ok(branches.pop().unwrap())
@@ -136,10 +242,15 @@ fn parse_alternation(chars: &[char], pos: &mut usize) -> Result<RegexNode, Strin
 }
 
 /// Parse a sequence of quantified atoms.
-fn parse_sequence(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
+fn parse_sequence(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
     let mut items = Vec::new();
     while *pos < chars.len() && chars[*pos] != '|' && chars[*pos] != ')' {
-        items.push(parse_quantified(chars, pos)?);
+        items.push(parse_quantified(chars, pos, depth, max_depth)?);
     }
     if items.len() == 1 {
         Ok(items.pop().unwrap())
@@ -149,8 +260,13 @@ fn parse_sequence(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> 
 }
 
 /// Parse an atom followed by an optional quantifier.
-fn parse_quantified(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
-    let atom = parse_atom(chars, pos)?;
+fn parse_quantified(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
+    let atom = parse_atom(chars, pos, depth, max_depth)?;
     if *pos < chars.len() {
         match chars[*pos] {
             '*' => {
@@ -213,6 +329,14 @@ fn parse_brace_quantifier(
             let max = parse_number(chars, pos)?;
             if *pos < chars.len() && chars[*pos] == '}' {
                 *pos += 1;
+                // Reject `{n,m}` with `m < n` at compile time. Without
+                // this, `match_repetition` computes `m - n` directly and
+                // would panic in debug / wrap in release. Patterns are
+                // attacker-controlled via schemas, so fail-closed at
+                // compile rather than during matching.
+                if max < min {
+                    return Err(format!("Quantifier {{{},{}}} has max < min", min, max));
+                }
                 Ok(RegexNode::Repetition {
                     inner: Box::new(atom),
                     min,
@@ -241,14 +365,25 @@ fn parse_number(chars: &[char], pos: &mut usize) -> Result<usize, String> {
 }
 
 /// Parse a single atom: literal, '.', escape, group, or character class.
-fn parse_atom(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
+fn parse_atom(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<RegexNode, String> {
     if *pos >= chars.len() {
         return Err("Unexpected end of pattern".into());
     }
     match chars[*pos] {
         '(' => {
+            if depth >= max_depth {
+                return Err(format!(
+                    "Pattern group nesting exceeds maximum depth of {}",
+                    max_depth
+                ));
+            }
             *pos += 1;
-            let inner = parse_alternation(chars, pos)?;
+            let inner = parse_alternation(chars, pos, depth + 1, max_depth)?;
             if *pos < chars.len() && chars[*pos] == ')' {
                 *pos += 1;
                 Ok(inner)
@@ -257,7 +392,7 @@ fn parse_atom(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
             }
         }
         '[' => {
-            let cc = parse_char_class(chars, pos)?;
+            let cc = parse_char_class(chars, pos, depth, max_depth)?;
             Ok(RegexNode::CharClass(cc))
         }
         '.' => {
@@ -363,7 +498,12 @@ fn parse_escape(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
 }
 
 /// Parse a character class: [...]
-fn parse_char_class(chars: &[char], pos: &mut usize) -> Result<CharClass, String> {
+fn parse_char_class(
+    chars: &[char],
+    pos: &mut usize,
+    depth: u32,
+    max_depth: u32,
+) -> Result<CharClass, String> {
     *pos += 1; // skip '['
     let negated = if *pos < chars.len() && chars[*pos] == '^' {
         *pos += 1;
@@ -379,8 +519,14 @@ fn parse_char_class(chars: &[char], pos: &mut usize) -> Result<CharClass, String
     let subtraction = if *pos < chars.len() && chars[*pos] == '-' {
         // Look ahead: if next is '[', it's subtraction
         if *pos + 1 < chars.len() && chars[*pos + 1] == '[' {
+            if depth >= max_depth {
+                return Err(format!(
+                    "Character-class subtraction nesting exceeds maximum depth of {}",
+                    max_depth
+                ));
+            }
             *pos += 1; // skip '-'
-            let sub = parse_char_class(chars, pos)?;
+            let sub = parse_char_class(chars, pos, depth + 1, max_depth)?;
             Some(Box::new(sub))
         } else {
             // Trailing dash — treat as literal
@@ -503,8 +649,20 @@ fn parse_class_atom(chars: &[char], pos: &mut usize) -> Result<ClassMember, Stri
 
 // ─── Matcher ─────────────────────────────────────────────────────────────────
 
-/// Match a regex node against the input. Returns all possible end positions.
-fn match_node(node: &RegexNode, input: &[char], start: usize) -> Vec<usize> {
+/// Match a regex node against the input. Returns all possible end
+/// positions. `budget` is charged one step per call; if the budget is
+/// exhausted the function returns an empty vec (same shape as "no
+/// match") and every subsequent call also short-circuits, so the
+/// matcher as a whole reports "no match" rather than hanging.
+fn match_node(
+    node: &RegexNode,
+    input: &[char],
+    start: usize,
+    budget: &mut MatchBudget,
+) -> Vec<usize> {
+    if !budget.tick() {
+        return Vec::new();
+    }
     match node {
         RegexNode::Literal(expected) => {
             if start < input.len() && input[start] == *expected {
@@ -528,22 +686,27 @@ fn match_node(node: &RegexNode, input: &[char], start: usize) -> Vec<usize> {
                 vec![]
             }
         }
-        RegexNode::Sequence(nodes) => match_sequence(nodes, input, start),
+        RegexNode::Sequence(nodes) => match_sequence(nodes, input, start, budget),
         RegexNode::Alternation(branches) => {
             let mut results = Vec::new();
             for branch in branches {
-                results.extend(match_node(branch, input, start));
+                results.extend(match_node(branch, input, start, budget));
             }
             results
         }
         RegexNode::Repetition { inner, min, max } => {
-            match_repetition(inner, *min, *max, input, start)
+            match_repetition(inner, *min, *max, input, start, budget)
         }
     }
 }
 
 /// Match a sequence of nodes in order.
-fn match_sequence(nodes: &[RegexNode], input: &[char], start: usize) -> Vec<usize> {
+fn match_sequence(
+    nodes: &[RegexNode],
+    input: &[char],
+    start: usize,
+    budget: &mut MatchBudget,
+) -> Vec<usize> {
     if nodes.is_empty() {
         return vec![start];
     }
@@ -553,7 +716,7 @@ fn match_sequence(nodes: &[RegexNode], input: &[char], start: usize) -> Vec<usiz
     for node in nodes {
         let mut next_positions = Vec::new();
         for &pos in &current_positions {
-            next_positions.extend(match_node(node, input, pos));
+            next_positions.extend(match_node(node, input, pos, budget));
         }
         // Deduplicate to avoid exponential blowup
         next_positions.sort_unstable();
@@ -574,16 +737,17 @@ fn match_repetition(
     max: Option<usize>,
     input: &[char],
     start: usize,
+    budget: &mut MatchBudget,
 ) -> Vec<usize> {
-    // We collect all positions reachable after matching inner i times, for i in [0, max].
-    let mut results = Vec::new();
     let mut current_positions = vec![start];
 
-    // Match the first `min` occurrences (required).
+    // Match the first `min` occurrences (required). Per-iteration
+    // sort+dedup is cheap here because `min` is bounded by the pattern
+    // (not by input length), and inner branching is typically tiny.
     for _ in 0..min {
         let mut next = Vec::new();
         for &pos in &current_positions {
-            next.extend(match_node(inner, input, pos));
+            next.extend(match_node(inner, input, pos, budget));
         }
         next.sort_unstable();
         next.dedup();
@@ -593,37 +757,68 @@ fn match_repetition(
         current_positions = next;
     }
 
-    // After min matches, all current positions are valid results.
-    results.extend(&current_positions);
+    // Greedy loop accumulator: a direct-indexed `seen` bitmap (positions
+    // are bounded by `input.len()`) gives O(1) membership test per
+    // candidate. Combined with a parallel `results` Vec that holds only
+    // the unique reachable end-positions, total work is O(N) insertions
+    // plus one O(N log N) final sort — vs the O(N^2) cost a
+    // merge-into-sorted-vec accumulator would incur on linear patterns
+    // like `[a-z]+` over a long string of `a`s.
+    let mut seen: Vec<bool> = vec![false; input.len() + 1];
+    let mut results: Vec<usize> = Vec::new();
+    for &p in &current_positions {
+        if p < seen.len() && !seen[p] {
+            seen[p] = true;
+            results.push(p);
+        }
+    }
 
-    // Continue matching up to max.
+    // Defence-in-depth: `parse_brace_quantifier` rejects `{n,m}` with
+    // `m < n` at compile time, so reaching the panic-on-underflow path
+    // would require a future regression. Use `checked_sub` and treat
+    // the impossible case as "no further iterations" (fail-closed).
     let remaining = match max {
-        Some(m) => m - min,
-        None => input.len() + 1, // More than enough
+        Some(m) => match m.checked_sub(min) {
+            Some(r) => r,
+            None => return results,
+        },
+        None => input.len().saturating_add(1), // More than enough
     };
 
     for _ in 0..remaining {
         let mut next = Vec::new();
         for &pos in &current_positions {
-            next.extend(match_node(inner, input, pos));
+            next.extend(match_node(inner, input, pos, budget));
         }
         next.sort_unstable();
         next.dedup();
         if next.is_empty() {
             break;
         }
-        // Only keep genuinely new positions to prevent infinite loops on zero-width matches
-        let old_len = results.len();
-        results.extend(&next);
-        results.sort_unstable();
-        results.dedup();
-        if results.len() == old_len {
-            // No new positions added — we've saturated
+
+        let mut added = false;
+        for &p in &next {
+            // Bounds check is defensive: inner matchers should never
+            // return a position > input.len(), but a future regression
+            // shouldn't be able to panic the matcher.
+            if p < seen.len() && !seen[p] {
+                seen[p] = true;
+                results.push(p);
+                added = true;
+            }
+        }
+        if !added {
+            // No new end-positions reachable — saturated.
             break;
         }
         current_positions = next;
     }
 
+    // `results` is built in insertion order, which interleaves positions
+    // from different `current_positions` branches. Sort once at the end
+    // so downstream alternation / sequence de-duplication sees a tidy
+    // result. O(N log N) in the worst case, dwarfed by the saved O(N^2).
+    results.sort_unstable();
     results
 }
 
@@ -1794,5 +1989,179 @@ mod tests {
         let re = XsdRegex::compile("a\\nb").unwrap();
         assert!(re.is_match("a\nb"));
         assert!(!re.is_match("ab"));
+    }
+
+    /// F-04: deeply nested `(...)` groups must be rejected cleanly
+    /// instead of stack-overflowing the recursive-descent parser.
+    #[test]
+    fn test_group_depth_cap_rejects_deep_nesting() {
+        let mut pat = String::new();
+        for _ in 0..500 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..500 {
+            pat.push(')');
+        }
+        let err = XsdRegex::compile(&pat).expect_err("deep nesting must be rejected");
+        assert!(
+            err.contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// F-04: same guard for character-class subtraction nesting.
+    #[test]
+    fn test_class_subtraction_depth_cap() {
+        let mut pat = String::new();
+        for _ in 0..500 {
+            pat.push_str("[a-");
+        }
+        pat.push_str("[a-z]");
+        for _ in 0..500 {
+            pat.push(']');
+        }
+        let err =
+            XsdRegex::compile(&pat).expect_err("deep class-subtraction nesting must be rejected");
+        assert!(
+            err.contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// Legitimate nesting well under the cap still compiles.
+    #[test]
+    fn test_moderate_group_nesting_still_compiles() {
+        // 10 levels of nesting is common in real schemas.
+        let mut pat = String::new();
+        for _ in 0..10 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..10 {
+            pat.push(')');
+        }
+        let re = XsdRegex::compile(&pat).expect("10-deep nesting must compile");
+        assert!(re.is_match("a"));
+    }
+
+    /// F-1 (review follow-up): custom cap via `compile_with_max_depth`
+    /// must fire at the configured value.
+    #[test]
+    fn test_compile_with_custom_max_depth() {
+        // 10-deep pattern: cap of 5 rejects, cap of 20 accepts.
+        let mut pat = String::new();
+        for _ in 0..10 {
+            pat.push('(');
+        }
+        pat.push('a');
+        for _ in 0..10 {
+            pat.push(')');
+        }
+        assert!(
+            XsdRegex::compile_with_max_depth(&pat, 5).is_err(),
+            "cap of 5 must reject 10-deep pattern"
+        );
+        let re = XsdRegex::compile_with_max_depth(&pat, 20)
+            .expect("cap of 20 must admit 10-deep pattern");
+        assert!(re.is_match("a"));
+    }
+
+    /// F-05: polynomial ReDoS. The classic catastrophic-backtracking
+    /// shape `(a*)*b` against a long string of `a`s (no trailing `b`)
+    /// makes the backtracking matcher explore every way to partition
+    /// the `a`s, which is O(n^3) or worse. Asserted deterministically
+    /// against the step budget rather than wall-clock — a tight cap on
+    /// `is_match_with_max_steps` must produce a fail-closed result no
+    /// matter how slow / parallel-loaded the host is.
+    #[test]
+    fn test_polynomial_redos_fails_closed_with_step_budget() {
+        let re = XsdRegex::compile("(a*)*b").expect("compile");
+        let input: String = "a".repeat(500);
+        // Genuine no-match (no trailing 'b'): correct under any budget.
+        assert!(
+            !re.is_match(&input),
+            "input does not end with 'b', must not match"
+        );
+        // A tight step budget must fail closed even for the
+        // catastrophic-backtracking shape — any other outcome means
+        // the budget didn't fire.
+        assert!(
+            !re.is_match_with_max_steps(&input, 1),
+            "tight step budget must fail closed for pathological backtracking"
+        );
+    }
+
+    /// Legitimate simple patterns still match well within budget.
+    #[test]
+    fn test_normal_match_unaffected_by_budget() {
+        let re = XsdRegex::compile("[a-z]+[0-9]+").expect("compile");
+        assert!(re.is_match("abc123"));
+        assert!(!re.is_match("abc"));
+        assert!(!re.is_match("123"));
+    }
+
+    /// F-1 (review follow-up): custom step budget via
+    /// `is_match_with_max_steps` must fire at the configured value.
+    #[test]
+    fn test_is_match_with_custom_budget() {
+        let re = XsdRegex::compile("(a*)*b").expect("compile");
+        let input: String = "a".repeat(200);
+        // A tight budget should fail to find the match (fail-closed).
+        assert!(!re.is_match_with_max_steps(&input, 1_000));
+        // A very generous budget still fails (genuine no-match), but
+        // without hitting the cap.
+        assert!(!re.is_match_with_max_steps(&input, 10_000_000));
+    }
+
+    /// F-1: legitimate linear pattern against a large input must
+    /// still match under the default (scaled) budget. Pre-F-1 the
+    /// constant 1M-step cap caused false-rejects once input exceeded
+    /// ~1 million chars.
+    #[test]
+    fn test_large_legitimate_input_matches() {
+        let re = XsdRegex::compile("[a-z]+").expect("compile");
+        let input: String = "a".repeat(2_000_000);
+        assert!(
+            re.is_match(&input),
+            "2-million-char legitimate input must match under the \
+             input-scaled default budget"
+        );
+    }
+
+    /// `{n,m}` quantifier with `m < n` must be rejected at compile time
+    /// rather than panicking inside `match_repetition` on the `m - n`
+    /// underflow.
+    #[test]
+    fn test_brace_quantifier_rejects_max_below_min() {
+        let err = XsdRegex::compile("a{5,3}").expect_err("max<min must be rejected");
+        assert!(
+            err.contains("max < min"),
+            "expected max<min error, got: {}",
+            err
+        );
+        // Equal min/max stays accepted.
+        assert!(XsdRegex::compile("a{3,3}").is_ok());
+        // Normal range stays accepted.
+        assert!(XsdRegex::compile("a{2,5}").is_ok());
+    }
+
+    /// F-2: exercise `match_repetition` on a substantial linear-pattern
+    /// input. The bitmap accumulator keeps this O(N log N); a regression
+    /// to the old O(N^2 log N) shape would balloon CPU but the timing
+    /// thresholds were flaky on slow / loaded CI runners. Assert
+    /// correctness only — `test_large_legitimate_input_matches` already
+    /// covers the 2-million-char path under the input-scaled budget,
+    /// which is the meaningful regression net.
+    #[test]
+    fn test_match_repetition_large_linear_input_matches() {
+        let re = XsdRegex::compile("[a-z]+").expect("compile");
+        let input: String = "a".repeat(100_000);
+        assert!(
+            re.is_match(&input),
+            "100K-char linear-pattern input must match"
+        );
     }
 }

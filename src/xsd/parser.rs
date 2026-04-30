@@ -25,7 +25,6 @@ use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::{XmlError, XmlResult};
 use crate::namespace::build_resolver_for_node;
 
-use super::debug_log;
 use super::types::{
     AttributeDecl, AttributeGroupDef, AttributeWildcard, BuiltInType, ComplexTypeDef, ContentModel,
     ElementDecl, Facet, IdentityConstraint, IdentityConstraintKind, MaxOccurs, ModelGroupDef,

@@ -18,8 +18,7 @@ use std::path::Path;
 use crate::dom::{Document, NodeKind};
 use crate::error::{XmlError, XmlResult};
 
-use super::composition::process_schema_composition;
-use super::debug_log;
+use super::composition::{process_schema_composition, CompositionState};
 use super::facet_resolution::{
     resolve_content_model_list_item_facets, resolve_inline_list_item_facets,
 };
@@ -60,6 +59,23 @@ impl XsdValidator {
     pub fn from_schema_with_base_path(
         schema_doc: &Document,
         base_path: Option<&Path>,
+    ) -> XmlResult<Self> {
+        // Public entry creates fresh composition state (visited paths +
+        // depth counter) and delegates to the internal variant. The
+        // state is what lets `xs:include` / `xs:import` chains detect
+        // cycles and enforce a nesting cap.
+        let mut state = CompositionState::new(base_path);
+        Self::from_schema_with_composition_state(schema_doc, base_path, &mut state)
+    }
+
+    /// Internal entry used by `from_schema_with_base_path` and by
+    /// recursive composition. Threads the `CompositionState` so visited
+    /// paths and depth survive across nested `xs:include` / `xs:import`
+    /// calls.
+    pub(super) fn from_schema_with_composition_state(
+        schema_doc: &Document,
+        base_path: Option<&Path>,
+        state: &mut CompositionState,
     ) -> XmlResult<Self> {
         let mut validator = XsdValidator {
             elements: HashMap::new(),
@@ -110,7 +126,7 @@ impl XsdValidator {
 
         // Pass 0: Process xs:include and xs:redefine to merge external schema declarations
         if base_path.is_some() {
-            process_schema_composition(schema_doc, schema_elem, &mut validator, base_path)?;
+            process_schema_composition(schema_doc, schema_elem, &mut validator, base_path, state)?;
         }
 
         // Pass 0.5: Parse global attribute declarations first, since attributeGroup

@@ -130,19 +130,31 @@ fn string_value_of_node(doc: &Document<'_>, id: NodeId) -> String {
 pub struct XPathEvaluator {
     /// Namespace prefix mappings for XPath expressions.
     namespaces: HashMap<String, String>,
+    /// Maximum expression-nesting depth enforced by the parser. Defaults
+    /// to [`DEFAULT_MAX_XPATH_DEPTH`]; override via [`Self::with_max_depth`].
+    max_depth: u32,
 }
 
 impl XPathEvaluator {
-    /// Create a new evaluator with no namespace bindings.
+    /// Create a new evaluator with no namespace bindings and the default
+    /// expression-nesting cap ([`DEFAULT_MAX_XPATH_DEPTH`]).
     pub fn new() -> Self {
         XPathEvaluator {
             namespaces: HashMap::new(),
+            max_depth: DEFAULT_MAX_XPATH_DEPTH,
         }
     }
 
     /// Register a namespace prefix for use in XPath expressions.
     pub fn add_namespace(&mut self, prefix: impl Into<String>, uri: impl Into<String>) {
         self.namespaces.insert(prefix.into(), uri.into());
+    }
+
+    /// Override the maximum expression-nesting depth. Returns `self` so it
+    /// can chain with other builder methods.
+    pub fn with_max_depth(mut self, max_depth: u32) -> Self {
+        self.max_depth = max_depth;
+        self
     }
 
     /// Evaluate an XPath expression from the given context node.
@@ -153,7 +165,7 @@ impl XPathEvaluator {
         expr: &str,
     ) -> XmlResult<XPathValue> {
         let tokens = tokenize(expr)?;
-        let mut parser = XPathParser::new(&tokens);
+        let mut parser = XPathParser::new(&tokens, self.max_depth);
         let ast = parser.parse_expr()?;
         let ctx = EvalContext {
             node: context,
@@ -511,14 +523,36 @@ enum NodeTest {
 
 // ─── XPath Parser (tokens -> AST) ─────────────────────
 
+/// Default maximum expression-nesting depth. Each `(...)` group, `[...]`
+/// predicate, chained leading `-`, and function-call argument counts as
+/// one level. XPath has a deep grammar hierarchy (roughly 15 frames per
+/// expression-grammar re-entry through or/and/equality/relational/
+/// additive/multiplicative/unary/union/path), so a modest cap of 32
+/// stays well clear of a 2 MiB thread stack in debug builds while
+/// permitting any realistic XPath expression (real-world XPath rarely
+/// exceeds 5-10 nesting levels). Override via
+/// [`XPathEvaluator::with_max_depth`].
+pub const DEFAULT_MAX_XPATH_DEPTH: u32 = 32;
+
 struct XPathParser<'a> {
     tokens: &'a [Token],
     pos: usize,
+    /// Current expression-nesting depth. Bumped around each re-entry
+    /// to `parse_expr` (group, predicate, function argument, chained
+    /// leading `-`).
+    depth: u32,
+    /// Configured cap for `depth`. Passed down from `XPathEvaluator`.
+    max_depth: u32,
 }
 
 impl<'a> XPathParser<'a> {
-    fn new(tokens: &'a [Token]) -> Self {
-        XPathParser { tokens, pos: 0 }
+    fn new(tokens: &'a [Token], max_depth: u32) -> Self {
+        XPathParser {
+            tokens,
+            pos: 0,
+            depth: 0,
+            max_depth,
+        }
     }
 
     fn peek(&self) -> Option<&Token> {
@@ -548,6 +582,49 @@ impl<'a> XPathParser<'a> {
         self.parse_or_expr()
     }
 
+    /// Parse a nested expression at `depth + 1`, returning an error if
+    /// the cap is exceeded. Used at every re-entry point to the
+    /// expression grammar: `(expr)`, `[pred]`, `fn(arg, ...)`.
+    ///
+    /// The depth counter is managed by a `DepthGuard` whose `Drop` impl
+    /// decrements `self.depth` on every exit path (including the
+    /// `?`-early-return when the inner parse fails). This keeps the
+    /// counter balanced even across error / panic boundaries.
+    fn parse_nested_expr(&mut self) -> XmlResult<Expr> {
+        let guard = DepthGuard::enter(self)?;
+        guard.parser.parse_expr()
+    }
+}
+
+/// RAII helper that bumps `XPathParser::depth` on construction and
+/// decrements it on drop. Returns `Err` at construction time if the
+/// bump would exceed the cap. The Drop impl runs on every exit path -
+/// `Ok`, `?`-propagated `Err`, or panic - so the depth counter stays
+/// balanced even when a nested parse fails mid-way.
+struct DepthGuard<'p, 'a> {
+    parser: &'p mut XPathParser<'a>,
+}
+
+impl<'p, 'a> DepthGuard<'p, 'a> {
+    fn enter(parser: &'p mut XPathParser<'a>) -> XmlResult<Self> {
+        if parser.depth >= parser.max_depth {
+            return Err(XmlError::xpath(format!(
+                "XPath expression nesting exceeds maximum depth of {}",
+                parser.max_depth
+            )));
+        }
+        parser.depth += 1;
+        Ok(DepthGuard { parser })
+    }
+}
+
+impl<'p, 'a> Drop for DepthGuard<'p, 'a> {
+    fn drop(&mut self) {
+        self.parser.depth -= 1;
+    }
+}
+
+impl<'a> XPathParser<'a> {
     fn parse_or_expr(&mut self) -> XmlResult<Expr> {
         let mut left = self.parse_and_expr()?;
         while matches!(self.peek(), Some(Token::Or)) {
@@ -665,9 +742,15 @@ impl<'a> XPathParser<'a> {
 
     fn parse_unary_expr(&mut self) -> XmlResult<Expr> {
         if matches!(self.peek(), Some(Token::Minus)) {
-            self.advance();
-            let expr = self.parse_unary_expr()?;
-            Ok(Expr::Negate(Box::new(expr)))
+            // `parse_unary_expr` recurses directly into itself for
+            // chained leading minuses (`---...---1`), bypassing
+            // `parse_nested_expr`. Use the same `DepthGuard` RAII so a
+            // long `-` chain is capped the same way and the counter
+            // stays balanced on error paths.
+            let guard = DepthGuard::enter(self)?;
+            guard.parser.advance();
+            let inner = guard.parser.parse_unary_expr()?;
+            Ok(Expr::Negate(Box::new(inner)))
         } else {
             self.parse_union_expr()
         }
@@ -729,7 +812,7 @@ impl<'a> XPathParser<'a> {
             Some(Token::FunctionName(_)) => self.parse_function_call(),
             Some(Token::LParen) => {
                 self.advance();
-                let expr = self.parse_expr()?;
+                let expr = self.parse_nested_expr()?;
                 self.expect(&Token::RParen)?;
                 Ok(expr)
             }
@@ -851,7 +934,7 @@ impl<'a> XPathParser<'a> {
         let mut predicates = Vec::new();
         while matches!(self.peek(), Some(Token::LBracket)) {
             self.advance();
-            let expr = self.parse_expr()?;
+            let expr = self.parse_nested_expr()?;
             self.expect(&Token::RBracket)?;
             predicates.push(expr);
         }
@@ -866,10 +949,10 @@ impl<'a> XPathParser<'a> {
         self.expect(&Token::LParen)?;
         let mut args = Vec::new();
         if !matches!(self.peek(), Some(Token::RParen)) {
-            args.push(self.parse_expr()?);
+            args.push(self.parse_nested_expr()?);
             while matches!(self.peek(), Some(Token::Comma)) {
                 self.advance();
-                args.push(self.parse_expr()?);
+                args.push(self.parse_nested_expr()?);
             }
         }
         self.expect(&Token::RParen)?;
@@ -1659,6 +1742,135 @@ mod tests {
         match val {
             XPathValue::Number(n) => assert_eq!(n, 5.0),
             _ => panic!("Expected number"),
+        }
+    }
+
+    /// F-08: deeply-nested `(...)` groups must be rejected cleanly
+    /// instead of stack-overflowing the parser.
+    #[test]
+    fn test_xpath_paren_depth_cap() {
+        let mut expr = String::new();
+        for _ in 0..1000 {
+            expr.push('(');
+        }
+        expr.push('1');
+        for _ in 0..1000 {
+            expr.push(')');
+        }
+        let doc = crate::parse("<r/>").unwrap();
+        let eval = XPathEvaluator::new();
+        let root = doc.root();
+        let err = eval
+            .evaluate(&doc, root, &expr)
+            .err()
+            .expect("deep paren nesting must be rejected");
+        assert!(
+            format!("{}", err).contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// F-08: deeply-nested `[...]` predicates must be rejected.
+    #[test]
+    fn test_xpath_predicate_depth_cap() {
+        // Build `a[a[a[...a[1]...]]]` with 500 nested predicates.
+        let mut expr = String::from("a");
+        for _ in 0..500 {
+            expr.push_str("[a");
+        }
+        expr.push_str("[1]");
+        for _ in 0..500 {
+            expr.push(']');
+        }
+        let doc = crate::parse("<r><a/></r>").unwrap();
+        let eval = XPathEvaluator::new();
+        let root = doc.root();
+        let err = eval
+            .evaluate(&doc, root, &expr)
+            .err()
+            .expect("deep predicate nesting must be rejected");
+        assert!(
+            format!("{}", err).contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// F-08: chained leading unary `-` must be rejected before the
+    /// `parse_unary_expr` recursion blows the stack.
+    #[test]
+    fn test_xpath_unary_minus_depth_cap() {
+        let mut expr = String::new();
+        for _ in 0..1000 {
+            expr.push('-');
+        }
+        expr.push('1');
+        let doc = crate::parse("<r/>").unwrap();
+        let eval = XPathEvaluator::new();
+        let root = doc.root();
+        let err = eval
+            .evaluate(&doc, root, &expr)
+            .err()
+            .expect("deep unary-minus chain must be rejected");
+        assert!(
+            format!("{}", err).contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    /// Legitimate nesting well under the cap still works.
+    #[test]
+    fn test_xpath_moderate_nesting_evaluates() {
+        let mut expr = String::new();
+        for _ in 0..10 {
+            expr.push('(');
+        }
+        expr.push('1');
+        for _ in 0..10 {
+            expr.push(')');
+        }
+        let doc = crate::parse("<r/>").unwrap();
+        let eval = XPathEvaluator::new();
+        let root = doc.root();
+        let val = eval.evaluate(&doc, root, &expr).expect("10-deep evaluates");
+        match val {
+            XPathValue::Number(n) => assert_eq!(n, 1.0),
+            _ => panic!("expected number"),
+        }
+    }
+
+    /// F-1 (review follow-up): custom cap via `with_max_depth` must
+    /// fire at the configured value.
+    #[test]
+    fn test_xpath_with_custom_max_depth() {
+        let mut expr = String::new();
+        for _ in 0..10 {
+            expr.push('(');
+        }
+        expr.push('1');
+        for _ in 0..10 {
+            expr.push(')');
+        }
+        let doc = crate::parse("<r/>").unwrap();
+        let root = doc.root();
+
+        // Tight cap of 5 rejects the 10-deep expression.
+        let eval = XPathEvaluator::new().with_max_depth(5);
+        assert!(
+            eval.evaluate(&doc, root, &expr).is_err(),
+            "cap of 5 must reject 10-deep expression"
+        );
+
+        // Loose cap of 20 admits the same expression.
+        let eval = XPathEvaluator::new().with_max_depth(20);
+        let val = eval
+            .evaluate(&doc, root, &expr)
+            .expect("cap of 20 must admit 10-deep expression");
+        match val {
+            XPathValue::Number(n) => assert_eq!(n, 1.0),
+            _ => panic!("expected number"),
         }
     }
 }

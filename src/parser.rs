@@ -20,23 +20,70 @@ type EntityMap = HashMap<String, String>;
 /// Key: entity name, Value: expanded text.
 type EntityCache = HashMap<String, String>;
 
+/// Default maximum element-nesting depth.
+///
+/// Sized well above legitimate XML (SOAP, XHTML, SVG, and XSLT documents in the
+/// wild rarely exceed ~50 levels) while staying comfortably within a 2 MiB
+/// thread stack (Rust's default worker-thread size) even under debug builds
+/// where per-frame overhead is inflated. Exposed via [`Parser::with_max_depth`].
+pub const DEFAULT_MAX_DEPTH: u32 = 128;
+
+/// Default total budget for entity expansion (bytes written to expansion
+/// buffers over the lifetime of a single `parse()` call).
+///
+/// 1 MiB is more than enough for every legitimate internal-subset entity
+/// usage but far below the ~10⁹-byte output of a classical billion-laughs
+/// attack. Callers who legitimately need more can raise it via
+/// [`Parser::with_max_entity_expansion`].
+pub const DEFAULT_MAX_ENTITY_EXPANSION: usize = 1 << 20;
+
 /// The XML 1.0 parser.
 pub struct Parser {
     /// Whether to resolve namespaces during parsing.
     namespace_aware: bool,
+    /// Maximum allowed element-nesting depth. Enforced in `parse_element`
+    /// to prevent stack overflow on maliciously deep input.
+    max_depth: u32,
+    /// Maximum total bytes of entity expansion per `parse()` call. Enforced
+    /// in `expand_entity_value` and on `entity_cache` hits to block both
+    /// billion-laughs (exponential nesting) and quadratic-blowup (single
+    /// large entity referenced many times) attacks.
+    max_entity_expansion: usize,
 }
 
 impl Parser {
-    /// Create a new parser with namespace awareness enabled.
+    /// Create a new parser with namespace awareness enabled and the default
+    /// safety limits ([`DEFAULT_MAX_DEPTH`], [`DEFAULT_MAX_ENTITY_EXPANSION`]).
     pub fn new() -> Self {
         Parser {
             namespace_aware: true,
+            max_depth: DEFAULT_MAX_DEPTH,
+            max_entity_expansion: DEFAULT_MAX_ENTITY_EXPANSION,
         }
     }
 
-    /// Create a new parser with configurable namespace awareness.
+    /// Create a new parser with configurable namespace awareness. Uses the
+    /// default nesting-depth and entity-expansion caps.
     pub fn with_namespace_aware(namespace_aware: bool) -> Self {
-        Parser { namespace_aware }
+        Parser {
+            namespace_aware,
+            max_depth: DEFAULT_MAX_DEPTH,
+            max_entity_expansion: DEFAULT_MAX_ENTITY_EXPANSION,
+        }
+    }
+
+    /// Override the maximum element-nesting depth. Returns `self` so it can
+    /// chain with other builder methods.
+    pub fn with_max_depth(mut self, max_depth: u32) -> Self {
+        self.max_depth = max_depth;
+        self
+    }
+
+    /// Override the maximum total bytes of entity expansion per `parse()`
+    /// call. Chains with other builder methods.
+    pub fn with_max_entity_expansion(mut self, max_bytes: usize) -> Self {
+        self.max_entity_expansion = max_bytes;
+        self
     }
 
     /// Parse an XML string into a [`Document`].
@@ -54,6 +101,10 @@ impl Parser {
         };
         let mut entities = EntityMap::new();
         let mut entity_cache = EntityCache::new();
+        // Shared byte-budget for all entity expansion over this parse call.
+        // Decremented on every byte appended to an expansion buffer and on
+        // every `entity_cache` hit; returns a parse error on underflow.
+        let mut entity_budget: usize = self.max_entity_expansion;
 
         // Skip BOM if present
         cursor.skip_bom();
@@ -68,9 +119,18 @@ impl Parser {
             doc.xml_declaration = Some(decl);
         }
 
-        // Parse prolog content (comments, PIs, whitespace, DOCTYPE)
+        // Parse prolog content (comments, PIs, whitespace, DOCTYPE).
+        // The document-level `entity_budget` is threaded through DOCTYPE/
+        // internal-subset parsing so ATTLIST default values charge against
+        // the same cap as document content (closes the M-1 bypass).
         let root_id = doc.root();
-        parse_misc(&mut cursor, &mut doc, root_id, &mut entities)?;
+        parse_misc(
+            &mut cursor,
+            &mut doc,
+            root_id,
+            &mut entities,
+            &mut entity_budget,
+        )?;
 
         // Parse document element and trailing misc
         let mut found_root = false;
@@ -106,6 +166,9 @@ impl Parser {
                     &mut ns_resolver,
                     &entities,
                     &mut entity_cache,
+                    &mut entity_budget,
+                    0,
+                    self.max_depth,
                 )?;
                 found_root = true;
             } else {
@@ -552,10 +615,41 @@ fn parse_standalone(cursor: &mut Cursor) -> XmlResult<bool> {
     Ok(&*val == "yes")
 }
 
+/// Charge `n` bytes against an entity-expansion budget. Returns a parse
+/// error (with the current cursor location) when the budget would go
+/// negative — this is the core of the billion-laughs / quadratic-blowup
+/// defence.
+#[inline]
+fn charge_entity_budget(budget: &mut usize, n: usize, line: usize, col: usize) -> XmlResult<()> {
+    match budget.checked_sub(n) {
+        Some(remaining) => {
+            *budget = remaining;
+            Ok(())
+        }
+        None => Err(XmlError::parse(
+            format!(
+                "Entity expansion exceeds configured limit ({} bytes remaining)",
+                *budget
+            ),
+            line,
+            col,
+        )),
+    }
+}
+
 /// Parse a quoted attribute value (handles both `"` and `'`).
 /// Uses lazy allocation: returns Borrowed if no entities/special chars found.
 fn parse_quoted_value<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
-    parse_quoted_value_with_entities(cursor, &HashMap::new(), &mut EntityCache::new())
+    // Standalone call site (no surrounding DTD entities): use a fresh budget
+    // with the default cap so well-formed values without references parse
+    // exactly as before.
+    let mut budget = DEFAULT_MAX_ENTITY_EXPANSION;
+    parse_quoted_value_with_entities(
+        cursor,
+        &HashMap::new(),
+        &mut EntityCache::new(),
+        &mut budget,
+    )
 }
 
 /// Parse a quoted attribute value with entity resolution.
@@ -565,6 +659,7 @@ fn parse_quoted_value_with_entities<'a>(
     cursor: &mut Cursor<'a>,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    budget: &mut usize,
 ) -> XmlResult<Cow<'a, str>> {
     let quote = match cursor.peek() {
         Some('"') => '"',
@@ -647,7 +742,8 @@ fn parse_quoted_value_with_entities<'a>(
                 break;
             }
             Some(b'&') => {
-                let resolved = parse_reference_with_entities(cursor, entities, entity_cache)?;
+                let resolved =
+                    parse_reference_with_entities(cursor, entities, entity_cache, budget)?;
                 value.push_str(&resolved);
             }
             Some(b'<') => {
@@ -665,7 +761,13 @@ fn parse_quoted_value_with_entities<'a>(
 
 /// Parse a character or entity reference (`&amp;`, `&#x41;`, etc.).
 fn parse_reference(cursor: &mut Cursor) -> XmlResult<String> {
-    parse_reference_with_entities(cursor, &HashMap::new(), &mut EntityCache::new())
+    let mut budget = DEFAULT_MAX_ENTITY_EXPANSION;
+    parse_reference_with_entities(
+        cursor,
+        &HashMap::new(),
+        &mut EntityCache::new(),
+        &mut budget,
+    )
 }
 
 /// Parse a character or entity reference with custom entity resolution.
@@ -673,6 +775,7 @@ fn parse_reference_with_entities(
     cursor: &mut Cursor,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    budget: &mut usize,
 ) -> XmlResult<String> {
     cursor.expect("&")?;
     let after_amp = cursor.peek_byte();
@@ -741,8 +844,12 @@ fn parse_reference_with_entities(
             "apos" => Ok("'".to_string()),
             "quot" => Ok("\"".to_string()),
             _ => {
-                // Check cache first to avoid re-expansion and re-validation
+                // Check cache first to avoid re-expansion and re-validation.
+                // Charge the cached length against the budget — this is the
+                // F-02 (quadratic blow-up) defence: one large entity
+                // referenced N times becomes N * len bytes.
                 if let Some(cached) = entity_cache.get(&*name) {
+                    charge_entity_budget(budget, cached.len(), cursor.line(), cursor.column())?;
                     return Ok(cached.clone());
                 }
                 if let Some(value) = entities.get(&*name) {
@@ -751,6 +858,7 @@ fn parse_reference_with_entities(
                         value,
                         entities,
                         &mut vec![name.to_string()],
+                        budget,
                         cursor.line(),
                         cursor.column(),
                     )?;
@@ -759,6 +867,7 @@ fn parse_reference_with_entities(
                         value,
                         entities,
                         &mut vec![name.to_string()],
+                        budget,
                         cursor.line(),
                         cursor.column(),
                     )?;
@@ -785,10 +894,15 @@ fn parse_reference_with_entities(
 
 /// Recursively expand entity references in an entity value.
 /// Detects circular references and validates the expanded text.
+///
+/// `budget` is a byte-budget charged on every append to the result buffer.
+/// When exhausted, expansion aborts — this is the F-01 (billion-laughs)
+/// defence.
 fn expand_entity_value(
     value: &str,
     entities: &EntityMap,
     seen: &mut Vec<String>,
+    budget: &mut usize,
     line: usize,
     col: usize,
 ) -> XmlResult<String> {
@@ -801,6 +915,7 @@ fn expand_entity_value(
         if value[pos..].starts_with("<![CDATA[") {
             if let Some(end) = value[pos..].find("]]>") {
                 let cdata_end = pos + end + 3;
+                charge_entity_budget(budget, cdata_end - pos, line, col)?;
                 result.push_str(&value[pos..cdata_end]);
                 pos = cdata_end;
                 continue;
@@ -812,28 +927,34 @@ fn expand_entity_value(
                 let ref_content = &value[pos + 1..pos + 1 + semi];
                 if ref_content.starts_with('#') {
                     // Character reference - pass through (already resolved in entity value)
+                    charge_entity_budget(budget, semi + 2, line, col)?;
                     result.push_str(&value[pos..pos + 2 + semi]);
                     pos = pos + 2 + semi;
                 } else {
                     // Named entity reference
                     match ref_content {
                         "lt" => {
+                            charge_entity_budget(budget, 1, line, col)?;
                             result.push('<');
                             pos = pos + 2 + semi;
                         }
                         "gt" => {
+                            charge_entity_budget(budget, 1, line, col)?;
                             result.push('>');
                             pos = pos + 2 + semi;
                         }
                         "amp" => {
+                            charge_entity_budget(budget, 1, line, col)?;
                             result.push('&');
                             pos = pos + 2 + semi;
                         }
                         "apos" => {
+                            charge_entity_budget(budget, 1, line, col)?;
                             result.push('\'');
                             pos = pos + 2 + semi;
                         }
                         "quot" => {
+                            charge_entity_budget(budget, 1, line, col)?;
                             result.push('"');
                             pos = pos + 2 + semi;
                         }
@@ -849,9 +970,13 @@ fn expand_entity_value(
                             }
                             if let Some(ref_value) = entities.get(&ref_name) {
                                 seen.push(ref_name);
-                                let expanded =
-                                    expand_entity_value(ref_value, entities, seen, line, col)?;
+                                let expanded = expand_entity_value(
+                                    ref_value, entities, seen, budget, line, col,
+                                )?;
                                 seen.pop();
+                                // `expanded` was already budget-charged
+                                // inside the recursive call. Append without
+                                // double-charging.
                                 result.push_str(&expanded);
                             } else {
                                 return Err(XmlError::well_formedness(
@@ -866,12 +991,14 @@ fn expand_entity_value(
                 }
             } else {
                 // No semicolon found - malformed
+                charge_entity_budget(budget, 1, line, col)?;
                 result.push('&');
                 pos += 1;
             }
         } else {
             // Regular character - just advance
             let c = value[pos..].chars().next().unwrap();
+            charge_entity_budget(budget, c.len_utf8(), line, col)?;
             result.push(c);
             pos += c.len_utf8();
         }
@@ -884,6 +1011,7 @@ fn expand_entity_value_no_builtins(
     value: &str,
     entities: &EntityMap,
     seen: &mut Vec<String>,
+    budget: &mut usize,
     line: usize,
     col: usize,
 ) -> XmlResult<String> {
@@ -896,6 +1024,7 @@ fn expand_entity_value_no_builtins(
         if value[pos..].starts_with("<![CDATA[") {
             if let Some(end) = value[pos..].find("]]>") {
                 let cdata_end = pos + end + 3;
+                charge_entity_budget(budget, cdata_end - pos, line, col)?;
                 result.push_str(&value[pos..cdata_end]);
                 pos = cdata_end;
                 continue;
@@ -906,12 +1035,14 @@ fn expand_entity_value_no_builtins(
                 let ref_content = &value[pos + 1..pos + 1 + semi];
                 if ref_content.starts_with('#') {
                     // Character reference - pass through as-is
+                    charge_entity_budget(budget, semi + 2, line, col)?;
                     result.push_str(&value[pos..pos + 2 + semi]);
                     pos = pos + 2 + semi;
                 } else {
                     match ref_content {
                         "lt" | "gt" | "amp" | "apos" | "quot" => {
                             // Keep built-in entities as-is (don't resolve)
+                            charge_entity_budget(budget, semi + 2, line, col)?;
                             result.push_str(&value[pos..pos + 2 + semi]);
                             pos = pos + 2 + semi;
                         }
@@ -927,7 +1058,7 @@ fn expand_entity_value_no_builtins(
                             if let Some(ref_value) = entities.get(&ref_name) {
                                 seen.push(ref_name);
                                 let expanded = expand_entity_value_no_builtins(
-                                    ref_value, entities, seen, line, col,
+                                    ref_value, entities, seen, budget, line, col,
                                 )?;
                                 seen.pop();
                                 result.push_str(&expanded);
@@ -943,11 +1074,13 @@ fn expand_entity_value_no_builtins(
                     }
                 }
             } else {
+                charge_entity_budget(budget, 1, line, col)?;
                 result.push('&');
                 pos += 1;
             }
         } else {
             let c = value[pos..].chars().next().unwrap();
+            charge_entity_budget(budget, c.len_utf8(), line, col)?;
             result.push(c);
             pos += c.len_utf8();
         }
@@ -1054,11 +1187,17 @@ fn parse_pi<'a>(cursor: &mut Cursor<'a>) -> XmlResult<ProcessingInstruction<'a>>
 }
 
 /// Parse prolog miscellaneous content (comments, PIs, whitespace, DOCTYPE).
+///
+/// `entity_budget` is the shared document-level budget; it is threaded through
+/// DOCTYPE / internal-subset parsing so any entity expansion that occurs while
+/// processing ATTLIST default values charges against the same cap as document
+/// content.
 fn parse_misc<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
     parent: NodeId,
     entities: &mut EntityMap,
+    entity_budget: &mut usize,
 ) -> XmlResult<()> {
     loop {
         cursor.skip_whitespace();
@@ -1078,7 +1217,7 @@ fn parse_misc<'a>(
             doc.set_byte_end_pos(id, cursor.pos);
             doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<!DOCTYPE") {
-            parse_doctype(cursor, doc, entities)?;
+            parse_doctype(cursor, doc, entities, entity_budget)?;
         } else {
             break;
         }
@@ -1087,10 +1226,15 @@ fn parse_misc<'a>(
 }
 
 /// Parse a DOCTYPE declaration, including internal subset.
+///
+/// `entity_budget` is the shared document-level expansion budget. It is
+/// threaded into the internal-subset parser so ATTLIST default values
+/// charge against the same cap as document content.
 fn parse_doctype<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
     entities: &mut EntityMap,
+    entity_budget: &mut usize,
 ) -> XmlResult<()> {
     let start_pos = cursor.pos;
     cursor.expect("<!DOCTYPE")?;
@@ -1148,7 +1292,7 @@ fn parse_doctype<'a>(
     // Optional internal subset
     if cursor.peek() == Some('[') {
         cursor.advance_char();
-        parse_internal_subset(cursor, entities)?;
+        parse_internal_subset(cursor, entities, entity_budget)?;
         cursor.expect("]")?;
         cursor.skip_whitespace();
     }
@@ -1241,7 +1385,11 @@ fn is_pubid_char(c: char) -> bool {
 }
 
 /// Parse the internal subset of a DOCTYPE declaration.
-fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()> {
+fn parse_internal_subset(
+    cursor: &mut Cursor,
+    entities: &mut EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     loop {
         cursor.skip_whitespace();
         if cursor.is_eof() {
@@ -1258,7 +1406,7 @@ fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlRe
         } else if cursor.starts_with("<!ELEMENT") {
             parse_element_decl(cursor)?;
         } else if cursor.starts_with("<!ATTLIST") {
-            parse_attlist_decl(cursor, entities)?;
+            parse_attlist_decl(cursor, entities, entity_budget)?;
         } else if cursor.starts_with("<!ENTITY") {
             parse_entity_decl(cursor, entities)?;
         } else if cursor.starts_with("<!NOTATION") {
@@ -1580,7 +1728,11 @@ fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
 }
 
 /// Parse an ATTLIST declaration.
-fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_attlist_decl(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     cursor.expect("<!ATTLIST")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -1607,12 +1759,16 @@ fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
             reject_pe_in_markup_decl(cursor)?;
             continue;
         }
-        parse_att_def(cursor, entities)?;
+        parse_att_def(cursor, entities, entity_budget)?;
     }
 }
 
 /// Parse a single attribute definition within an ATTLIST.
-fn parse_att_def(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_att_def(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     parse_name(cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -1635,7 +1791,7 @@ fn parse_att_def(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
     }
     cursor.skip_whitespace();
 
-    parse_default_decl(cursor, entities)?;
+    parse_default_decl(cursor, entities, entity_budget)?;
 
     Ok(())
 }
@@ -1724,7 +1880,11 @@ fn parse_nmtoken(cursor: &mut Cursor) -> XmlResult<String> {
 }
 
 /// Parse a default declaration.
-fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_default_decl(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     if cursor.starts_with("#REQUIRED") {
         cursor.advance(9);
     } else if cursor.starts_with("#IMPLIED") {
@@ -1739,9 +1899,9 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
             ));
         }
         cursor.skip_whitespace();
-        parse_att_value_in_dtd(cursor, entities)?;
+        parse_att_value_in_dtd(cursor, entities, entity_budget)?;
     } else if cursor.peek() == Some('"') || cursor.peek() == Some('\'') {
-        parse_att_value_in_dtd(cursor, entities)?;
+        parse_att_value_in_dtd(cursor, entities, entity_budget)?;
     } else {
         return Err(XmlError::well_formedness(
             "Expected default declaration (#REQUIRED, #IMPLIED, #FIXED, or default value)",
@@ -1753,7 +1913,16 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
 }
 
 /// Parse an attribute value inside a DTD declaration.
-fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<String> {
+///
+/// `entity_budget` is the shared document-level expansion budget. Every
+/// entity reference inside the default value charges against it, so a
+/// runaway internal-subset DTD cannot drive peak memory beyond the
+/// configured cap by chaining many ATTLIST defaults together.
+fn parse_att_value_in_dtd(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<String> {
     let quote = match cursor.peek() {
         Some('"') => '"',
         Some('\'') => '\'',
@@ -1775,8 +1944,17 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
                 break;
             }
             Some('&') => {
-                let resolved =
-                    parse_reference_with_entities(cursor, entities, &mut EntityCache::new())?;
+                // Entity references in ATTLIST default values share the
+                // document-level `entity_budget` so a runaway internal subset
+                // (e.g. many ATTLIST defaults each referencing a near-budget
+                // entity) cannot bypass the cap by allocating fresh budgets
+                // per declaration.
+                let resolved = parse_reference_with_entities(
+                    cursor,
+                    entities,
+                    &mut EntityCache::new(),
+                    entity_budget,
+                )?;
                 value.push_str(&resolved);
             }
             Some('<') => {
@@ -2046,6 +2224,12 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
 }
 
 /// Parse an element and its content recursively.
+///
+/// `depth` is the current nesting depth (0 for the document element); `max_depth`
+/// is the configured cap. When `depth >= max_depth` the parser returns an error
+/// instead of recursing further — this prevents stack overflow on maliciously
+/// deep input.
+#[allow(clippy::too_many_arguments)]
 fn parse_element<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
@@ -2053,7 +2237,17 @@ fn parse_element<'a>(
     ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    budget: &mut usize,
+    depth: u32,
+    max_depth: u32,
 ) -> XmlResult<NodeId> {
+    if depth >= max_depth {
+        return Err(XmlError::parse(
+            format!("Element nesting exceeds maximum depth of {}", max_depth),
+            cursor.line(),
+            cursor.column(),
+        ));
+    }
     let start_pos = cursor.pos;
 
     cursor.expect("<")?;
@@ -2075,7 +2269,7 @@ fn parse_element<'a>(
         cursor.skip_whitespace();
         cursor.expect("=")?;
         cursor.skip_whitespace();
-        let attr_value = parse_quoted_value_with_entities(cursor, entities, entity_cache)?;
+        let attr_value = parse_quoted_value_with_entities(cursor, entities, entity_cache, budget)?;
 
         // Separate namespace declarations from regular attributes.
         // xmlns attrs go only into ns_decls (not raw_attrs) to avoid cloning.
@@ -2225,7 +2419,17 @@ fn parse_element<'a>(
     cursor.expect(">")?;
 
     // Parse element content
-    parse_content(cursor, doc, elem_id, ns_resolver, entities, entity_cache)?;
+    parse_content(
+        cursor,
+        doc,
+        elem_id,
+        ns_resolver,
+        entities,
+        entity_cache,
+        budget,
+        depth,
+        max_depth,
+    )?;
 
     // Parse end tag
     cursor.expect("</")?;
@@ -2254,6 +2458,10 @@ fn parse_element<'a>(
 
 /// Parse element content (text, child elements, CDATA, comments, PIs).
 /// Uses lazy allocation: text content is borrowed from input when possible.
+///
+/// `depth` is the depth of the *parent* element; any child element parsed here
+/// will be at `depth + 1` and is checked against `max_depth`.
+#[allow(clippy::too_many_arguments)]
 fn parse_content<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
@@ -2261,6 +2469,9 @@ fn parse_content<'a>(
     ns_resolver: &mut Option<NamespaceResolver<'a>>,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
+    budget: &mut usize,
+    depth: u32,
+    max_depth: u32,
 ) -> XmlResult<()> {
     // Lazy text buffer: tracks start position for borrowing, switches to owned on entity/\r
     enum TextBuf {
@@ -2420,13 +2631,24 @@ fn parse_content<'a>(
                         // Child element
                         text_buf.flush(cursor.input, doc, parent, text_start_pos, cursor.pos);
                         text_buf = TextBuf::Empty;
-                        parse_element(cursor, doc, parent, ns_resolver, entities, entity_cache)?;
+                        parse_element(
+                            cursor,
+                            doc,
+                            parent,
+                            ns_resolver,
+                            entities,
+                            entity_cache,
+                            budget,
+                            depth + 1,
+                            max_depth,
+                        )?;
                     }
                 }
             }
             b'&' => {
                 let before_pos = cursor.pos;
-                let resolved = parse_reference_with_entities(cursor, entities, entity_cache)?;
+                let resolved =
+                    parse_reference_with_entities(cursor, entities, entity_cache, budget)?;
                 text_buf.push_str(cursor.input, before_pos, &resolved);
             }
             b'\r' => {
@@ -2616,5 +2838,180 @@ mod tests {
             "Expected borrowed name"
         );
         let _ = elem; // suppress unused warning
+    }
+
+    fn nested_xml(depth: usize) -> String {
+        let mut s = String::with_capacity(depth * 8);
+        for _ in 0..depth {
+            s.push_str("<a>");
+        }
+        s.push('x');
+        for _ in 0..depth {
+            s.push_str("</a>");
+        }
+        s
+    }
+
+    #[test]
+    fn test_depth_cap_rejects_deep_input() {
+        // 5 000-deep nesting would stack-overflow an unguarded recursive
+        // parser. The default cap stops it with a clean error.
+        let xml = nested_xml(5_000);
+        let err = Parser::new()
+            .parse(&xml)
+            .expect_err("deep input must be rejected");
+        assert!(
+            format!("{}", err).contains("maximum depth"),
+            "expected depth-cap error, got: {}",
+            err
+        );
+    }
+
+    #[test]
+    fn test_depth_within_cap_parses() {
+        // Well under DEFAULT_MAX_DEPTH — must parse without complaint.
+        let xml = nested_xml(100);
+        let doc = Parser::new().parse(&xml).expect("within cap must parse");
+        assert!(doc.document_element().is_some());
+    }
+
+    #[test]
+    fn test_custom_max_depth() {
+        let xml = nested_xml(10);
+        assert!(
+            Parser::new().with_max_depth(5).parse(&xml).is_err(),
+            "cap of 5 must reject 10-deep input"
+        );
+        assert!(
+            Parser::new().with_max_depth(20).parse(&xml).is_ok(),
+            "cap of 20 must admit 10-deep input"
+        );
+    }
+
+    /// Canonical billion-laughs. Five nesting levels already yield
+    /// 3 · 10⁵ bytes of expansion (>256 KiB), comfortably beyond a
+    /// 1 MiB budget once the nested expansion runs to completion.
+    /// Six levels → 3 MiB → budget exhausted mid-expansion.
+    #[test]
+    fn test_entity_budget_rejects_billion_laughs() {
+        let xml = r#"<?xml version="1.0"?>
+<!DOCTYPE lolz [
+  <!ENTITY lol "lol">
+  <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+  <!ENTITY lol2 "&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;">
+  <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+  <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+  <!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+  <!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+]>
+<lolz>&lol6;</lolz>"#;
+        let err = Parser::new()
+            .parse(xml)
+            .expect_err("billion-laughs must be rejected by the default budget");
+        let msg = format!("{}", err);
+        assert!(
+            msg.contains("Entity expansion"),
+            "expected entity-budget error, got: {}",
+            msg
+        );
+    }
+
+    /// F-02 — one moderate entity referenced many times. The matcher
+    /// cache hits each clone cached.len() bytes against the budget, so
+    /// N × len quickly blows through even if any single expansion stays
+    /// small.
+    #[test]
+    fn test_entity_budget_rejects_quadratic_blowup() {
+        // `a` is 10 000 chars, `b` is 10 × a = 100 000 chars, and the
+        // document body references `b` 50 times — 5 MiB total → budget
+        // exceeded.
+        let big_a = "A".repeat(10_000);
+        let xml = format!(
+            r#"<?xml version="1.0"?>
+<!DOCTYPE doc [
+  <!ENTITY a "{}">
+  <!ENTITY b "&a;&a;&a;&a;&a;&a;&a;&a;&a;&a;">
+]>
+<doc>{}</doc>"#,
+            big_a,
+            "&b;".repeat(50),
+        );
+        let err = Parser::new()
+            .parse(&xml)
+            .expect_err("quadratic blow-up must be rejected");
+        assert!(
+            format!("{}", err).contains("Entity expansion"),
+            "expected entity-budget error, got: {}",
+            err
+        );
+    }
+
+    /// Legitimate entity use must still parse under the default cap.
+    #[test]
+    fn test_entity_budget_allows_legitimate_use() {
+        let xml = r#"<?xml version="1.0"?>
+<!DOCTYPE doc [
+  <!ENTITY name "Alice">
+  <!ENTITY greeting "Hello, &name;!">
+]>
+<doc>&greeting; &greeting; &greeting;</doc>"#;
+        let doc = Parser::new().parse(xml).expect("legitimate entities OK");
+        let root = doc.document_element().unwrap();
+        let text = doc.text_content_deep(root);
+        assert_eq!(text, "Hello, Alice! Hello, Alice! Hello, Alice!");
+    }
+
+    /// M-1 regression — ATTLIST defaults must charge against the shared
+    /// document budget, not a fresh per-`&` 1 MiB cap. Pre-fix, an internal
+    /// subset DTD could chain N ATTLIST defaults each referencing a
+    /// near-budget entity to consume `N × budget` peak memory while never
+    /// tripping the document-level cap.
+    #[test]
+    fn test_entity_budget_covers_attlist_defaults() {
+        // `a` is 500 KiB, referenced 3× in a single ATTLIST default → 1.5 MiB
+        // expansion total. Pre-fix this parsed; post-fix the shared 1 MiB
+        // budget rejects.
+        let big_a = "A".repeat(500_000);
+        let xml = format!(
+            r#"<?xml version="1.0"?>
+<!DOCTYPE r [
+<!ENTITY a "{}">
+<!ATTLIST r foo CDATA "&a;&a;&a;">
+]>
+<r/>"#,
+            big_a
+        );
+        let err = Parser::new()
+            .parse(&xml)
+            .expect_err("ATTLIST default must charge against the shared budget");
+        assert!(
+            format!("{}", err).contains("Entity expansion"),
+            "expected entity-budget error, got: {}",
+            err
+        );
+    }
+
+    /// Custom budget wins: a tiny cap must reject what the default accepts.
+    #[test]
+    fn test_custom_max_entity_expansion() {
+        let xml = r#"<?xml version="1.0"?>
+<!DOCTYPE doc [<!ENTITY s "XXXXXXXXXXXXXXXX">]>
+<doc>&s;&s;&s;&s;</doc>"#;
+        // Budget of 32 bytes — not enough for 4×16-byte expansions.
+        assert!(
+            Parser::new()
+                .with_max_entity_expansion(32)
+                .parse(xml)
+                .is_err(),
+            "tight budget must fire"
+        );
+        // Loose budget — parses.
+        assert!(
+            Parser::new()
+                .with_max_entity_expansion(1 << 16)
+                .parse(xml)
+                .is_ok(),
+            "loose budget must admit the same input"
+        );
     }
 }

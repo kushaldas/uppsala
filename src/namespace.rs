@@ -72,7 +72,27 @@ impl<'a> NamespaceResolver<'a> {
     /// Declare a namespace binding in the current scope.
     ///
     /// `prefix` is the empty string for a default namespace declaration.
+    ///
+    /// Per Namespaces in XML §3 the three bindings below are reserved
+    /// and cannot be declared by consumer code. The parser already
+    /// rejects them at source-level; this method silently ignores them
+    /// so the resolver's invariants cannot be broken by a caller that
+    /// constructs a resolver programmatically:
+    ///
+    /// * the prefix `xml` bound to anything other than
+    ///   `http://www.w3.org/XML/1998/namespace`
+    /// * the prefix `xmlns` (may never be declared)
+    /// * any prefix bound to `http://www.w3.org/2000/xmlns/`
     pub fn declare(&mut self, prefix: Cow<'a, str>, uri: Cow<'a, str>) {
+        if &*prefix == "xmlns" {
+            return;
+        }
+        if &*prefix == "xml" && &*uri != XML_NAMESPACE {
+            return;
+        }
+        if &*uri == XMLNS_NAMESPACE {
+            return;
+        }
         if let Some(scope) = self.scopes.last_mut() {
             scope.bindings.push((prefix, uri));
         }

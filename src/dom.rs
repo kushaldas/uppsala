@@ -1182,11 +1182,11 @@ impl<'a> Document<'a> {
     fn write_document_to(&self, out: &mut dyn fmt::Write, opts: &XmlWriteOptions) -> fmt::Result {
         if let Some(decl) = &self.xml_declaration {
             out.write_str("<?xml version=\"")?;
-            out.write_str(&decl.version)?;
+            out.write_str(&crate::writer::safe_xml_version(&decl.version))?;
             out.write_char('"')?;
             if let Some(enc) = &decl.encoding {
                 out.write_str(" encoding=\"")?;
-                out.write_str(enc)?;
+                out.write_str(&crate::writer::safe_xml_encoding(enc))?;
                 out.write_char('"')?;
             }
             if let Some(sa) = decl.standalone {
@@ -1289,16 +1289,22 @@ impl<'a> Document<'a> {
                 write_escaped_text(out, text)?;
             }
             Some(NodeKind::CData(text)) => {
+                // F-15: split content containing `]]>` across adjacent
+                // CDATA sections so attacker-crafted DOM nodes cannot
+                // smuggle markup through the serializer.
                 out.write_str("<![CDATA[")?;
-                out.write_str(text)?;
+                out.write_str(&crate::writer::split_cdata_content(text))?;
                 out.write_str("]]>")?;
             }
             Some(NodeKind::Comment(text)) => {
                 if indent_self {
                     write_indent(out, opts, depth)?;
                 }
+                // F-13: pad consecutive dashes so content cannot break
+                // XML 1.0 comment well-formedness and terminate the
+                // comment early.
                 out.write_str("<!--")?;
-                out.write_str(text)?;
+                out.write_str(&crate::writer::sanitize_comment_content(text))?;
                 out.write_str("-->")?;
                 if indent_self {
                     out.write_char('\n')?;
@@ -1308,11 +1314,15 @@ impl<'a> Document<'a> {
                 if indent_self {
                     write_indent(out, opts, depth)?;
                 }
+                // F-14: rename a reserved `xml` target so the emitted PI
+                // cannot collide with an XML declaration, and insert a
+                // space between `?` and `>` in data so the PI cannot
+                // terminate early.
                 out.write_str("<?")?;
-                out.write_str(&pi.target)?;
+                out.write_str(&crate::writer::sanitize_pi_target(&pi.target))?;
                 if let Some(data) = &pi.data {
                     out.write_char(' ')?;
-                    out.write_str(data)?;
+                    out.write_str(&crate::writer::sanitize_pi_data(data))?;
                 }
                 out.write_str("?>")?;
                 if indent_self {
