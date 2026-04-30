@@ -153,10 +153,14 @@ impl XsdRegex {
     /// takes ~1 step per char) while keeping a tight enough cap that
     /// `O(n^2)` / `O(n^3)` adversarial patterns saturate in bounded time.
     pub fn is_match(&self, text: &str) -> bool {
-        let char_count = text.chars().count();
-        let scaled = char_count.saturating_mul(100);
+        // Single walk over `text`: collect into `Vec<char>` once and
+        // derive the budget from `chars.len()`. The naive `chars().count()
+        // + chars().collect()` shape was a measurable double-scan on the
+        // multi-MB inputs the budget scaling targets.
+        let chars: Vec<char> = text.chars().collect();
+        let scaled = chars.len().saturating_mul(100);
         let budget = scaled.max(DEFAULT_MAX_REGEX_STEPS);
-        self.is_match_with_max_steps(text, budget)
+        self.is_match_chars(&chars, budget)
     }
 
     /// Test if the given string matches this pattern with an explicit
@@ -165,8 +169,16 @@ impl XsdRegex {
     /// require more steps.
     pub fn is_match_with_max_steps(&self, text: &str, max_steps: usize) -> bool {
         let chars: Vec<char> = text.chars().collect();
+        self.is_match_chars(&chars, max_steps)
+    }
+
+    /// Internal core: match against a pre-collected `&[char]` slice with
+    /// an explicit step budget. Lets [`Self::is_match`] and
+    /// [`Self::is_match_with_max_steps`] share the matcher invocation
+    /// without each one re-scanning the input.
+    fn is_match_chars(&self, chars: &[char], max_steps: usize) -> bool {
         let mut budget = MatchBudget::new(max_steps);
-        match_node(&self.node, &chars, 0, &mut budget)
+        match_node(&self.node, chars, 0, &mut budget)
             .into_iter()
             .any(|end| end == chars.len())
     }

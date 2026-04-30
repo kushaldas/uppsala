@@ -397,8 +397,13 @@ pub(crate) fn split_cdata_content(s: &str) -> Cow<'_, str> {
     Cow::Owned(s.replace("]]>", "]]]]><![CDATA[>"))
 }
 
-/// Return `s` if it matches the XML 1.0 `VersionNum` production
-/// (`'1.' [0-9]+`); otherwise return a safe fallback `"1.0"`.
+/// Return `s` if it is a version this library can both serialize and
+/// parse — `"1.0"` or `"1.1"` — and a safe fallback `"1.0"` otherwise.
+///
+/// Tighter than the XML 1.0 `VersionNum` production (`'1.' [0-9]+`)
+/// because `parse_xml_declaration` only accepts `1.0` / `1.1`; emitting
+/// any other version (e.g. `1.42`) would produce a document this
+/// library refuses to reparse.
 ///
 /// Without this, an attacker who can mutate `Document::xml_declaration`
 /// or pass an attacker-controlled string to
@@ -407,20 +412,11 @@ pub(crate) fn split_cdata_content(s: &str) -> Cow<'_, str> {
 /// markup ahead of the root element. The same smuggle class the
 /// comment / PI / CDATA sanitizers above close for those node kinds.
 pub(crate) fn safe_xml_version(s: &str) -> Cow<'_, str> {
-    if is_valid_xml_version(s) {
+    if s == "1.0" || s == "1.1" {
         Cow::Borrowed(s)
     } else {
         Cow::Borrowed("1.0")
     }
-}
-
-/// XML 1.0 §2.8 `VersionNum ::= '1.' [0-9]+`.
-fn is_valid_xml_version(s: &str) -> bool {
-    let rest = match s.strip_prefix("1.") {
-        Some(r) => r,
-        None => return false,
-    };
-    !rest.is_empty() && rest.bytes().all(|b| b.is_ascii_digit())
 }
 
 /// Return `s` if it matches the XML 1.0 `EncName` production
@@ -645,20 +641,23 @@ mod tests {
 
     #[test]
     fn safe_xml_version_passes_valid() {
+        // Only the two version numbers the parser actually accepts.
         assert!(matches!(safe_xml_version("1.0"), Cow::Borrowed(_)));
         assert!(matches!(safe_xml_version("1.1"), Cow::Borrowed(_)));
-        assert!(matches!(safe_xml_version("1.10"), Cow::Borrowed(_)));
         assert_eq!(&*safe_xml_version("1.0"), "1.0");
-        assert_eq!(&*safe_xml_version("1.42"), "1.42");
+        assert_eq!(&*safe_xml_version("1.1"), "1.1");
     }
 
     #[test]
     fn safe_xml_version_rejects_invalid() {
-        // Empty, wrong major, missing minor, trailing garbage, injection.
+        // Empty, wrong major, missing minor, syntactically-valid but
+        // unsupported (1.42 / 1.10), trailing garbage, injection.
         assert_eq!(&*safe_xml_version(""), "1.0");
         assert_eq!(&*safe_xml_version("1"), "1.0");
         assert_eq!(&*safe_xml_version("1."), "1.0");
         assert_eq!(&*safe_xml_version("2.0"), "1.0");
+        assert_eq!(&*safe_xml_version("1.10"), "1.0");
+        assert_eq!(&*safe_xml_version("1.42"), "1.0");
         assert_eq!(&*safe_xml_version("1.0a"), "1.0");
         assert_eq!(&*safe_xml_version("1.0\"?><x/><?y "), "1.0");
         assert_eq!(&*safe_xml_version("1.0 "), "1.0");
