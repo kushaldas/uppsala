@@ -83,11 +83,21 @@ time. Callers who need a non-scaled tight budget use
 The step budget alone does not cap wall-clock time per step. The original
 `match_repetition` implementation did `results.sort_unstable();
 results.dedup();` on a growing vector every iteration, producing an
-O(n² log n) wall-clock even on legitimate O(n) matches. This has been
-replaced with a linear sorted merge (O(|a| + |b|) per iteration), since
-both `results` and `next` are already sorted and deduplicated at the merge
-point. Net effect: a linear pattern over N characters now runs in O(N) time
-instead of O(N² log N).
+O(N² log N) wall-clock even on legitimate linear matches. This has been
+replaced with a direct-indexed `seen` bitmap (positions are bounded by
+`input.len()`, so a `Vec<bool>` sized to `input.len() + 1` is an O(1)
+membership test) plus an insertion-order `results` Vec, sorted once at
+the end. Net effect: a linear pattern over N characters now runs in
+O(N log N) time (dominated by the single final sort) instead of
+O(N² log N).
+
+An intermediate version used a sorted merge (`merge_sorted_unique`) of
+two already-sorted vectors per iteration, which was O(|a| + |b|) per
+iteration and cumulatively O(N²) — one log factor better than the
+original, but still quadratic. That version was correct but its 2 M-char
+regression test (`test_large_legitimate_input_matches`) could not
+terminate in bounded time, which exposed the issue; the bitmap
+accumulator replaced it.
 
 ### Fail-closed semantics
 

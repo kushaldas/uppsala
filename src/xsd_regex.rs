@@ -719,11 +719,11 @@ fn match_repetition(
     start: usize,
     budget: &mut MatchBudget,
 ) -> Vec<usize> {
-    // We collect all positions reachable after matching inner i times, for i in [0, max].
-    let mut results = Vec::new();
     let mut current_positions = vec![start];
 
-    // Match the first `min` occurrences (required).
+    // Match the first `min` occurrences (required). Per-iteration
+    // sort+dedup is cheap here because `min` is bounded by the pattern
+    // (not by input length), and inner branching is typically tiny.
     for _ in 0..min {
         let mut next = Vec::new();
         for &pos in &current_positions {
@@ -737,19 +737,27 @@ fn match_repetition(
         current_positions = next;
     }
 
-    // After min matches, all current positions are valid results.
-    results.extend(&current_positions);
+    // Greedy loop accumulator: a direct-indexed `seen` bitmap (positions
+    // are bounded by `input.len()`) gives O(1) membership test per
+    // candidate. Combined with a parallel `results` Vec that holds only
+    // the unique reachable end-positions, total work is O(N) insertions
+    // plus one O(N log N) final sort — vs the O(N^2) cost a
+    // merge-into-sorted-vec accumulator would incur on linear patterns
+    // like `[a-z]+` over a long string of `a`s.
+    let mut seen: Vec<bool> = vec![false; input.len() + 1];
+    let mut results: Vec<usize> = Vec::new();
+    for &p in &current_positions {
+        if p < seen.len() && !seen[p] {
+            seen[p] = true;
+            results.push(p);
+        }
+    }
 
-    // Continue matching up to max.
     let remaining = match max {
         Some(m) => m - min,
         None => input.len() + 1, // More than enough
     };
 
-    // Invariant: `results` is kept sorted+dedup'd across loop iterations.
-    // The initial contents came from `current_positions` above, which was
-    // sorted+dedup'd at the end of the min loop, so the invariant holds
-    // on entry.
     for _ in 0..remaining {
         let mut next = Vec::new();
         for &pos in &current_positions {
@@ -760,50 +768,31 @@ fn match_repetition(
         if next.is_empty() {
             break;
         }
-        // F-2: merge `next` into `results` in O(|results| + |next|)
-        // rather than the previous `extend + sort_unstable + dedup`,
-        // which was O(k log k) per iteration and cumulatively
-        // O(n^2 log n) on linear patterns like `[a-z]+` over a long
-        // string of `a`s. Merge preserves the sorted+dedup'd invariant.
-        let old_len = results.len();
-        results = merge_sorted_unique(&results, &next);
-        if results.len() == old_len {
-            // No new positions added — we've saturated.
+
+        let mut added = false;
+        for &p in &next {
+            // Bounds check is defensive: inner matchers should never
+            // return a position > input.len(), but a future regression
+            // shouldn't be able to panic the matcher.
+            if p < seen.len() && !seen[p] {
+                seen[p] = true;
+                results.push(p);
+                added = true;
+            }
+        }
+        if !added {
+            // No new end-positions reachable — saturated.
             break;
         }
         current_positions = next;
     }
 
+    // `results` is built in insertion order, which interleaves positions
+    // from different `current_positions` branches. Sort once at the end
+    // so downstream alternation / sequence de-duplication sees a tidy
+    // result. O(N log N) in the worst case, dwarfed by the saved O(N^2).
+    results.sort_unstable();
     results
-}
-
-/// Merge two already-sorted-and-deduplicated position vectors into one
-/// sorted-and-deduplicated vector in O(|a| + |b|) time. Used by
-/// `match_repetition` to accumulate reachable end positions without the
-/// quadratic cost of re-sorting the whole result set every iteration.
-fn merge_sorted_unique(a: &[usize], b: &[usize]) -> Vec<usize> {
-    let mut out = Vec::with_capacity(a.len() + b.len());
-    let (mut i, mut j) = (0, 0);
-    while i < a.len() && j < b.len() {
-        match a[i].cmp(&b[j]) {
-            std::cmp::Ordering::Less => {
-                out.push(a[i]);
-                i += 1;
-            }
-            std::cmp::Ordering::Equal => {
-                out.push(a[i]);
-                i += 1;
-                j += 1;
-            }
-            std::cmp::Ordering::Greater => {
-                out.push(b[j]);
-                j += 1;
-            }
-        }
-    }
-    out.extend_from_slice(&a[i..]);
-    out.extend_from_slice(&b[j..]);
-    out
 }
 
 // ─── Character class matching ────────────────────────────────────────────────
@@ -2113,11 +2102,12 @@ mod tests {
         );
     }
 
-    /// F-2: the sorted-merge fix inside `match_repetition` brings
-    /// linear-pattern wall-clock from O(n^2 log n) down to O(n). At
-    /// N=100 000 the old implementation took ~8 seconds; the new one
-    /// finishes in milliseconds. Assert a generous 1-second cap so
-    /// noisy CI runners don't false-fail.
+    /// F-2: the bitmap-accumulator inside `match_repetition` keeps
+    /// linear-pattern wall-clock to O(N log N) (dominated by the final
+    /// sort) rather than the O(N^2 log N) behaviour of the pre-fix
+    /// extend+sort+dedup and the O(N^2) behaviour of the intermediate
+    /// merge-based fix. Assert a generous 1-second cap so noisy CI
+    /// runners don't false-fail.
     #[test]
     fn test_match_repetition_linear_wall_clock() {
         let re = XsdRegex::compile("[a-z]+").expect("compile");
