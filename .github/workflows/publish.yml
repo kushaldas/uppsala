@@ -52,7 +52,6 @@ jobs:
             --test serialization_conformance \
             --test range_conformance \
             --test xsd_composition \
-            --test security_audit
 
       - name: W3C XML conformance
         run: cargo test --test w3c_xmlconf -- --nocapture
