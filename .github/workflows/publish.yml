@@ -1,0 +1,133 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Run the same gate CI runs on main, against the exact commit a
+  # tag points at, before any publish step touches the registry.
+  test:
+    name: Release-gate tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+        with:
+          components: rustfmt
+
+      - name: Cache cargo registry
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-publish-${{ hashFiles('Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Hand-crafted suites
+        run: |
+          cargo test --lib \
+            --test xml_conformance \
+            --test namespace_conformance \
+            --test xpath_conformance \
+            --test xsd_conformance \
+            --test serialization_conformance \
+            --test range_conformance \
+            --test xsd_composition \
+            --test security_audit
+
+      - name: W3C XML conformance
+        run: cargo test --test w3c_xmlconf -- --nocapture
+
+      - name: W3C XSD conformance (NIST Datatypes)
+        run: cargo test --test w3c_xsts xsts_nist_datatypes -- --nocapture
+
+      - name: W3C XSD conformance (MS DataTypes)
+        run: cargo test --test w3c_xsts xsts_ms_datatypes -- --nocapture
+
+      - name: W3C XSD conformance (Sun Combined)
+        run: cargo test --test w3c_xsts xsts_sun_combined -- --nocapture
+
+  # Publish to crates.io via OIDC trusted publishing. No long-lived
+  # CARGO_REGISTRY_TOKEN secret is needed — `crates-io-auth-action`
+  # exchanges the GitHub OIDC token for a short-lived crates.io token
+  # gated by the trusted-publishing config on https://crates.io/me.
+  publish-crate:
+    name: Publish to crates.io
+    needs: test
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+
+      - name: Authenticate with crates.io
+        id: auth
+        uses: rust-lang/crates-io-auth-action@bbd81622f20ce9e2dd9622e3218b975523e45bbe # v1
+
+      # Skip the tag-vs-Cargo.toml verification for manual dispatch
+      # (no tag context). On a real tag push, refuse to publish if the
+      # tag and Cargo.toml version don't match.
+      - name: Verify tag matches crate version
+        if: github.event_name == 'push'
+        run: |
+          version=$(grep -m 1 '^version' Cargo.toml | sed -E 's/version *= *"(.+)"/\1/')
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match Cargo.toml version v${version}"
+            exit 1
+          fi
+
+      # `--dry-run` always; real `publish` only on tag push so manual
+      # workflow runs can sanity-check the workflow without uploading.
+      - name: Verify publishable package
+        run: cargo publish --dry-run
+
+      - name: Publish to crates.io
+        if: github.event_name == 'push'
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: cargo publish
+
+  # GitHub Release with auto-generated notes from commit history.
+  github-release:
+    name: GitHub release
+    needs: publish-crate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        with:
+          generate_release_notes: true
