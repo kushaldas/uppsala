@@ -487,3 +487,47 @@ fn deep_include_chain_rejected() {
         err
     );
 }
+
+/// When the caller supplies a `base_path` whose parent directory cannot
+/// be canonicalized, the composition layer must fail closed rather than
+/// silently dropping the F-10 containment check. Pre-fix, the
+/// containment-anchor was `base_dir.canonicalize().ok()`, so any
+/// canonicalize failure (missing dir, permission denied, race) collapsed
+/// `canonical_base` to `None` and left the include path unchecked.
+#[test]
+fn uncanonicalizable_base_path_fails_closed() {
+    // Construct a base_path whose parent directory does NOT exist.
+    let bogus_parent = std::env::temp_dir().join(format!(
+        "uppsala-nonexistent-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos(),
+    ));
+    let bogus_schema = bogus_parent.join("schema.xsd");
+    assert!(
+        !bogus_parent.exists(),
+        "test precondition: parent must not exist"
+    );
+
+    // Schema body itself is benign; it just has to reach
+    // process_schema_composition (which fires on any xs:include /
+    // xs:redefine / xs:import — even one with a missing target).
+    let schema_src = r#"<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="other.xsd"/>
+  <xs:element name="x" type="xs:string"/>
+</xs:schema>"#;
+    let schema_doc = uppsala::parse(schema_src).expect("parse");
+    let built = uppsala::XsdValidator::from_schema_with_base_path(&schema_doc, Some(&bogus_schema));
+
+    let err = built
+        .err()
+        .expect("uncanonicalizable base directory must fail closed");
+    assert!(
+        format!("{}", err).contains("canonicalize schema base directory"),
+        "expected canonicalize error, got: {}",
+        err
+    );
+}

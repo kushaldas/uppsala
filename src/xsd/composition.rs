@@ -162,7 +162,22 @@ pub(super) fn process_schema_composition(
     let base_dir = base_path.and_then(|p| p.parent());
     // Canonicalize the base once per call; reused as the containment
     // anchor for every schemaLocation resolved in the loop below.
-    let canonical_base = base_dir.and_then(|b| b.canonicalize().ok());
+    //
+    // Fail closed when the caller supplied a base directory we cannot
+    // canonicalize (permission denied, missing, race with `rm -rf`,
+    // etc.). Falling through to `canonical_base = None` would skip the
+    // containment check inside `resolve_include_path` and re-open the
+    // arbitrary-file-read window F-10 closed.
+    let canonical_base = match base_dir {
+        Some(b) => Some(b.canonicalize().map_err(|e| {
+            XmlError::validation(format!(
+                "Failed to canonicalize schema base directory '{}': {}",
+                b.display(),
+                e
+            ))
+        })?),
+        None => None,
+    };
 
     for child in schema_doc.children(schema_elem) {
         if let Some(NodeKind::Element(elem)) = schema_doc.node_kind(child) {
@@ -211,13 +226,18 @@ pub(super) fn process_schema_composition(
 
                     // Build a sub-validator from the external schema,
                     // propagating the visited set and incrementing depth.
+                    // Decrement on every exit path (Ok or Err) so a
+                    // failure deep in the include tree cannot leave
+                    // `state.depth` desynced for any later sibling
+                    // includes.
                     state.depth += 1;
-                    let ext_validator = XsdValidator::from_schema_with_composition_state(
+                    let ext_validator_res = XsdValidator::from_schema_with_composition_state(
                         &ext_doc,
                         Some(&canonical_path),
                         state,
-                    )?;
+                    );
                     state.depth -= 1;
+                    let ext_validator = ext_validator_res?;
 
                     // Determine the effective namespace for included declarations.
                     // "Chameleon include": if the external schema has no targetNamespace
@@ -267,13 +287,18 @@ pub(super) fn process_schema_composition(
                     };
 
                     // Build a sub-validator from the external schema.
+                    // Same balanced-decrement pattern as the include /
+                    // redefine branch above: decrement runs on Ok and
+                    // Err alike, so a failure inside the import chain
+                    // cannot desync `state.depth` for sibling imports.
                     state.depth += 1;
-                    let ext_validator = XsdValidator::from_schema_with_composition_state(
+                    let ext_validator_res = XsdValidator::from_schema_with_composition_state(
                         &ext_doc,
                         Some(&canonical_path),
                         state,
-                    )?;
+                    );
                     state.depth -= 1;
+                    let ext_validator = ext_validator_res?;
 
                     // Import never uses chameleon fixup — the imported schema
                     // has its own targetNamespace which is preserved as-is.
