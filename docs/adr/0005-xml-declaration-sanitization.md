@@ -51,8 +51,15 @@ the existing sanitizers, to `version` and `encoding`:
 
 | Helper | Matches | Fallback on mismatch |
 |---|---|---|
-| `writer::safe_xml_version` | XML 1.0 §2.8 `VersionNum ::= '1.' [0-9]+` | `"1.0"` |
+| `writer::safe_xml_version` | Exact string `"1.0"` or `"1.1"` | `"1.0"` |
 | `writer::safe_xml_encoding` | XML 1.0 §4.3.3 `EncName ::= [A-Za-z] ([A-Za-z0-9._] \| '-')*` | `"UTF-8"` |
+
+For `version`, this is intentionally narrower than XML 1.0's general
+`VersionNum ::= '1.' [0-9]+` production: the parser only accepts `"1.0"`
+and `"1.1"`, so emitting any other syntactically-valid value (e.g.
+`"1.42"`) would produce a document this library cannot reparse. The
+helper therefore accepts only those two exact values and substitutes
+`"1.0"` for everything else.
 
 Wired into both serializer entry points:
 
@@ -135,9 +142,9 @@ to emit a non-round-trippable document anyway.
 
 Added to `src/writer.rs` test module:
 
-1. `safe_xml_version_passes_valid` — `"1.0"`, `"1.1"`, `"1.10"`, `"1.42"`
+1. `safe_xml_version_passes_valid` — `"1.0"`, `"1.1"`
 2. `safe_xml_version_rejects_invalid` — empty, `"1"`, `"1."`, `"2.0"`,
-   `"1.0a"`, `"1.0 "`, injection string
+   `"1.10"`, `"1.42"`, `"1.0a"`, `"1.0 "`, injection string
 3. `safe_xml_encoding_passes_valid` — `"UTF-8"`, `"utf-8"`,
    `"ISO-8859-1"`, `"US_ASCII.1"`
 4. `safe_xml_encoding_rejects_invalid` — empty, digit-first, leading
