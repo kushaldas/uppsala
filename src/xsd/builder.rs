@@ -19,7 +19,6 @@ use crate::dom::{Document, NodeKind};
 use crate::error::{XmlError, XmlResult};
 
 use super::composition::{process_schema_composition, CompositionState};
-use super::debug_log;
 use super::facet_resolution::{
     resolve_content_model_list_item_facets, resolve_inline_list_item_facets,
 };

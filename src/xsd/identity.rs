@@ -10,7 +10,6 @@ use std::collections::HashMap;
 use crate::dom::{Document, NodeId, NodeKind};
 use crate::error::ValidationError;
 
-use super::debug_log;
 use super::types::{IdentityConstraint, IdentityConstraintKind, XsdValidator};
 
 impl XsdValidator {

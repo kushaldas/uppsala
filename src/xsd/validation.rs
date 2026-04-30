@@ -18,7 +18,6 @@ use super::builtins::{
     apply_whitespace_normalization, validate_builtin_value, validate_facet, validate_list_facet,
     whitespace_for_type,
 };
-use super::debug_log;
 use super::parser::parse_builtin_type;
 use super::types::*;
 use super::wildcard::wildcard_allows_namespace;

@@ -42,6 +42,7 @@ macro_rules! debug_log {
     }};
 }
 
+#[allow(unused_imports)]
 pub(crate) use debug_log;
 
 // Submodule declarations — each file contains a logical slice of the XSD validator.

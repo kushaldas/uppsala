@@ -689,11 +689,7 @@ mod tests {
         // Attacker-controlled version string tries to close the
         // declaration early and inject a root-sibling PI.
         let mut w = XmlWriter::new();
-        w.write_declaration_full(
-            "1.0\"?><!-- smuggled -->",
-            Some("UTF-8"),
-            None,
-        );
+        w.write_declaration_full("1.0\"?><!-- smuggled -->", Some("UTF-8"), None);
         w.start_element("r", &[]);
         w.end_element("r");
         let out = w.into_string();
@@ -709,11 +705,7 @@ mod tests {
     #[test]
     fn roundtrip_xml_writer_declaration_encoding_injection_blocked() {
         let mut w = XmlWriter::new();
-        w.write_declaration_full(
-            "1.0",
-            Some("UTF-8\"?><inject/><?x "),
-            None,
-        );
+        w.write_declaration_full("1.0", Some("UTF-8\"?><inject/><?x "), None);
         w.start_element("r", &[]);
         w.end_element("r");
         let out = w.into_string();
@@ -753,10 +745,7 @@ mod tests {
             out
         );
         let reparsed = crate::parse(&out).expect("sanitized output must reparse");
-        assert_eq!(
-            reparsed.xml_declaration.as_ref().unwrap().version,
-            "1.0"
-        );
+        assert_eq!(reparsed.xml_declaration.as_ref().unwrap().version, "1.0");
     }
 
     #[test]
@@ -775,7 +764,12 @@ mod tests {
         );
         let reparsed = crate::parse(&out).expect("sanitized output must reparse");
         assert_eq!(
-            reparsed.xml_declaration.as_ref().unwrap().encoding.as_deref(),
+            reparsed
+                .xml_declaration
+                .as_ref()
+                .unwrap()
+                .encoding
+                .as_deref(),
             Some("UTF-8")
         );
     }
