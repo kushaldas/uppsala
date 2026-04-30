@@ -62,11 +62,11 @@ impl XmlWriter {
         standalone: Option<bool>,
     ) {
         self.buf.push_str("<?xml version=\"");
-        self.buf.push_str(version);
+        self.buf.push_str(&safe_xml_version(version));
         self.buf.push('"');
         if let Some(enc) = encoding {
             self.buf.push_str(" encoding=\"");
-            self.buf.push_str(enc);
+            self.buf.push_str(&safe_xml_encoding(enc));
             self.buf.push('"');
         }
         if let Some(sa) = standalone {
@@ -397,6 +397,54 @@ pub(crate) fn split_cdata_content(s: &str) -> Cow<'_, str> {
     Cow::Owned(s.replace("]]>", "]]]]><![CDATA[>"))
 }
 
+/// Return `s` if it matches the XML 1.0 `VersionNum` production
+/// (`'1.' [0-9]+`); otherwise return a safe fallback `"1.0"`.
+///
+/// Without this, an attacker who can mutate `Document::xml_declaration`
+/// or pass an attacker-controlled string to
+/// [`XmlWriter::write_declaration_full`] can close the enclosing
+/// `<?xml ... ?>` early with a `"?>` byte pair and smuggle arbitrary
+/// markup ahead of the root element. The same smuggle class the
+/// comment / PI / CDATA sanitizers above close for those node kinds.
+pub(crate) fn safe_xml_version(s: &str) -> Cow<'_, str> {
+    if is_valid_xml_version(s) {
+        Cow::Borrowed(s)
+    } else {
+        Cow::Borrowed("1.0")
+    }
+}
+
+/// XML 1.0 §2.8 `VersionNum ::= '1.' [0-9]+`.
+fn is_valid_xml_version(s: &str) -> bool {
+    let rest = match s.strip_prefix("1.") {
+        Some(r) => r,
+        None => return false,
+    };
+    !rest.is_empty() && rest.bytes().all(|b| b.is_ascii_digit())
+}
+
+/// Return `s` if it matches the XML 1.0 `EncName` production
+/// (`[A-Za-z] ([A-Za-z0-9._] | '-')*`); otherwise return a safe
+/// fallback `"UTF-8"`. Same threat model and rationale as
+/// [`safe_xml_version`].
+pub(crate) fn safe_xml_encoding(s: &str) -> Cow<'_, str> {
+    if is_valid_xml_encoding(s) {
+        Cow::Borrowed(s)
+    } else {
+        Cow::Borrowed("UTF-8")
+    }
+}
+
+/// XML 1.0 §4.3.3 `EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*`.
+fn is_valid_xml_encoding(s: &str) -> bool {
+    let mut bytes = s.bytes();
+    match bytes.next() {
+        Some(b) if b.is_ascii_alphabetic() => {}
+        _ => return false,
+    }
+    bytes.all(|b| b.is_ascii_alphanumeric() || matches!(b, b'.' | b'_' | b'-'))
+}
+
 // ─── Internal escaping helpers (write directly to String, no allocation) ───
 
 /// Write text content with XML escaping directly to a String.
@@ -591,6 +639,145 @@ mod tests {
             .collect();
         assert_eq!(pi_children.len(), 1, "expected exactly one PI child");
         assert_eq!(&*pi_children[0].target, "_xml");
+    }
+
+    // ─── XML-declaration version/encoding validation (M-1) ────────────
+
+    #[test]
+    fn safe_xml_version_passes_valid() {
+        assert!(matches!(safe_xml_version("1.0"), Cow::Borrowed(_)));
+        assert!(matches!(safe_xml_version("1.1"), Cow::Borrowed(_)));
+        assert!(matches!(safe_xml_version("1.10"), Cow::Borrowed(_)));
+        assert_eq!(&*safe_xml_version("1.0"), "1.0");
+        assert_eq!(&*safe_xml_version("1.42"), "1.42");
+    }
+
+    #[test]
+    fn safe_xml_version_rejects_invalid() {
+        // Empty, wrong major, missing minor, trailing garbage, injection.
+        assert_eq!(&*safe_xml_version(""), "1.0");
+        assert_eq!(&*safe_xml_version("1"), "1.0");
+        assert_eq!(&*safe_xml_version("1."), "1.0");
+        assert_eq!(&*safe_xml_version("2.0"), "1.0");
+        assert_eq!(&*safe_xml_version("1.0a"), "1.0");
+        assert_eq!(&*safe_xml_version("1.0\"?><x/><?y "), "1.0");
+        assert_eq!(&*safe_xml_version("1.0 "), "1.0");
+    }
+
+    #[test]
+    fn safe_xml_encoding_passes_valid() {
+        assert!(matches!(safe_xml_encoding("UTF-8"), Cow::Borrowed(_)));
+        assert!(matches!(safe_xml_encoding("utf-8"), Cow::Borrowed(_)));
+        assert!(matches!(safe_xml_encoding("ISO-8859-1"), Cow::Borrowed(_)));
+        assert!(matches!(safe_xml_encoding("US_ASCII.1"), Cow::Borrowed(_)));
+        assert_eq!(&*safe_xml_encoding("UTF-8"), "UTF-8");
+    }
+
+    #[test]
+    fn safe_xml_encoding_rejects_invalid() {
+        // Empty, digit-first, leading dash, injection, control chars.
+        assert_eq!(&*safe_xml_encoding(""), "UTF-8");
+        assert_eq!(&*safe_xml_encoding("1UTF"), "UTF-8");
+        assert_eq!(&*safe_xml_encoding("-foo"), "UTF-8");
+        assert_eq!(&*safe_xml_encoding("UTF-8\"?><x/>"), "UTF-8");
+        assert_eq!(&*safe_xml_encoding("utf 8"), "UTF-8");
+        assert_eq!(&*safe_xml_encoding("utf\x00"), "UTF-8");
+    }
+
+    #[test]
+    fn roundtrip_xml_writer_declaration_version_injection_blocked() {
+        // Attacker-controlled version string tries to close the
+        // declaration early and inject a root-sibling PI.
+        let mut w = XmlWriter::new();
+        w.write_declaration_full(
+            "1.0\"?><!-- smuggled -->",
+            Some("UTF-8"),
+            None,
+        );
+        w.start_element("r", &[]);
+        w.end_element("r");
+        let out = w.into_string();
+        assert!(
+            !out.contains("smuggled"),
+            "attacker-controlled version must not reach output: {:?}",
+            out
+        );
+        let doc = crate::parse(&out).expect("sanitized output must reparse");
+        assert_eq!(doc.xml_declaration.as_ref().unwrap().version, "1.0");
+    }
+
+    #[test]
+    fn roundtrip_xml_writer_declaration_encoding_injection_blocked() {
+        let mut w = XmlWriter::new();
+        w.write_declaration_full(
+            "1.0",
+            Some("UTF-8\"?><inject/><?x "),
+            None,
+        );
+        w.start_element("r", &[]);
+        w.end_element("r");
+        let out = w.into_string();
+        assert!(
+            !out.contains("<inject"),
+            "attacker-controlled encoding must not reach output: {:?}",
+            out
+        );
+        let doc = crate::parse(&out).expect("sanitized output must reparse");
+        // Root must still be <r/>, not the smuggled sibling.
+        let root = doc.document_element().unwrap();
+        match doc.node_kind(root) {
+            Some(crate::NodeKind::Element(e)) => {
+                assert_eq!(&*e.name.local_name, "r");
+            }
+            _ => panic!("expected element root"),
+        }
+        assert_eq!(
+            doc.xml_declaration.as_ref().unwrap().encoding.as_deref(),
+            Some("UTF-8")
+        );
+    }
+
+    #[test]
+    fn roundtrip_dom_declaration_version_injection_blocked() {
+        // Same threat model, exercised through the DOM serializer path.
+        let mut doc = crate::parse("<r/>").expect("parse");
+        doc.xml_declaration = Some(crate::dom::XmlDeclaration {
+            version: "1.0\"?><forged/><?y ".into(),
+            encoding: Some("UTF-8".into()),
+            standalone: None,
+        });
+        let out = doc.to_xml();
+        assert!(
+            !out.contains("<forged"),
+            "DOM-mutation version injection not blocked: {:?}",
+            out
+        );
+        let reparsed = crate::parse(&out).expect("sanitized output must reparse");
+        assert_eq!(
+            reparsed.xml_declaration.as_ref().unwrap().version,
+            "1.0"
+        );
+    }
+
+    #[test]
+    fn roundtrip_dom_declaration_encoding_injection_blocked() {
+        let mut doc = crate::parse("<r/>").expect("parse");
+        doc.xml_declaration = Some(crate::dom::XmlDeclaration {
+            version: "1.0".into(),
+            encoding: Some("UTF-8\"?><forged/><?y ".into()),
+            standalone: None,
+        });
+        let out = doc.to_xml();
+        assert!(
+            !out.contains("<forged"),
+            "DOM-mutation encoding injection not blocked: {:?}",
+            out
+        );
+        let reparsed = crate::parse(&out).expect("sanitized output must reparse");
+        assert_eq!(
+            reparsed.xml_declaration.as_ref().unwrap().encoding.as_deref(),
+            Some("UTF-8")
+        );
     }
 
     #[test]

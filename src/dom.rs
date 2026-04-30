@@ -1182,11 +1182,11 @@ impl<'a> Document<'a> {
     fn write_document_to(&self, out: &mut dyn fmt::Write, opts: &XmlWriteOptions) -> fmt::Result {
         if let Some(decl) = &self.xml_declaration {
             out.write_str("<?xml version=\"")?;
-            out.write_str(&decl.version)?;
+            out.write_str(&crate::writer::safe_xml_version(&decl.version))?;
             out.write_char('"')?;
             if let Some(enc) = &decl.encoding {
                 out.write_str(" encoding=\"")?;
-                out.write_str(enc)?;
+                out.write_str(&crate::writer::safe_xml_encoding(enc))?;
                 out.write_char('"')?;
             }
             if let Some(sa) = decl.standalone {
