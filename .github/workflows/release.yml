@@ -1,0 +1,160 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run cargo publish --dry-run only (don't publish)"
+        type: boolean
+        default: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Always run a full CI gate before any publish step. The same matrix
+  # the regular CI workflow exercises, so a tag push produces an
+  # artefact identical to what main branch CI signed off on.
+  test:
+    name: Test (release gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout uppsala
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Hand-crafted suites
+        run: |
+          cargo test --lib \
+            --test xml_conformance \
+            --test namespace_conformance \
+            --test xpath_conformance \
+            --test xsd_conformance \
+            --test serialization_conformance \
+            --test range_conformance \
+            --test xsd_composition
+
+      - name: W3C XML conformance
+        run: cargo test --test w3c_xmlconf -- --nocapture
+
+      - name: W3C XSD conformance (NIST Datatypes)
+        run: cargo test --test w3c_xsts xsts_nist_datatypes -- --nocapture
+
+      - name: W3C XSD conformance (MS DataTypes)
+        run: cargo test --test w3c_xsts xsts_ms_datatypes -- --nocapture
+
+      - name: W3C XSD conformance (Sun Combined)
+        run: cargo test --test w3c_xsts xsts_sun_combined -- --nocapture
+
+  # Verify the pushed tag matches the version in Cargo.toml so we never
+  # publish a `v0.4.0` tag on top of a `0.3.9` Cargo.toml. Skipped on
+  # manual workflow_dispatch (no tag context).
+  verify-tag:
+    name: Verify tag matches Cargo.toml
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      version: ${{ steps.extract.outputs.version }}
+    steps:
+      - name: Checkout uppsala
+        uses: actions/checkout@v4
+
+      - name: Extract Cargo.toml version
+        id: extract
+        run: |
+          cargo_version=$(grep -m 1 '^version' Cargo.toml | sed -E 's/version = "(.+)"/\1/')
+          tag_version="${GITHUB_REF_NAME#v}"
+          echo "Cargo.toml version: $cargo_version"
+          echo "Tag version:        $tag_version"
+          if [ "$cargo_version" != "$tag_version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match Cargo.toml version $cargo_version"
+            exit 1
+          fi
+          echo "version=$cargo_version" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - verify-tag
+    # On manual dispatch, `verify-tag` is skipped (`if:` false). GitHub
+    # marks skipped needs as success, so this job still runs — but we
+    # gate the actual publish on the dry_run input below.
+    if: |
+      always() &&
+      needs.test.result == 'success' &&
+      (needs.verify-tag.result == 'success' || needs.verify-tag.result == 'skipped')
+    steps:
+      - name: Checkout uppsala
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: cargo publish --dry-run
+        run: cargo publish --dry-run --verbose
+
+      - name: cargo publish
+        if: github.event_name == 'push' || inputs.dry_run == false
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --verbose
+
+  github-release:
+    name: GitHub Release notes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: publish
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout uppsala
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
