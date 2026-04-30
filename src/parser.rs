@@ -119,9 +119,18 @@ impl Parser {
             doc.xml_declaration = Some(decl);
         }
 
-        // Parse prolog content (comments, PIs, whitespace, DOCTYPE)
+        // Parse prolog content (comments, PIs, whitespace, DOCTYPE).
+        // The document-level `entity_budget` is threaded through DOCTYPE/
+        // internal-subset parsing so ATTLIST default values charge against
+        // the same cap as document content (closes the M-1 bypass).
         let root_id = doc.root();
-        parse_misc(&mut cursor, &mut doc, root_id, &mut entities)?;
+        parse_misc(
+            &mut cursor,
+            &mut doc,
+            root_id,
+            &mut entities,
+            &mut entity_budget,
+        )?;
 
         // Parse document element and trailing misc
         let mut found_root = false;
@@ -1178,11 +1187,17 @@ fn parse_pi<'a>(cursor: &mut Cursor<'a>) -> XmlResult<ProcessingInstruction<'a>>
 }
 
 /// Parse prolog miscellaneous content (comments, PIs, whitespace, DOCTYPE).
+///
+/// `entity_budget` is the shared document-level budget; it is threaded through
+/// DOCTYPE / internal-subset parsing so any entity expansion that occurs while
+/// processing ATTLIST default values charges against the same cap as document
+/// content.
 fn parse_misc<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
     parent: NodeId,
     entities: &mut EntityMap,
+    entity_budget: &mut usize,
 ) -> XmlResult<()> {
     loop {
         cursor.skip_whitespace();
@@ -1202,7 +1217,7 @@ fn parse_misc<'a>(
             doc.set_byte_end_pos(id, cursor.pos);
             doc.append_child_unchecked(parent, id);
         } else if cursor.starts_with("<!DOCTYPE") {
-            parse_doctype(cursor, doc, entities)?;
+            parse_doctype(cursor, doc, entities, entity_budget)?;
         } else {
             break;
         }
@@ -1211,10 +1226,15 @@ fn parse_misc<'a>(
 }
 
 /// Parse a DOCTYPE declaration, including internal subset.
+///
+/// `entity_budget` is the shared document-level expansion budget. It is
+/// threaded into the internal-subset parser so ATTLIST default values
+/// charge against the same cap as document content.
 fn parse_doctype<'a>(
     cursor: &mut Cursor<'a>,
     doc: &mut Document<'a>,
     entities: &mut EntityMap,
+    entity_budget: &mut usize,
 ) -> XmlResult<()> {
     let start_pos = cursor.pos;
     cursor.expect("<!DOCTYPE")?;
@@ -1272,7 +1292,7 @@ fn parse_doctype<'a>(
     // Optional internal subset
     if cursor.peek() == Some('[') {
         cursor.advance_char();
-        parse_internal_subset(cursor, entities)?;
+        parse_internal_subset(cursor, entities, entity_budget)?;
         cursor.expect("]")?;
         cursor.skip_whitespace();
     }
@@ -1365,7 +1385,11 @@ fn is_pubid_char(c: char) -> bool {
 }
 
 /// Parse the internal subset of a DOCTYPE declaration.
-fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()> {
+fn parse_internal_subset(
+    cursor: &mut Cursor,
+    entities: &mut EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     loop {
         cursor.skip_whitespace();
         if cursor.is_eof() {
@@ -1382,7 +1406,7 @@ fn parse_internal_subset(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlRe
         } else if cursor.starts_with("<!ELEMENT") {
             parse_element_decl(cursor)?;
         } else if cursor.starts_with("<!ATTLIST") {
-            parse_attlist_decl(cursor, entities)?;
+            parse_attlist_decl(cursor, entities, entity_budget)?;
         } else if cursor.starts_with("<!ENTITY") {
             parse_entity_decl(cursor, entities)?;
         } else if cursor.starts_with("<!NOTATION") {
@@ -1704,7 +1728,11 @@ fn parse_children_group(cursor: &mut Cursor) -> XmlResult<()> {
 }
 
 /// Parse an ATTLIST declaration.
-fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_attlist_decl(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     cursor.expect("<!ATTLIST")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -1731,12 +1759,16 @@ fn parse_attlist_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
             reject_pe_in_markup_decl(cursor)?;
             continue;
         }
-        parse_att_def(cursor, entities)?;
+        parse_att_def(cursor, entities, entity_budget)?;
     }
 }
 
 /// Parse a single attribute definition within an ATTLIST.
-fn parse_att_def(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_att_def(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     parse_name(cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -1759,7 +1791,7 @@ fn parse_att_def(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
     }
     cursor.skip_whitespace();
 
-    parse_default_decl(cursor, entities)?;
+    parse_default_decl(cursor, entities, entity_budget)?;
 
     Ok(())
 }
@@ -1848,7 +1880,11 @@ fn parse_nmtoken(cursor: &mut Cursor) -> XmlResult<String> {
 }
 
 /// Parse a default declaration.
-fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()> {
+fn parse_default_decl(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<()> {
     if cursor.starts_with("#REQUIRED") {
         cursor.advance(9);
     } else if cursor.starts_with("#IMPLIED") {
@@ -1863,9 +1899,9 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
             ));
         }
         cursor.skip_whitespace();
-        parse_att_value_in_dtd(cursor, entities)?;
+        parse_att_value_in_dtd(cursor, entities, entity_budget)?;
     } else if cursor.peek() == Some('"') || cursor.peek() == Some('\'') {
-        parse_att_value_in_dtd(cursor, entities)?;
+        parse_att_value_in_dtd(cursor, entities, entity_budget)?;
     } else {
         return Err(XmlError::well_formedness(
             "Expected default declaration (#REQUIRED, #IMPLIED, #FIXED, or default value)",
@@ -1877,7 +1913,16 @@ fn parse_default_decl(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<()
 }
 
 /// Parse an attribute value inside a DTD declaration.
-fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResult<String> {
+///
+/// `entity_budget` is the shared document-level expansion budget. Every
+/// entity reference inside the default value charges against it, so a
+/// runaway internal-subset DTD cannot drive peak memory beyond the
+/// configured cap by chaining many ATTLIST defaults together.
+fn parse_att_value_in_dtd(
+    cursor: &mut Cursor,
+    entities: &EntityMap,
+    entity_budget: &mut usize,
+) -> XmlResult<String> {
     let quote = match cursor.peek() {
         Some('"') => '"',
         Some('\'') => '\'',
@@ -1899,15 +1944,16 @@ fn parse_att_value_in_dtd(cursor: &mut Cursor, entities: &EntityMap) -> XmlResul
                 break;
             }
             Some('&') => {
-                // DTD attribute default values are expanded once at declaration
-                // time; use a fresh per-call budget so a runaway default cannot
-                // spill into the document-level expansion budget.
-                let mut local_budget = DEFAULT_MAX_ENTITY_EXPANSION;
+                // Entity references in ATTLIST default values share the
+                // document-level `entity_budget` so a runaway internal subset
+                // (e.g. many ATTLIST defaults each referencing a near-budget
+                // entity) cannot bypass the cap by allocating fresh budgets
+                // per declaration.
                 let resolved = parse_reference_with_entities(
                     cursor,
                     entities,
                     &mut EntityCache::new(),
-                    &mut local_budget,
+                    entity_budget,
                 )?;
                 value.push_str(&resolved);
             }
@@ -2913,6 +2959,36 @@ mod tests {
         let root = doc.document_element().unwrap();
         let text = doc.text_content_deep(root);
         assert_eq!(text, "Hello, Alice! Hello, Alice! Hello, Alice!");
+    }
+
+    /// M-1 regression — ATTLIST defaults must charge against the shared
+    /// document budget, not a fresh per-`&` 1 MiB cap. Pre-fix, an internal
+    /// subset DTD could chain N ATTLIST defaults each referencing a
+    /// near-budget entity to consume `N × budget` peak memory while never
+    /// tripping the document-level cap.
+    #[test]
+    fn test_entity_budget_covers_attlist_defaults() {
+        // `a` is 500 KiB, referenced 3× in a single ATTLIST default → 1.5 MiB
+        // expansion total. Pre-fix this parsed; post-fix the shared 1 MiB
+        // budget rejects.
+        let big_a = "A".repeat(500_000);
+        let xml = format!(
+            r#"<?xml version="1.0"?>
+<!DOCTYPE r [
+<!ENTITY a "{}">
+<!ATTLIST r foo CDATA "&a;&a;&a;">
+]>
+<r/>"#,
+            big_a
+        );
+        let err = Parser::new()
+            .parse(&xml)
+            .expect_err("ATTLIST default must charge against the shared budget");
+        assert!(
+            format!("{}", err).contains("Entity expansion"),
+            "expected entity-budget error, got: {}",
+            err
+        );
     }
 
     /// Custom budget wins: a tiny cap must reject what the default accepts.
