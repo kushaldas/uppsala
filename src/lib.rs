@@ -247,7 +247,7 @@ fn decode_xml_bytes(input: &[u8]) -> XmlResult<String> {
 fn decode_utf16_le(bytes: &[u8]) -> XmlResult<String> {
     // A UTF-16 stream must be an exact sequence of 16-bit code units.
     // Dropping an orphan trailing byte would silently accept truncated input.
-    if !bytes.len().is_multiple_of(2) {
+    if bytes.len() % 2 != 0 {
         return Err(XmlError::well_formedness(
             "Invalid UTF-16 LE: odd number of bytes",
             1,
@@ -269,7 +269,7 @@ fn decode_utf16_le(bytes: &[u8]) -> XmlResult<String> {
 fn decode_utf16_be(bytes: &[u8]) -> XmlResult<String> {
     // A UTF-16 stream must be an exact sequence of 16-bit code units.
     // Dropping an orphan trailing byte would silently accept truncated input.
-    if !bytes.len().is_multiple_of(2) {
+    if bytes.len() % 2 != 0 {
         return Err(XmlError::well_formedness(
             "Invalid UTF-16 BE: odd number of bytes",
             1,
