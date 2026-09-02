@@ -13,6 +13,18 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout uppsala
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Install Rust 1.85
+        uses: dtolnay/rust-toolchain@1.85.0
+
+      - name: Check declared MSRV
+        run: cargo check --all-targets
+
   build-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
