@@ -435,6 +435,11 @@ pub(super) fn parse_complex_type(
 
     let mut content = ContentModel::Empty;
     let mut attributes = Vec::new();
+    // Bare `<xsd:attribute>` declarations only (not attributes contributed by an
+    // `<xsd:attributeGroup ref="...">`). Tracked separately from `attributes` so that
+    // `reresolve_types_after_redefine` can rebuild the attributeGroup-derived portion
+    // after `xs:redefine` without discarding attributes declared directly on the type.
+    let mut own_attributes: Vec<AttributeDecl> = Vec::new();
     let mut attribute_wildcard: Option<AttributeWildcard> = None;
     let mut base_type: Option<(Option<String>, String)> = None;
     let mut derived_by_extension: Option<bool> = None;
@@ -528,7 +533,9 @@ pub(super) fn parse_complex_type(
                     }
                 }
                 "attribute" => {
-                    attributes.push(parse_attribute_decl(doc, child, target_ns)?);
+                    let decl = parse_attribute_decl(doc, child, target_ns)?;
+                    own_attributes.push(decl.clone());
+                    attributes.push(decl);
                 }
                 "anyAttribute" => {
                     let new_wc = parse_any_attribute(child_elem, target_ns);
@@ -605,9 +612,11 @@ pub(super) fn parse_complex_type(
                                             }
                                             match gc_child_elem.name.local_name.as_ref() {
                                                 "attribute" => {
-                                                    attributes.push(parse_attribute_decl(
+                                                    let decl = parse_attribute_decl(
                                                         doc, gc_child, target_ns,
-                                                    )?);
+                                                    )?;
+                                                    own_attributes.push(decl.clone());
+                                                    attributes.push(decl);
                                                 }
                                                 "anyAttribute" => {
                                                     local_wildcard = Some(parse_any_attribute(
@@ -682,6 +691,11 @@ pub(super) fn parse_complex_type(
                                                             doc, gc_child, ref_name, target_ns,
                                                         );
                                                         let key = (ag_ns, ag_local.to_string());
+                                                        // Track the unresolved reference for
+                                                        // potential re-resolution after redefine,
+                                                        // matching the top-level attributeGroup
+                                                        // branch above.
+                                                        attribute_group_refs.push(key.clone());
                                                         if let Some(ag) = attribute_groups.get(&key)
                                                         {
                                                             attributes.extend(
@@ -732,6 +746,7 @@ pub(super) fn parse_complex_type(
         name,
         content,
         attributes,
+        own_attributes,
         mixed,
         attribute_wildcard,
         base_type,
