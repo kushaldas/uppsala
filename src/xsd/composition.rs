@@ -551,6 +551,25 @@ fn chameleon_fixup_type_def(td: &mut TypeDef, target_ns: &Option<String>) {
                 }
             }
             chameleon_fixup_attribute_decls(&mut ct.attributes, target_ns);
+            chameleon_fixup_attribute_decls(&mut ct.own_attributes, target_ns);
+            for ag_key in &mut ct.attribute_group_refs {
+                if ag_key.0.is_none() {
+                    ag_key.0 = target_ns.clone();
+                }
+            }
+            // Fix up the unresolved model group reference the same way as
+            // attribute_group_refs above: model groups themselves are re-keyed
+            // into the including schema's target namespace during chameleon
+            // merge (see the `model_groups` re-keying loop), so a bare
+            // `<xsd:group ref="Foo"/>` recorded with a `None` namespace must
+            // follow suit. Otherwise, `reresolve_types_after_redefine`'s
+            // `model_groups.get(mg_key)` lookup would miss after a later
+            // `xs:redefine` of that group, silently leaving `ct.content` stale.
+            if let Some((ref mut ns, _)) = ct.group_ref {
+                if ns.is_none() {
+                    *ns = target_ns.clone();
+                }
+            }
             chameleon_fixup_content_model(&mut ct.content, target_ns);
         }
         TypeDef::Simple(_) => {
@@ -774,14 +793,22 @@ fn reresolve_types_after_redefine(validator: &mut XsdValidator) {
             }
             // Re-resolve attribute group references
             if !ct.attribute_group_refs.is_empty() {
-                // Rebuild attributes: start with non-attributeGroup attributes.
-                // For simplicity, we re-derive all attributes from the attribute
-                // group refs. Any directly declared attributes on the complexType
-                // that aren't from group refs would need to be preserved, but
-                // in practice the external schema complexTypes only get attributes
-                // from attributeGroup refs (which are what we're re-resolving).
-                let mut new_attrs = Vec::new();
-                let mut new_wildcard = ct.attribute_wildcard.clone();
+                // Rebuild attributes starting from the attributes declared directly
+                // on this type (bare `<xsd:attribute>` children, preserved in
+                // `own_attributes`), then re-append the (possibly updated)
+                // attribute group contributions. Previously this rebuilt
+                // `attributes` from only the group refs, silently discarding any
+                // attributes declared directly on the type alongside an
+                // attributeGroup ref.
+                //
+                // The wildcard is rebuilt the same way: starting from the type's own
+                // directly-declared `anyAttribute` (`own_wildcard`), not from the stale
+                // `attribute_wildcard`, which already has the OLD group's wildcard baked
+                // in. Starting from the stale value would intersect the redefined
+                // group's wildcard with the one it's replacing, so a redefine that
+                // removes or broadens the wildcard would never take effect.
+                let mut new_attrs = ct.own_attributes.clone();
+                let mut new_wildcard = ct.own_wildcard.clone();
                 for ag_key in &ct.attribute_group_refs {
                     if let Some(ag) = validator.attribute_groups.get(ag_key) {
                         new_attrs.extend(ag.attributes.iter().cloned());

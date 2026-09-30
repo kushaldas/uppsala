@@ -435,7 +435,17 @@ pub(super) fn parse_complex_type(
 
     let mut content = ContentModel::Empty;
     let mut attributes = Vec::new();
+    // Bare `<xsd:attribute>` declarations only (not attributes contributed by an
+    // `<xsd:attributeGroup ref="...">`). Tracked separately from `attributes` so that
+    // `reresolve_types_after_redefine` can rebuild the attributeGroup-derived portion
+    // after `xs:redefine` without discarding attributes declared directly on the type.
+    let mut own_attributes: Vec<AttributeDecl> = Vec::new();
     let mut attribute_wildcard: Option<AttributeWildcard> = None;
+    // The `xs:anyAttribute` declared directly on this type (not contributed by an
+    // `<xsd:attributeGroup ref="...">`). Tracked separately, mirroring `own_attributes`,
+    // so `reresolve_types_after_redefine` can rebuild `attribute_wildcard` after
+    // `xs:redefine` without starting from the stale group-derived wildcard.
+    let mut own_wildcard: Option<AttributeWildcard> = None;
     let mut base_type: Option<(Option<String>, String)> = None;
     let mut derived_by_extension: Option<bool> = None;
     let mut group_ref: Option<(Option<String>, String)> = None;
@@ -528,12 +538,18 @@ pub(super) fn parse_complex_type(
                     }
                 }
                 "attribute" => {
-                    attributes.push(parse_attribute_decl(doc, child, target_ns)?);
+                    let decl = parse_attribute_decl(doc, child, target_ns)?;
+                    own_attributes.push(decl.clone());
+                    attributes.push(decl);
                 }
                 "anyAttribute" => {
                     let new_wc = parse_any_attribute(child_elem, target_ns);
                     // Intersect with existing wildcard if present
                     attribute_wildcard = match attribute_wildcard {
+                        Some(existing_wc) => existing_wc.intersect(&new_wc),
+                        None => Some(new_wc.clone()),
+                    };
+                    own_wildcard = match own_wildcard {
                         Some(existing_wc) => existing_wc.intersect(&new_wc),
                         None => Some(new_wc),
                     };
@@ -589,6 +605,10 @@ pub(super) fn parse_complex_type(
                                     }
                                     // Parse attributes and anyAttribute within extension/restriction
                                     let mut local_wildcard: Option<AttributeWildcard> = None;
+                                    // The `xs:anyAttribute` declared directly within this
+                                    // extension/restriction, excluding any attributeGroup-derived
+                                    // wildcard. Mirrors `own_wildcard` at the top level.
+                                    let mut local_own_wildcard: Option<AttributeWildcard> = None;
                                     for gc_child in doc.children(grandchild) {
                                         if let Some(NodeKind::Element(gc_child_elem)) =
                                             doc.node_kind(gc_child)
@@ -605,15 +625,19 @@ pub(super) fn parse_complex_type(
                                             }
                                             match gc_child_elem.name.local_name.as_ref() {
                                                 "attribute" => {
-                                                    attributes.push(parse_attribute_decl(
+                                                    let decl = parse_attribute_decl(
                                                         doc, gc_child, target_ns,
-                                                    )?);
+                                                    )?;
+                                                    own_attributes.push(decl.clone());
+                                                    attributes.push(decl);
                                                 }
                                                 "anyAttribute" => {
-                                                    local_wildcard = Some(parse_any_attribute(
+                                                    let wc = parse_any_attribute(
                                                         gc_child_elem,
                                                         target_ns,
-                                                    ));
+                                                    );
+                                                    local_wildcard = Some(wc.clone());
+                                                    local_own_wildcard = Some(wc);
                                                 }
                                                 "sequence" => {
                                                     let min_occ = gc_child_elem
@@ -682,6 +706,11 @@ pub(super) fn parse_complex_type(
                                                             doc, gc_child, ref_name, target_ns,
                                                         );
                                                         let key = (ag_ns, ag_local.to_string());
+                                                        // Track the unresolved reference for
+                                                        // potential re-resolution after redefine,
+                                                        // matching the top-level attributeGroup
+                                                        // branch above.
+                                                        attribute_group_refs.push(key.clone());
                                                         if let Some(ag) = attribute_groups.get(&key)
                                                         {
                                                             attributes.extend(
@@ -717,6 +746,7 @@ pub(super) fn parse_complex_type(
                                         // If no wildcard in restriction, it means no wildcard
                                         attribute_wildcard = local_wildcard;
                                     }
+                                    own_wildcard = local_own_wildcard;
                                 }
                                 _ => {}
                             }
@@ -732,8 +762,10 @@ pub(super) fn parse_complex_type(
         name,
         content,
         attributes,
+        own_attributes,
         mixed,
         attribute_wildcard,
+        own_wildcard,
         base_type,
         derived_by_extension,
         block_extension: block_ext,
