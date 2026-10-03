@@ -757,7 +757,7 @@ pub(crate) fn validate_builtin_value(
         // MS test: hexBinary003 — strip internal whitespace before validation
         BuiltInType::HexBinary => {
             let v: String = text.chars().filter(|c| !c.is_whitespace()).collect();
-            if !v.len().is_multiple_of(2) || !v.chars().all(|c| c.is_ascii_hexdigit()) {
+            if v.len() % 2 != 0 || !v.chars().all(|c| c.is_ascii_hexdigit()) {
                 errors.push(ValidationError {
                     message: format!("'{}' is not valid hexBinary", text),
                     line: Some(doc.node_line(node)),
@@ -769,7 +769,7 @@ pub(crate) fn validate_builtin_value(
             let v: String = text.chars().filter(|c| !c.is_whitespace()).collect();
             let is_valid = if v.is_empty() {
                 true
-            } else if !v.len().is_multiple_of(4) {
+            } else if v.len() % 4 != 0 {
                 false
             } else {
                 let pad_count = v.chars().rev().take_while(|&c| c == '=').count();
