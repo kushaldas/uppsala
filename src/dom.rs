@@ -9,6 +9,7 @@ use crate::fasthash::{FastHashMap, FastHashSet};
 use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 use std::fmt;
+use std::sync::OnceLock;
 
 /// A unique identifier for a node within a [`Document`].
 ///
@@ -446,6 +447,37 @@ pub struct Document<'a> {
     pub(crate) attr_node_pool: Vec<NodeId>,
     /// Original input for lazy line/column computation from byte positions.
     pub(crate) input: &'a str,
+    /// Where each line of `input` starts, built on the first
+    /// [`Self::node_line`] / [`Self::node_column`] call, so that a position
+    /// costs a binary search instead of a scan from the start of the input.
+    line_index: OnceLock<LineIndex>,
+}
+
+#[cfg(test)]
+thread_local! {
+    /// Input bytes read to compute node positions on this thread: the whole
+    /// input once for a line index, or the bytes before the node for a scan.
+    /// Lets tests check that positions cost no more than one pass.
+    pub(crate) static POSITION_BYTES_SCANNED: std::cell::Cell<usize> =
+        const { std::cell::Cell::new(0) };
+}
+
+#[cfg(test)]
+fn note_position_bytes_scanned(bytes: usize) {
+    POSITION_BYTES_SCANNED.with(|scanned| scanned.set(scanned.get() + bytes));
+}
+
+#[cfg(not(test))]
+#[inline(always)]
+fn note_position_bytes_scanned(_bytes: usize) {}
+
+/// The byte offset of the start of every line of a document's input, with
+/// the address and length of the input it was built from.
+#[derive(Debug, Clone)]
+struct LineIndex {
+    input_addr: usize,
+    input_len: usize,
+    starts: Vec<usize>,
 }
 
 impl<'a> Document<'a> {
@@ -471,6 +503,7 @@ impl<'a> Document<'a> {
             xpath_dirty: true,
             attr_node_pool: Vec::new(),
             input: "",
+            line_index: OnceLock::new(),
         }
     }
 
@@ -486,6 +519,7 @@ impl<'a> Document<'a> {
             xpath_dirty: self.xpath_dirty,
             attr_node_pool: self.attr_node_pool,
             input: "",
+            line_index: OnceLock::new(),
         }
     }
 
@@ -995,11 +1029,18 @@ impl<'a> Document<'a> {
         if self.input.is_empty() || byte_pos == 0 {
             return 1;
         }
-        self.input.as_bytes()[..byte_pos]
-            .iter()
-            .filter(|&&b| b == b'\n')
-            .count()
-            + 1
+        match self.line_starts() {
+            // The number of lines starting at or before `byte_pos`.
+            Some(starts) => starts.partition_point(|&start| start <= byte_pos),
+            None => {
+                note_position_bytes_scanned(byte_pos);
+                self.input.as_bytes()[..byte_pos]
+                    .iter()
+                    .filter(|&&b| b == b'\n')
+                    .count()
+                    + 1
+            }
+        }
     }
 
     /// Get the source column of a node (computed lazily from byte position).
@@ -1011,11 +1052,41 @@ impl<'a> Document<'a> {
         if self.input.is_empty() || byte_pos == 0 {
             return 1;
         }
+        if let Some(starts) = self.line_starts() {
+            let line = starts.partition_point(|&start| start <= byte_pos);
+            return byte_pos - starts[line - 1] + 1;
+        }
+        note_position_bytes_scanned(byte_pos);
         let bytes = &self.input.as_bytes()[..byte_pos];
         match bytes.iter().rposition(|&b| b == b'\n') {
             Some(nl_pos) => byte_pos - nl_pos,
             None => byte_pos + 1,
         }
+    }
+
+    /// The start offsets of the lines of `input` (the first is 0), built
+    /// once. `None` if `input` was replaced after the index was built; the
+    /// callers then scan, as without an index.
+    fn line_starts(&self) -> Option<&[usize]> {
+        let input = self.input;
+        let index = self.line_index.get_or_init(|| {
+            note_position_bytes_scanned(input.len());
+            LineIndex {
+                input_addr: input.as_ptr() as usize,
+                input_len: input.len(),
+                starts: std::iter::once(0)
+                    .chain(
+                        input
+                            .bytes()
+                            .enumerate()
+                            .filter(|&(_, b)| b == b'\n')
+                            .map(|(i, _)| i + 1),
+                    )
+                    .collect(),
+            }
+        });
+        (index.input_addr == input.as_ptr() as usize && index.input_len == input.len())
+            .then_some(index.starts.as_slice())
     }
 
     /// Returns the byte range of a node in the original source text.
@@ -2505,6 +2576,34 @@ impl<'w> fmt::Write for IoWriteAdapter<'w> {
 mod dom_tests {
     use super::*;
     use crate::parser::Parser;
+
+    /// The positions of every node of a document cost one pass over the
+    /// input (the line index), not a scan from its start for each node.
+    #[test]
+    fn node_positions_read_the_input_once() {
+        let lines = 2000;
+        let body: String = (0..lines).map(|i| format!("<e>{}</e>\r\n", i)).collect();
+        let input = format!("<r>\n{}</r>", body);
+        let doc = Parser::new().parse(&input).unwrap();
+        POSITION_BYTES_SCANNED.with(|scanned| scanned.set(0));
+        let root = doc.document_element().unwrap();
+        let mut positions = Vec::new();
+        for child in doc.children(root) {
+            if doc.element(child).is_some() {
+                positions.push((doc.node_line(child), doc.node_column(child)));
+            }
+        }
+        assert_eq!(positions.len(), lines);
+        assert_eq!(positions[0], (2, 1));
+        assert_eq!(positions[lines - 1], (lines + 1, 1));
+        let scanned = POSITION_BYTES_SCANNED.with(|scanned| scanned.get());
+        assert!(
+            scanned <= input.len(),
+            "{} bytes read for the positions of a {}-byte input",
+            scanned,
+            input.len()
+        );
+    }
 
     /// `prepare_xpath()` refreshes the document-order index after a mutation, so
     /// a node appended following an earlier `prepare_xpath()` gets a valid
