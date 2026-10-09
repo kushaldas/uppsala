@@ -471,6 +471,54 @@ fn write_node_to_with_options_matches_node_to_xml_in_a_reused_buffer() {
 }
 
 #[test]
+fn serialized_size_hint_is_dropped_once_the_tree_is_mutated() {
+    // A parsed tree that is then pruned must not keep reserving the original
+    // input length: `remove_child` of the bulky subtree, `replace_tree_from`
+    // with a tiny document, or any other edit zeroes the hint for every node
+    // (the ranges stay available for node_range/node_source, only the
+    // serialization hint is withdrawn). Output is unaffected either way.
+    let bulk = "x".repeat(64 * 1024);
+    let xml = format!("<root><big>{bulk}</big><small/></root>");
+    let mut doc = parse(&xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let children = doc.children(root);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), xml.len());
+    assert!(doc.node_serialized_size_hint(children[0]) > bulk.len());
+
+    doc.remove_child(root, children[0]);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.node_serialized_size_hint(root), 0);
+    assert_eq!(doc.node_serialized_size_hint(children[1]), 0);
+    assert_eq!(doc.to_xml(), "<root><small/></root>");
+    assert_eq!(doc.node_to_xml(root), "<root><small/></root>");
+    // The source range itself is still reported; only the hint is gone.
+    assert!(doc.node_range(children[1]).is_some());
+
+    let mut doc = parse(&xml).unwrap();
+    let tiny = parse("<r/>").unwrap();
+    doc.replace_tree_from(&tiny);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.to_xml(), "<r/>");
+
+    // A text edit through node_kind_mut counts as a mutation as well.
+    let mut doc = parse("<root>abc</root>").unwrap();
+    let root = doc.document_element().unwrap();
+    let text = doc.children(root)[0];
+    if let Some(uppsala::NodeKind::Text(t)) = doc.node_kind_mut(text) {
+        *t = std::borrow::Cow::Borrowed("a much longer replacement text");
+    }
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.to_xml(), "<root>a much longer replacement text</root>");
+
+    // An unmodified parsed document keeps its hints across into_static for
+    // nodes (the input text is dropped, so the document-level hint is 0).
+    let doc = parse(&xml).unwrap().into_static();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.node_serialized_size_hint(root), xml.len());
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+}
+
+#[test]
 fn write_node_to_with_options_propagates_sink_errors() {
     let doc = parse("<root><a x=\"1\">text<b/></a></root>").unwrap();
     let root = doc.document_element().unwrap();

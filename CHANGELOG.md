@@ -35,9 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   subtree by sibling/parent links and test in place rather than collecting
   the subtree first.
 - Serialization pre-sizes its output buffer from the node's source range
-  (`to_xml`, `node_to_xml`, and the `_with_options` variants), avoiding the
-  doubling reallocations on multi-megabyte documents, and skips the
-  per-element prefix hash map for elements with few namespace declarations.
+  (`to_xml`, `node_to_xml`, and the `_with_options` variants) while the
+  parsed tree is unmodified, avoiding the doubling reallocations on
+  multi-megabyte documents; any mutation withdraws the hint so a pruned tree
+  never reserves its old input size. Elements with few namespace
+  declarations skip the per-element prefix hash map.
 - Reduce temporary allocations in DOM and XPath traversal by using child
   iterators. `Document::descendants()` now uses an iterative depth-first walk
   instead of recursive traversal.

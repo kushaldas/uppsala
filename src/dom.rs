@@ -446,6 +446,15 @@ pub struct Document<'a> {
     pub(crate) attr_node_pool: Vec<NodeId>,
     /// Original input for lazy line/column computation from byte positions.
     pub(crate) input: &'a str,
+    /// Whether the tree still mirrors `input`, so a node's source range (and
+    /// `input.len()` for the document) is a sound capacity hint for
+    /// serializing it. Set by the parser once the tree is complete; cleared
+    /// by every mutator (through [`Self::invalidate_xpath_caches`]), because
+    /// after `remove_child`, `replace_tree_from` or any other edit the parsed
+    /// ranges no longer bound the output: a multi-megabyte input pruned to a
+    /// few nodes must not keep reserving the full input length. `false` for
+    /// built documents, whose nodes have no ranges anyway.
+    pub(crate) source_hint_valid: bool,
 }
 
 impl<'a> Document<'a> {
@@ -471,6 +480,7 @@ impl<'a> Document<'a> {
             xpath_dirty: true,
             attr_node_pool: Vec::new(),
             input: "",
+            source_hint_valid: false,
         }
     }
 
@@ -486,6 +496,9 @@ impl<'a> Document<'a> {
             xpath_dirty: self.xpath_dirty,
             attr_node_pool: self.attr_node_pool,
             input: "",
+            // Node ranges stay meaningful for an unmodified tree even though
+            // the input text is gone (the document-level hint becomes 0).
+            source_hint_valid: self.source_hint_valid,
         }
     }
 
@@ -703,6 +716,17 @@ impl<'a> Document<'a> {
     /// call could.
     fn invalidate_xpath_caches(&mut self) {
         self.xpath_dirty = true;
+        // The same mutations make parsed source ranges unreliable as
+        // serialization capacity hints; see `source_hint_valid`.
+        self.source_hint_valid = false;
+    }
+
+    /// Record that the arena is a faithful image of `input`, so source ranges
+    /// may size serialization buffers. Called by the parser's DOM sink once
+    /// the whole document has been built (the build itself goes through
+    /// mutators that clear the flag).
+    pub(crate) fn mark_source_hint_valid(&mut self) {
+        self.source_hint_valid = true;
     }
 
     /// Assign each node its document-order position into `self.doc_order`, by a
@@ -1693,12 +1717,17 @@ impl<'a> Document<'a> {
 
     /// Initial buffer capacity for serializing `id`: the length of its source
     /// range when it was parsed (serialized output is usually within a few
-    /// percent of the input), or zero for a built node. Only a hint: a
-    /// mutated tree may serialize longer, and `String` grows as usual then.
+    /// percent of the input), or zero for a built node or for any node of a
+    /// document that has been mutated since parsing (`source_hint_valid`).
+    /// Only a hint: `String` grows as usual if the output is longer.
     /// Reserving up front avoids the doubling reallocations (and the page
     /// faults of each fresh larger block) that otherwise dominate the
-    /// whole-document path on multi-megabyte inputs.
+    /// whole-document path on multi-megabyte inputs; declining to reserve
+    /// after a mutation costs only those reallocations, never correctness.
     fn serialized_size_hint(&self, id: NodeId) -> usize {
+        if !self.source_hint_valid {
+            return 0;
+        }
         if id == self.root {
             return self.input.len();
         }
@@ -1781,7 +1810,9 @@ impl<'a> Document<'a> {
     /// [`write_node_to_with_options`](Self::write_node_to_with_options) that
     /// size their own sink: the length of the node's source range when it was
     /// parsed (the whole input length for the document node), or `0` for a
-    /// node built programmatically. A hint only, never an upper bound.
+    /// node built programmatically and for every node once the document has
+    /// been mutated after parsing, since the parsed ranges then no longer
+    /// describe the tree. A hint only, never an upper bound.
     pub fn node_serialized_size_hint(&self, id: NodeId) -> usize {
         self.serialized_size_hint(id)
     }
