@@ -271,6 +271,32 @@ cargo bench --bench uppsala -- --baseline u0full   # if the baseline exists
 cargo bench --bench uppsala                        # absolute numbers
 ```
 
+## Third pass: 2026-10-08 (`//` evaluation and serializer buffers)
+
+Driven by the pyuppsala-vs-lxml comparison (`pyuppsala/PERFORMANCE.md`,
+2026-10-08) on the 7.1 MB SWAMID aggregate (44,823 nodes). Laptop (Intel Core
+Ultra 7 155H), evaluator timed through the binding, medians of 7. Full
+rationale and profile in ADR 0020.
+
+| Expression | Before | After | libxml2 (lxml) |
+|---|---:|---:|---:|
+| `//md:EntityDescriptor/md:IDPSSODescriptor` | 23.7 ms | 5.3 ms | 8.7 ms |
+| `count(//*)` | 24.6 ms | 3.5 ms | - |
+| `/md:EntitiesDescriptor/md:EntityDescriptor/md:IDPSSODescriptor` | 1.6 ms | 0.9 ms | - |
+
+Changes:
+
+- `//child::T` and `//attribute::T` without predicates run as one pre-order
+  pointer walk that tests nodes in place (`apply_descendant_test`), instead of
+  materializing every node and re-scanning each node's children.
+- Node tests are resolved once per step (`ResolvedTest`): no per-candidate
+  `HashMap` lookup of the namespace prefix.
+- `descendant::`/`descendant-or-self::` test in place during the walk.
+- Serializer buffers are pre-sized from the node's source range, and
+  `write_node_to_with_options` lets callers serialize fragments into a reused
+  buffer. Whole-document `node_to_xml` of the aggregate was dominated by page
+  faults on the fresh 7 MB buffer and its doubling reallocations.
+
 ## Second pass: 2026-10-07 (XPath result construction and preparation)
 
 Baseline: `fix/perf` at `1751d355`, including the review corrections above.

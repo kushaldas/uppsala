@@ -1677,7 +1677,7 @@ impl<'a> Document<'a> {
 
     /// Serialize the document back to an XML string (compact, no indentation).
     pub fn to_xml(&self) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(self.root));
         // write_document_to cannot fail when writing to String
         self.write_document_to(&mut output, &XmlWriteOptions::default())
             .unwrap();
@@ -1686,16 +1686,30 @@ impl<'a> Document<'a> {
 
     /// Serialize the document with formatting options.
     pub fn to_xml_with_options(&self, opts: &XmlWriteOptions) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(self.root));
         self.write_document_to(&mut output, opts).unwrap();
         output
+    }
+
+    /// Initial buffer capacity for serializing `id`: the length of its source
+    /// range when it was parsed (serialized output is usually within a few
+    /// percent of the input), or zero for a built node. Only a hint: a
+    /// mutated tree may serialize longer, and `String` grows as usual then.
+    /// Reserving up front avoids the doubling reallocations (and the page
+    /// faults of each fresh larger block) that otherwise dominate the
+    /// whole-document path on multi-megabyte inputs.
+    fn serialized_size_hint(&self, id: NodeId) -> usize {
+        if id == self.root {
+            return self.input.len();
+        }
+        self.node_range(id).map(|r| r.len()).unwrap_or(0)
     }
 
     /// Serialize a single node (and its subtree) to an XML string.
     ///
     /// Useful for extracting XML fragments without the XML declaration or DOCTYPE.
     pub fn node_to_xml(&self, id: NodeId) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(id));
         let binds = self.ancestor_ns_bindings(id);
         let scope = NsScope {
             parent: None,
@@ -1715,15 +1729,38 @@ impl<'a> Document<'a> {
 
     /// Serialize a single node (and its subtree) with formatting options.
     pub fn node_to_xml_with_options(&self, id: NodeId, opts: &XmlWriteOptions) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(id));
+        self.write_node_to_with_options(id, &mut output, opts)
+            .unwrap();
+        output
+    }
+
+    /// Serialize a single node (and its subtree) into any `fmt::Write` sink
+    /// with formatting options: the node-level counterpart of
+    /// [`write_to_with_options`](Self::write_to_with_options). The sink
+    /// receives exactly the text `node_to_xml_with_options` would return, so a
+    /// caller that serializes repeatedly can reuse one buffer instead of
+    /// paying for a fresh multi-megabyte allocation per call.
+    pub fn write_node_to_with_options(
+        &self,
+        id: NodeId,
+        out: &mut dyn fmt::Write,
+        opts: &XmlWriteOptions,
+    ) -> fmt::Result {
         let binds = self.ancestor_ns_bindings(id);
         let scope = NsScope {
             parent: None,
             local: &binds,
         };
-        self.write_node_to(id, &mut output, opts, 0, false, &scope)
-            .unwrap();
-        output
+        self.write_node_to(id, out, opts, 0, false, &scope)
+    }
+
+    /// Suggested buffer capacity for serializing `id` (see
+    /// `serialized_size_hint`), for callers of
+    /// [`write_node_to_with_options`](Self::write_node_to_with_options) that
+    /// size their own sink.
+    pub fn node_serialized_size_hint(&self, id: NodeId) -> usize {
+        self.serialized_size_hint(id)
     }
 
     /// Write the entire document to any `io::Write` sink (file, socket, `Vec<u8>`, etc.)
@@ -1842,7 +1879,8 @@ impl<'a> Document<'a> {
                 // programmatic attributes cannot collide into duplicate XML.
                 // Holds Cows: valid unique names (every parsed document) are
                 // recorded as borrows, so the tracking allocates nothing.
-                let mut seen_attrs: Vec<Cow<'_, str>> = Vec::new();
+                let mut seen_attrs: Vec<Cow<'_, str>> =
+                    Vec::with_capacity(child_local.len() + elem.attributes.len());
                 // Namespace declarations. `child_local` holds every binding this
                 // element introduces (stored + synthesized) in order; emit only
                 // the *last* binding per prefix so a synthesized override — e.g. an
@@ -1854,12 +1892,23 @@ impl<'a> Document<'a> {
                 //
                 // Precompute the last index per prefix so the "last binding wins"
                 // dedup is O(n) rather than O(n^2) in the number of bindings.
-                let mut last_idx: HashMap<&str, usize> = HashMap::with_capacity(child_local.len());
-                for (i, (prefix, _)) in child_local.iter().enumerate() {
-                    last_idx.insert(prefix.as_ref(), i);
-                }
+                // A handful of bindings (the norm) is cheaper to scan than to
+                // hash; the map is only built past that.
+                let last_idx: Option<HashMap<&str, usize>> = if child_local.len() > 8 {
+                    let mut m = HashMap::with_capacity(child_local.len());
+                    for (i, (prefix, _)) in child_local.iter().enumerate() {
+                        m.insert(prefix.as_ref(), i);
+                    }
+                    Some(m)
+                } else {
+                    None
+                };
                 for (i, (prefix, uri)) in child_local.iter().enumerate() {
-                    if last_idx.get(prefix.as_ref()) != Some(&i) {
+                    let shadowed = match &last_idx {
+                        Some(m) => m.get(prefix.as_ref()) != Some(&i),
+                        None => child_local[i + 1..].iter().any(|(p, _)| p == prefix),
+                    };
+                    if shadowed {
                         continue; // shadowed by a later binding for the same prefix
                     }
                     let (prefix, uri) = (prefix.as_ref(), uri.as_ref());
