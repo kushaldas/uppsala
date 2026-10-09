@@ -26,9 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - XPath `//child::T` and `//attribute::T` pairs without predicates are
   evaluated as one descendant walk that tests nodes in place, and every step
   resolves its node test's namespace prefix once instead of once per
-  candidate. `//md:EntityDescriptor/@entityID` over a 7 MB SAML aggregate
-  drops from 23.7 ms to 5.3 ms (libxml2: 8.7 ms); `count(//*)` from 24.6 ms
-  to 3.5 ms. Results and ordering are unchanged. See ADR 0020.
+  candidate. Over a 7 MB SAML aggregate,
+  `//md:EntityDescriptor/md:IDPSSODescriptor` drops from 23.7 ms to 5.3 ms
+  (libxml2: 8.7 ms), `//md:EntityDescriptor/@entityID` from 22.8 ms to
+  5.4 ms (libxml2: 6.9 ms), and `count(//*)` from 24.6 ms to 3.5 ms. Results
+  and ordering are unchanged. See ADR 0020.
 - The explicit `descendant::` and `descendant-or-self::` axes walk the
   subtree by sibling/parent links and test in place rather than collecting
   the subtree first.

@@ -403,6 +403,104 @@ fn node_to_xml_with_expand_empty() {
     assert_eq!(doc.node_to_xml_with_options(children[0], &opts), "<a></a>");
 }
 
+// ─── write_node_to_with_options ─────────────────────────────────────────────
+
+// The node-level streaming writer must produce exactly what the String-returning
+// subtree serializer produces, and must surface the sink's error instead of
+// swallowing it.
+
+/// A `fmt::Write` sink that accepts `budget` bytes and then fails.
+struct FailAfter {
+    budget: usize,
+}
+
+impl std::fmt::Write for FailAfter {
+    fn write_str(&mut self, s: &str) -> std::fmt::Result {
+        if s.len() > self.budget {
+            return Err(std::fmt::Error);
+        }
+        self.budget -= s.len();
+        Ok(())
+    }
+}
+
+#[test]
+fn write_node_to_with_options_matches_node_to_xml_in_a_reused_buffer() {
+    let xml = concat!(
+        r#"<md:EntitiesDescriptor xmlns:md="urn:md" xmlns:ds="urn:ds">"#,
+        r#"<md:EntityDescriptor entityID="a&amp;b"><ds:Signature/>"#,
+        "<md:Text>caf\u{e9} &lt;&amp;&gt;</md:Text></md:EntityDescriptor>",
+        "<md:EntityDescriptor entityID=\"c\"><x xmlns=\"urn:x\"><y/></x></md:EntityDescriptor>",
+        "</md:EntitiesDescriptor>"
+    );
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let entities = doc.children(root);
+    let compact = uppsala::XmlWriteOptions::compact();
+    let pretty = uppsala::XmlWriteOptions::pretty("  ").with_expand_empty_elements(true);
+
+    // One buffer, reused across fragments and option sets: the stream must
+    // equal the String API byte for byte every time.
+    let mut buf = String::new();
+    for &id in entities.iter().chain(std::iter::once(&root)) {
+        for opts in [&compact, &pretty] {
+            buf.clear();
+            buf.reserve(doc.node_serialized_size_hint(id));
+            doc.write_node_to_with_options(id, &mut buf, opts).unwrap();
+            assert_eq!(buf, doc.node_to_xml_with_options(id, opts));
+        }
+    }
+    // The streamed fragment is a standalone, re-parsable document: the prefix
+    // declared on the ancestor is not re-emitted (no `xmlns:md` is stored on
+    // the child), which is the documented node_to_xml behaviour.
+    buf.clear();
+    doc.write_node_to_with_options(entities[0], &mut buf, &compact)
+        .unwrap();
+    assert!(buf.starts_with("<md:EntityDescriptor entityID=\"a&amp;b\">"));
+    assert!(buf.contains("<md:Text>caf\u{e9} &lt;&amp;&gt;</md:Text>"));
+    assert!(!buf.contains("xmlns:md"));
+    // The size hint for a parsed node is its source length; for the whole
+    // document it is the input length.
+    assert_eq!(
+        doc.node_serialized_size_hint(entities[0]),
+        doc.node_range(entities[0]).unwrap().len()
+    );
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), xml.len());
+}
+
+#[test]
+fn write_node_to_with_options_propagates_sink_errors() {
+    let doc = parse("<root><a x=\"1\">text<b/></a></root>").unwrap();
+    let root = doc.document_element().unwrap();
+    let opts = uppsala::XmlWriteOptions::compact();
+    // Fails on the very first write.
+    assert!(doc
+        .write_node_to_with_options(root, &mut FailAfter { budget: 0 }, &opts)
+        .is_err());
+    // Fails part-way through an element (after the start tag opens).
+    assert!(doc
+        .write_node_to_with_options(root, &mut FailAfter { budget: 8 }, &opts)
+        .is_err());
+    // A sink with enough room succeeds and sees the full output.
+    let full = doc.node_to_xml(root);
+    let mut sink = FailAfter { budget: full.len() };
+    doc.write_node_to_with_options(root, &mut sink, &opts)
+        .unwrap();
+    assert_eq!(sink.budget, 0);
+    // A built (unparsed) node has no source range and a zero hint; writing it
+    // still works.
+    let mut built = uppsala::Document::new();
+    let el = built.create_element(uppsala::QName::local("made"));
+    let built_root = built.root();
+    built.append_child(built_root, el);
+    assert_eq!(built.node_serialized_size_hint(el), 0);
+    let mut out = String::new();
+    built
+        .write_node_to_with_options(el, &mut out, &opts)
+        .unwrap();
+    assert_eq!(out, "<made/>");
+}
+
 // ─── Namespace declarations in serialization ────────────────────────────────
 
 // Namespace declarations are part of the element start tag and must survive

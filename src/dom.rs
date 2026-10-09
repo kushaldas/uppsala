@@ -1741,6 +1741,28 @@ impl<'a> Document<'a> {
     /// receives exactly the text `node_to_xml_with_options` would return, so a
     /// caller that serializes repeatedly can reuse one buffer instead of
     /// paying for a fresh multi-megabyte allocation per call.
+    ///
+    /// Namespace bindings declared on `id`'s ancestors are treated as in
+    /// scope (and so not re-declared), exactly as in `node_to_xml`. No XML
+    /// declaration or DOCTYPE is written. An error from `out` is returned as
+    /// soon as it occurs; the sink may then hold a partial document.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use uppsala::{parse, XmlWriteOptions};
+    ///
+    /// let doc = parse("<r><a x=\"1\"/><b/></r>").unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let opts = XmlWriteOptions::compact();
+    /// let mut buf = String::new();
+    /// for child in doc.children(root) {
+    ///     buf.clear();
+    ///     buf.reserve(doc.node_serialized_size_hint(child));
+    ///     doc.write_node_to_with_options(child, &mut buf, &opts).unwrap();
+    ///     assert_eq!(buf, doc.node_to_xml_with_options(child, &opts));
+    /// }
+    /// ```
     pub fn write_node_to_with_options(
         &self,
         id: NodeId,
@@ -1755,10 +1777,11 @@ impl<'a> Document<'a> {
         self.write_node_to(id, out, opts, 0, false, &scope)
     }
 
-    /// Suggested buffer capacity for serializing `id` (see
-    /// `serialized_size_hint`), for callers of
+    /// Suggested buffer capacity for serializing `id`, for callers of
     /// [`write_node_to_with_options`](Self::write_node_to_with_options) that
-    /// size their own sink.
+    /// size their own sink: the length of the node's source range when it was
+    /// parsed (the whole input length for the document node), or `0` for a
+    /// node built programmatically. A hint only, never an upper bound.
     pub fn node_serialized_size_hint(&self, id: NodeId) -> usize {
         self.serialized_size_hint(id)
     }
@@ -1879,6 +1902,8 @@ impl<'a> Document<'a> {
                 // programmatic attributes cannot collide into duplicate XML.
                 // Holds Cows: valid unique names (every parsed document) are
                 // recorded as borrows, so the tracking allocates nothing.
+                // Sized up front: one allocation per element instead of the
+                // 4/8/16 growth steps a `push` loop would take.
                 let mut seen_attrs: Vec<Cow<'_, str>> =
                     Vec::with_capacity(child_local.len() + elem.attributes.len());
                 // Namespace declarations. `child_local` holds every binding this

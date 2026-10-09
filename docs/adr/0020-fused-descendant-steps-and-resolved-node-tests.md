@@ -7,9 +7,11 @@ Accepted (2026-10-08). Builds on ADR 0010 (document-order index).
 ## Context
 
 Profiling pyuppsala against lxml on the 7.1 MB SWAMID aggregate (1032
-entities, 44,823 nodes) on 2026-10-08 showed `//md:EntityDescriptor/@entityID`
-at 23.7 ms in the uppsala evaluator against 8.7 ms for libxml2, with the
-binding adding under 0.3 ms. `perf` placed the time in three places:
+entities, 44,823 nodes) on 2026-10-08 showed
+`//md:EntityDescriptor/md:IDPSSODescriptor` at 23.7 ms in the uppsala
+evaluator against 8.7 ms for libxml2, with the binding adding under 0.3 ms;
+the pyuppsala benchmark's `//md:EntityDescriptor/@entityID` row showed the
+same ratio (22.8 ms against 6.9 ms). `perf` placed the time in three places:
 
 | Function | Self time | Why |
 |---|---:|---|
@@ -60,8 +62,11 @@ with the attribute index prepared, medians of 7:
 | `//md:EntityDescriptor` | 22.3 ms | 5.1 ms | - |
 | `count(//*)` | 24.6 ms | 3.5 ms | - |
 | `/md:EntitiesDescriptor/md:EntityDescriptor/md:IDPSSODescriptor` (no `//`) | 1.6 ms | 0.9 ms | - |
+| `//md:EntityDescriptor/@entityID` (pyuppsala `xpath_ns` row, `etree_bench.py`) | 22.8 ms | 5.4 ms | 6.9 ms |
 
-The last row has no `//` at all; its gain is the resolved node test alone.
+The fifth row has no `//` at all; its gain is the resolved node test alone.
+The last row is the attribute-axis fusion, measured through the pyuppsala
+benchmark harness rather than the stage timer.
 `cargo test` (all suites, including the W3C XML conformance and XSTS suites and
 the XSLT pyFF stylesheet acceptance) passes unchanged; `src/xpath.rs` gained
 tests asserting the fused and explicit spellings select the same nodes,

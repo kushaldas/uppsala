@@ -281,6 +281,7 @@ rationale and profile in ADR 0020.
 | Expression | Before | After | libxml2 (lxml) |
 |---|---:|---:|---:|
 | `//md:EntityDescriptor/md:IDPSSODescriptor` | 23.7 ms | 5.3 ms | 8.7 ms |
+| `//md:EntityDescriptor/@entityID` (pyuppsala `xpath_ns` bench row) | 22.8 ms | 5.4 ms | 6.9 ms |
 | `count(//*)` | 24.6 ms | 3.5 ms | - |
 | `/md:EntitiesDescriptor/md:EntityDescriptor/md:IDPSSODescriptor` | 1.6 ms | 0.9 ms | - |
 
