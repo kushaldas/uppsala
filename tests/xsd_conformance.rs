@@ -398,6 +398,148 @@ fn xsd_exact_length() {
     assert!(validate_xml_against_xsd("<zip>123456</zip>", xsd).is_err());
 }
 
+// XSD 1.0 Part 2 4.3.1-4.3.3: for string and the types derived from it, and
+// for anyURI, length is measured in characters (code points), not in UTF-8
+// bytes. Each table row is (repeat count, expected valid) against a limit of 4.
+
+const LENGTH_LIMIT: usize = 4;
+
+fn length_facet_schema(base: &str, facet: &str, limit: usize) -> String {
+    format!(
+        r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="e">
+    <xs:simpleType>
+      <xs:restriction base="{}"><xs:{} value="{}"/></xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+</xs:schema>"#,
+        base, facet, limit
+    )
+}
+
+/// Check `facet` at `LENGTH_LIMIT` on xs:string for values of 3, 4 and 5
+/// repetitions of each character in `chars`.
+fn check_length_facet(facet: &str, chars: &[char], expected: [(usize, bool); 3]) {
+    let xsd = length_facet_schema("xs:string", facet, LENGTH_LIMIT);
+    for ch in chars {
+        for (count, valid) in expected {
+            let value: String = std::iter::repeat(*ch).take(count).collect();
+            let result = validate_xml_against_xsd(&format!("<e>{}</e>", value), &xsd);
+            assert_eq!(
+                result.is_ok(),
+                valid,
+                "{} {}: {} x {:?} ({} bytes): {:?}",
+                facet,
+                LENGTH_LIMIT,
+                count,
+                ch,
+                value.len(),
+                result
+            );
+        }
+    }
+}
+
+/// Two-, three- and four-byte characters in UTF-8.
+const MULTIBYTE: [char; 3] = ['\u{142}', '\u{20AC}', '\u{1F600}'];
+
+#[test]
+fn xsd_length_counts_characters_not_bytes() {
+    check_length_facet("length", &MULTIBYTE, [(3, false), (4, true), (5, false)]);
+}
+
+#[test]
+fn xsd_min_length_counts_characters_not_bytes() {
+    check_length_facet("minLength", &MULTIBYTE, [(3, false), (4, true), (5, true)]);
+}
+
+#[test]
+fn xsd_max_length_counts_characters_not_bytes() {
+    check_length_facet("maxLength", &MULTIBYTE, [(3, true), (4, true), (5, false)]);
+}
+
+#[test]
+fn xsd_length_facets_on_ascii_are_unchanged() {
+    check_length_facet("length", &['a'], [(3, false), (4, true), (5, false)]);
+    check_length_facet("minLength", &['a'], [(3, false), (4, true), (5, true)]);
+    check_length_facet("maxLength", &['a'], [(3, true), (4, true), (5, false)]);
+}
+
+#[test]
+fn xsd_length_facets_count_characters_through_a_derived_string_type() {
+    let xsd = r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="Base">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="Derived">
+    <xs:restriction base="Base">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="e" type="Derived"/>
+</xs:schema>"#;
+    for (value, valid) in [
+        ("\u{20AC}", false),
+        ("\u{20AC}\u{20AC}", true),
+        ("\u{20AC}\u{20AC}\u{20AC}\u{20AC}\u{20AC}", true),
+        ("\u{20AC}\u{20AC}\u{20AC}\u{20AC}\u{20AC}\u{20AC}", false),
+    ] {
+        let result = validate_xml_against_xsd(&format!("<e>{}</e>", value), xsd);
+        assert_eq!(result.is_ok(), valid, "{:?}: {:?}", value, result);
+    }
+}
+
+#[test]
+fn xsd_length_facets_measure_the_whitespace_normalized_value() {
+    // xs:token collapses whitespace first: "  \u{142} \u{142}  " is 3 characters.
+    let xsd = length_facet_schema("xs:token", "maxLength", 3);
+    for (value, valid) in [
+        ("  \u{142} \u{142}  ", true),
+        ("\u{142}  \u{142}\u{142}", false),
+    ] {
+        let result = validate_xml_against_xsd(&format!("<e>{}</e>", value), &xsd);
+        assert_eq!(result.is_ok(), valid, "{:?}: {:?}", value, result);
+    }
+}
+
+#[test]
+fn xsd_any_uri_length_counts_characters() {
+    // "urn:x:" plus three two-byte characters: 9 characters, 12 bytes.
+    let xsd = length_facet_schema("xs:anyURI", "length", 9);
+    for (value, valid) in [
+        ("urn:x:\u{142}\u{142}", false),
+        ("urn:x:\u{142}\u{142}\u{142}", true),
+        ("urn:x:\u{142}\u{142}\u{142}\u{142}", false),
+    ] {
+        let result = validate_xml_against_xsd(&format!("<e>{}</e>", value), &xsd);
+        assert_eq!(result.is_ok(), valid, "{:?}: {:?}", value, result);
+    }
+}
+
+#[test]
+fn xsd_qname_length_counts_characters_of_uri_and_local_name() {
+    // The namespace "urn:" plus three two-byte characters (7) and the local
+    // name "ab" (2) are 9 characters; in bytes they would be 12.
+    let xsd = length_facet_schema("xs:QName", "maxLength", 9);
+    for (value, valid) in [("p:ab", true), ("p:abc", false)] {
+        let xml = format!(
+            r#"<e xmlns:p="urn:{}">{}</e>"#,
+            "\u{142}\u{142}\u{142}", value
+        );
+        let result = validate_xml_against_xsd(&xml, &xsd);
+        assert_eq!(result.is_ok(), valid, "{:?}: {:?}", value, result);
+    }
+    // An unbound prefix is refused by the QName check itself, whatever its
+    // length.
+    let result = validate_xml_against_xsd("<e>q:ab</e>", &xsd);
+    assert!(
+        result.as_ref().is_err_and(|e| e.contains("not bound")),
+        "{:?}",
+        result
+    );
+}
+
 #[test]
 fn xsd_total_digits() {
     let xsd = r#"<?xml version="1.0"?>
