@@ -24,18 +24,22 @@ specific to the attribute axis.
 
 ## Decision
 
-- **Fuse `//child::T` and `//attribute::T`.** `apply_steps` evaluates a
-  location path step by step but, when a step is the parser-injected
-  `descendant-or-self::node()` with no predicates and the next step is a
-  `child::` or `attribute::` step with no predicates, it runs
-  `apply_descendant_test` once instead: a pre-order walk of each context
-  node's subtree that applies the test to every node (or to every element's
-  attributes) as it is visited, with one budget charge per node. The two
-  spellings select the same nodes in the same order, so results are
-  identical; a single context needs no document-order sort, several contexts
-  are deduplicated as before. A predicate on the step after `//` is positional
-  relative to the parent, so such pairs are not fused and keep the two-step
-  evaluation.
+- **Fuse `//child::T` and `//attribute::T` from a single context.**
+  `apply_steps` evaluates a location path step by step but, when a step is
+  the parser-injected `descendant-or-self::node()` with no predicates, the
+  next step is a `child::` or `attribute::` step with no predicates, and the
+  current context is one node, it runs `apply_descendant_test` once instead:
+  a pre-order walk of that node's subtree that applies the test to every
+  node (or to every element's attributes) as it is visited, with one budget
+  charge per node. The two spellings select the same nodes in the same
+  order, so results are identical, and one context needs no document-order
+  sort. Two shapes keep the two-step evaluation: a predicate on the step
+  after `//`, which is positional relative to the parent, and a `//` reached
+  from several context nodes (`//a//b` where `a` elements nest), where the
+  two-step form deduplicates the intermediate set before charging it and
+  separate walks would charge a nested subtree once per enclosing context.
+  The leading `//` of any path starts from one node, which is where the cost
+  was.
 - **Resolve the node test once per step.** `ResolvedTest` turns a `NodeTest`
   into a variant holding borrowed `&str` namespace URI and local name (or
   `Never` for an unbound prefix, per XPath 1.0 §2.3) before the candidate loop.
@@ -48,7 +52,10 @@ specific to the attribute axis.
 
 The budget semantics are unchanged in kind (one charge per node visited); the
 fused form charges fewer visits than the two-step form for the same query,
-which lowers the DoS bound for callers, never raises it.
+which lowers the DoS bound for callers, never raises it. A unit test pins
+this: a budget of exactly the document's node count admits `//b` but not the
+two-step spelling, and the budget the two-step spelling of a nested
+`//a//@*` needs also admits the `//` form.
 
 ## Results
 
@@ -80,6 +87,8 @@ prefixes match nothing.
   step to recognise a `//` connector. The fusion lives in evaluation only.
 - `//T[pred]` still takes the two-step path. Fusing it would require tracking
   `position()`/`last()` per parent inside the walk; do that only if a profile
-  shows it.
+  shows it. A `//` reached from several contexts also stays on the two-step
+  path; fusing it would need a visited-set to keep the budget bound, which
+  costs an allocation per step for a shape that is not on the hot path.
 - Any new axis evaluation should resolve its node test with `ResolvedTest`
   before its candidate loop rather than calling `matches_node_test` per node.

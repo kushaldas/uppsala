@@ -2074,10 +2074,21 @@ fn is_double_slash_step(step: &Step) -> bool {
 
 /// Evaluate a location path's steps from `start`, fusing each
 /// `//child::T` (and `//attribute::T`) pair without predicates into one
-/// descendant walk. `descendant-or-self::node()/child::T` selects exactly
-/// `descendant::T`, so the fused walk visits every node once, tests it in
-/// place and never materializes the intermediate all-nodes set that the
-/// two-step form builds and then re-scans child by child.
+/// descendant walk when it runs from a single context node.
+/// `descendant-or-self::node()/child::T` selects exactly `descendant::T`, so
+/// the fused walk visits every node once, tests it in place and never
+/// materializes the intermediate all-nodes set that the two-step form builds
+/// and then re-scans child by child.
+///
+/// With several context nodes the pair is evaluated as two ordinary steps.
+/// Contexts can nest (`//a//b` where one `a` contains another), and the
+/// two-step form deduplicates the `descendant-or-self` set before the second
+/// step charges it, so every node is charged once; separate walks from each
+/// context would charge the inner subtree once per enclosing context and
+/// could exhaust a budget the unfused query stays within. Restricting the
+/// fusion to one context keeps "never charges more than the unfused form"
+/// true, and that is where the cost lives anyway: the leading `//` of an
+/// absolute or relative path always starts from exactly one node.
 fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Vec<NodeId>> {
     let mut nodes = vec![start];
     let mut i = 0;
@@ -2086,8 +2097,9 @@ fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Ve
         // Look one step ahead for the `//T` shape. A predicate on the second
         // step is positional relative to the *parent* (`//b[1]` is the first
         // `b` child of every parent), which a flat walk cannot reproduce, so
-        // such pairs fall through to the ordinary two-step evaluation.
-        if i + 1 < steps.len() && is_double_slash_step(step) {
+        // such pairs fall through to the ordinary two-step evaluation, as do
+        // pairs reached from more than one context node (see above).
+        if i + 1 < steps.len() && nodes.len() == 1 && is_double_slash_step(step) {
             let next = &steps[i + 1];
             if next.predicates.is_empty() {
                 match next.axis {
@@ -2096,7 +2108,8 @@ fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Ve
                     // the context node itself is never a child, so the walk
                     // excludes it.
                     Axis::Child => {
-                        nodes = apply_descendant_test(&next.node_test, false, false, &nodes, ctx)?;
+                        nodes =
+                            apply_descendant_test(&next.node_test, false, false, nodes[0], ctx)?;
                         i += 2;
                         continue;
                     }
@@ -2104,7 +2117,7 @@ fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Ve
                     // attributes of the context node *and* every descendant, so
                     // here the walk includes the context node.
                     Axis::Attribute => {
-                        nodes = apply_descendant_test(&next.node_test, true, true, &nodes, ctx)?;
+                        nodes = apply_descendant_test(&next.node_test, true, true, nodes[0], ctx)?;
                         i += 2;
                         continue;
                     }
@@ -2120,61 +2133,54 @@ fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Ve
     Ok(nodes)
 }
 
-/// Select every node under each context node (plus the node itself when
+/// Select every node under `context` (plus `context` itself when
 /// `include_self`) that passes `test`; with `attributes`, test the attribute
 /// nodes of each visited element instead of the elements.
 ///
 /// Budget: one charge per node visited, plus one per attribute examined in
 /// attribute mode. The two-step form this replaces charged every node once
-/// in the `descendant-or-self` step and every child once more in the
-/// `child` step, so the fused form never charges more than the unfused one
-/// and the configured DoS bound still holds.
+/// in the `descendant-or-self` step and every child (or attribute) once more
+/// in the second step, so from one context the fused form never charges
+/// more than the unfused one and the configured DoS bound still holds.
+/// `apply_steps` only calls this with a single context for that reason.
 ///
-/// Ordering: a pre-order walk from a single context yields document order
-/// with no duplicates, so that case returns directly. Several contexts
-/// (`//a//b`: one walk per `a`, and `a` elements nest) can overlap, and go
-/// through `dedup_document_order` like any other multi-context step.
+/// Ordering: a pre-order walk from one context yields document order with
+/// no duplicates, so no `dedup_document_order` pass is needed.
 fn apply_descendant_test(
     test: &NodeTest,
     include_self: bool,
     attributes: bool,
-    context_nodes: &[NodeId],
+    context: NodeId,
     ctx: &EvalContext,
 ) -> XmlResult<Vec<NodeId>> {
     let doc = ctx.doc;
     // Resolve the prefix once here; `matches` below is then hash-free.
     let test = ResolvedTest::resolve(test, ctx.namespaces);
     let mut result = Vec::new();
-    for &node in context_nodes {
-        if attributes {
-            walk_descendants(doc, node, include_self, |n| {
-                ctx.budget.charge(1)?;
-                // Empty for non-elements (text, comments, the document node),
-                // so no kind check is needed before asking.
-                let attrs = doc.get_attribute_nodes(n);
-                ctx.budget.charge(attrs.len())?;
-                for &a in attrs {
-                    if test.matches(a, doc) {
-                        result.push(a);
-                    }
+    if attributes {
+        walk_descendants(doc, context, include_self, |n| {
+            ctx.budget.charge(1)?;
+            // Empty for non-elements (text, comments, the document node),
+            // so no kind check is needed before asking.
+            let attrs = doc.get_attribute_nodes(n);
+            ctx.budget.charge(attrs.len())?;
+            for &a in attrs {
+                if test.matches(a, doc) {
+                    result.push(a);
                 }
-                Ok(())
-            })?;
-        } else {
-            walk_descendants(doc, node, include_self, |n| {
-                ctx.budget.charge(1)?;
-                if test.matches(n, doc) {
-                    result.push(n);
-                }
-                Ok(())
-            })?;
-        }
+            }
+            Ok(())
+        })?;
+    } else {
+        walk_descendants(doc, context, include_self, |n| {
+            ctx.budget.charge(1)?;
+            if test.matches(n, doc) {
+                result.push(n);
+            }
+            Ok(())
+        })?;
     }
-    // One context: a pre-order walk is already unique and in document order.
-    if context_nodes.len() == 1 {
-        return Ok(result);
-    }
-    Ok(dedup_document_order(doc, result))
+    Ok(result)
 }
 
 fn apply_step(step: &Step, context_nodes: &[NodeId], ctx: &EvalContext) -> XmlResult<Vec<NodeId>> {
@@ -3392,6 +3398,57 @@ mod tests {
         ] {
             assert_eq!(ids(&doc, fused), ids(&doc, unfused), "{fused} vs {unfused}");
         }
+    }
+
+    #[test]
+    fn fused_double_slash_never_charges_more_than_unfused() {
+        // From one context the fused walk charges each node once, where the
+        // two-step form charges it in the descendant-or-self step and again
+        // as a child candidate. A budget of exactly the node count therefore
+        // admits `//b` but not the explicit `descendant::` spelling that still
+        // runs two steps (`/descendant::node()/self::b` charges twice too).
+        let doc = fuse_doc();
+        let root = doc.document_element().unwrap();
+        let all_nodes = preorder_filter(&doc, &|_| true).len();
+        let tight = XPathEvaluator::new().with_max_node_visits(all_nodes);
+        assert_eq!(tight.select_nodes(&doc, root, "//b").unwrap().len(), 3);
+        assert!(tight
+            .select_nodes(&doc, root, "/descendant::node()/self::b")
+            .is_err());
+        // Nested contexts (two `a` elements, one inside the other) are not
+        // fused: the inner subtree must be charged once, as the two-step
+        // dedup guarantees, not once per enclosing `a`. The budget that the
+        // explicit two-step spelling needs must also admit the `//` form.
+        let mut needed = 0;
+        loop {
+            needed += 1;
+            let eval = XPathEvaluator::new().with_max_node_visits(needed);
+            if eval
+                .select_nodes(
+                    &doc,
+                    root,
+                    "/descendant::a/descendant-or-self::node()/attribute::*",
+                )
+                .is_ok()
+            {
+                break;
+            }
+        }
+        let eval = XPathEvaluator::new().with_max_node_visits(needed);
+        assert_eq!(
+            eval.select_nodes(&doc, root, "//a//@*").unwrap(),
+            eval.select_nodes(
+                &doc,
+                root,
+                "/descendant::a/descendant-or-self::node()/attribute::*"
+            )
+            .unwrap()
+        );
+        assert_eq!(
+            eval.select_nodes(&doc, root, "//a//b").unwrap(),
+            eval.select_nodes(&doc, root, "/descendant::a/descendant::b")
+                .unwrap()
+        );
     }
 
     #[test]

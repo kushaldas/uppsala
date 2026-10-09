@@ -450,9 +450,11 @@ fn write_node_to_with_options_matches_node_to_xml_in_a_reused_buffer() {
             assert_eq!(buf, doc.node_to_xml_with_options(id, opts));
         }
     }
-    // The streamed fragment is a standalone, re-parsable document: the prefix
-    // declared on the ancestor is not re-emitted (no `xmlns:md` is stored on
-    // the child), which is the documented node_to_xml behaviour.
+    // The stream keeps node_to_xml's ancestor-scope behaviour: a prefix bound
+    // on an ancestor counts as in scope, so the fragment uses `md:` without
+    // re-emitting `xmlns:md` (the declaration is stored on the root, not the
+    // child). Callers wanting a self-contained fragment add those bindings
+    // themselves, as pyuppsala does.
     buf.clear();
     doc.write_node_to_with_options(entities[0], &mut buf, &compact)
         .unwrap();
