@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.12.0] - 2026-10-08
-
+## [0.12.0] - 2026-10-09
 
 ### Added
 
+- `Document::write_node_to_with_options` serializes one node into any
+  `fmt::Write` sink, and `Document::node_serialized_size_hint` suggests a
+  capacity for it, so repeated fragment serialization can reuse one buffer.
 - Add allocation-free `Document::children_count()` and double-ended child
   iteration, including mixed forward/backward traversal.
 - Add `XPathEvaluator::clear_cache()` to release cached compiled expressions.
@@ -21,6 +23,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- XPath `//child::T` and `//attribute::T` pairs without predicates are
+  evaluated as one descendant walk that tests nodes in place, and every step
+  resolves its node test's namespace prefix once instead of once per
+  candidate. Over a 7 MB SAML aggregate,
+  `//md:EntityDescriptor/md:IDPSSODescriptor` drops from 23.7 ms to 5.3 ms
+  (libxml2: 8.7 ms), `//md:EntityDescriptor/@entityID` from 22.8 ms to
+  5.4 ms (libxml2: 6.9 ms), and `count(//*)` from 24.6 ms to 3.5 ms. Results
+  and ordering are unchanged. See ADR 0020.
+- The explicit `descendant::` and `descendant-or-self::` axes walk the
+  subtree by sibling/parent links and test in place rather than collecting
+  the subtree first.
+- Serialization pre-sizes its output buffer from the node's source range
+  (`to_xml`, `node_to_xml`, and the `_with_options` variants) while the
+  parsed tree is unmodified, avoiding the doubling reallocations on
+  multi-megabyte documents; any mutation withdraws the hint so a pruned tree
+  never reserves its old input size. Elements with few namespace
+  declarations skip the per-element prefix hash map.
 - Reduce temporary allocations in DOM and XPath traversal by using child
   iterators. `Document::descendants()` now uses an iterative depth-first walk
   instead of recursive traversal.
@@ -37,7 +56,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Node-visit budgets and per-parent predicate positions remain enforced.
 - Reserve virtual-attribute arena and index capacity before initial XPath
   preparation to avoid repeated growth on attribute-heavy documents.
-
 
 ### Fixed
 

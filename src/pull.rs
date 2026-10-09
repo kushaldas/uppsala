@@ -1136,6 +1136,10 @@ impl<'a> DomSink<'a> {
         }
         let root = doc.root();
         doc.set_byte_end_pos(root, input.len());
+        // Building the arena went through mutators that clear the flag; the
+        // finished tree is an exact image of `input`, so source ranges may
+        // size serialization buffers until the first edit.
+        doc.mark_source_hint_valid();
         Ok(doc)
     }
 }

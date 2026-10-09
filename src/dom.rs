@@ -446,6 +446,15 @@ pub struct Document<'a> {
     pub(crate) attr_node_pool: Vec<NodeId>,
     /// Original input for lazy line/column computation from byte positions.
     pub(crate) input: &'a str,
+    /// Whether the tree still mirrors `input`, so a node's source range (and
+    /// `input.len()` for the document) is a sound capacity hint for
+    /// serializing it. Set by the parser once the tree is complete; cleared
+    /// by every mutator (through [`Self::invalidate_xpath_caches`]), because
+    /// after `remove_child`, `replace_tree_from` or any other edit the parsed
+    /// ranges no longer bound the output: a multi-megabyte input pruned to a
+    /// few nodes must not keep reserving the full input length. `false` for
+    /// built documents, whose nodes have no ranges anyway.
+    pub(crate) source_hint_valid: bool,
 }
 
 impl<'a> Document<'a> {
@@ -471,6 +480,7 @@ impl<'a> Document<'a> {
             xpath_dirty: true,
             attr_node_pool: Vec::new(),
             input: "",
+            source_hint_valid: false,
         }
     }
 
@@ -486,6 +496,9 @@ impl<'a> Document<'a> {
             xpath_dirty: self.xpath_dirty,
             attr_node_pool: self.attr_node_pool,
             input: "",
+            // Node ranges stay meaningful for an unmodified tree even though
+            // the input text is gone (the document-level hint becomes 0).
+            source_hint_valid: self.source_hint_valid,
         }
     }
 
@@ -703,6 +716,17 @@ impl<'a> Document<'a> {
     /// call could.
     fn invalidate_xpath_caches(&mut self) {
         self.xpath_dirty = true;
+        // The same mutations make parsed source ranges unreliable as
+        // serialization capacity hints; see `source_hint_valid`.
+        self.source_hint_valid = false;
+    }
+
+    /// Record that the arena is a faithful image of `input`, so source ranges
+    /// may size serialization buffers. Called by the parser's DOM sink once
+    /// the whole document has been built (the build itself goes through
+    /// mutators that clear the flag).
+    pub(crate) fn mark_source_hint_valid(&mut self) {
+        self.source_hint_valid = true;
     }
 
     /// Assign each node its document-order position into `self.doc_order`, by a
@@ -1677,7 +1701,7 @@ impl<'a> Document<'a> {
 
     /// Serialize the document back to an XML string (compact, no indentation).
     pub fn to_xml(&self) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(self.root));
         // write_document_to cannot fail when writing to String
         self.write_document_to(&mut output, &XmlWriteOptions::default())
             .unwrap();
@@ -1686,16 +1710,35 @@ impl<'a> Document<'a> {
 
     /// Serialize the document with formatting options.
     pub fn to_xml_with_options(&self, opts: &XmlWriteOptions) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(self.root));
         self.write_document_to(&mut output, opts).unwrap();
         output
+    }
+
+    /// Initial buffer capacity for serializing `id`: the length of its source
+    /// range when it was parsed (serialized output is usually within a few
+    /// percent of the input), or zero for a built node or for any node of a
+    /// document that has been mutated since parsing (`source_hint_valid`).
+    /// Only a hint: `String` grows as usual if the output is longer.
+    /// Reserving up front avoids the doubling reallocations (and the page
+    /// faults of each fresh larger block) that otherwise dominate the
+    /// whole-document path on multi-megabyte inputs; declining to reserve
+    /// after a mutation costs only those reallocations, never correctness.
+    fn serialized_size_hint(&self, id: NodeId) -> usize {
+        if !self.source_hint_valid {
+            return 0;
+        }
+        if id == self.root {
+            return self.input.len();
+        }
+        self.node_range(id).map(|r| r.len()).unwrap_or(0)
     }
 
     /// Serialize a single node (and its subtree) to an XML string.
     ///
     /// Useful for extracting XML fragments without the XML declaration or DOCTYPE.
     pub fn node_to_xml(&self, id: NodeId) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(id));
         let binds = self.ancestor_ns_bindings(id);
         let scope = NsScope {
             parent: None,
@@ -1715,15 +1758,63 @@ impl<'a> Document<'a> {
 
     /// Serialize a single node (and its subtree) with formatting options.
     pub fn node_to_xml_with_options(&self, id: NodeId, opts: &XmlWriteOptions) -> String {
-        let mut output = String::new();
+        let mut output = String::with_capacity(self.serialized_size_hint(id));
+        self.write_node_to_with_options(id, &mut output, opts)
+            .unwrap();
+        output
+    }
+
+    /// Serialize a single node (and its subtree) into any `fmt::Write` sink
+    /// with formatting options: the node-level counterpart of
+    /// [`write_to_with_options`](Self::write_to_with_options). The sink
+    /// receives exactly the text `node_to_xml_with_options` would return, so a
+    /// caller that serializes repeatedly can reuse one buffer instead of
+    /// paying for a fresh multi-megabyte allocation per call.
+    ///
+    /// Namespace bindings declared on `id`'s ancestors are treated as in
+    /// scope (and so not re-declared), exactly as in `node_to_xml`. No XML
+    /// declaration or DOCTYPE is written. An error from `out` is returned as
+    /// soon as it occurs; the sink may then hold a partial document.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use uppsala::{parse, XmlWriteOptions};
+    ///
+    /// let doc = parse("<r><a x=\"1\"/><b/></r>").unwrap();
+    /// let root = doc.document_element().unwrap();
+    /// let opts = XmlWriteOptions::compact();
+    /// let mut buf = String::new();
+    /// for child in doc.children(root) {
+    ///     buf.clear();
+    ///     buf.reserve(doc.node_serialized_size_hint(child));
+    ///     doc.write_node_to_with_options(child, &mut buf, &opts).unwrap();
+    ///     assert_eq!(buf, doc.node_to_xml_with_options(child, &opts));
+    /// }
+    /// ```
+    pub fn write_node_to_with_options(
+        &self,
+        id: NodeId,
+        out: &mut dyn fmt::Write,
+        opts: &XmlWriteOptions,
+    ) -> fmt::Result {
         let binds = self.ancestor_ns_bindings(id);
         let scope = NsScope {
             parent: None,
             local: &binds,
         };
-        self.write_node_to(id, &mut output, opts, 0, false, &scope)
-            .unwrap();
-        output
+        self.write_node_to(id, out, opts, 0, false, &scope)
+    }
+
+    /// Suggested buffer capacity for serializing `id`, for callers of
+    /// [`write_node_to_with_options`](Self::write_node_to_with_options) that
+    /// size their own sink: the length of the node's source range when it was
+    /// parsed (the whole input length for the document node), or `0` for a
+    /// node built programmatically and for every node once the document has
+    /// been mutated after parsing, since the parsed ranges then no longer
+    /// describe the tree. A hint only, never an upper bound.
+    pub fn node_serialized_size_hint(&self, id: NodeId) -> usize {
+        self.serialized_size_hint(id)
     }
 
     /// Write the entire document to any `io::Write` sink (file, socket, `Vec<u8>`, etc.)
@@ -1842,7 +1933,10 @@ impl<'a> Document<'a> {
                 // programmatic attributes cannot collide into duplicate XML.
                 // Holds Cows: valid unique names (every parsed document) are
                 // recorded as borrows, so the tracking allocates nothing.
-                let mut seen_attrs: Vec<Cow<'_, str>> = Vec::new();
+                // Sized up front: one allocation per element instead of the
+                // 4/8/16 growth steps a `push` loop would take.
+                let mut seen_attrs: Vec<Cow<'_, str>> =
+                    Vec::with_capacity(child_local.len() + elem.attributes.len());
                 // Namespace declarations. `child_local` holds every binding this
                 // element introduces (stored + synthesized) in order; emit only
                 // the *last* binding per prefix so a synthesized override — e.g. an
@@ -1854,12 +1948,23 @@ impl<'a> Document<'a> {
                 //
                 // Precompute the last index per prefix so the "last binding wins"
                 // dedup is O(n) rather than O(n^2) in the number of bindings.
-                let mut last_idx: HashMap<&str, usize> = HashMap::with_capacity(child_local.len());
-                for (i, (prefix, _)) in child_local.iter().enumerate() {
-                    last_idx.insert(prefix.as_ref(), i);
-                }
+                // A handful of bindings (the norm) is cheaper to scan than to
+                // hash; the map is only built past that.
+                let last_idx: Option<HashMap<&str, usize>> = if child_local.len() > 8 {
+                    let mut m = HashMap::with_capacity(child_local.len());
+                    for (i, (prefix, _)) in child_local.iter().enumerate() {
+                        m.insert(prefix.as_ref(), i);
+                    }
+                    Some(m)
+                } else {
+                    None
+                };
                 for (i, (prefix, uri)) in child_local.iter().enumerate() {
-                    if last_idx.get(prefix.as_ref()) != Some(&i) {
+                    let shadowed = match &last_idx {
+                        Some(m) => m.get(prefix.as_ref()) != Some(&i),
+                        None => child_local[i + 1..].iter().any(|(p, _)| p == prefix),
+                    };
+                    if shadowed {
                         continue; // shadowed by a later binding for the same prefix
                     }
                     let (prefix, uri) = (prefix.as_ref(), uri.as_ref());

@@ -1863,14 +1863,10 @@ impl EvalBudget {
 fn evaluate_expr(expr: &Expr, ctx: &EvalContext) -> XmlResult<XPathValue> {
     match expr {
         Expr::Path(steps) => {
-            let mut nodes = vec![ctx.node];
-            for step in steps {
-                nodes = apply_step(step, &nodes, ctx)?;
-            }
-            // `apply_step` already returns a deduplicated, document-ordered
+            // `apply_steps` already returns a deduplicated, document-ordered
             // vector, so an extra dedup pass here would be redundant (and
             // uncharged) work.
-            Ok(XPathValue::NodeSet(nodes))
+            Ok(XPathValue::NodeSet(apply_steps(steps, ctx.node, ctx)?))
         }
         Expr::AbsolutePath(steps) => {
             // Find the document root
@@ -1878,12 +1874,8 @@ fn evaluate_expr(expr: &Expr, ctx: &EvalContext) -> XmlResult<XPathValue> {
             while let Some(p) = ctx.doc.parent(root) {
                 root = p;
             }
-            let mut nodes = vec![root];
-            for step in steps {
-                nodes = apply_step(step, &nodes, ctx)?;
-            }
-            // Already deduplicated and document-ordered by `apply_step`.
-            Ok(XPathValue::NodeSet(nodes))
+            // Already deduplicated and document-ordered by `apply_steps`.
+            Ok(XPathValue::NodeSet(apply_steps(steps, root, ctx)?))
         }
         Expr::Union(left, right) => {
             let left_val = evaluate_expr(left, ctx)?;
@@ -2072,7 +2064,131 @@ fn xpath_equal(left: &XPathValue, right: &XPathValue, doc: &Document<'_>) -> boo
     }
 }
 
+/// Is `step` the `descendant-or-self::node()` step the parser injects for
+/// a `//` connector (no predicates)?
+fn is_double_slash_step(step: &Step) -> bool {
+    matches!(step.axis, Axis::DescendantOrSelf)
+        && matches!(&step.node_test, NodeTest::NodeType(nt) if nt == "node")
+        && step.predicates.is_empty()
+}
+
+/// Evaluate a location path's steps from `start`, fusing each
+/// `//child::T` (and `//attribute::T`) pair without predicates into one
+/// descendant walk when it runs from a single context node.
+/// `descendant-or-self::node()/child::T` selects exactly `descendant::T`, so
+/// the fused walk visits every node once, tests it in place and never
+/// materializes the intermediate all-nodes set that the two-step form builds
+/// and then re-scans child by child.
+///
+/// With several context nodes the pair is evaluated as two ordinary steps.
+/// Contexts can nest (`//a//b` where one `a` contains another), and the
+/// two-step form deduplicates the `descendant-or-self` set before the second
+/// step charges it, so every node is charged once; separate walks from each
+/// context would charge the inner subtree once per enclosing context and
+/// could exhaust a budget the unfused query stays within. Restricting the
+/// fusion to one context keeps "never charges more than the unfused form"
+/// true, and that is where the cost lives anyway: the leading `//` of an
+/// absolute or relative path always starts from exactly one node.
+fn apply_steps(steps: &[Step], start: NodeId, ctx: &EvalContext) -> XmlResult<Vec<NodeId>> {
+    let mut nodes = vec![start];
+    let mut i = 0;
+    while i < steps.len() {
+        let step = &steps[i];
+        // Look one step ahead for the `//T` shape. A predicate on the second
+        // step is positional relative to the *parent* (`//b[1]` is the first
+        // `b` child of every parent), which a flat walk cannot reproduce, so
+        // such pairs fall through to the ordinary two-step evaluation, as do
+        // pairs reached from more than one context node (see above).
+        if i + 1 < steps.len() && nodes.len() == 1 && is_double_slash_step(step) {
+            let next = &steps[i + 1];
+            if next.predicates.is_empty() {
+                match next.axis {
+                    // `descendant-or-self::node()/child::T` is every child of
+                    // the context or of any descendant, i.e. `descendant::T`:
+                    // the context node itself is never a child, so the walk
+                    // excludes it.
+                    Axis::Child => {
+                        nodes =
+                            apply_descendant_test(&next.node_test, false, false, nodes[0], ctx)?;
+                        i += 2;
+                        continue;
+                    }
+                    // `descendant-or-self::node()/attribute::T` is the matching
+                    // attributes of the context node *and* every descendant, so
+                    // here the walk includes the context node.
+                    Axis::Attribute => {
+                        nodes = apply_descendant_test(&next.node_test, true, true, nodes[0], ctx)?;
+                        i += 2;
+                        continue;
+                    }
+                    // `//self::x`, `//parent::x`, `//descendant::x`, ...: rare
+                    // and not equivalent to a single walk; evaluate as written.
+                    _ => {}
+                }
+            }
+        }
+        nodes = apply_step(step, &nodes, ctx)?;
+        i += 1;
+    }
+    Ok(nodes)
+}
+
+/// Select every node under `context` (plus `context` itself when
+/// `include_self`) that passes `test`; with `attributes`, test the attribute
+/// nodes of each visited element instead of the elements.
+///
+/// Budget: one charge per node visited, plus one per attribute examined in
+/// attribute mode. The two-step form this replaces charged every node once
+/// in the `descendant-or-self` step and every child (or attribute) once more
+/// in the second step, so from one context the fused form never charges
+/// more than the unfused one and the configured DoS bound still holds.
+/// `apply_steps` only calls this with a single context for that reason.
+///
+/// Ordering: a pre-order walk from one context yields document order with
+/// no duplicates, so no `dedup_document_order` pass is needed.
+fn apply_descendant_test(
+    test: &NodeTest,
+    include_self: bool,
+    attributes: bool,
+    context: NodeId,
+    ctx: &EvalContext,
+) -> XmlResult<Vec<NodeId>> {
+    let doc = ctx.doc;
+    // Resolve the prefix once here; `matches` below is then hash-free.
+    let test = ResolvedTest::resolve(test, ctx.namespaces);
+    let mut result = Vec::new();
+    if attributes {
+        walk_descendants(doc, context, include_self, |n| {
+            ctx.budget.charge(1)?;
+            // Empty for non-elements (text, comments, the document node),
+            // so no kind check is needed before asking.
+            let attrs = doc.get_attribute_nodes(n);
+            ctx.budget.charge(attrs.len())?;
+            for &a in attrs {
+                if test.matches(a, doc) {
+                    result.push(a);
+                }
+            }
+            Ok(())
+        })?;
+    } else {
+        walk_descendants(doc, context, include_self, |n| {
+            ctx.budget.charge(1)?;
+            if test.matches(n, doc) {
+                result.push(n);
+            }
+            Ok(())
+        })?;
+    }
+    Ok(result)
+}
+
 fn apply_step(step: &Step, context_nodes: &[NodeId], ctx: &EvalContext) -> XmlResult<Vec<NodeId>> {
+    let doc = ctx.doc;
+    // Resolve the test's namespace prefix once per step, not once per
+    // candidate: the per-node check is then a kind match plus at most two
+    // string compares with no hashing.
+    let test = ResolvedTest::resolve(&step.node_test, ctx.namespaces);
     let mut result = Vec::new();
     for &node in context_nodes {
         let start = result.len();
@@ -2081,25 +2197,37 @@ fn apply_step(step: &Step, context_nodes: &[NodeId], ctx: &EvalContext) -> XmlRe
                 // Stream into the result instead of counting siblings, copying
                 // the axis, and then allocating a separate filtered vector.
                 // Charge every candidate, including non-matches, before push.
-                for candidate in ctx.doc.children_iter(node) {
+                for candidate in doc.children_iter(node) {
                     ctx.budget.charge(1)?;
-                    if matches_node_test(&step.node_test, candidate, ctx.doc, ctx.namespaces) {
+                    if test.matches(candidate, doc) {
                         result.push(candidate);
                     }
                 }
             }
             Axis::Attribute => {
-                let candidates = ctx.doc.get_attribute_nodes(node);
+                let candidates = doc.get_attribute_nodes(node);
                 ctx.budget.charge(candidates.len())?;
                 for &candidate in candidates {
-                    if matches_node_test(&step.node_test, candidate, ctx.doc, ctx.namespaces) {
+                    if test.matches(candidate, doc) {
                         result.push(candidate);
                     }
                 }
             }
+            // Test descendants as they are visited rather than collecting the
+            // whole subtree first and filtering a second time.
+            Axis::Descendant | Axis::DescendantOrSelf => {
+                let include_self = matches!(step.axis, Axis::DescendantOrSelf);
+                walk_descendants(doc, node, include_self, |n| {
+                    ctx.budget.charge(1)?;
+                    if test.matches(n, doc) {
+                        result.push(n);
+                    }
+                    Ok(())
+                })?;
+            }
             _ => {
                 for candidate in select_axis(&step.axis, node, ctx)? {
-                    if matches_node_test(&step.node_test, candidate, ctx.doc, ctx.namespaces) {
+                    if test.matches(candidate, doc) {
                         result.push(candidate);
                     }
                 }
@@ -2112,10 +2240,61 @@ fn apply_step(step: &Step, context_nodes: &[NodeId], ctx: &EvalContext) -> XmlRe
     // These axes are already unique and in document order for one context,
     // even without prepare_xpath(). Multiple (possibly nested) contexts still
     // require global ordering, as do the reverse and overlapping axes.
-    if context_nodes.len() == 1 && matches!(step.axis, Axis::Child | Axis::Attribute) {
+    if context_nodes.len() == 1
+        && matches!(
+            step.axis,
+            Axis::Child | Axis::Attribute | Axis::Descendant | Axis::DescendantOrSelf
+        )
+    {
         return Ok(result);
     }
-    Ok(dedup_document_order(ctx.doc, result))
+    Ok(dedup_document_order(doc, result))
+}
+
+/// Visit `root`'s descendants in document order (pre-order), and `root`
+/// itself first when `include_self`. Follows first-child / next-sibling /
+/// parent links, so the walk allocates nothing; `visit` may abort it with an
+/// error (the node-visit budget).
+///
+/// Attribute nodes are not children in the arena (they live in the virtual
+/// attribute index), so they are never visited here; `root` may itself be an
+/// attribute or a leaf, in which case only `root` (if `include_self`) is
+/// visited. The walk never leaves `root`'s subtree: the climb stops as soon
+/// as it would step onto `root`'s own parent or sibling.
+fn walk_descendants(
+    doc: &Document<'_>,
+    root: NodeId,
+    include_self: bool,
+    mut visit: impl FnMut(NodeId) -> XmlResult<()>,
+) -> XmlResult<()> {
+    if include_self {
+        visit(root)?;
+    }
+    let mut cur = match doc.first_child(root) {
+        Some(c) => c,
+        None => return Ok(()),
+    };
+    loop {
+        visit(cur)?;
+        // Descend first: pre-order means a node's subtree comes right after it.
+        if let Some(c) = doc.first_child(cur) {
+            cur = c;
+            continue;
+        }
+        // Leaf reached: move to the next sibling, or climb until an ancestor
+        // (strictly below `root`) has one. Reaching `root` means every
+        // descendant has been visited.
+        loop {
+            if let Some(s) = doc.next_sibling(cur) {
+                cur = s;
+                break;
+            }
+            match doc.parent(cur) {
+                Some(p) if p != root => cur = p,
+                _ => return Ok(()),
+            }
+        }
+    }
 }
 
 fn apply_predicate(
@@ -2312,69 +2491,101 @@ fn matches_node_test(
     doc: &Document<'_>,
     namespaces: &HashMap<String, String>,
 ) -> bool {
-    match test {
-        NodeTest::Wildcard => matches!(
-            doc.node_kind(node),
-            Some(NodeKind::Element(_)) | Some(NodeKind::Attribute(_, _))
-        ),
-        NodeTest::Name(name) => match doc.node_kind(node) {
-            Some(NodeKind::Element(e)) => {
-                *e.name.local_name == *name && e.name.namespace_uri.is_none()
+    ResolvedTest::resolve(test, namespaces).matches(node, doc)
+}
+
+/// A [`NodeTest`] with its namespace prefix already looked up, so a step can
+/// resolve once and test each candidate with plain comparisons. An unbound
+/// prefix resolves to `Never` (XPath 1.0 §2.3: the test matches nothing).
+///
+/// Before this existed, `matches_node_test` hashed the prefix string into the
+/// evaluator's `HashMap<String, String>` for every candidate node; on a
+/// 45k-node document that lookup plus the URI compare was a tenth of the
+/// whole evaluation. The borrowed `&str`s point into the step and the
+/// namespace map, both of which outlive the candidate loop.
+enum ResolvedTest<'t> {
+    /// `node()`: every node, no kind check needed.
+    AnyNode,
+    /// `*`: any element or attribute (the principal node type of the axis).
+    Wildcard,
+    /// `local`: element/attribute with this local name and *no* namespace.
+    Name(&'t str),
+    /// `prefix:local`: element/attribute with this local name in namespace `ns`.
+    QName { ns: &'t str, local: &'t str },
+    /// `prefix:*`: any element/attribute in namespace `ns`.
+    NsWildcard(&'t str),
+    /// `text()`: text and CDATA nodes.
+    Text,
+    /// `comment()`.
+    Comment,
+    /// `processing-instruction()` (the target argument is not matched here,
+    /// same as before this type existed).
+    Pi,
+    /// Matches nothing: an unbound prefix or an unknown node type name.
+    Never,
+}
+
+impl<'t> ResolvedTest<'t> {
+    /// Resolve `test` against `namespaces` (prefix to URI). Call once per
+    /// step, outside the candidate loop.
+    fn resolve(test: &'t NodeTest, namespaces: &'t HashMap<String, String>) -> Self {
+        match test {
+            NodeTest::Wildcard => ResolvedTest::Wildcard,
+            NodeTest::Name(name) => ResolvedTest::Name(name),
+            NodeTest::PrefixedName(prefix, local) => match namespaces.get(prefix) {
+                Some(ns) => ResolvedTest::QName { ns, local },
+                None => ResolvedTest::Never,
+            },
+            NodeTest::PrefixWildcard(prefix) => match namespaces.get(prefix) {
+                Some(ns) => ResolvedTest::NsWildcard(ns),
+                None => ResolvedTest::Never,
+            },
+            NodeTest::NodeType(nt) => match nt.as_str() {
+                "node" => ResolvedTest::AnyNode,
+                "text" => ResolvedTest::Text,
+                "comment" => ResolvedTest::Comment,
+                "processing-instruction" => ResolvedTest::Pi,
+                _ => ResolvedTest::Never,
+            },
+        }
+    }
+
+    /// Does `node` pass the test? `AnyNode` short-circuits before touching the
+    /// arena, so `//node()` costs only the walk itself. A node id outside the
+    /// arena (never produced by the axes) fails rather than panicking.
+    #[inline]
+    fn matches(&self, node: NodeId, doc: &Document<'_>) -> bool {
+        if matches!(self, ResolvedTest::AnyNode) {
+            return true;
+        }
+        let kind = match doc.node_kind(node) {
+            Some(k) => k,
+            None => return false,
+        };
+        // Elements and attributes share the name tests; every other kind has
+        // no name and fails them.
+        let qname = match kind {
+            NodeKind::Element(e) => Some(&e.name),
+            NodeKind::Attribute(qn, _) => Some(qn),
+            _ => None,
+        };
+        match self {
+            ResolvedTest::AnyNode => true,
+            ResolvedTest::Wildcard => qname.is_some(),
+            ResolvedTest::Name(name) => {
+                qname.is_some_and(|q| q.namespace_uri.is_none() && *q.local_name == **name)
             }
-            Some(NodeKind::Attribute(qn, _)) => {
-                *qn.local_name == *name && qn.namespace_uri.is_none()
+            ResolvedTest::QName { ns, local } => qname.is_some_and(|q| {
+                *q.local_name == **local && q.namespace_uri.as_deref() == Some(*ns)
+            }),
+            ResolvedTest::NsWildcard(ns) => {
+                qname.is_some_and(|q| q.namespace_uri.as_deref() == Some(*ns))
             }
-            _ => false,
-        },
-        NodeTest::PrefixedName(prefix, local) => match doc.node_kind(node) {
-            Some(NodeKind::Element(e)) => {
-                if let Some(expected_ns) = namespaces.get(prefix) {
-                    *e.name.local_name == *local
-                        && e.name.namespace_uri.as_deref() == Some(expected_ns.as_str())
-                } else {
-                    false
-                }
-            }
-            Some(NodeKind::Attribute(qn, _)) => {
-                if let Some(expected_ns) = namespaces.get(prefix) {
-                    *qn.local_name == *local
-                        && qn.namespace_uri.as_deref() == Some(expected_ns.as_str())
-                } else {
-                    false
-                }
-            }
-            _ => false,
-        },
-        NodeTest::PrefixWildcard(prefix) => match doc.node_kind(node) {
-            Some(NodeKind::Element(e)) => {
-                if let Some(expected_ns) = namespaces.get(prefix) {
-                    e.name.namespace_uri.as_deref() == Some(expected_ns.as_str())
-                } else {
-                    false
-                }
-            }
-            Some(NodeKind::Attribute(qn, _)) => {
-                if let Some(expected_ns) = namespaces.get(prefix) {
-                    qn.namespace_uri.as_deref() == Some(expected_ns.as_str())
-                } else {
-                    false
-                }
-            }
-            _ => false,
-        },
-        NodeTest::NodeType(nt) => match nt.as_str() {
-            "node" => true,
-            "text" => matches!(
-                doc.node_kind(node),
-                Some(NodeKind::Text(_)) | Some(NodeKind::CData(_))
-            ),
-            "comment" => matches!(doc.node_kind(node), Some(NodeKind::Comment(_))),
-            "processing-instruction" => matches!(
-                doc.node_kind(node),
-                Some(NodeKind::ProcessingInstruction(_))
-            ),
-            _ => false,
-        },
+            ResolvedTest::Text => matches!(kind, NodeKind::Text(_) | NodeKind::CData(_)),
+            ResolvedTest::Comment => matches!(kind, NodeKind::Comment(_)),
+            ResolvedTest::Pi => matches!(kind, NodeKind::ProcessingInstruction(_)),
+            ResolvedTest::Never => false,
+        }
     }
 }
 
@@ -3015,6 +3226,277 @@ mod tests {
         let eval = XPathEvaluator::new();
         let root = doc.document_element().unwrap();
         eval.evaluate(&doc, root, xpath).unwrap()
+    }
+
+    /// Node ids selected by `expr`, with `md` bound for namespaced tests.
+    fn ids(doc: &Document<'_>, expr: &str) -> Vec<NodeId> {
+        let mut eval = XPathEvaluator::new();
+        eval.add_namespace("md", "urn:md");
+        let root = doc.document_element().unwrap();
+        eval.select_nodes(doc, root, expr).unwrap()
+    }
+
+    /// Fixture for the `//` fusion tests: nested `a` elements (so `//a//b`
+    /// contexts overlap), `b` elements at several depths, two namespaced
+    /// `m:b`, a leaf `c`, seven `id` attributes, and one comment, text node
+    /// and processing instruction so the node-type tests have targets.
+    const FUSE_DOC: &str = "<r xmlns:m='urn:md'><a id='1'><b id='2'/><a id='3'><b id='4'/>\
+        <m:b id='5'/></a></a><b id='6'><c/></b><!--x-->t<?pi d?><m:b id='7'/></r>";
+
+    /// `FUSE_DOC` parsed with the attribute-node index built, as the attribute
+    /// axis requires.
+    fn fuse_doc() -> Document<'static> {
+        let mut doc = Parser::new().parse(FUSE_DOC).unwrap();
+        doc.prepare_xpath();
+        doc
+    }
+
+    /// Independent oracle: pre-order walk of the whole tree (document node
+    /// first) using only the DOM API, keeping nodes for which `keep` holds.
+    fn preorder_filter(doc: &Document<'_>, keep: &dyn Fn(NodeId) -> bool) -> Vec<NodeId> {
+        fn walk(
+            doc: &Document<'_>,
+            id: NodeId,
+            keep: &dyn Fn(NodeId) -> bool,
+            out: &mut Vec<NodeId>,
+        ) {
+            if keep(id) {
+                out.push(id);
+            }
+            for c in doc.children_iter(id) {
+                walk(doc, c, keep, out);
+            }
+        }
+        let mut out = Vec::new();
+        walk(doc, doc.root(), keep, &mut out);
+        out
+    }
+
+    /// Attribute nodes of every element in document order, filtered by `keep`.
+    fn preorder_attrs(doc: &Document<'_>, keep: &dyn Fn(NodeId) -> bool) -> Vec<NodeId> {
+        let mut out = Vec::new();
+        for el in preorder_filter(doc, &|n| doc.element(n).is_some()) {
+            out.extend(
+                doc.get_attribute_nodes(el)
+                    .iter()
+                    .copied()
+                    .filter(|&a| keep(a)),
+            );
+        }
+        out
+    }
+
+    /// Is `n` an element or attribute named `local` in namespace `ns`
+    /// (`None` for no namespace)? Written against the DOM, not the evaluator.
+    fn local_is(doc: &Document<'_>, n: NodeId, ns: Option<&str>, local: &str) -> bool {
+        match doc.node_kind(n) {
+            Some(NodeKind::Element(e)) => {
+                *e.name.local_name == *local && e.name.namespace_uri.as_deref() == ns
+            }
+            Some(NodeKind::Attribute(q, _)) => {
+                *q.local_name == *local && q.namespace_uri.as_deref() == ns
+            }
+            _ => false,
+        }
+    }
+
+    #[test]
+    fn fused_double_slash_matches_independent_oracle() {
+        // `//T` and `//@T` take the fused walk. The expected sets come from a
+        // hand-written pre-order DOM walk, not from the evaluator, so a wrong
+        // or misordered fusion cannot agree with its own control.
+        let doc = fuse_doc();
+        let d = &doc;
+        assert_eq!(
+            ids(d, "//b"),
+            preorder_filter(d, &|n| local_is(d, n, None, "b"))
+        );
+        assert_eq!(
+            ids(d, "//md:b"),
+            preorder_filter(d, &|n| local_is(d, n, Some("urn:md"), "b"))
+        );
+        assert_eq!(
+            ids(d, "//md:*"),
+            preorder_filter(d, &|n| matches!(
+                d.node_kind(n),
+                Some(NodeKind::Element(e)) if e.name.namespace_uri.as_deref() == Some("urn:md")
+            ))
+        );
+        assert_eq!(
+            ids(d, "//*"),
+            preorder_filter(d, &|n| d.element(n).is_some())
+        );
+        // `//node()` is every node except the document node itself.
+        let mut all = preorder_filter(d, &|_| true);
+        all.remove(0);
+        assert_eq!(ids(d, "//node()"), all);
+        assert_eq!(
+            ids(d, "//text()"),
+            preorder_filter(d, &|n| matches!(d.node_kind(n), Some(NodeKind::Text(_))))
+        );
+        assert_eq!(
+            ids(d, "//comment()"),
+            preorder_filter(d, &|n| matches!(d.node_kind(n), Some(NodeKind::Comment(_))))
+        );
+        assert_eq!(
+            ids(d, "//@id"),
+            preorder_attrs(d, &|a| local_is(d, a, None, "id"))
+        );
+        assert_eq!(ids(d, "//@*"), preorder_attrs(d, &|_| true));
+        // Nested `//`: `b` elements with an `a` ancestor, and `id` attributes on
+        // `a` elements or their descendants, each once, in document order.
+        let has_a_ancestor = |n: NodeId| {
+            let mut cur = d.parent(n);
+            while let Some(p) = cur {
+                if local_is(d, p, None, "a") {
+                    return true;
+                }
+                cur = d.parent(p);
+            }
+            false
+        };
+        assert_eq!(
+            ids(d, "//a//b"),
+            preorder_filter(d, &|n| local_is(d, n, None, "b") && has_a_ancestor(n))
+        );
+        assert_eq!(
+            ids(d, "//a//@id"),
+            preorder_attrs(d, &|a| {
+                let owner = d.parent(a).unwrap();
+                local_is(d, owner, None, "a") || has_a_ancestor(owner)
+            })
+        );
+        assert_eq!(ids(d, "//b").len(), 3);
+        assert_eq!(ids(d, "//md:b").len(), 2);
+        assert_eq!(ids(d, "//@id").len(), 7);
+        assert_eq!(ids(d, "//a//b").len(), 2);
+    }
+
+    #[test]
+    fn fused_double_slash_matches_unfused_spellings() {
+        // Equivalent paths written with axes the fusion does not touch
+        // (`descendant::`, `descendant-or-self::*`), relative and absolute,
+        // from the root element and from nested contexts.
+        let doc = fuse_doc();
+        for (fused, unfused) in [
+            ("//b", "/descendant::b"),
+            ("//md:b", "/descendant::md:b"),
+            ("//md:*", "/descendant::md:*"),
+            ("//*", "/descendant::*"),
+            ("//node()", "/descendant::node()"),
+            ("//text()", "/descendant::text()"),
+            ("//@id", "/descendant::*/attribute::id"),
+            ("//@*", "/descendant::*/attribute::*"),
+            (".//b", "descendant::b"),
+            ("a//b", "a/descendant::b"),
+            ("//a//b", "/descendant::a/descendant::b"),
+            (
+                "//a//@id",
+                "/descendant::a/descendant-or-self::*/attribute::id",
+            ),
+            ("//c//*", "/descendant::c/descendant::*"),
+        ] {
+            assert_eq!(ids(&doc, fused), ids(&doc, unfused), "{fused} vs {unfused}");
+        }
+    }
+
+    #[test]
+    fn fused_double_slash_never_charges_more_than_unfused() {
+        // From one context the fused walk charges each node once, where the
+        // two-step form charges it in the descendant-or-self step and again
+        // as a child candidate. A budget of exactly the node count therefore
+        // admits `//b` but not the explicit `descendant::` spelling that still
+        // runs two steps (`/descendant::node()/self::b` charges twice too).
+        let doc = fuse_doc();
+        let root = doc.document_element().unwrap();
+        let all_nodes = preorder_filter(&doc, &|_| true).len();
+        let tight = XPathEvaluator::new().with_max_node_visits(all_nodes);
+        assert_eq!(tight.select_nodes(&doc, root, "//b").unwrap().len(), 3);
+        assert!(tight
+            .select_nodes(&doc, root, "/descendant::node()/self::b")
+            .is_err());
+        // Nested contexts (two `a` elements, one inside the other) are not
+        // fused: the inner subtree must be charged once, as the two-step
+        // dedup guarantees, not once per enclosing `a`. The budget that the
+        // explicit two-step spelling needs must also admit the `//` form.
+        let mut needed = 0;
+        loop {
+            needed += 1;
+            let eval = XPathEvaluator::new().with_max_node_visits(needed);
+            if eval
+                .select_nodes(
+                    &doc,
+                    root,
+                    "/descendant::a/descendant-or-self::node()/attribute::*",
+                )
+                .is_ok()
+            {
+                break;
+            }
+        }
+        let eval = XPathEvaluator::new().with_max_node_visits(needed);
+        assert_eq!(
+            eval.select_nodes(&doc, root, "//a//@*").unwrap(),
+            eval.select_nodes(
+                &doc,
+                root,
+                "/descendant::a/descendant-or-self::node()/attribute::*"
+            )
+            .unwrap()
+        );
+        assert_eq!(
+            eval.select_nodes(&doc, root, "//a//b").unwrap(),
+            eval.select_nodes(&doc, root, "/descendant::a/descendant::b")
+                .unwrap()
+        );
+    }
+
+    #[test]
+    fn double_slash_with_predicates_keeps_per_parent_positions() {
+        // A predicate on the step after `//` is positional relative to the
+        // parent, so the pair is not fused: `//b[1]` is the first `b` child of
+        // every parent, not the first `b` in the document.
+        let doc = fuse_doc();
+        assert_eq!(ids(&doc, "//b[1]").len(), 3);
+        assert_eq!(ids(&doc, "//b[last()]").len(), 3);
+        assert_eq!(ids(&doc, "//b[@id='4']").len(), 1);
+        assert_eq!(
+            ids(&doc, "//b[1]"),
+            ids(&doc, "/descendant-or-self::node()/child::b[1]")
+        );
+    }
+
+    #[test]
+    fn resolved_test_unbound_prefix_matches_nothing() {
+        let doc = fuse_doc();
+        let eval = XPathEvaluator::new();
+        let root = doc.document_element().unwrap();
+        assert!(eval.select_nodes(&doc, root, "//zz:b").unwrap().is_empty());
+        assert!(eval.select_nodes(&doc, root, "//zz:*").unwrap().is_empty());
+        assert!(eval
+            .select_nodes(&doc, root, "descendant::zz:b")
+            .unwrap()
+            .is_empty());
+    }
+
+    #[test]
+    fn descendant_axis_from_attribute_and_leaf_contexts() {
+        let doc = fuse_doc();
+        // A leaf element has no descendants; an attribute context has none and
+        // its `//` walk must not escape to the owner's siblings.
+        assert!(ids(&doc, "//c//*").is_empty());
+        assert!(ids(&doc, "//@id//*").is_empty());
+        assert!(ids(&doc, "//c/descendant::node()").is_empty());
+        assert_eq!(ids(&doc, "//b[@id='6']/descendant-or-self::*").len(), 2);
+        // count() over the fused form equals the explicit form.
+        let eval = XPathEvaluator::new();
+        let root = doc.document_element().unwrap();
+        let n = |e: &str| eval.evaluate(&doc, root, e).unwrap().to_number(&doc);
+        assert_eq!(
+            n("count(//*)"),
+            n("count(/descendant-or-self::node()/child::*)")
+        );
+        assert_eq!(n("count(//*)"), 9.0);
     }
 
     #[test]

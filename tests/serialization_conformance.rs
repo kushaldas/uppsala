@@ -403,6 +403,154 @@ fn node_to_xml_with_expand_empty() {
     assert_eq!(doc.node_to_xml_with_options(children[0], &opts), "<a></a>");
 }
 
+// ─── write_node_to_with_options ─────────────────────────────────────────────
+
+// The node-level streaming writer must produce exactly what the String-returning
+// subtree serializer produces, and must surface the sink's error instead of
+// swallowing it.
+
+/// A `fmt::Write` sink that accepts `budget` bytes and then fails.
+struct FailAfter {
+    budget: usize,
+}
+
+impl std::fmt::Write for FailAfter {
+    fn write_str(&mut self, s: &str) -> std::fmt::Result {
+        if s.len() > self.budget {
+            return Err(std::fmt::Error);
+        }
+        self.budget -= s.len();
+        Ok(())
+    }
+}
+
+#[test]
+fn write_node_to_with_options_matches_node_to_xml_in_a_reused_buffer() {
+    let xml = concat!(
+        r#"<md:EntitiesDescriptor xmlns:md="urn:md" xmlns:ds="urn:ds">"#,
+        r#"<md:EntityDescriptor entityID="a&amp;b"><ds:Signature/>"#,
+        "<md:Text>caf\u{e9} &lt;&amp;&gt;</md:Text></md:EntityDescriptor>",
+        "<md:EntityDescriptor entityID=\"c\"><x xmlns=\"urn:x\"><y/></x></md:EntityDescriptor>",
+        "</md:EntitiesDescriptor>"
+    );
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let entities = doc.children(root);
+    let compact = uppsala::XmlWriteOptions::compact();
+    let pretty = uppsala::XmlWriteOptions::pretty("  ").with_expand_empty_elements(true);
+
+    // One buffer, reused across fragments and option sets: the stream must
+    // equal the String API byte for byte every time.
+    let mut buf = String::new();
+    for &id in entities.iter().chain(std::iter::once(&root)) {
+        for opts in [&compact, &pretty] {
+            buf.clear();
+            buf.reserve(doc.node_serialized_size_hint(id));
+            doc.write_node_to_with_options(id, &mut buf, opts).unwrap();
+            assert_eq!(buf, doc.node_to_xml_with_options(id, opts));
+        }
+    }
+    // The stream keeps node_to_xml's ancestor-scope behaviour: a prefix bound
+    // on an ancestor counts as in scope, so the fragment uses `md:` without
+    // re-emitting `xmlns:md` (the declaration is stored on the root, not the
+    // child). Callers wanting a self-contained fragment add those bindings
+    // themselves, as pyuppsala does.
+    buf.clear();
+    doc.write_node_to_with_options(entities[0], &mut buf, &compact)
+        .unwrap();
+    assert!(buf.starts_with("<md:EntityDescriptor entityID=\"a&amp;b\">"));
+    assert!(buf.contains("<md:Text>caf\u{e9} &lt;&amp;&gt;</md:Text>"));
+    assert!(!buf.contains("xmlns:md"));
+    // The size hint for a parsed node is its source length; for the whole
+    // document it is the input length.
+    assert_eq!(
+        doc.node_serialized_size_hint(entities[0]),
+        doc.node_range(entities[0]).unwrap().len()
+    );
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), xml.len());
+}
+
+#[test]
+fn serialized_size_hint_is_dropped_once_the_tree_is_mutated() {
+    // A parsed tree that is then pruned must not keep reserving the original
+    // input length: `remove_child` of the bulky subtree, `replace_tree_from`
+    // with a tiny document, or any other edit zeroes the hint for every node
+    // (the ranges stay available for node_range/node_source, only the
+    // serialization hint is withdrawn). Output is unaffected either way.
+    let bulk = "x".repeat(64 * 1024);
+    let xml = format!("<root><big>{bulk}</big><small/></root>");
+    let mut doc = parse(&xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let children = doc.children(root);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), xml.len());
+    assert!(doc.node_serialized_size_hint(children[0]) > bulk.len());
+
+    doc.remove_child(root, children[0]);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.node_serialized_size_hint(root), 0);
+    assert_eq!(doc.node_serialized_size_hint(children[1]), 0);
+    assert_eq!(doc.to_xml(), "<root><small/></root>");
+    assert_eq!(doc.node_to_xml(root), "<root><small/></root>");
+    // The source range itself is still reported; only the hint is gone.
+    assert!(doc.node_range(children[1]).is_some());
+
+    let mut doc = parse(&xml).unwrap();
+    let tiny = parse("<r/>").unwrap();
+    doc.replace_tree_from(&tiny);
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.to_xml(), "<r/>");
+
+    // A text edit through node_kind_mut counts as a mutation as well.
+    let mut doc = parse("<root>abc</root>").unwrap();
+    let root = doc.document_element().unwrap();
+    let text = doc.children(root)[0];
+    if let Some(uppsala::NodeKind::Text(t)) = doc.node_kind_mut(text) {
+        *t = std::borrow::Cow::Borrowed("a much longer replacement text");
+    }
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+    assert_eq!(doc.to_xml(), "<root>a much longer replacement text</root>");
+
+    // An unmodified parsed document keeps its hints across into_static for
+    // nodes (the input text is dropped, so the document-level hint is 0).
+    let doc = parse(&xml).unwrap().into_static();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.node_serialized_size_hint(root), xml.len());
+    assert_eq!(doc.node_serialized_size_hint(doc.root()), 0);
+}
+
+#[test]
+fn write_node_to_with_options_propagates_sink_errors() {
+    let doc = parse("<root><a x=\"1\">text<b/></a></root>").unwrap();
+    let root = doc.document_element().unwrap();
+    let opts = uppsala::XmlWriteOptions::compact();
+    // Fails on the very first write.
+    assert!(doc
+        .write_node_to_with_options(root, &mut FailAfter { budget: 0 }, &opts)
+        .is_err());
+    // Fails part-way through an element (after the start tag opens).
+    assert!(doc
+        .write_node_to_with_options(root, &mut FailAfter { budget: 8 }, &opts)
+        .is_err());
+    // A sink with enough room succeeds and sees the full output.
+    let full = doc.node_to_xml(root);
+    let mut sink = FailAfter { budget: full.len() };
+    doc.write_node_to_with_options(root, &mut sink, &opts)
+        .unwrap();
+    assert_eq!(sink.budget, 0);
+    // A built (unparsed) node has no source range and a zero hint; writing it
+    // still works.
+    let mut built = uppsala::Document::new();
+    let el = built.create_element(uppsala::QName::local("made"));
+    let built_root = built.root();
+    built.append_child(built_root, el);
+    assert_eq!(built.node_serialized_size_hint(el), 0);
+    let mut out = String::new();
+    built
+        .write_node_to_with_options(el, &mut out, &opts)
+        .unwrap();
+    assert_eq!(out, "<made/>");
+}
+
 // ─── Namespace declarations in serialization ────────────────────────────────
 
 // Namespace declarations are part of the element start tag and must survive
