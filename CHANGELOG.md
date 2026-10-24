@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `XPathEvaluator::evaluate_with_variables` resolves `$name` references through a
+  `VariableResolver`, and `HashMap<String, XPathValue>` implements the trait for
+  unprefixed names. `evaluate` is unchanged.
+
 ## [0.12.0] - 2026-10-09
 
 ### Added

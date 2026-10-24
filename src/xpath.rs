@@ -155,6 +155,16 @@ pub trait FunctionResolver {
     ) -> Option<XmlResult<XPathValue>>;
 }
 
+/// Unprefixed variable names looked up in a map.
+impl VariableResolver for HashMap<String, XPathValue> {
+    fn resolve_variable(&self, prefix: Option<&str>, local: &str) -> Option<XPathValue> {
+        if prefix.is_some() {
+            return None;
+        }
+        self.get(local).cloned()
+    }
+}
+
 /// A [`VariableResolver`] that defines no variables (the plain-XPath default).
 struct NoVariables;
 impl VariableResolver for NoVariables {
@@ -307,6 +317,22 @@ impl XPathEvaluator {
         context: NodeId,
         expr: &str,
     ) -> XmlResult<XPathValue> {
+        self.evaluate_with_variables(doc, context, expr, &NoVariables)
+    }
+
+    /// Like [`Self::evaluate`], but resolves `$name` references through `vars`.
+    ///
+    /// Binding values as variables is the safe way to put untrusted data into an
+    /// expression: the value is never parsed as XPath. A reference `vars` does not
+    /// resolve is an error. A `HashMap<String, XPathValue>` works as a resolver for
+    /// unprefixed names.
+    pub fn evaluate_with_variables(
+        &self,
+        doc: &Document<'_>,
+        context: NodeId,
+        expr: &str,
+        vars: &dyn VariableResolver,
+    ) -> XmlResult<XPathValue> {
         // End the lock before parsing/evaluation; a poisoned advisory cache
         // is bypassed rather than turning a query into a panic.
         let cached = self
@@ -339,7 +365,7 @@ impl XPathEvaluator {
             size: 1,
             doc,
             namespaces: &self.namespaces,
-            vars: &NoVariables,
+            vars,
             funcs: &NoFunctions,
             budget: &budget,
         };
