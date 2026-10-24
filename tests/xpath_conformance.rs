@@ -800,3 +800,26 @@ fn xpath_with_namespace_prefix() {
     assert_eq!(nodes.len(), 1);
     assert_eq!(doc.text_content_deep(nodes[0]), "hello");
 }
+
+// ─── Union operands ─────────────────────────────────────
+
+#[test]
+fn union_requires_node_set_operands() {
+    let mut doc = parse("<r><a/><b/></r>").unwrap();
+    doc.prepare_xpath();
+    let root = doc.document_element().unwrap();
+    let eval = uppsala::XPathEvaluator::new();
+
+    // `|` is defined for node-sets only (XPath 1.0 section 3.3); anything else is a type error
+    // rather than a silently dropped operand.
+    for expr in ["1 | 2", "'a' | 'b'", "true() | false()", "//a | 1", "'x' | //a"] {
+        assert!(
+            eval.evaluate(&doc, root, expr).is_err(),
+            "{expr} should be an error"
+        );
+    }
+
+    // Valid unions are unchanged.
+    let v = eval.evaluate(&doc, root, "count(//a | //b | //a)").unwrap();
+    assert_eq!(v.to_number(&doc), 2.0);
+}
