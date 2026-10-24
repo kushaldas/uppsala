@@ -1880,8 +1880,15 @@ fn evaluate_expr(expr: &Expr, ctx: &EvalContext) -> XmlResult<XPathValue> {
         Expr::Union(left, right) => {
             let left_val = evaluate_expr(left, ctx)?;
             let right_val = evaluate_expr(right, ctx)?;
-            let mut nodes = left_val.as_node_set().to_vec();
-            nodes.extend_from_slice(right_val.as_node_set());
+            let (XPathValue::NodeSet(left_nodes), XPathValue::NodeSet(right_nodes)) =
+                (&left_val, &right_val)
+            else {
+                return Err(XmlError::xpath(
+                    "The operands of '|' must be node-sets (XPath 1.0 section 3.3)",
+                ));
+            };
+            let mut nodes = left_nodes.clone();
+            nodes.extend_from_slice(right_nodes);
             ctx.budget.charge(nodes.len())?;
             Ok(XPathValue::NodeSet(dedup_document_order(ctx.doc, nodes)))
         }

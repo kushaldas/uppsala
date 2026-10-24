@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- XPath `|` with a non-node-set operand (`1 | 2`, `//a | 1`) is now an error, as XPath 1.0
+  requires, instead of silently dropping the operand and returning an empty or partial node-set.
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
