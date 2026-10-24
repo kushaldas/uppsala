@@ -800,3 +800,39 @@ fn xpath_with_namespace_prefix() {
     assert_eq!(nodes.len(), 1);
     assert_eq!(doc.text_content_deep(nodes[0]), "hello");
 }
+
+// ─── Variables ──────────────────────────────────────────
+
+#[test]
+fn variables_bind_values_without_being_parsed_as_xpath() {
+    use std::collections::HashMap;
+    let mut doc = parse(r#"<r><i k="a">1</i><i k="b">2</i><i k="x' or '1'='1">3</i></r>"#).unwrap();
+    doc.prepare_xpath();
+    let root = doc.document_element().unwrap();
+    let eval = uppsala::XPathEvaluator::new();
+
+    let mut vars = HashMap::new();
+    vars.insert("k".to_string(), XPathValue::String("b".into()));
+    vars.insert("n".to_string(), XPathValue::Number(1.0));
+    let v = eval
+        .evaluate_with_variables(&doc, root, "string(i[@k=$k])", &vars)
+        .unwrap();
+    assert_eq!(v.to_string_value(&doc), "2");
+    let v = eval
+        .evaluate_with_variables(&doc, root, "count(i[. > $n])", &vars)
+        .unwrap();
+    assert_eq!(v.to_number(&doc), 2.0);
+
+    // A hostile value is data, not expression syntax.
+    vars.insert("k".to_string(), XPathValue::String("x' or '1'='1".into()));
+    let v = eval
+        .evaluate_with_variables(&doc, root, "count(i[@k=$k])", &vars)
+        .unwrap();
+    assert_eq!(v.to_number(&doc), 1.0);
+
+    // Unbound variables are errors, with or without a resolver.
+    assert!(eval
+        .evaluate_with_variables(&doc, root, "$missing", &vars)
+        .is_err());
+    assert!(eval.evaluate(&doc, root, "$k").is_err());
+}
