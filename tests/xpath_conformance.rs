@@ -812,7 +812,13 @@ fn union_requires_node_set_operands() {
 
     // `|` is defined for node-sets only (XPath 1.0 section 3.3); anything else is a type error
     // rather than a silently dropped operand.
-    for expr in ["1 | 2", "'a' | 'b'", "true() | false()", "//a | 1", "'x' | //a"] {
+    for expr in [
+        "1 | 2",
+        "'a' | 'b'",
+        "true() | false()",
+        "//a | 1",
+        "'x' | //a",
+    ] {
         assert!(
             eval.evaluate(&doc, root, expr).is_err(),
             "{expr} should be an error"
