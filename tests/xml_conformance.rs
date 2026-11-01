@@ -189,6 +189,98 @@ fn empty_hex_character_reference_is_rejected() {
     assert!(err.to_string().contains("hex character reference"));
 }
 
+// §4.4.2: the replacement text "may contain both character data and ...
+// markup, which MUST be recognized in the usual way".
+
+#[test]
+fn entity_replacement_text_markup_is_parsed() {
+    let xml = r#"<!DOCTYPE a [<!ENTITY e "<b c='1'>x</b>&amp;">]><a>&e;</a>"#;
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let children = doc.children(root);
+    assert_eq!(children.len(), 2, "{}", doc.to_xml());
+    let b = doc.element(children[0]).expect("an element b");
+    assert_eq!(b.name.local_name, "b");
+    assert_eq!(b.get_attribute("c"), Some("1"));
+    assert_eq!(doc.text_content_deep(children[0]), "x");
+    assert_eq!(doc.text_content(children[1]), Some("&"));
+    // A node from replacement text has the source range of the reference.
+    assert_eq!(&xml[doc.node_range(children[0]).unwrap()], "&e;");
+}
+
+#[test]
+fn entity_replacement_text_appendix_d_example() {
+    // XML 1.0 Appendix D, first example.
+    let xml = r#"<!DOCTYPE a [<!ENTITY example "<p>An ampersand (&#38;#38;) may be escaped numerically (&#38;#38;#38;) or with a general entity (&amp;amp;).</p>">]><a>&example;</a>"#;
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let p = doc.children(root)[0];
+    assert_eq!(doc.element(p).unwrap().name.local_name, "p");
+    assert_eq!(
+        doc.text_content_deep(p),
+        "An ampersand (&) may be escaped numerically (&#38;) or with a general entity (&amp;)."
+    );
+}
+
+#[test]
+fn entity_replacement_text_char_ref_is_recognized() {
+    // The literal `&#38;#60;` stores the replacement text `&#60;`, which is a
+    // character reference when the entity is included, in content and in an
+    // attribute value.
+    let xml = r#"<!DOCTYPE a [<!ENTITY e "&#38;#60;">]><a b="&e;">&e;</a>"#;
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.text_content_deep(root), "<");
+    assert_eq!(doc.element(root).unwrap().get_attribute("b"), Some("<"));
+}
+
+#[test]
+fn entity_replacement_text_joins_the_surrounding_text() {
+    let xml = r#"<!DOCTYPE a [<!ENTITY e "x<b/>y"><!ENTITY f "<c>&e;</c>t">]><a>1&f;2&e;3</a>"#;
+    let doc = parse(xml).unwrap();
+    assert_eq!(doc.to_xml(), "<a>1<c>x<b/>y</c>t2x<b/>y3</a>");
+    let root = doc.document_element().unwrap();
+    let texts: Vec<_> = doc
+        .children(root)
+        .into_iter()
+        .filter_map(|n| doc.text_content(n))
+        .collect();
+    assert_eq!(texts, ["1", "t2x", "y3"]);
+}
+
+#[test]
+fn entity_replacement_text_sees_namespaces_in_scope() {
+    let xml = r#"<!DOCTYPE a [<!ENTITY e "<p:b/>">]><a xmlns:p="urn:p">&e;</a>"#;
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let b = doc.element(doc.children(root)[0]).unwrap();
+    assert_eq!(b.name.namespace_uri.as_deref(), Some("urn:p"));
+
+    let err = parse(r#"<!DOCTYPE a [<!ENTITY e "<p:b/>">]><a>&e;</a>"#).unwrap_err();
+    assert!(
+        err.to_string().contains("Undeclared namespace prefix: p"),
+        "{err}"
+    );
+}
+
+#[test]
+fn entity_replacement_text_comment_pi_and_cdata() {
+    let xml = r#"<!DOCTYPE a [<!ENTITY e "<!--c--><?p d?><![CDATA[<x>]]>">]><a>&e;</a>"#;
+    let doc = parse(xml).unwrap();
+    let root = doc.document_element().unwrap();
+    let kinds: Vec<_> = doc
+        .children(root)
+        .into_iter()
+        .map(|n| match doc.node_kind(n) {
+            Some(NodeKind::Comment(c)) => format!("comment {c}"),
+            Some(NodeKind::ProcessingInstruction(pi)) => format!("pi {}", pi.target),
+            Some(NodeKind::CData(c)) => format!("cdata {c}"),
+            other => format!("{other:?}"),
+        })
+        .collect();
+    assert_eq!(kinds, ["comment c", "pi p", "cdata <x>"]);
+}
+
 // ─── CDATA sections ─────────────────────────────────────
 
 #[test]

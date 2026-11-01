@@ -179,6 +179,25 @@ fn f7_deep_entity_chain_fails_closed() {
 }
 
 #[test]
+fn f7_deep_markup_entity_chain_fails_closed() {
+    // Markup in replacement text is tokenized on a new stack frame per nested
+    // reference, so each level counts against the element depth limit. A chain
+    // within the expansion depth cap but past the element depth limit must be
+    // refused with a normal error.
+    let n = 200;
+    let mut dtd = String::from("<!DOCTYPE r [<!ENTITY e0 \"<z/>\">");
+    for i in 1..n {
+        dtd.push_str(&format!("<!ENTITY e{i} \"<y/>&e{};\">", i - 1));
+    }
+    dtd.push_str(&format!("]><r>&e{};</r>", n - 1));
+    let err = parse(&dtd).expect_err("deep markup entity chain must fail closed");
+    assert!(err.to_string().contains("maximum depth"), "{err}");
+
+    let shallow = "<!DOCTYPE r [<!ENTITY a \"<a/>\"><!ENTITY b \"<b>&a;</b>\">]><r>&b;</r>";
+    assert_eq!(parse(shallow).unwrap().to_xml(), "<r><b><a/></b></r>");
+}
+
+#[test]
 fn f7_shallow_entity_nesting_still_expands() {
     // A handful of nested entities must still resolve normally.
     let doc = parse(

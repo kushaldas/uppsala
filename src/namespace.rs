@@ -163,6 +163,34 @@ impl<'a> NamespaceResolver<'a> {
     pub fn depth(&self) -> usize {
         self.scopes.len()
     }
+
+    /// Copy this resolver, scopes included, into one that owns its strings.
+    /// The tokenizer gives one to the tokenizer of an entity's replacement
+    /// text, which sees the bindings in scope at the reference.
+    pub(crate) fn to_static(&self) -> NamespaceResolver<'static> {
+        fn owned(s: &str) -> Cow<'static, str> {
+            Cow::Owned(s.to_string())
+        }
+        NamespaceResolver {
+            scopes: self
+                .scopes
+                .iter()
+                .map(|scope| NamespaceScope {
+                    bindings: scope
+                        .bindings
+                        .iter()
+                        .map(|(prefix, uri)| (owned(prefix), owned(uri)))
+                        .collect(),
+                })
+                .collect(),
+            default_namespace: self.default_namespace.as_deref().map(owned),
+            default_namespace_stack: self
+                .default_namespace_stack
+                .iter()
+                .map(|uri| uri.as_deref().map(owned))
+                .collect(),
+        }
+    }
 }
 
 impl<'a> Default for NamespaceResolver<'a> {

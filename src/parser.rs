@@ -959,9 +959,19 @@ fn expand_entity_value(
             if let Some(semi) = value[pos + 1..].find(';') {
                 let ref_content = &value[pos + 1..pos + 1 + semi];
                 if ref_content.starts_with('#') {
-                    // Character reference - pass through (already resolved in entity value)
-                    charge_entity_budget(budget, semi + 2, line, col)?;
-                    result.push_str(&value[pos..pos + 2 + semi]);
+                    // Character reference. The literal resolved the ones
+                    // written in it, so this is one it produced (`&#38;#60;`
+                    // stores `&#60;`), and it is recognized like any other.
+                    let reference = &value[pos..pos + 2 + semi];
+                    let c = parse_reference(&mut Cursor::new(reference)).map_err(|_| {
+                        XmlError::well_formedness(
+                            format!("Invalid character reference: {}", reference),
+                            line,
+                            col,
+                        )
+                    })?;
+                    charge_entity_budget(budget, c.len(), line, col)?;
+                    result.push_str(&c);
                     pos = pos + 2 + semi;
                 } else {
                     // Named entity reference
@@ -1037,6 +1047,44 @@ fn expand_entity_value(
         }
     }
     Ok(result)
+}
+
+/// Whether the replacement text of the internal entity `name`, or of an
+/// entity it refers to, contains markup. Only call it once the entity has
+/// been expanded, so that a cycle or an undeclared name has been refused.
+/// `memo` keeps one answer per name, so the walk is linear in the size of the
+/// declarations.
+pub(crate) fn entity_has_markup(
+    name: &str,
+    entities: &EntityMap,
+    memo: &mut HashMap<String, bool>,
+) -> bool {
+    if let Some(&known) = memo.get(name) {
+        return known;
+    }
+    let Some(value) = entities.get(name) else {
+        return false;
+    };
+    let mut found = value.contains('<');
+    let mut rest = value.as_str();
+    while !found {
+        let Some(amp) = rest.find('&') else {
+            break;
+        };
+        rest = &rest[amp + 1..];
+        let Some(semi) = rest.find(';') else {
+            break;
+        };
+        let reference = &rest[..semi];
+        rest = &rest[semi + 1..];
+        if !reference.starts_with('#')
+            && !matches!(reference, "lt" | "gt" | "amp" | "apos" | "quot")
+        {
+            found = entity_has_markup(reference, entities, memo);
+        }
+    }
+    memo.insert(name.to_string(), found);
+    found
 }
 
 /// Like expand_entity_value but does NOT resolve built-in entities (&lt; &gt; &amp; &apos; &quot;).
