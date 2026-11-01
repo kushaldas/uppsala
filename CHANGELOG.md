@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- An external or unparsed entity declaration now binds its name, so a later
+  internal declaration of the same name no longer takes effect, and a
+  reference to an unparsed entity is refused (WFC: Parsed Entity)
+  ([#62](https://github.com/kushaldas/uppsala/issues/62)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added

@@ -189,6 +189,28 @@ fn empty_hex_character_reference_is_rejected() {
     assert!(err.to_string().contains("hex character reference"));
 }
 
+#[test]
+fn entity_first_declaration_binds() {
+    // §4.2: "If the same entity is declared more than once, the first
+    // declaration encountered is binding", external declarations included.
+    let doc = parse(r#"<!DOCTYPE a [<!ENTITY g "first"><!ENTITY g "second">]><a>&g;</a>"#).unwrap();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.text_content_deep(root), "first");
+
+    // The external entity binds `g`. It is not read, so the reference is
+    // refused rather than expanded to the later internal value.
+    let err = parse(r#"<!DOCTYPE a [<!ENTITY g SYSTEM "g.xml"><!ENTITY g "inline">]><a>&g;</a>"#)
+        .unwrap_err();
+    assert!(err.to_string().contains("external entity &g;"), "{err}");
+
+    // WFC: Parsed Entity: a reference must not name an unparsed entity.
+    let err = parse(
+        r#"<!DOCTYPE a [<!NOTATION n SYSTEM "n"><!ENTITY g SYSTEM "g.bin" NDATA n><!ENTITY g "inline">]><a>&g;</a>"#,
+    )
+    .unwrap_err();
+    assert!(err.to_string().contains("unparsed entity: &g;"), "{err}");
+}
+
 // ─── CDATA sections ─────────────────────────────────────
 
 #[test]
