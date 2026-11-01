@@ -13,9 +13,18 @@ use crate::error::{XmlError, XmlResult};
 /// A map of general entity names to their replacement text.
 pub(crate) type EntityMap = HashMap<String, String>;
 
-/// Cache of already-validated entity expansion results.
-/// Key: entity name, Value: expanded text.
-pub(crate) type EntityCache = HashMap<String, String>;
+/// Cache of already-validated entity expansion results, keyed by entity name.
+pub(crate) type EntityCache = HashMap<String, CachedEntity>;
+
+/// One entry of an [`EntityCache`].
+pub(crate) struct CachedEntity {
+    /// The expanded text.
+    text: String,
+    /// Whether the replacement text, directly or through a nested entity,
+    /// contains a `<`. Such an entity must not be referenced in an attribute
+    /// value (WFC: No < in Attribute Values).
+    has_lt: bool,
+}
 
 /// Default maximum element-nesting depth.
 ///
@@ -701,7 +710,7 @@ pub(crate) fn parse_quoted_value_with_entities<'a>(
                 break;
             }
             Some(b'&') => {
-                parse_reference_into(cursor, entities, entity_cache, budget, &mut value)?;
+                parse_reference_into(cursor, entities, entity_cache, budget, &mut value, true)?;
             }
             Some(b'<') => {
                 return Err(XmlError::well_formedness(
@@ -735,19 +744,24 @@ pub(crate) fn parse_reference_with_entities(
     budget: &mut usize,
 ) -> XmlResult<String> {
     let mut result = String::new();
-    parse_reference_into(cursor, entities, entity_cache, budget, &mut result)?;
+    parse_reference_into(cursor, entities, entity_cache, budget, &mut result, false)?;
     Ok(result)
 }
 
 /// Parse a character or entity reference and append its replacement text into
 /// an existing buffer. This avoids per-reference `String` allocations on the
 /// hot predefined-entity and numeric-character-reference paths.
+///
+/// `in_attribute` is set when the reference is in an attribute value, where
+/// the replacement text of an entity referred to directly or indirectly must
+/// not contain a `<` (XML 1.0 §3.1, WFC: No < in Attribute Values).
 fn parse_reference_into(
     cursor: &mut Cursor,
     entities: &EntityMap,
     entity_cache: &mut EntityCache,
     budget: &mut usize,
     out: &mut String,
+    in_attribute: bool,
 ) -> XmlResult<()> {
     cursor.expect("&")?;
     let after_amp = cursor.peek_byte();
@@ -874,8 +888,11 @@ fn parse_reference_into(
         // F-02 (quadratic blow-up) defence: one large entity
         // referenced N times becomes N * len bytes.
         if let Some(cached) = entity_cache.get(&*name) {
-            charge_entity_budget_at_cursor(budget, cached.len(), cursor)?;
-            out.push_str(cached);
+            if in_attribute && cached.has_lt {
+                return Err(lt_in_attribute_entity(&name, cursor));
+            }
+            charge_entity_budget_at_cursor(budget, cached.text.len(), cursor)?;
+            out.push_str(&cached.text);
             return Ok(());
         }
         if let Some(value) = entities.get(&*name) {
@@ -897,10 +914,22 @@ fn parse_reference_into(
                 cursor.line(),
                 cursor.column(),
             )?;
+            // Character and predefined entity references are still unexpanded
+            // here, so a `<` in this text is one the replacement text holds.
+            let has_lt = validation_text.contains('<');
+            if in_attribute && has_lt {
+                return Err(lt_in_attribute_entity(&name, cursor));
+            }
             validate_entity_as_content(&validation_text, entities, cursor.line(), cursor.column())?;
             // Cache the result for subsequent references
-            entity_cache.insert(name.to_string(), expanded.clone());
             out.push_str(&expanded);
+            entity_cache.insert(
+                name.to_string(),
+                CachedEntity {
+                    text: expanded,
+                    has_lt,
+                },
+            );
             Ok(())
         } else {
             Err(XmlError::well_formedness(
@@ -910,6 +939,19 @@ fn parse_reference_into(
             ))
         }
     }
+}
+
+/// The error for an attribute value that refers to an entity whose
+/// replacement text contains a `<`.
+fn lt_in_attribute_entity(name: &str, cursor: &Cursor) -> XmlError {
+    XmlError::well_formedness(
+        format!(
+            "Replacement text of entity &{}; contains '<', which is not allowed in attribute values",
+            name
+        ),
+        cursor.line(),
+        cursor.column(),
+    )
 }
 
 /// Recursively expand entity references in an entity value.
@@ -1981,13 +2023,14 @@ fn parse_att_value_in_dtd(
                 // (e.g. many ATTLIST defaults each referencing a near-budget
                 // entity) cannot bypass the cap by allocating fresh budgets
                 // per declaration.
-                let resolved = parse_reference_with_entities(
+                parse_reference_into(
                     cursor,
                     entities,
                     &mut EntityCache::default(),
                     entity_budget,
+                    &mut value,
+                    true,
                 )?;
-                value.push_str(&resolved);
             }
             Some('<') => {
                 return Err(XmlError::well_formedness(

@@ -371,6 +371,35 @@ fn error_lt_in_attribute() {
 }
 
 #[test]
+fn error_lt_in_attribute_via_entity() {
+    // WFC: No < in Attribute Values covers the replacement text of any entity
+    // referred to directly or indirectly in the value.
+    for xml in [
+        r#"<!DOCTYPE a [<!ENTITY x "<b>x</b>">]><a b="&x;"/>"#,
+        r#"<!DOCTYPE a [<!ENTITY y "<b/>"><!ENTITY x "&y;">]><a b="&x;"/>"#,
+        r#"<!DOCTYPE a [<!ENTITY x "<b>x</b>"><!ATTLIST a b CDATA "&x;">]><a/>"#,
+        // The reference in content fills the entity cache first.
+        r#"<!DOCTYPE a [<!ENTITY x "<b/>">]><a>&x;<c d="&x;"/></a>"#,
+        // `&#60;` in the literal puts a `<` into the replacement text.
+        r#"<!DOCTYPE a [<!ENTITY x "&#60;">]><a b="&x;"/>"#,
+    ] {
+        let err = parse(xml).expect_err(xml).to_string();
+        assert!(
+            err.contains("not allowed in attribute values"),
+            "{xml}: {err}"
+        );
+    }
+}
+
+#[test]
+fn lt_in_attribute_via_predefined_entity_in_replacement_text() {
+    // `&lt;` stays a reference in the replacement text, so there is no `<`.
+    let doc = parse(r#"<!DOCTYPE a [<!ENTITY x "&lt;">]><a b="&x;"/>"#).unwrap();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.element(root).unwrap().get_attribute("b"), Some("<"));
+}
+
+#[test]
 fn error_double_hyphen_in_comment() {
     // -- inside a comment is not well-formed
     let result = parse("<r><!-- -- --></r>");
