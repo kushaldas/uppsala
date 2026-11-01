@@ -315,6 +315,10 @@ fn pull_dom_matches_parser_for_regression_corpus() {
             r#"<r _="one" __1="two" __2="three"></r>"#,
         ),
         ("roundtrip attr with lt", r#"<r a="a &lt; b"/>"#),
+        (
+            "entity replacement text with markup",
+            r#"<!DOCTYPE r [<!ENTITY e "x<b c='1'>y</b>z"><!ENTITY f "<p:c>&e;</p:c>">]><r xmlns:p="urn:p">1&f;2&e;3</r>"#,
+        ),
         ("reserved prefix strip fixture", "<xmlns:xmlns:C/>"),
         (
             "reserved prefix strip under default namespace",

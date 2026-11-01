@@ -20,7 +20,7 @@
 //! See ADR 0019 for why the DOM path does not consume events.
 
 use std::borrow::Cow;
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 
 use crate::dom::{
     Attribute, Document, Element, NodeId, NodeKind, ProcessingInstruction, QName, XmlDeclaration,
@@ -28,9 +28,10 @@ use crate::dom::{
 use crate::error::{XmlError, XmlResult};
 use crate::namespace::NamespaceResolver;
 use crate::parser::{
-    borrow_from_cow, is_xml_char, parse_cdata, parse_comment, parse_doctype, parse_name, parse_pi,
-    parse_quoted_value_with_entities, parse_reference_with_entities, parse_xml_declaration,
-    split_qname, Cursor, EntityCache, EntityMap, DEFAULT_MAX_DEPTH, DEFAULT_MAX_ENTITY_EXPANSION,
+    borrow_from_cow, entity_has_markup, is_xml_char, parse_cdata, parse_comment, parse_doctype,
+    parse_name, parse_pi, parse_quoted_value_with_entities, parse_reference_with_entities,
+    parse_xml_declaration, split_qname, Cursor, EntityCache, EntityMap, DEFAULT_MAX_DEPTH,
+    DEFAULT_MAX_ENTITY_EXPANSION,
 };
 
 /// A namespace declaration made by a start tag.
@@ -194,8 +195,17 @@ pub(crate) struct Tokenizer<'a> {
     entities: EntityMap,
     entity_cache: EntityCache,
     entity_budget: usize,
+    /// Whether an entity's replacement text holds markup, per entity name
+    /// (see [`entity_has_markup`]).
+    entity_markup: HashMap<String, bool>,
     stack: Vec<OpenElement<'a>>,
     phase: Phase,
+    /// Set on a tokenizer over an entity's replacement text, which is content
+    /// rather than a document: no prolog, and the end of the input ends it.
+    fragment: bool,
+    /// For such a tokenizer, the nesting outside its input: the element depth
+    /// at the reference, plus one for each entity it is inside.
+    base_depth: u32,
 }
 
 impl<'a> Tokenizer<'a> {
@@ -210,8 +220,11 @@ impl<'a> Tokenizer<'a> {
             entities: EntityMap::default(),
             entity_cache: EntityCache::default(),
             entity_budget: DEFAULT_MAX_ENTITY_EXPANSION,
+            entity_markup: HashMap::new(),
             stack: Vec::new(),
             phase: Phase::Start,
+            fragment: false,
+            base_depth: 0,
         }
     }
 
@@ -328,7 +341,19 @@ impl<'a> Tokenizer<'a> {
                 ))
             }
             Phase::Content => {
-                if self.stack.is_empty() {
+                if self.fragment {
+                    if self.cursor.is_eof() {
+                        if !self.stack.is_empty() {
+                            return Err(XmlError::well_formedness(
+                                "Element not closed in entity replacement text",
+                                self.cursor.line(),
+                                self.cursor.column(),
+                            ));
+                        }
+                        self.phase = Phase::Done;
+                        return Ok(false);
+                    }
+                } else if self.stack.is_empty() {
                     self.phase = Phase::Trailing;
                     return Ok(true);
                 }
@@ -467,6 +492,13 @@ impl<'a> Tokenizer<'a> {
         let mut text_buf = TextBuf::Empty;
         loop {
             if self.cursor.pos >= self.cursor.input.len() {
+                if self.fragment {
+                    let end = self.cursor.pos;
+                    if let Some((content, start)) = text_buf.into_parts(self.cursor.input, end) {
+                        sink.text(content, start, end);
+                    }
+                    return Ok(());
+                }
                 return Err(XmlError::UnexpectedEof);
             }
 
@@ -500,7 +532,8 @@ impl<'a> Tokenizer<'a> {
             }
 
             if self.cursor.pos >= self.cursor.input.len() {
-                return Err(XmlError::UnexpectedEof);
+                // The top of the loop handles the end of the input.
+                continue;
             }
 
             match bytes[self.cursor.pos] {
@@ -513,13 +546,64 @@ impl<'a> Tokenizer<'a> {
                 }
                 b'&' => {
                     let before_pos = self.cursor.pos;
+                    // This also checks an entity's replacement text and
+                    // charges the expansion budget, for both kinds of entity.
                     let resolved = parse_reference_with_entities(
                         &mut self.cursor,
                         &self.entities,
                         &mut self.entity_cache,
                         &mut self.entity_budget,
                     )?;
-                    text_buf.push_str(self.cursor.input, before_pos, &resolved);
+                    let input = self.cursor.input;
+                    let after_pos = self.cursor.pos;
+                    let Some(name) = self.markup_entity(&input[before_pos..after_pos]) else {
+                        text_buf.push_str(input, before_pos, &resolved);
+                        continue;
+                    };
+                    // The markup in the replacement text is recognized as
+                    // markup (XML 1.0 §4.4.2), so the entity's elements,
+                    // comments, PIs and CDATA sections become tokens of their
+                    // own. Its text before the first of them continues the
+                    // current text run, and its text after the last one
+                    // starts the next.
+                    let tokens = self.entity_tokens(&name)?;
+                    let first = tokens
+                        .iter()
+                        .position(|t| !matches!(t, EntityToken::Text(_)))
+                        .unwrap_or(tokens.len());
+                    let last = tokens
+                        .iter()
+                        .rposition(|t| !matches!(t, EntityToken::Text(_)))
+                        .map_or(first, |i| i + 1);
+                    let depth = self.stack.len() as u32;
+                    let mut trailing = String::new();
+                    for (i, token) in tokens.into_iter().enumerate() {
+                        if i < first {
+                            if let EntityToken::Text(s) = token {
+                                text_buf.push_str(input, before_pos, &s);
+                            }
+                            continue;
+                        }
+                        if i >= last {
+                            if let EntityToken::Text(s) = token {
+                                trailing.push_str(&s);
+                            }
+                            continue;
+                        }
+                        if i == first {
+                            let run = std::mem::replace(&mut text_buf, TextBuf::Empty);
+                            if let Some((content, start)) = run.into_parts(input, before_pos) {
+                                sink.text(content, start, before_pos);
+                            }
+                        }
+                        token.replay(sink, depth, before_pos, after_pos);
+                    }
+                    if first < last && !trailing.is_empty() {
+                        text_buf = TextBuf::Owned {
+                            start: before_pos,
+                            text: trailing,
+                        };
+                    }
                 }
                 b'\r' => {
                     let before_pos = self.cursor.pos;
@@ -583,9 +667,69 @@ impl<'a> Tokenizer<'a> {
         }
     }
 
+    /// The name of the entity `reference` refers to, if it is a general
+    /// entity whose replacement text holds markup.
+    fn markup_entity(&mut self, reference: &str) -> Option<String> {
+        let name = reference.strip_prefix('&')?.strip_suffix(';')?;
+        if name.starts_with('#') || matches!(name, "lt" | "gt" | "amp" | "apos" | "quot") {
+            return None;
+        }
+        entity_has_markup(name, &self.entities, &mut self.entity_markup).then(|| name.to_string())
+    }
+
+    /// Tokenize the replacement text of the internal entity `name` as
+    /// content, with the namespace bindings and the depth of the reference.
+    /// The entity map, cache and budget are lent to the inner tokenizer and
+    /// taken back, so nested references share them. An error is reported at
+    /// the reference.
+    ///
+    /// Each nested reference tokenizes on a new stack frame, so an entity
+    /// counts as one level of nesting against `max_depth`, like an element.
+    fn entity_tokens(&mut self, name: &str) -> XmlResult<Vec<EntityToken>> {
+        let depth = self.base_depth + self.stack.len() as u32;
+        if depth >= self.max_depth {
+            return Err(XmlError::parse(
+                format!("Entity nesting exceeds maximum depth of {}", self.max_depth),
+                self.cursor.line(),
+                self.cursor.column(),
+            ));
+        }
+        let Some(text) = self.entities.get(name).cloned() else {
+            return Ok(Vec::new());
+        };
+        let mut inner = Tokenizer::new(&text, false);
+        inner.phase = Phase::Content;
+        inner.fragment = true;
+        inner.max_depth = self.max_depth;
+        inner.base_depth = depth + 1;
+        inner.ns_resolver = self.ns_resolver.as_ref().map(NamespaceResolver::to_static);
+        inner.entities = std::mem::take(&mut self.entities);
+        inner.entity_cache = std::mem::take(&mut self.entity_cache);
+        inner.entity_markup = std::mem::take(&mut self.entity_markup);
+        inner.entity_budget = self.entity_budget;
+
+        let mut tokens = EntityTokens(Vec::new());
+        let result = loop {
+            match inner.step(&mut tokens) {
+                Ok(true) => {}
+                Ok(false) => break Ok(()),
+                Err(err) => break Err(err),
+            }
+        };
+
+        self.entities = std::mem::take(&mut inner.entities);
+        self.entity_cache = std::mem::take(&mut inner.entity_cache);
+        self.entity_markup = std::mem::take(&mut inner.entity_markup);
+        self.entity_budget = inner.entity_budget;
+        match result {
+            Ok(()) => Ok(tokens.0),
+            Err(err) => Err(err.at(self.cursor.line(), self.cursor.column())),
+        }
+    }
+
     fn scan_start_element<S: TokenSink<'a>>(&mut self, sink: &mut S) -> XmlResult<()> {
         let depth = self.stack.len() as u32;
-        if depth >= self.max_depth {
+        if self.base_depth + depth >= self.max_depth {
             return Err(XmlError::parse(
                 format!(
                     "Element nesting exceeds maximum depth of {}",
@@ -874,6 +1018,112 @@ impl<'a> Tokenizer<'a> {
             }
         }
         Ok(())
+    }
+}
+
+/// One token of an entity's replacement text, owned so it outlives the text.
+/// Depths are relative to the reference.
+enum EntityToken {
+    Start {
+        name: QName<'static>,
+        attributes: Vec<Attribute<'static>>,
+        namespace_declarations: Vec<(Cow<'static, str>, Cow<'static, str>)>,
+        depth: u32,
+    },
+    End {
+        depth: u32,
+    },
+    Text(String),
+    CData(String),
+    Comment(String),
+    Pi(ProcessingInstruction<'static>),
+}
+
+impl EntityToken {
+    /// Report this token to `sink` at `depth` below the reference's element,
+    /// with the source range of the reference.
+    fn replay<'a, S: TokenSink<'a>>(
+        self,
+        sink: &mut S,
+        depth: u32,
+        byte_start: usize,
+        byte_end: usize,
+    ) {
+        match self {
+            EntityToken::Start {
+                name,
+                attributes,
+                namespace_declarations,
+                depth: d,
+            } => sink.start_element(
+                name,
+                attributes,
+                namespace_declarations,
+                byte_start,
+                byte_end,
+                depth + d,
+            ),
+            EntityToken::End { depth: d } => sink.end_element(byte_start, byte_end, depth + d),
+            EntityToken::Text(s) => sink.text(Cow::Owned(s), byte_start, byte_end),
+            EntityToken::CData(s) => sink.cdata(Cow::Owned(s), byte_start, byte_end),
+            EntityToken::Comment(s) => sink.comment(Cow::Owned(s), byte_start, byte_end),
+            EntityToken::Pi(pi) => sink.processing_instruction(pi, byte_start, byte_end),
+        }
+    }
+}
+
+/// Sink that records the tokens of an entity's replacement text.
+struct EntityTokens(Vec<EntityToken>);
+
+impl<'b> TokenSink<'b> for EntityTokens {
+    // Replacement text is tokenized as content, which has neither.
+    fn xml_declaration(&mut self, _decl: XmlDeclaration<'b>) {}
+
+    fn doctype(&mut self, _raw: Cow<'b, str>) {}
+
+    fn start_element(
+        &mut self,
+        name: QName<'b>,
+        attributes: Vec<Attribute<'b>>,
+        namespace_declarations: Vec<(Cow<'b, str>, Cow<'b, str>)>,
+        _byte_start: usize,
+        _byte_end: usize,
+        depth: u32,
+    ) {
+        self.0.push(EntityToken::Start {
+            name: name.into_static(),
+            attributes: attributes.into_iter().map(Attribute::into_static).collect(),
+            namespace_declarations: namespace_declarations
+                .into_iter()
+                .map(|(p, u)| (Cow::Owned(p.into_owned()), Cow::Owned(u.into_owned())))
+                .collect(),
+            depth,
+        });
+    }
+
+    fn end_element(&mut self, _byte_start: usize, _byte_end: usize, depth: u32) {
+        self.0.push(EntityToken::End { depth });
+    }
+
+    fn text(&mut self, content: Cow<'b, str>, _byte_start: usize, _byte_end: usize) {
+        self.0.push(EntityToken::Text(content.into_owned()));
+    }
+
+    fn cdata(&mut self, content: Cow<'b, str>, _byte_start: usize, _byte_end: usize) {
+        self.0.push(EntityToken::CData(content.into_owned()));
+    }
+
+    fn comment(&mut self, content: Cow<'b, str>, _byte_start: usize, _byte_end: usize) {
+        self.0.push(EntityToken::Comment(content.into_owned()));
+    }
+
+    fn processing_instruction(
+        &mut self,
+        pi: ProcessingInstruction<'b>,
+        _byte_start: usize,
+        _byte_end: usize,
+    ) {
+        self.0.push(EntityToken::Pi(pi.into_static()));
     }
 }
 

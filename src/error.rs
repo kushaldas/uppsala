@@ -117,6 +117,20 @@ impl fmt::Display for ValidationError {
 }
 
 impl XmlError {
+    /// This error with its location moved to `line` and `column`. The
+    /// tokenizer uses it to report an error in an entity's replacement text
+    /// at the reference.
+    pub(crate) fn at(self, line: usize, column: usize) -> Self {
+        match self {
+            XmlError::Parse(e) => XmlError::Parse(ParseError { line, column, ..e }),
+            XmlError::WellFormedness(e) => {
+                XmlError::WellFormedness(WellFormednessError { line, column, ..e })
+            }
+            XmlError::Namespace(e) => XmlError::Namespace(NamespaceError { line, column, ..e }),
+            other => other,
+        }
+    }
+
     /// Create a [`ParseError`] with the given message and source location.
     pub fn parse(message: impl Into<String>, line: usize, column: usize) -> Self {
         XmlError::Parse(ParseError {

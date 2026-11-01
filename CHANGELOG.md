@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Parse markup in an internal entity's replacement text as markup, and
+  recognize the character references an entity value produced, instead of
+  turning both into character data
+  ([#56](https://github.com/kushaldas/uppsala/issues/56)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
