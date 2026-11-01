@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Refuse an attribute value that refers, directly or through another entity,
+  to an entity whose replacement text contains `<` (WFC: No < in Attribute
+  Values) ([#63](https://github.com/kushaldas/uppsala/issues/63)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
