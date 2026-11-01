@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `parse_bytes` skips only one byte order mark, so a second U+FEFF before the
+  prolog is refused instead of dropped
+  ([#58](https://github.com/kushaldas/uppsala/issues/58)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
