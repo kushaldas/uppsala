@@ -10,8 +10,39 @@ use std::collections::HashMap;
 use crate::dom::{Document, ProcessingInstruction, XmlDeclaration};
 use crate::error::{XmlError, XmlResult};
 
-/// A map of general entity names to their replacement text.
-pub(crate) type EntityMap = HashMap<String, String>;
+/// A map of general entity names to their first declaration, which is the
+/// binding one (XML 1.0 §4.2).
+pub(crate) type EntityMap = HashMap<String, EntityDecl>;
+
+/// A general entity declaration, as recorded in an [`EntityMap`].
+pub(crate) enum EntityDecl {
+    /// An internal entity and its replacement text.
+    Internal(String),
+    /// An external parsed entity. The parser does not read external entities.
+    External,
+    /// An unparsed (`NDATA`) entity.
+    Unparsed,
+}
+
+/// The replacement text of the internal entity `name`, or the error for a
+/// reference to it: undeclared, external (not read), or unparsed (WFC: Parsed
+/// Entity).
+fn internal_replacement_text<'e>(
+    entities: &'e EntityMap,
+    name: &str,
+    line: usize,
+    col: usize,
+) -> XmlResult<&'e str> {
+    let message = match entities.get(name) {
+        Some(EntityDecl::Internal(value)) => return Ok(value),
+        Some(EntityDecl::External) => {
+            format!("Reference to external entity &{};, which is not read", name)
+        }
+        Some(EntityDecl::Unparsed) => format!("Reference to unparsed entity: &{};", name),
+        None => format!("Unknown entity reference: &{};", name),
+    };
+    Err(XmlError::well_formedness(message, line, col))
+}
 
 /// Cache of already-validated entity expansion results.
 /// Key: entity name, Value: expanded text.
@@ -878,37 +909,30 @@ fn parse_reference_into(
             out.push_str(cached);
             return Ok(());
         }
-        if let Some(value) = entities.get(&*name) {
-            // Fully expand the entity value, resolving nested entity refs.
-            let expanded = expand_entity_value(
-                value,
-                entities,
-                &mut vec![name.to_string()],
-                budget,
-                cursor.line(),
-                cursor.column(),
-            )?;
-            // Validate well-formedness of the entity replacement text.
-            let validation_text = expand_entity_value_no_builtins(
-                value,
-                entities,
-                &mut vec![name.to_string()],
-                budget,
-                cursor.line(),
-                cursor.column(),
-            )?;
-            validate_entity_as_content(&validation_text, entities, cursor.line(), cursor.column())?;
-            // Cache the result for subsequent references
-            entity_cache.insert(name.to_string(), expanded.clone());
-            out.push_str(&expanded);
-            Ok(())
-        } else {
-            Err(XmlError::well_formedness(
-                format!("Unknown entity reference: &{};", name),
-                cursor.line(),
-                cursor.column(),
-            ))
-        }
+        let value = internal_replacement_text(entities, &name, cursor.line(), cursor.column())?;
+        // Fully expand the entity value, resolving nested entity refs.
+        let expanded = expand_entity_value(
+            value,
+            entities,
+            &mut vec![name.to_string()],
+            budget,
+            cursor.line(),
+            cursor.column(),
+        )?;
+        // Validate well-formedness of the entity replacement text.
+        let validation_text = expand_entity_value_no_builtins(
+            value,
+            entities,
+            &mut vec![name.to_string()],
+            budget,
+            cursor.line(),
+            cursor.column(),
+        )?;
+        validate_entity_as_content(&validation_text, entities, cursor.line(), cursor.column())?;
+        // Cache the result for subsequent references
+        entity_cache.insert(name.to_string(), expanded.clone());
+        out.push_str(&expanded);
+        Ok(())
     }
 }
 
@@ -1001,23 +1025,16 @@ fn expand_entity_value(
                                     col,
                                 ));
                             }
-                            if let Some(ref_value) = entities.get(&ref_name) {
-                                seen.push(ref_name);
-                                let expanded = expand_entity_value(
-                                    ref_value, entities, seen, budget, line, col,
-                                )?;
-                                seen.pop();
-                                // `expanded` was already budget-charged
-                                // inside the recursive call. Append without
-                                // double-charging.
-                                result.push_str(&expanded);
-                            } else {
-                                return Err(XmlError::well_formedness(
-                                    format!("Unknown entity reference: &{};", ref_name),
-                                    line,
-                                    col,
-                                ));
-                            }
+                            let ref_value =
+                                internal_replacement_text(entities, &ref_name, line, col)?;
+                            seen.push(ref_name);
+                            let expanded =
+                                expand_entity_value(ref_value, entities, seen, budget, line, col)?;
+                            seen.pop();
+                            // `expanded` was already budget-charged
+                            // inside the recursive call. Append without
+                            // double-charging.
+                            result.push_str(&expanded);
                             pos = pos + 2 + semi;
                         }
                     }
@@ -1100,20 +1117,14 @@ fn expand_entity_value_no_builtins(
                                     col,
                                 ));
                             }
-                            if let Some(ref_value) = entities.get(&ref_name) {
-                                seen.push(ref_name);
-                                let expanded = expand_entity_value_no_builtins(
-                                    ref_value, entities, seen, budget, line, col,
-                                )?;
-                                seen.pop();
-                                result.push_str(&expanded);
-                            } else {
-                                return Err(XmlError::well_formedness(
-                                    format!("Unknown entity reference: &{};", ref_name),
-                                    line,
-                                    col,
-                                ));
-                            }
+                            let ref_value =
+                                internal_replacement_text(entities, &ref_name, line, col)?;
+                            seen.push(ref_name);
+                            let expanded = expand_entity_value_no_builtins(
+                                ref_value, entities, seen, budget, line, col,
+                            )?;
+                            seen.pop();
+                            result.push_str(&expanded);
                             pos = pos + 2 + semi;
                         }
                     }
@@ -2054,7 +2065,9 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
         cursor.skip_whitespace();
 
         if !is_pe {
-            entities.entry(name.into_owned()).or_insert(value);
+            entities
+                .entry(name.into_owned())
+                .or_insert(EntityDecl::Internal(value));
         }
     } else if cursor.starts_with("SYSTEM") || cursor.starts_with("PUBLIC") {
         if cursor.starts_with("SYSTEM") {
@@ -2091,6 +2104,17 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
         }
         let has_ws_before_ndata = cursor.peek().map(is_xml_whitespace).unwrap_or(false);
         cursor.skip_whitespace();
+
+        // An external declaration binds its name like an internal one does,
+        // so a later internal declaration of the same name is not binding.
+        if !is_pe {
+            let decl = if cursor.starts_with("NDATA") {
+                EntityDecl::Unparsed
+            } else {
+                EntityDecl::External
+            };
+            entities.entry(name.into_owned()).or_insert(decl);
+        }
 
         if !is_pe && cursor.starts_with("NDATA") {
             if !has_ws_before_ndata {
