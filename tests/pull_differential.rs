@@ -315,11 +315,6 @@ fn pull_dom_matches_parser_for_regression_corpus() {
             r#"<r _="one" __1="two" __2="three"></r>"#,
         ),
         ("roundtrip attr with lt", r#"<r a="a &lt; b"/>"#),
-        ("reserved prefix strip fixture", "<xmlns:xmlns:C/>"),
-        (
-            "reserved prefix strip under default namespace",
-            r#"<r xmlns="urn:x"><xmlns:c/></r>"#,
-        ),
         (
             "xsd schema snippet",
             r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:element name="x" type="xs:string"/></xs:schema>"#,
@@ -440,6 +435,17 @@ fn pull_dom_fails_like_parser_for_invalid_regression_corpus() {
         ),
         ("undeclared element prefix", r#"<p:r/>"#),
         ("undeclared attribute prefix", r#"<r p:a="1"/>"#),
+        ("multi colon element name", "<xmlns:xmlns:C/>"),
+        (
+            "xmlns element prefix under default namespace",
+            r#"<r xmlns="urn:x"><xmlns:c/></r>"#,
+        ),
+        ("undeclared namespace prefix", r#"<r xmlns:p=""/>"#),
+        ("colon in pi target", "<r><?a:b x?></r>"),
+        (
+            "colon in entity name",
+            r#"<!DOCTYPE r [<!ENTITY a:b "x">]><r/>"#,
+        ),
     ] {
         assert_same_failure(name, xml, Parser::new(), || PullParser::new(xml));
     }

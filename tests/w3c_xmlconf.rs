@@ -21,6 +21,9 @@ struct W3cTestCase {
     entities: String,
     uri: String,
     edition: Option<String>,
+    /// `false` for `NAMESPACE="no"`: the document is well-formed XML 1.0 but
+    /// not namespace-well-formed, so it is parsed with namespace processing off.
+    namespace: bool,
     base_dir: PathBuf,
 }
 
@@ -49,6 +52,7 @@ fn parse_catalog(path: &Path, base_dir: &Path) -> Vec<W3cTestCase> {
                 let entities = extract_attr(tag, "ENTITIES").unwrap_or_default();
                 let uri = extract_attr(tag, "URI").unwrap_or_default();
                 let edition = extract_attr(tag, "EDITION");
+                let namespace = extract_attr(tag, "NAMESPACE").as_deref() != Some("no");
 
                 if !id.is_empty() && !uri.is_empty() {
                     tests.push(W3cTestCase {
@@ -57,6 +61,7 @@ fn parse_catalog(path: &Path, base_dir: &Path) -> Vec<W3cTestCase> {
                         entities,
                         uri,
                         edition,
+                        namespace,
                         base_dir: base_dir.to_path_buf(),
                     });
                 }
@@ -156,6 +161,22 @@ fn load_all_tests() -> Vec<W3cTestCase> {
     all_tests.extend(parse_catalog(&jp_catalog, &base.join("japanese")));
 
     all_tests
+}
+
+/// Parse a test document the way its catalog entry asks: through
+/// `parse_bytes`, or, for a `NAMESPACE="no"` document, with namespace
+/// processing off. Those documents are all UTF-8.
+fn parse_case(test: &W3cTestCase, bytes: &[u8]) -> Result<(), String> {
+    if test.namespace {
+        return uppsala::parse_bytes(bytes)
+            .map(|_| ())
+            .map_err(|e| e.to_string());
+    }
+    let text = std::str::from_utf8(bytes).map_err(|e| e.to_string())?;
+    uppsala::Parser::with_namespace_aware(false)
+        .parse(text)
+        .map(|_| ())
+        .map_err(|e| e.to_string())
 }
 
 /// Check if a test applies to XML 1.0 5th edition.
@@ -274,7 +295,7 @@ fn w3c_xmltest_not_well_formed_standalone() {
             }
         };
 
-        let result = uppsala::parse_bytes(&bytes);
+        let result = parse_case(test, &bytes);
         if result.is_err() {
             passed += 1;
         } else {
@@ -351,7 +372,7 @@ fn w3c_xmltest_valid_standalone() {
             }
         };
 
-        match uppsala::parse_bytes(&bytes) {
+        match parse_case(test, &bytes) {
             Ok(_) => passed += 1,
             Err(err) => {
                 failed += 1;
@@ -426,7 +447,7 @@ fn w3c_xmltest_invalid_standalone() {
             }
         };
 
-        match uppsala::parse_bytes(&bytes) {
+        match parse_case(test, &bytes) {
             Ok(_) => passed += 1,
             Err(err) => {
                 failed += 1;

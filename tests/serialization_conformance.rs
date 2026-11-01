@@ -1152,20 +1152,53 @@ fn ns_xmlns_prefixed_attribute_does_not_masquerade_as_declaration() {
 
 #[test]
 fn ns_reserved_prefix_strip_is_single_pass_idempotent() {
-    // Regression (fuzz_roundtrip): the parser leniently accepts a multi-colon
-    // element name like `xmlns:xmlns:C` (prefix `xmlns`, local `xmlns:C`). When
-    // the serializer strips the reserved `xmlns` prefix it must sanitize the
-    // remaining local name as an NCName; emitting the raw `xmlns:C` re-parses as
-    // a *new* `xmlns`-prefixed element, so serialization strips one layer per
+    use uppsala::namespace::{XMLNS_NAMESPACE, XML_NAMESPACE};
+    use uppsala::{Document, QName};
+    // Regression (fuzz_roundtrip): an element with a reserved prefix and a
+    // local name that is not an NCName, like `xmlns:xmlns:C` (prefix `xmlns`,
+    // local `xmlns:C`). The parser refuses that name with namespace processing
+    // on, so the DOM API builds it here. When the serializer strips the
+    // reserved `xmlns` prefix it must sanitize the remaining local name as an
+    // NCName; emitting the raw `xmlns:C` would re-parse as a *new*
+    // `xmlns`-prefixed element, so serialization would strip one layer per
     // round instead of being a one-pass fixpoint. Assert `to_xml()` output is a
-    // fixed point of parse->serialize for the whole family of stacked names.
-    for input in [
-        "<xmlns:xmlns:C/>",
-        "<xmlns:xmlns:xmlns:Z/>",
-        "<a><xmlns:xmlns:V/></a>",
-        "<xml:xml:foo/>",
+    // fixed point of serialize->parse->serialize for the whole family of
+    // stacked names.
+    for (input, wrap, prefix, uri, local) in [
+        (
+            "<xmlns:xmlns:C/>",
+            false,
+            "xmlns",
+            XMLNS_NAMESPACE,
+            "xmlns:C",
+        ),
+        (
+            "<xmlns:xmlns:xmlns:Z/>",
+            false,
+            "xmlns",
+            XMLNS_NAMESPACE,
+            "xmlns:xmlns:Z",
+        ),
+        (
+            "<a><xmlns:xmlns:V/></a>",
+            true,
+            "xmlns",
+            XMLNS_NAMESPACE,
+            "xmlns:V",
+        ),
+        ("<xml:xml:foo/>", false, "xml", XML_NAMESPACE, "xml:foo"),
     ] {
-        let out1 = parse(input).unwrap().to_xml();
+        assert!(parse(input).is_err(), "{input:?} is not a QName");
+        let mut doc = Document::new();
+        let mut parent = doc.root();
+        if wrap {
+            let a = doc.create_element(QName::local("a"));
+            doc.append_child(parent, a);
+            parent = a;
+        }
+        let el = doc.create_element(QName::full(prefix, uri, local));
+        doc.append_child(parent, el);
+        let out1 = doc.to_xml();
         let out2 = parse(&out1).unwrap().to_xml();
         assert_eq!(
             out1, out2,
@@ -1400,8 +1433,17 @@ fn ns_reserved_prefix_strip_undeclares_default_namespace() {
     // otherwise the re-parse captures it into the default namespace, silently
     // changing the element's namespace (and, when the default was the XML
     // namespace, breaking the byte-level fixpoint via `xml:` re-prefixing).
+    // The parser refuses an element named with the `xmlns` prefix, so the DOM
+    // API builds `<r xmlns="urn:x"><xmlns:c/></r>`.
+    use uppsala::namespace::XMLNS_NAMESPACE;
+    use uppsala::QName;
     let input = r#"<r xmlns="urn:x"><xmlns:c/></r>"#;
-    let out1 = parse(input).unwrap().to_xml();
+    assert!(parse(input).is_err());
+    let mut doc = parse(r#"<r xmlns="urn:x"/>"#).unwrap();
+    let root = doc.document_element().unwrap();
+    let child = doc.create_element(QName::full("xmlns", XMLNS_NAMESPACE, "c"));
+    doc.append_child(root, child);
+    let out1 = doc.to_xml();
     assert!(
         out1.contains(r#"<c xmlns=""/>"#),
         "stripped name must undeclare the default namespace: {out1}"

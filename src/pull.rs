@@ -28,9 +28,10 @@ use crate::dom::{
 use crate::error::{XmlError, XmlResult};
 use crate::namespace::NamespaceResolver;
 use crate::parser::{
-    borrow_from_cow, is_xml_char, parse_cdata, parse_comment, parse_doctype, parse_name, parse_pi,
-    parse_quoted_value_with_entities, parse_reference_with_entities, parse_xml_declaration,
-    split_qname, Cursor, EntityCache, EntityMap, DEFAULT_MAX_DEPTH, DEFAULT_MAX_ENTITY_EXPANSION,
+    borrow_from_cow, check_no_colon, is_xml_char, parse_cdata, parse_comment, parse_doctype,
+    parse_name, parse_pi, parse_quoted_value_with_entities, parse_reference_with_entities,
+    parse_xml_declaration, split_qname, Cursor, EntityCache, EntityMap, DEFAULT_MAX_DEPTH,
+    DEFAULT_MAX_ENTITY_EXPANSION,
 };
 
 /// A namespace declaration made by a start tag.
@@ -311,6 +312,7 @@ impl<'a> Tokenizer<'a> {
                         &mut self.entity_budget,
                         self.forbid_entities,
                         self.max_depth,
+                        self.ns_resolver.is_some(),
                     )?;
                     self.seen_doctype = true;
                     sink.doctype(Cow::Borrowed(&self.cursor.input[start..self.cursor.pos]));
@@ -393,6 +395,12 @@ impl<'a> Tokenizer<'a> {
     fn scan_pi<S: TokenSink<'a>>(&mut self, sink: &mut S) -> XmlResult<()> {
         let start = self.cursor.pos;
         let pi = parse_pi(&mut self.cursor)?;
+        check_no_colon(
+            self.ns_resolver.is_some(),
+            "Processing instruction target",
+            &pi.target,
+            &self.cursor,
+        )?;
         sink.processing_instruction(pi, start, self.cursor.pos);
         Ok(())
     }
@@ -655,6 +663,13 @@ impl<'a> Tokenizer<'a> {
                         self.cursor.column(),
                     ));
                 }
+                if self.ns_resolver.is_some() && attr_value.is_empty() {
+                    return Err(XmlError::namespace(
+                        format!("The prefix '{}' must not be undeclared", prefix),
+                        self.cursor.line(),
+                        self.cursor.column(),
+                    ));
+                }
                 if prefix == "xml" && &*attr_value != crate::namespace::XML_NAMESPACE {
                     return Err(XmlError::namespace(
                         "The prefix 'xml' must not be bound to any other namespace",
@@ -772,6 +787,14 @@ impl<'a> Tokenizer<'a> {
     ) -> XmlResult<(QName<'a>, Vec<Attribute<'a>>, bool, usize)> {
         let (prefix, local_name) = split_qname(tag_name);
         let qname = if let Some(resolver) = self.ns_resolver.as_ref() {
+            check_qname(tag_name, &self.cursor)?;
+            if prefix == Some("xmlns") {
+                return Err(XmlError::namespace(
+                    "Element names must not have the prefix 'xmlns'",
+                    self.cursor.line(),
+                    self.cursor.column(),
+                ));
+            }
             let ns: Option<Cow<'a, str>> = if let Some(p) = prefix {
                 let uri = resolver.resolve(p).ok_or_else(|| {
                     XmlError::namespace(
@@ -797,6 +820,7 @@ impl<'a> Tokenizer<'a> {
         for (attr_name, attr_value) in raw_attrs {
             let (a_prefix, a_local) = split_qname(&attr_name);
             let a_qname = if let Some(resolver) = self.ns_resolver.as_ref() {
+                check_qname(&attr_name, &self.cursor)?;
                 if let Some(p) = a_prefix {
                     let ns_uri = resolver.resolve(p).ok_or_else(|| {
                         XmlError::namespace(
@@ -875,6 +899,23 @@ impl<'a> Tokenizer<'a> {
         }
         Ok(())
     }
+}
+
+/// With namespace processing on, element and attribute names must match
+/// `QName`, `NCName (':' NCName)?` (Namespaces in XML 1.0 §7). A `Name` with
+/// no colon is already an NCName.
+fn check_qname(name: &str, cursor: &Cursor) -> XmlResult<()> {
+    if let Some((prefix, local)) = name.split_once(':') {
+        if !crate::writer::is_valid_xml_ncname(prefix) || !crate::writer::is_valid_xml_ncname(local)
+        {
+            return Err(XmlError::namespace(
+                format!("Invalid QName: {}", name),
+                cursor.line(),
+                cursor.column(),
+            ));
+        }
+    }
+    Ok(())
 }
 
 /// Sink that turns tokens into buffered [`PullEvent`]s.
