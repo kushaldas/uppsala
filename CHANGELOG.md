@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Translate line ends in comments, processing instructions, CDATA sections and
+  entity value literals, as XML 1.0 §2.11 requires for all input
+  ([#59](https://github.com/kushaldas/uppsala/issues/59)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added

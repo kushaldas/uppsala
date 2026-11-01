@@ -285,6 +285,30 @@ impl<'a> Cursor<'a> {
     }
 }
 
+/// Translate `\r\n` and any `\r` not followed by `\n` to a single `\n`
+/// (XML 1.0 §2.11). Borrows when the text has no `\r`.
+///
+/// Character data gets the same translation in the text scanner; this is
+/// for the constructs read as one raw slice (comments, PI data, CDATA).
+pub(crate) fn normalize_line_ends(text: Cow<'_, str>) -> Cow<'_, str> {
+    if !text.contains('\r') {
+        return text;
+    }
+    let mut out = String::with_capacity(text.len());
+    let mut chars = text.chars().peekable();
+    while let Some(c) = chars.next() {
+        if c == '\r' {
+            out.push('\n');
+            if chars.peek() == Some(&'\n') {
+                chars.next();
+            }
+        } else {
+            out.push(c);
+        }
+    }
+    Cow::Owned(out)
+}
+
 // ─── Character classifications (XML 1.0 Fifth Edition) ──
 
 pub(crate) fn is_xml_whitespace(c: char) -> bool {
@@ -1183,7 +1207,7 @@ pub(crate) fn parse_comment<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, st
             ));
         }
     }
-    Ok(content)
+    Ok(normalize_line_ends(content))
 }
 
 /// Parse a processing instruction (`<?target data?>`).
@@ -1227,7 +1251,7 @@ pub(crate) fn parse_pi<'a>(cursor: &mut Cursor<'a>) -> XmlResult<ProcessingInstr
     }
     Ok(ProcessingInstruction {
         target,
-        data: Some(data),
+        data: Some(normalize_line_ends(data)),
     })
 }
 
@@ -2176,6 +2200,16 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
                     cursor.column(),
                 ));
             }
+            Some('\r') => {
+                // Line ends in the literal are translated like any other
+                // input (§2.11); a `\r` from `&#13;` took the arm above and
+                // is kept.
+                cursor.advance(1);
+                if cursor.peek_byte() == Some(b'\n') {
+                    cursor.advance(1);
+                }
+                value.push('\n');
+            }
             Some(c) => {
                 if !is_xml_char(c) {
                     return Err(XmlError::well_formedness(
@@ -2255,7 +2289,8 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
     Ok(())
 }
 
-/// Parse a CDATA section. Returns borrowed slice (CDATA never has entity expansion).
+/// Parse a CDATA section. Returns a borrowed slice (CDATA never has entity
+/// expansion) unless a line end has to be translated.
 pub(crate) fn parse_cdata<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>> {
     cursor.expect("<![CDATA[")?;
     let content = cursor.read_until("]]>")?;
@@ -2269,7 +2304,7 @@ pub(crate) fn parse_cdata<'a>(cursor: &mut Cursor<'a>) -> XmlResult<Cow<'a, str>
             ));
         }
     }
-    Ok(content)
+    Ok(normalize_line_ends(content))
 }
 
 #[cfg(test)]
