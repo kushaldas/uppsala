@@ -404,6 +404,25 @@ pub(crate) fn borrow_from_cow<'a>(source: &Cow<'a, str>, slice: &str) -> Cow<'a,
     }
 }
 
+/// With namespace processing on, entity names, processing instruction targets
+/// and notation names must be NCNames, so they contain no colon (Namespaces in
+/// XML 1.0 §7). `what` names the token in the error.
+pub(crate) fn check_no_colon(
+    namespace_aware: bool,
+    what: &str,
+    name: &str,
+    cursor: &Cursor,
+) -> XmlResult<()> {
+    if namespace_aware && name.contains(':') {
+        return Err(XmlError::namespace(
+            format!("{} must not contain a colon: {}", what, name),
+            cursor.line(),
+            cursor.column(),
+        ));
+    }
+    Ok(())
+}
+
 /// Split a name into prefix and local parts.
 pub(crate) fn split_qname(name: &str) -> (Option<&str>, &str) {
     if let Some(colon_pos) = name.find(':') {
@@ -1242,6 +1261,7 @@ pub(crate) fn parse_doctype<'a>(
     entity_budget: &mut usize,
     forbid_entities: bool,
     max_depth: u32,
+    namespace_aware: bool,
 ) -> XmlResult<()> {
     cursor.expect("<!DOCTYPE")?;
 
@@ -1298,7 +1318,14 @@ pub(crate) fn parse_doctype<'a>(
     // Optional internal subset
     if cursor.peek() == Some('[') {
         cursor.advance_char();
-        parse_internal_subset(cursor, entities, entity_budget, forbid_entities, max_depth)?;
+        parse_internal_subset(
+            cursor,
+            entities,
+            entity_budget,
+            forbid_entities,
+            max_depth,
+            namespace_aware,
+        )?;
         cursor.expect("]")?;
         cursor.skip_whitespace();
     }
@@ -1396,6 +1423,7 @@ fn parse_internal_subset(
     entity_budget: &mut usize,
     forbid_entities: bool,
     max_depth: u32,
+    namespace_aware: bool,
 ) -> XmlResult<()> {
     loop {
         cursor.skip_whitespace();
@@ -1409,7 +1437,7 @@ fn parse_internal_subset(
         if cursor.starts_with("<!--") {
             parse_comment(cursor)?;
         } else if cursor.starts_with("<?") {
-            parse_pi_in_dtd(cursor)?;
+            parse_pi_in_dtd(cursor, namespace_aware)?;
         } else if cursor.starts_with("<!ELEMENT") {
             parse_element_decl(cursor, max_depth)?;
         } else if cursor.starts_with("<!ATTLIST") {
@@ -1422,9 +1450,9 @@ fn parse_internal_subset(
                     cursor.column(),
                 ));
             }
-            parse_entity_decl(cursor, entities)?;
+            parse_entity_decl(cursor, entities, namespace_aware)?;
         } else if cursor.starts_with("<!NOTATION") {
-            parse_notation_decl(cursor)?;
+            parse_notation_decl(cursor, namespace_aware)?;
         } else if cursor.starts_with("<![") {
             // Conditional sections not allowed in internal subset without PE
             return Err(XmlError::well_formedness(
@@ -1449,9 +1477,15 @@ fn parse_internal_subset(
 }
 
 /// Parse a processing instruction inside the DTD.
-fn parse_pi_in_dtd(cursor: &mut Cursor) -> XmlResult<()> {
+fn parse_pi_in_dtd(cursor: &mut Cursor, namespace_aware: bool) -> XmlResult<()> {
     cursor.expect("<?")?;
     let target = parse_name(cursor)?;
+    check_no_colon(
+        namespace_aware,
+        "Processing instruction target",
+        &target,
+        cursor,
+    )?;
     if target.eq_ignore_ascii_case("xml") {
         return Err(XmlError::well_formedness(
             "Processing instruction target must not be 'xml'",
@@ -2013,7 +2047,11 @@ fn parse_att_value_in_dtd(
 }
 
 /// Parse an ENTITY declaration.
-fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult<()> {
+fn parse_entity_decl(
+    cursor: &mut Cursor,
+    entities: &mut EntityMap,
+    namespace_aware: bool,
+) -> XmlResult<()> {
     cursor.expect("<!ENTITY")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -2039,6 +2077,7 @@ fn parse_entity_decl(cursor: &mut Cursor, entities: &mut EntityMap) -> XmlResult
     }
 
     let name = parse_name(cursor)?;
+    check_no_colon(namespace_aware, "Entity name", &name, cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(
@@ -2193,7 +2232,7 @@ fn parse_entity_value(cursor: &mut Cursor) -> XmlResult<String> {
 }
 
 /// Parse a NOTATION declaration.
-fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
+fn parse_notation_decl(cursor: &mut Cursor, namespace_aware: bool) -> XmlResult<()> {
     cursor.expect("<!NOTATION")?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
@@ -2205,7 +2244,8 @@ fn parse_notation_decl(cursor: &mut Cursor) -> XmlResult<()> {
     }
     cursor.skip_whitespace();
 
-    parse_name(cursor)?;
+    let name = parse_name(cursor)?;
+    check_no_colon(namespace_aware, "Notation name", &name, cursor)?;
 
     if !cursor.peek().map(is_xml_whitespace).unwrap_or(false) {
         return Err(XmlError::well_formedness(

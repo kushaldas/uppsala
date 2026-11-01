@@ -347,3 +347,71 @@ fn xml_prefix_may_be_declared_with_its_own_uri() {
         Some("http://www.w3.org/XML/1998/namespace")
     );
 }
+
+// ─── Namespace well-formedness (§3, §7) ─────────────────
+
+#[test]
+fn error_prefix_undeclaring() {
+    // Namespace constraint: No Prefix Undeclaring. `xmlns:p=""` is the 1.1 form
+    // (rmt-ns10-023 in the W3C suite).
+    for xml in [r#"<r xmlns:p=""/>"#, r#"<r xmlns:p=""><p:s/></r>"#] {
+        assert!(
+            parse(xml).is_err(),
+            "prefix undeclaring must be rejected: {xml}"
+        );
+    }
+}
+
+#[test]
+fn error_name_is_not_a_qname() {
+    // §7: element and attribute names must match QName (rmt-ns10-013 multiple
+    // colons, rmt-ns10-014 colon at end, rmt-ns10-015 colon at start).
+    for xml in [
+        r#"<p:q:a xmlns:p="urn:p"/>"#,
+        "<a:/>",
+        "<:a/>",
+        r#"<r :b="1"/>"#,
+        r#"<r xmlns:p="urn:p" p:q:b="1"/>"#,
+        r#"<p:1a xmlns:p="urn:p"/>"#,
+    ] {
+        assert!(parse(xml).is_err(), "non-QName must be rejected: {xml}");
+    }
+}
+
+#[test]
+fn error_element_prefix_xmlns() {
+    // §3: element names must not have the prefix xmlns.
+    assert!(parse("<xmlns:a/>").is_err());
+}
+
+#[test]
+fn error_colon_in_pi_target_entity_or_notation_name() {
+    // §7: no entity names, PI targets or notation names contain a colon
+    // (rmt-ns10-042 PI target, rmt-ns10-043 entity name, rmt-ns10-044 notation
+    // name).
+    for xml in [
+        "<r><?a:b x?></r>",
+        "<!DOCTYPE r [<?a:b x?>]><r/>",
+        r#"<!DOCTYPE r [<!ENTITY a:b "x">]><r>&a:b;</r>"#,
+        r#"<!DOCTYPE r [<!ENTITY % a:b "x">]><r/>"#,
+        r#"<!DOCTYPE r [<!NOTATION a:b SYSTEM "n">]><r/>"#,
+    ] {
+        assert!(parse(xml).is_err(), "colon must be rejected: {xml}");
+    }
+}
+
+#[test]
+fn non_namespace_aware_accepts_names_that_are_not_qnames() {
+    // Without namespace processing these are well-formed XML 1.0.
+    let parser = uppsala::Parser::with_namespace_aware(false);
+    for xml in [
+        r#"<r xmlns:p=""/>"#,
+        r#"<p:q:a xmlns:p="urn:p"/>"#,
+        "<:a/>",
+        "<xmlns:a/>",
+        "<r><?a:b x?></r>",
+        r#"<!DOCTYPE r [<!ENTITY a:b "x"><!NOTATION n:m SYSTEM "n">]><r>&a:b;</r>"#,
+    ] {
+        assert!(parser.parse(xml).is_ok(), "XML 1.0 well-formed: {xml}");
+    }
+}

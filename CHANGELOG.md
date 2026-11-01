@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- With namespace processing on, refuse `xmlns:p=""`, element and attribute
+  names that are not QNames, elements with the `xmlns` prefix, and colons in
+  PI targets, entity names and notation names
+  ([#60](https://github.com/kushaldas/uppsala/issues/60)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
