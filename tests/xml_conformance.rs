@@ -409,6 +409,66 @@ fn line_ending_bare_cr_to_lf() {
     assert_eq!(doc.text_content_deep(root), "line1\nline2");
 }
 
+// §2.11 translates line ends in all input, not only in character data.
+
+#[test]
+fn line_ending_in_comment() {
+    for xml in ["<r><!--a\r\nb--></r>", "<r><!--a\rb--></r>"] {
+        let doc = parse(xml).unwrap();
+        let root = doc.document_element().unwrap();
+        match doc.node_kind(doc.children(root)[0]) {
+            Some(NodeKind::Comment(c)) => assert_eq!(c, "a\nb", "{xml:?}"),
+            other => panic!("Expected comment, got {:?}", other),
+        }
+    }
+}
+
+#[test]
+fn line_ending_in_processing_instruction() {
+    for xml in ["<r><?p a\r\nb?></r>", "<r><?p a\rb?></r>"] {
+        let doc = parse(xml).unwrap();
+        let root = doc.document_element().unwrap();
+        match doc.node_kind(doc.children(root)[0]) {
+            Some(NodeKind::ProcessingInstruction(pi)) => {
+                assert_eq!(pi.data.as_deref(), Some("a\nb"), "{xml:?}")
+            }
+            other => panic!("Expected PI, got {:?}", other),
+        }
+    }
+}
+
+#[test]
+fn line_ending_in_cdata() {
+    for xml in ["<r><![CDATA[a\r\nb]]></r>", "<r><![CDATA[a\rb]]></r>"] {
+        let doc = parse(xml).unwrap();
+        let root = doc.document_element().unwrap();
+        match doc.node_kind(doc.children(root)[0]) {
+            Some(NodeKind::CData(c)) => assert_eq!(c, "a\nb", "{xml:?}"),
+            other => panic!("Expected CDATA, got {:?}", other),
+        }
+    }
+}
+
+#[test]
+fn line_ending_in_entity_value() {
+    for xml in [
+        "<!DOCTYPE r [<!ENTITY e \"a\r\nb\">]><r>&e;</r>",
+        "<!DOCTYPE r [<!ENTITY e \"a\rb\">]><r>&e;</r>",
+    ] {
+        let doc = parse(xml).unwrap();
+        let root = doc.document_element().unwrap();
+        assert_eq!(doc.text_content_deep(root), "a\nb", "{xml:?}");
+    }
+}
+
+#[test]
+fn line_ending_char_ref_cr_kept_in_entity_value() {
+    // A #xD written as a character reference is not a line end in the input.
+    let doc = parse("<!DOCTYPE r [<!ENTITY e \"a&#13;b\">]><r>&e;</r>").unwrap();
+    let root = doc.document_element().unwrap();
+    assert_eq!(doc.text_content_deep(root), "a\rb");
+}
+
 // ─── BOM handling ───────────────────────────────────────
 
 #[test]
