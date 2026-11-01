@@ -104,6 +104,26 @@ fn utf16_without_bom_is_detected_by_leading_bytes() {
     assert!(parse_bytes(&be).is_ok());
 }
 
+/// Only the first byte order mark is the encoding signature (XML 1.0 §4.3.3).
+/// A second U+FEFF is a character before the prolog, so the document is not
+/// well-formed, whichever encoding carries it.
+#[test]
+fn second_byte_order_mark_rejected() {
+    let variants: [(&str, Vec<u8>); 3] = [
+        ("utf8", utf8("\u{FEFF}<r/>", true)),
+        ("utf16le", utf16_le("\u{FEFF}<r/>", true)),
+        ("utf16be", utf16_be("\u{FEFF}<r/>", true)),
+    ];
+
+    for (name, bytes) in &variants {
+        assert!(
+            parse_bytes(bytes).is_err(),
+            "{name}: a second byte order mark must be rejected"
+        );
+    }
+    assert!(parse_bytes(&utf8("<r/>", true)).is_ok());
+}
+
 // ─── Declared-vs-actual mismatch (documented, no smuggling) ────────────────
 
 /// Bytes are UTF-16LE (BOM present) but the XML declaration says UTF-8.

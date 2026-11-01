@@ -207,6 +207,11 @@ pub fn transform(xslt: &str, xml: &str) -> XmlResult<String> {
 }
 
 /// Decode raw XML bytes to a String, auto-detecting encoding.
+///
+/// A byte order mark is decoded with the rest of the input, as U+FEFF, and
+/// left for the parser, which skips exactly one at the start of the entity
+/// (XML 1.0 §4.3.3). Stripping it here as well would let a second U+FEFF,
+/// which is a character before the prolog, pass as the mark.
 fn decode_xml_bytes(input: &[u8]) -> XmlResult<String> {
     if input.len() < 2 {
         // Too short for BOM detection, assume UTF-8
@@ -217,15 +222,15 @@ fn decode_xml_bytes(input: &[u8]) -> XmlResult<String> {
     // Check for BOM
     if input[0] == 0xFF && input[1] == 0xFE {
         // UTF-16 LE BOM
-        return decode_utf16_le(&input[2..]);
+        return decode_utf16_le(input);
     }
     if input[0] == 0xFE && input[1] == 0xFF {
         // UTF-16 BE BOM
-        return decode_utf16_be(&input[2..]);
+        return decode_utf16_be(input);
     }
     if input.len() >= 3 && input[0] == 0xEF && input[1] == 0xBB && input[2] == 0xBF {
-        // UTF-8 BOM — strip it and decode as UTF-8
-        return String::from_utf8(input[3..].to_vec())
+        // UTF-8 BOM — decode as UTF-8
+        return String::from_utf8(input.to_vec())
             .map_err(|e| XmlError::well_formedness(format!("Invalid UTF-8: {}", e), 1, 1));
     }
 
