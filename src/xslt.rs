@@ -131,24 +131,30 @@ fn fixup_attribute_namespaces(
             continue;
         };
         let (prefix, local) = attr.qname.split_once(':').unwrap_or(("", &attr.qname));
-        if uri == "http://www.w3.org/XML/1998/namespace" {
+        if uri == crate::namespace::XMLNS_NAMESPACE {
+            return Err(XmlError::xpath(
+                "An attribute cannot use the reserved XMLNS namespace",
+            ));
+        }
+        if uri == crate::namespace::XML_NAMESPACE {
             charge((4 + local.len()).saturating_sub(attr.qname.len()))?;
             attr.qname = format!("xml:{local}");
             continue;
         }
         let mut prefix = prefix.to_string();
         if prefix.is_empty()
+            || prefix == "xml"
+            || prefix == "xmlns"
             || element
                 .ns_decls
                 .iter()
                 .any(|(p, u)| p.as_deref() == Some(&prefix) && u != uri)
         {
             // Reuse an existing binding before allocating a fresh prefix.
-            if let Some((Some(existing), _)) = element
-                .ns_decls
-                .iter()
-                .find(|(p, u)| p.is_some() && u == uri)
-            {
+            if let Some((Some(existing), _)) = element.ns_decls.iter().find(|(p, u)| {
+                matches!(p.as_deref(), Some(p) if p != "xml" && p != "xmlns" && !p.is_empty())
+                    && u == uri
+            }) {
                 prefix = existing.clone();
             } else {
                 loop {
@@ -1955,6 +1961,14 @@ impl<'a, 'b> Engine<'a, 'b> {
                         })
                         .transpose()?
                 };
+                // Namespace normalization can strip a prefix and expose the
+                // reserved unqualified name "xmlns". Validate the final name.
+                validate_result_qname("xsl:attribute", &qname)?;
+                if namespace_uri.as_deref() == Some(crate::namespace::XMLNS_NAMESPACE) {
+                    return Err(XmlError::xpath(
+                        "xsl:attribute cannot use the reserved XMLNS namespace",
+                    ));
+                }
                 let items = self.execute_sequence(body, focus)?;
                 let value = rtf_string_value(&items_to_nodes(items));
                 self.push_attr_item(

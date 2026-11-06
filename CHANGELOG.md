@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   attributes. Charge attribute-name growth during namespace fixup against the
   result-tree memory limit before allocating replacement names.
 
+- Keep the reserved XML prefix bound to its standard namespace during attribute
+  fixup. Reject computed attributes that normalize to `xmlns` or use the reserved
+  XMLNS namespace.
+
 ## [0.12.0] - 2026-10-09
 
 ### Added

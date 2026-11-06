@@ -193,3 +193,67 @@ fn namespace_fixup_charges_qname_growth() {
         .transform(&src)
         .is_err());
 }
+
+fn computed_attribute_result(name: &str, namespace: &str) -> uppsala::XmlResult<String> {
+    let xsl = style(&format!(
+        r#"<out><xsl:attribute name="{name}" namespace="{namespace}">urn:value</xsl:attribute><child/></out>"#
+    ));
+    let sd = Parser::new().parse(&xsl)?;
+    let src = Parser::new().parse("<root/>")?;
+    Stylesheet::compile(&sd)?.transform(&src)
+}
+
+#[test]
+fn reserved_xml_prefix_is_not_rebound() {
+    for namespace in ["urn:target", "{'urn:target'}"] {
+        let output = computed_attribute_result("xml:a", namespace).unwrap();
+        let doc = Parser::new().parse(&output).unwrap();
+        let e = doc.element(doc.document_element().unwrap()).unwrap();
+        let a = &e.attributes[0];
+        assert_eq!(a.name.namespace_uri.as_deref(), Some("urn:target"));
+        assert_ne!(a.name.prefix.as_deref(), Some("xml"));
+        assert_eq!(a.name.local_name, "a");
+        assert_eq!(a.value, "urn:value");
+        assert!(e.name.namespace_uri.is_none());
+    }
+    let output =
+        computed_attribute_result("xml:a", "http://www.w3.org/XML/1998/namespace").unwrap();
+    assert!(Parser::new().parse(&output).is_ok());
+    assert!(output.contains("xml:a="));
+}
+
+#[test]
+fn normalized_xmlns_attribute_is_rejected() {
+    for name in ["p:xmlns", "{'p:xmlns'}", "xml:xmlns"] {
+        for namespace in ["", "{''}"] {
+            assert!(
+                computed_attribute_result(name, namespace).is_err(),
+                "{name}"
+            );
+        }
+    }
+    // A namespaced attribute with local name xmlns is an ordinary attribute.
+    let output = computed_attribute_result("p:xmlns", "urn:target").unwrap();
+    let doc = Parser::new().parse(&output).unwrap();
+    let e = doc.element(doc.document_element().unwrap()).unwrap();
+    assert!(e.name.namespace_uri.is_none());
+    assert_eq!(
+        e.attributes[0].name.namespace_uri.as_deref(),
+        Some("urn:target")
+    );
+}
+
+#[test]
+fn explicit_xmlns_namespace_is_rejected() {
+    for name in ["a", "p:a", "xml:a"] {
+        for namespace in [
+            "http://www.w3.org/2000/xmlns/",
+            "{'http://www.w3.org/2000/xmlns/'}",
+        ] {
+            assert!(
+                computed_attribute_result(name, namespace).is_err(),
+                "{name}"
+            );
+        }
+    }
+}
