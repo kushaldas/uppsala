@@ -122,35 +122,43 @@ struct ResultAttr {
 /// Copied attributes retain their expanded names even when their source
 /// ancestor's namespace declarations are absent from the result.
 fn fixup_attribute_namespaces(element: &mut ResultElement) {
+    let mut next_prefix = 0;
     for attr in &mut element.attrs {
         let Some(uri) = &attr.namespace_uri else {
             continue;
         };
-        let Some((prefix, local)) = attr.qname.split_once(':') else {
-            continue;
-        };
-        if prefix == "xml" {
+        let (prefix, local) = attr.qname.split_once(':').unwrap_or(("", &attr.qname));
+        if uri == "http://www.w3.org/XML/1998/namespace" {
+            attr.qname = format!("xml:{local}");
             continue;
         }
         let mut prefix = prefix.to_string();
-        if element
-            .ns_decls
-            .iter()
-            .any(|(p, u)| p.as_deref() == Some(&prefix) && u != uri)
+        if prefix.is_empty()
+            || element
+                .ns_decls
+                .iter()
+                .any(|(p, u)| p.as_deref() == Some(&prefix) && u != uri)
         {
-            // Preserve the element's binding and give the attribute a fresh prefix.
-            let mut index = 0;
-            loop {
-                let candidate = format!("ns{index}");
-                if !element
-                    .ns_decls
-                    .iter()
-                    .any(|(p, _)| p.as_deref() == Some(&candidate))
-                {
-                    prefix = candidate;
-                    break;
+            // Reuse an existing binding before allocating a fresh prefix.
+            if let Some((Some(existing), _)) = element
+                .ns_decls
+                .iter()
+                .find(|(p, u)| p.is_some() && u == uri)
+            {
+                prefix = existing.clone();
+            } else {
+                loop {
+                    let candidate = format!("ns{next_prefix}");
+                    next_prefix += 1;
+                    if !element
+                        .ns_decls
+                        .iter()
+                        .any(|(p, _)| p.as_deref() == Some(&candidate))
+                    {
+                        prefix = candidate;
+                        break;
+                    }
                 }
-                index += 1;
             }
             attr.qname = format!("{prefix}:{local}");
         }
@@ -504,7 +512,11 @@ enum Instruction {
     /// `xsl:element` with a computed (AVT) name.
     Element { name: Avt, body: Vec<Instruction> },
     /// `xsl:attribute` with a computed (AVT) name; the body is its value.
-    Attribute { name: Avt, body: Vec<Instruction> },
+    Attribute {
+        name: Avt,
+        body: Vec<Instruction>,
+        namespaces: HashMap<String, String>,
+    },
     /// `xsl:comment`.
     Comment { body: Vec<Instruction> },
     /// `xsl:processing-instruction` with a computed (AVT) name.
@@ -535,6 +547,7 @@ struct WithParam {
 /// A literal-result-element attribute, whose value is an attribute value
 /// template (literal text interleaved with `{expr}` placeholders).
 struct AttrTemplate {
+    namespace_uri: Option<String>,
     qname: String,
     value: Avt,
 }
@@ -1066,6 +1079,7 @@ fn compile_xsl_instruction(
             body: compile_sequence(doc, node, ns)?,
         },
         "attribute" => Instruction::Attribute {
+            namespaces: ns.clone(),
             name: compile_avt(
                 el.get_attribute("name")
                     .ok_or_else(|| XmlError::xpath("xsl:attribute requires name"))?,
@@ -1188,6 +1202,7 @@ fn compile_literal_element(
             continue;
         }
         attrs.push(AttrTemplate {
+            namespace_uri: attr.name.namespace_uri.as_deref().map(str::to_owned),
             qname: attr.name.prefixed_name().to_string(),
             value: compile_avt(attr.value.as_ref(), ns)?,
         });
@@ -1818,7 +1833,7 @@ impl<'a, 'b> Engine<'a, 'b> {
                 let mut result_attrs = Vec::with_capacity(attrs.len());
                 for attr in attrs {
                     let result_attr = ResultAttr {
-                        namespace_uri: None,
+                        namespace_uri: attr.namespace_uri.clone(),
                         qname: attr.qname.clone(),
                         value: self.eval_avt(&attr.value, focus)?,
                     };
@@ -1898,15 +1913,27 @@ impl<'a, 'b> Engine<'a, 'b> {
                     },
                 )?;
             }
-            Instruction::Attribute { name, body } => {
+            Instruction::Attribute {
+                name,
+                body,
+                namespaces,
+            } => {
                 let qname = self.eval_avt(name, focus)?;
                 validate_result_qname("xsl:attribute", &qname)?;
+                let namespace_uri = qname
+                    .split_once(':')
+                    .map(|(prefix, _)| {
+                        namespaces.get(prefix).cloned().ok_or_else(|| {
+                            XmlError::xpath(format!("xsl:attribute: unbound prefix {prefix:?}"))
+                        })
+                    })
+                    .transpose()?;
                 let items = self.execute_sequence(body, focus)?;
                 let value = rtf_string_value(&items_to_nodes(items));
                 self.push_attr_item(
                     out,
                     ResultAttr {
-                        namespace_uri: None,
+                        namespace_uri,
                         qname,
                         value,
                     },
@@ -2401,15 +2428,12 @@ struct SerScope<'a> {
 }
 
 impl SerScope<'_> {
-    /// True if `(prefix, uri)` is already declared by this scope or an ancestor.
+    /// Compare against the nearest binding; a nearer declaration shadows ancestors.
     fn is_declared(&self, prefix: Option<&str>, uri: &str) -> bool {
         let mut cur = Some(self);
         while let Some(s) = cur {
-            if s.local
-                .iter()
-                .any(|(p, u)| p.as_deref() == prefix && u == uri)
-            {
-                return true;
+            if let Some((_, bound_uri)) = s.local.iter().find(|(p, _)| p.as_deref() == prefix) {
+                return bound_uri == uri;
             }
             cur = s.parent;
         }

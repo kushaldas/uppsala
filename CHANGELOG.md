@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `xsl:copy-of`, including whole-element copies. Declare missing prefixes on
   result elements and assign fresh prefixes when bindings conflict, so output
   remains namespace-well-formed when source ancestors are omitted
+  Preserve literal and computed attribute namespaces, respect shadowed bindings,
+  and handle prefixless DOM attributes while reusing generated namespace bindings.
   ([pyuppsala#36](https://github.com/kushaldas/pyuppsala/issues/36)).
 
 ## [0.12.0] - 2026-10-09
