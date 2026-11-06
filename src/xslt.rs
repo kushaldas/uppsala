@@ -114,8 +114,54 @@ struct ResultElement {
 
 #[derive(Debug, Clone)]
 struct ResultAttr {
+    namespace_uri: Option<String>,
     qname: String,
     value: String,
+}
+
+/// Copied attributes retain their expanded names even when their source
+/// ancestor's namespace declarations are absent from the result.
+fn fixup_attribute_namespaces(element: &mut ResultElement) {
+    for attr in &mut element.attrs {
+        let Some(uri) = &attr.namespace_uri else {
+            continue;
+        };
+        let Some((prefix, local)) = attr.qname.split_once(':') else {
+            continue;
+        };
+        if prefix == "xml" {
+            continue;
+        }
+        let mut prefix = prefix.to_string();
+        if element
+            .ns_decls
+            .iter()
+            .any(|(p, u)| p.as_deref() == Some(&prefix) && u != uri)
+        {
+            // Preserve the element's binding and give the attribute a fresh prefix.
+            let mut index = 0;
+            loop {
+                let candidate = format!("ns{index}");
+                if !element
+                    .ns_decls
+                    .iter()
+                    .any(|(p, _)| p.as_deref() == Some(&candidate))
+                {
+                    prefix = candidate;
+                    break;
+                }
+                index += 1;
+            }
+            attr.qname = format!("{prefix}:{local}");
+        }
+        if !element
+            .ns_decls
+            .iter()
+            .any(|(p, u)| p.as_deref() == Some(&prefix) && u == uri)
+        {
+            element.ns_decls.push((Some(prefix), uri.clone()));
+        }
+    }
 }
 
 /// An item produced by executing a sequence constructor. Attributes are kept
@@ -194,6 +240,7 @@ fn accounted_attr_bytes(attr: &ResultAttr) -> usize {
     RESULT_ATTR_ACCOUNTING_BYTES
         .saturating_add(attr.qname.len())
         .saturating_add(attr.value.len())
+        .saturating_add(attr.namespace_uri.as_ref().map_or(0, String::len))
 }
 
 fn accounted_ns_decls_bytes(ns_decls: &[(Option<String>, String)]) -> usize {
@@ -1414,8 +1461,9 @@ impl<'a, 'b> Engine<'a, 'b> {
     fn push_element_item(
         &mut self,
         out: &mut Vec<ResultItem>,
-        element: ResultElement,
+        mut element: ResultElement,
     ) -> XmlResult<()> {
+        fixup_attribute_namespaces(&mut element);
         self.charge_result_bytes(RESULT_NODE_ACCOUNTING_BYTES.saturating_add(element.qname.len()))?;
         self.charge_result_ns_decls(&element.ns_decls)?;
         out.push(ResultItem::Node(ResultNode::Element(element)));
@@ -1770,6 +1818,7 @@ impl<'a, 'b> Engine<'a, 'b> {
                 let mut result_attrs = Vec::with_capacity(attrs.len());
                 for attr in attrs {
                     let result_attr = ResultAttr {
+                        namespace_uri: None,
                         qname: attr.qname.clone(),
                         value: self.eval_avt(&attr.value, focus)?,
                     };
@@ -1854,7 +1903,14 @@ impl<'a, 'b> Engine<'a, 'b> {
                 validate_result_qname("xsl:attribute", &qname)?;
                 let items = self.execute_sequence(body, focus)?;
                 let value = rtf_string_value(&items_to_nodes(items));
-                self.push_attr_item(out, ResultAttr { qname, value })?;
+                self.push_attr_item(
+                    out,
+                    ResultAttr {
+                        namespace_uri: None,
+                        qname,
+                        value,
+                    },
+                )?;
             }
             Instruction::Comment { body } => {
                 let items = self.execute_sequence(body, focus)?;
@@ -1939,6 +1995,7 @@ impl<'a, 'b> Engine<'a, 'b> {
                 self.push_attr_item(
                     out,
                     ResultAttr {
+                        namespace_uri: qn.namespace_uri.as_deref().map(str::to_owned),
                         qname: qn.prefixed_name().to_string(),
                         value: v.to_string(),
                     },
@@ -2013,6 +2070,7 @@ impl<'a, 'b> Engine<'a, 'b> {
                         continue;
                     }
                     let result_attr = ResultAttr {
+                        namespace_uri: attr.name.namespace_uri.as_deref().map(str::to_owned),
                         qname: attr.name.prefixed_name().to_string(),
                         value: attr.value.to_string(),
                     };
@@ -2034,14 +2092,18 @@ impl<'a, 'b> Engine<'a, 'b> {
                         }
                     }
                 }
-                self.charge_result_bytes(RESULT_NODE_ACCOUNTING_BYTES.saturating_add(qname.len()))?;
-                self.charge_result_ns_decls(&ns_decls)?;
-                Ok(ResultItem::Node(ResultNode::Element(ResultElement {
+                let mut element = ResultElement {
                     qname,
                     ns_decls,
                     attrs,
                     children,
-                })))
+                };
+                fixup_attribute_namespaces(&mut element);
+                self.charge_result_bytes(
+                    RESULT_NODE_ACCOUNTING_BYTES.saturating_add(element.qname.len()),
+                )?;
+                self.charge_result_ns_decls(&element.ns_decls)?;
+                Ok(ResultItem::Node(ResultNode::Element(element)))
             }
             Some(NodeKind::Text(t)) | Some(NodeKind::CData(t)) => {
                 self.charge_result_bytes(RESULT_NODE_ACCOUNTING_BYTES)?;
@@ -2068,6 +2130,7 @@ impl<'a, 'b> Engine<'a, 'b> {
             }
             Some(NodeKind::Attribute(qn, v)) => {
                 let attr = ResultAttr {
+                    namespace_uri: qn.namespace_uri.as_deref().map(str::to_owned),
                     qname: qn.prefixed_name().to_string(),
                     value: v.to_string(),
                 };
@@ -2853,6 +2916,48 @@ mod tests {
     /// M4 — the identity-style transform: `xsl:copy` of the current node plus
     /// `apply-templates select="@*|node()"`, with `match="@*"` doing `xsl:copy`.
     /// Reproduces a source subtree (attributes + children) into the result.
+    #[test]
+    fn copied_attributes_preserve_namespace() {
+        use crate::dom::NodeKind;
+        for body in [
+            r#"<xsl:copy><xsl:apply-templates select="@*|node()"/></xsl:copy>"#,
+            r#"<v><xsl:copy-of select="@*|node()"/></v>"#,
+            r#"<xsl:copy-of select="."/>"#,
+            r#"<v xmlns:p="urn:other"><xsl:copy-of select="@*|node()"/></v>"#,
+        ] {
+            let style = format!(
+                r#"<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:template match="/root"><root><xsl:apply-templates/></root></xsl:template>
+                <xsl:template match="v">{body}</xsl:template>
+                <xsl:template match="@*|text()"><xsl:copy/></xsl:template>
+                </xsl:stylesheet>"#
+            );
+            let output = transform(
+                &style,
+                r#"<root xmlns:p="urn:source"><v p:type="string">1</v></root>"#,
+            )
+            .unwrap();
+            let doc = Parser::new().parse(&output).unwrap();
+            let root = doc.document_element().unwrap();
+            let child = doc
+                .children(root)
+                .into_iter()
+                .find(|id| matches!(doc.node_kind(*id), Some(NodeKind::Element(_))))
+                .unwrap();
+            let Some(NodeKind::Element(element)) = doc.node_kind(child) else {
+                panic!()
+            };
+            let attr = element
+                .attributes
+                .iter()
+                .find(|a| a.name.local_name == "type")
+                .unwrap();
+            assert_eq!(attr.name.namespace_uri.as_deref(), Some("urn:source"));
+            assert_eq!(attr.value, "string");
+        }
+    }
+
     #[test]
     fn m4_identity_copy() {
         let xslt = r#"<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-06
+
+### Fixed
+
+- Preserve namespace URIs on attributes copied by XSLT `xsl:copy` and
+  `xsl:copy-of`, including whole-element copies. Declare missing prefixes on
+  result elements and assign fresh prefixes when bindings conflict, so output
+  remains namespace-well-formed when source ancestors are omitted
+  ([pyuppsala#36](https://github.com/kushaldas/pyuppsala/issues/36)).
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
