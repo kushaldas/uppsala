@@ -121,7 +121,10 @@ struct ResultAttr {
 
 /// Copied attributes retain their expanded names even when their source
 /// ancestor's namespace declarations are absent from the result.
-fn fixup_attribute_namespaces(element: &mut ResultElement) {
+fn fixup_attribute_namespaces(
+    element: &mut ResultElement,
+    mut charge: impl FnMut(usize) -> XmlResult<()>,
+) -> XmlResult<()> {
     let mut next_prefix = 0;
     for attr in &mut element.attrs {
         let Some(uri) = &attr.namespace_uri else {
@@ -129,6 +132,7 @@ fn fixup_attribute_namespaces(element: &mut ResultElement) {
         };
         let (prefix, local) = attr.qname.split_once(':').unwrap_or(("", &attr.qname));
         if uri == "http://www.w3.org/XML/1998/namespace" {
+            charge((4 + local.len()).saturating_sub(attr.qname.len()))?;
             attr.qname = format!("xml:{local}");
             continue;
         }
@@ -160,6 +164,7 @@ fn fixup_attribute_namespaces(element: &mut ResultElement) {
                     }
                 }
             }
+            charge((prefix.len() + 1 + local.len()).saturating_sub(attr.qname.len()))?;
             attr.qname = format!("{prefix}:{local}");
         }
         if !element
@@ -170,6 +175,7 @@ fn fixup_attribute_namespaces(element: &mut ResultElement) {
             element.ns_decls.push((Some(prefix), uri.clone()));
         }
     }
+    Ok(())
 }
 
 /// An item produced by executing a sequence constructor. Attributes are kept
@@ -513,6 +519,7 @@ enum Instruction {
     Element { name: Avt, body: Vec<Instruction> },
     /// `xsl:attribute` with a computed (AVT) name; the body is its value.
     Attribute {
+        namespace: Option<Avt>,
         name: Avt,
         body: Vec<Instruction>,
         namespaces: HashMap<String, String>,
@@ -698,6 +705,14 @@ impl Stylesheet {
 /// XSLT namespace is excluded (it never appears in result output or in
 /// non-XSLT name resolution).
 fn in_scope_namespaces(doc: &Document<'_>, node: NodeId) -> HashMap<String, String> {
+    let mut map = complete_namespaces(doc, node);
+    if map.get("xsl").is_some_and(|uri| uri == XSLT_NAMESPACE) {
+        map.remove("xsl");
+    }
+    map
+}
+
+fn complete_namespaces(doc: &Document<'_>, node: NodeId) -> HashMap<String, String> {
     let mut chain = Vec::new();
     let mut cur = Some(node);
     while let Some(n) = cur {
@@ -716,12 +731,6 @@ fn in_scope_namespaces(doc: &Document<'_>, node: NodeId) -> HashMap<String, Stri
                 // DOM mutation can bypass parser validation. Preserve the
                 // reserved binding even for programmatically built stylesheets.
                 if prefix.as_ref() == "xml" {
-                    continue;
-                }
-                // The `xsl` prefix bound to the XSLT namespace never participates
-                // in result output or non-XSLT name resolution; skip it so it
-                // cannot leak into result QNames or XPath name resolution.
-                if prefix.as_ref() == "xsl" && uri.as_ref() == XSLT_NAMESPACE {
                     continue;
                 }
                 map.insert(prefix.to_string(), uri.to_string());
@@ -1079,7 +1088,11 @@ fn compile_xsl_instruction(
             body: compile_sequence(doc, node, ns)?,
         },
         "attribute" => Instruction::Attribute {
-            namespaces: ns.clone(),
+            namespace: el
+                .get_attribute("namespace")
+                .map(|v| compile_avt(v, ns))
+                .transpose()?,
+            namespaces: complete_namespaces(doc, node),
             name: compile_avt(
                 el.get_attribute("name")
                     .ok_or_else(|| XmlError::xpath("xsl:attribute requires name"))?,
@@ -1478,7 +1491,7 @@ impl<'a, 'b> Engine<'a, 'b> {
         out: &mut Vec<ResultItem>,
         mut element: ResultElement,
     ) -> XmlResult<()> {
-        fixup_attribute_namespaces(&mut element);
+        fixup_attribute_namespaces(&mut element, |bytes| self.charge_result_bytes(bytes))?;
         self.charge_result_bytes(RESULT_NODE_ACCOUNTING_BYTES.saturating_add(element.qname.len()))?;
         self.charge_result_ns_decls(&element.ns_decls)?;
         out.push(ResultItem::Node(ResultNode::Element(element)));
@@ -1914,20 +1927,34 @@ impl<'a, 'b> Engine<'a, 'b> {
                 )?;
             }
             Instruction::Attribute {
+                namespace,
                 name,
                 body,
                 namespaces,
             } => {
-                let qname = self.eval_avt(name, focus)?;
-                validate_result_qname("xsl:attribute", &qname)?;
-                let namespace_uri = qname
-                    .split_once(':')
-                    .map(|(prefix, _)| {
-                        namespaces.get(prefix).cloned().ok_or_else(|| {
-                            XmlError::xpath(format!("xsl:attribute: unbound prefix {prefix:?}"))
-                        })
-                    })
+                let explicit_uri = namespace
+                    .as_ref()
+                    .map(|avt| self.eval_avt(avt, focus))
                     .transpose()?;
+                let mut qname = self.eval_avt(name, focus)?;
+                validate_result_qname("xsl:attribute", &qname)?;
+                let namespace_uri = if let Some(uri) = explicit_uri {
+                    if uri.is_empty() {
+                        qname = qname.rsplit(':').next().unwrap().to_string();
+                        None
+                    } else {
+                        Some(uri)
+                    }
+                } else {
+                    qname
+                        .split_once(':')
+                        .map(|(prefix, _)| {
+                            namespaces.get(prefix).cloned().ok_or_else(|| {
+                                XmlError::xpath(format!("xsl:attribute: unbound prefix {prefix:?}"))
+                            })
+                        })
+                        .transpose()?
+                };
                 let items = self.execute_sequence(body, focus)?;
                 let value = rtf_string_value(&items_to_nodes(items));
                 self.push_attr_item(
@@ -2125,7 +2152,7 @@ impl<'a, 'b> Engine<'a, 'b> {
                     attrs,
                     children,
                 };
-                fixup_attribute_namespaces(&mut element);
+                fixup_attribute_namespaces(&mut element, |bytes| self.charge_result_bytes(bytes))?;
                 self.charge_result_bytes(
                     RESULT_NODE_ACCOUNTING_BYTES.saturating_add(element.qname.len()),
                 )?;

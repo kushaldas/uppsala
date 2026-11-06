@@ -109,3 +109,87 @@ fn many_conflicting_attributes_reuse_binding() {
     }
     assert_eq!(out.matches("=\"urn:source\"").count(), 1);
 }
+
+#[test]
+fn computed_attribute_explicit_namespace_and_xsl_binding() {
+    for (instruction, expected) in [
+        (
+            r#"<xsl:attribute xmlns:p="urn:other" name="p:a" namespace="{'urn:target'}">v</xsl:attribute>"#,
+            Some("urn:target"),
+        ),
+        (
+            r#"<xsl:attribute name="unbound:a" namespace="urn:target">v</xsl:attribute>"#,
+            Some("urn:target"),
+        ),
+        (
+            r#"<xsl:attribute name="a" namespace="urn:target">v</xsl:attribute>"#,
+            Some("urn:target"),
+        ),
+        (
+            r#"<xsl:attribute name="p:a" namespace="">v</xsl:attribute>"#,
+            None,
+        ),
+        (
+            r#"<xsl:attribute name="xsl:a">v</xsl:attribute>"#,
+            Some("http://www.w3.org/1999/XSL/Transform"),
+        ),
+    ] {
+        let xsl = style(&format!(
+            r#"<out xmlns:p="urn:target"><v>{instruction}</v></out>"#
+        ));
+        let sd = Parser::new().parse(&xsl).unwrap();
+        let src = Parser::new().parse("<root/>").unwrap();
+        let output = Stylesheet::compile(&sd).unwrap().transform(&src).unwrap();
+        let doc = Parser::new().parse(&output).unwrap();
+        let child = doc.children(doc.document_element().unwrap())[0];
+        let a = &doc.element(child).unwrap().attributes[0];
+        assert_eq!(a.name.local_name, "a");
+        assert_eq!(a.name.namespace_uri.as_deref(), expected, "{output}");
+    }
+}
+
+#[test]
+fn namespace_fixup_charges_qname_growth() {
+    let long_prefix = "n".repeat(1000);
+    let attrs: String = (0..200).map(|i| format!(" p:a{i}='v'")).collect();
+    let input = format!("<root xmlns:p='urn:source'{attrs}/>");
+    let xsl = style(&format!(
+        r#"<out xmlns:p="urn:other" xmlns:{long_prefix}="urn:source"><xsl:copy-of select="root/@*"/></out>"#
+    ));
+    let sd = Parser::new().parse(&xsl).unwrap();
+    let mut src = Parser::new().parse(&input).unwrap();
+    src.prepare_xpath();
+    let sheet = Stylesheet::compile(&sd)
+        .unwrap()
+        .set_max_result_tree_bytes(100_000);
+    assert!(sheet.transform(&src).is_err());
+    assert!(Stylesheet::compile(&sd).unwrap().transform(&src).is_ok());
+
+    // Deep-copy fixup also grows prefixless XML attribute names.
+    let mut src = Parser::new().parse("<root/>").unwrap();
+    let root = src.document_element().unwrap();
+    for i in 0..200 {
+        src.element_mut(root).unwrap().set_attribute(
+            QName::with_namespace("http://www.w3.org/XML/1998/namespace", format!("a{i}")),
+            Cow::Borrowed("v"),
+        );
+    }
+    let xsl = style(r#"<out><xsl:copy-of select="root"/></out>"#);
+    let sd = Parser::new().parse(&xsl).unwrap();
+    // Budget includes both elements and original attribute storage, but only
+    // half the 800 bytes required by the added "xml:" prefixes.
+    let original_bytes = 32
+        + "out".len()
+        + 32
+        + "root".len()
+        + (0..200)
+            .map(|i| 16 + format!("a{i}").len() + 1 + "http://www.w3.org/XML/1998/namespace".len())
+            .sum::<usize>();
+    let output = Stylesheet::compile(&sd).unwrap().transform(&src).unwrap();
+    assert!(output.contains("xml:a199"));
+    assert!(Stylesheet::compile(&sd)
+        .unwrap()
+        .set_max_result_tree_bytes(original_bytes + 400)
+        .transform(&src)
+        .is_err());
+}
