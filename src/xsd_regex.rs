@@ -9,6 +9,18 @@
 //! - Unicode category escapes: `\p{Lu}`, `\p{IsBasicLatin}`, `\P{...}`.
 //! - Character class subtraction: `[a-z-[aeiou]]`.
 //! - Multi-character escapes: `\d`, `\D`, `\s`, `\S`, `\w`, `\W`.
+//!
+//! General categories (`\p{..}`, `\d`, `\w` and their complements) come from
+//! the generated tables in `xsd_regex_tables`, which name their Unicode
+//! version. `\i` and `\c` are the XML 1.0 (Second Edition) `Letter` and
+//! `NameChar` productions that XSD 1.0 references, and the `\p{Is..}` block
+//! names are XSD 1.0's fixed list (Part 2, Appendix F.1) plus the names earlier
+//! releases accepted, so neither follows later Unicode versions.
+
+use crate::xsd_regex_tables::{
+    GeneralCategory, ASCII_CATEGORIES, CATEGORY_PAGES, CATEGORY_RUNS, XML_NAME_PAGES,
+    XML_NAME_RANGES, XML_NAME_START_PAGES, XML_NAME_START_RANGES,
+};
 
 /// A compiled XSD regular expression.
 #[derive(Debug, Clone)]
@@ -56,6 +68,12 @@ enum ClassMember {
     Escape(CharEscape),
     /// A Unicode property (\p{...} or \P{...}).
     Property(UnicodeProperty),
+    /// The union of the class's members that are defined by general
+    /// categories (`\d`, `\D`, `\w`, `\W` and every `\p`/`\P` other than a
+    /// block), as a set: bit `c as u32` stands for category `c`. Built by
+    /// [`char_class`], so a class looks a character's category up once,
+    /// whatever the number of such members.
+    Categories(u32),
     /// A nested character class (for subtraction). Spec-complete placeholder;
     /// the parser does not currently produce nested character classes.
     #[allow(dead_code)]
@@ -65,23 +83,23 @@ enum ClassMember {
 /// Multi-character escape types.
 #[derive(Debug, Clone, Copy)]
 enum CharEscape {
-    /// `\d` = [0-9]
+    /// `\d` = `\p{Nd}`
     Digit,
-    /// `\D` = [^0-9]
+    /// `\D` = `[^\d]`
     NotDigit,
     /// `\s` = [ \t\n\r]
     Space,
     /// `\S` = [^ \t\n\r]
     NotSpace,
-    /// `\w` = [a-zA-Z0-9_] (simplified; XSD defines it via Unicode categories)
+    /// `\w` = every character except the categories P, Z and C
     Word,
     /// `\W` = complement of \w
     NotWord,
-    /// `\i` = XML initial name character (Letter | '_' | ':')
+    /// `\i` = XML 1.0 (Second Edition) initial name character (Letter | '_' | ':')
     XmlInitial,
     /// `\I` = complement of \i
     NotXmlInitial,
-    /// `\c` = XML name character (Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender)
+    /// `\c` = XML 1.0 (Second Edition) `NameChar`
     XmlNameChar,
     /// `\C` = complement of \c
     NotXmlNameChar,
@@ -91,7 +109,18 @@ enum CharEscape {
 #[derive(Debug, Clone)]
 struct UnicodeProperty {
     negated: bool,
-    name: String,
+    class: PropertyClass,
+}
+
+/// The set a `\p{..}` names, resolved when the pattern is compiled.
+#[derive(Debug, Clone, Copy)]
+enum PropertyClass {
+    /// One general category, such as `Lu`.
+    Category(GeneralCategory),
+    /// All the categories of one letter, such as `L`.
+    Group(char),
+    /// An `Is` block escape: its code point ranges.
+    Block(&'static [(u32, u32)]),
 }
 
 /// Default maximum nesting depth of `(...)` groups plus character-class
@@ -192,6 +221,9 @@ impl XsdRegex {
 struct MatchBudget {
     steps: usize,
     max_steps: usize,
+    /// The general-category run of the last non-ASCII character looked up in
+    /// this match, reused while the next characters stay inside it.
+    run: CategoryRun,
 }
 
 impl MatchBudget {
@@ -199,6 +231,7 @@ impl MatchBudget {
         MatchBudget {
             steps: 0,
             max_steps,
+            run: CategoryRun::EMPTY,
         }
     }
 
@@ -419,56 +452,56 @@ fn parse_escape(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
     let c = chars[*pos];
     *pos += 1;
     match c {
-        'd' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::Digit)],
-            subtraction: None,
-        })),
-        'D' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::NotDigit)],
-            subtraction: None,
-        })),
-        's' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::Space)],
-            subtraction: None,
-        })),
-        'S' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::NotSpace)],
-            subtraction: None,
-        })),
-        'w' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::Word)],
-            subtraction: None,
-        })),
-        'W' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::NotWord)],
-            subtraction: None,
-        })),
-        'i' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::XmlInitial)],
-            subtraction: None,
-        })),
-        'I' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::NotXmlInitial)],
-            subtraction: None,
-        })),
-        'c' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::XmlNameChar)],
-            subtraction: None,
-        })),
-        'C' => Ok(RegexNode::CharClass(CharClass {
-            negated: false,
-            members: vec![ClassMember::Escape(CharEscape::NotXmlNameChar)],
-            subtraction: None,
-        })),
+        'd' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::Digit)],
+            None,
+        ))),
+        'D' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::NotDigit)],
+            None,
+        ))),
+        's' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::Space)],
+            None,
+        ))),
+        'S' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::NotSpace)],
+            None,
+        ))),
+        'w' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::Word)],
+            None,
+        ))),
+        'W' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::NotWord)],
+            None,
+        ))),
+        'i' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::XmlInitial)],
+            None,
+        ))),
+        'I' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::NotXmlInitial)],
+            None,
+        ))),
+        'c' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::XmlNameChar)],
+            None,
+        ))),
+        'C' => Ok(RegexNode::CharClass(char_class(
+            false,
+            vec![ClassMember::Escape(CharEscape::NotXmlNameChar)],
+            None,
+        ))),
         'p' | 'P' => {
             let negated = c == 'P';
             if *pos < chars.len() && chars[*pos] == '{' {
@@ -482,14 +515,13 @@ fn parse_escape(chars: &[char], pos: &mut usize) -> Result<RegexNode, String> {
                 }
                 let name: String = chars[start..*pos].iter().collect();
                 *pos += 1; // skip '}'
-                if !is_known_property_name(&name) {
-                    return Err(format!("Unknown Unicode property '{}'", name));
-                }
-                Ok(RegexNode::CharClass(CharClass {
-                    negated: false,
-                    members: vec![ClassMember::Property(UnicodeProperty { negated, name })],
-                    subtraction: None,
-                }))
+                let class = resolve_property(&name)
+                    .ok_or_else(|| format!("Unknown Unicode property '{}'", name))?;
+                Ok(RegexNode::CharClass(char_class(
+                    false,
+                    vec![ClassMember::Property(UnicodeProperty { negated, class })],
+                    None,
+                )))
             } else {
                 Err("Expected '{' after \\p or \\P".into())
             }
@@ -549,11 +581,7 @@ fn parse_char_class(
         return Err("Expected ']' to close character class".into());
     }
 
-    Ok(CharClass {
-        negated,
-        members,
-        subtraction,
-    })
+    Ok(char_class(negated, members, subtraction))
 }
 
 /// Parse members inside a character class until ']' or subtraction '-['.
@@ -634,10 +662,9 @@ fn parse_class_atom(chars: &[char], pos: &mut usize) -> Result<ClassMember, Stri
                         }
                         let name: String = chars[start..*pos].iter().collect();
                         *pos += 1;
-                        if !is_known_property_name(&name) {
-                            return Err(format!("Unknown Unicode property '{}'", name));
-                        }
-                        Ok(ClassMember::Property(UnicodeProperty { negated, name }))
+                        let class = resolve_property(&name)
+                            .ok_or_else(|| format!("Unknown Unicode property '{}'", name))?;
+                        Ok(ClassMember::Property(UnicodeProperty { negated, class }))
                     } else {
                         Err("Expected '{' after \\p or \\P in character class".into())
                     }
@@ -688,7 +715,7 @@ fn match_node(
             }
         }
         RegexNode::CharClass(cc) => {
-            if start < input.len() && char_class_matches(cc, input[start]) {
+            if start < input.len() && char_class_matches(cc, input[start], &mut budget.run) {
                 vec![start + 1]
             } else {
                 vec![]
@@ -844,15 +871,183 @@ fn match_repetition(
 
 // ─── Character class matching ────────────────────────────────────────────────
 
-fn char_class_matches(cc: &CharClass, ch: char) -> bool {
+/// Every general category, as a set (see [`ClassMember::Categories`]).
+const ALL_CATEGORIES: u32 = (1 << 30) - 1;
+
+/// The set holding `cat` alone.
+fn category_bit(cat: GeneralCategory) -> u32 {
+    1 << cat as u32
+}
+
+/// The set of the categories of one group letter (`L`, `M`, `N`, `P`, `S`,
+/// `Z` or `C`).
+fn group_bits(group: char) -> u32 {
+    use GeneralCategory::*;
+    let members: &[GeneralCategory] = match group {
+        'L' => &[Lu, Ll, Lt, Lm, Lo],
+        'M' => &[Mn, Mc, Me],
+        'N' => &[Nd, Nl, No],
+        'P' => &[Pc, Pd, Ps, Pe, Pi, Pf, Po],
+        'S' => &[Sm, Sc, Sk, So],
+        'Z' => &[Zs, Zl, Zp],
+        'C' => &[Cc, Cf, Cs, Co, Cn],
+        _ => &[],
+    };
+    members.iter().fold(0, |set, &cat| set | category_bit(cat))
+}
+
+/// The categories `member` stands for, or `None` when it is not defined by
+/// general categories (a character, a range, `\s`, `\i`, `\c`, a block).
+fn member_categories(member: &ClassMember) -> Option<u32> {
+    let not_word = group_bits('P') | group_bits('Z') | group_bits('C');
+    match member {
+        ClassMember::Escape(CharEscape::Digit) => Some(category_bit(GeneralCategory::Nd)),
+        ClassMember::Escape(CharEscape::NotDigit) => {
+            Some(ALL_CATEGORIES & !category_bit(GeneralCategory::Nd))
+        }
+        ClassMember::Escape(CharEscape::Word) => Some(ALL_CATEGORIES & !not_word),
+        ClassMember::Escape(CharEscape::NotWord) => Some(not_word),
+        ClassMember::Property(prop) => {
+            let set = match prop.class {
+                PropertyClass::Category(cat) => category_bit(cat),
+                PropertyClass::Group(group) => group_bits(group),
+                PropertyClass::Block(_) => return None,
+            };
+            Some(if prop.negated {
+                ALL_CATEGORIES & !set
+            } else {
+                set
+            })
+        }
+        _ => None,
+    }
+}
+
+/// Build a character class. When two or more members are defined by general
+/// categories, they are folded into one [`ClassMember::Categories`] set at the
+/// end, so matching looks a character's category up once per class, not once
+/// per member. A single such member keeps its own path (`\d` keeps its ASCII
+/// fast path).
+fn char_class(
+    negated: bool,
+    members: Vec<ClassMember>,
+    subtraction: Option<Box<CharClass>>,
+) -> CharClass {
+    let foldable = members
+        .iter()
+        .filter(|m| member_categories(m).is_some())
+        .count();
+    if foldable < 2 {
+        return CharClass {
+            negated,
+            members,
+            subtraction,
+        };
+    }
+    let mut categories = 0;
+    let mut kept = Vec::with_capacity(members.len());
+    for member in members {
+        match member_categories(&member) {
+            Some(set) => categories |= set,
+            None => kept.push(member),
+        }
+    }
+    if categories != 0 {
+        kept.push(ClassMember::Categories(categories));
+    }
+    CharClass {
+        negated,
+        members: kept,
+        subtraction,
+    }
+}
+
+/// A run of code points that share one general category: `first..=last`.
+#[derive(Clone, Copy)]
+struct CategoryRun {
+    first: u32,
+    last: u32,
+    category: GeneralCategory,
+}
+
+impl CategoryRun {
+    /// A run that holds no code point.
+    const EMPTY: CategoryRun = CategoryRun {
+        first: 1,
+        last: 0,
+        category: GeneralCategory::Cn,
+    };
+
+    fn contains(&self, c: u32) -> bool {
+        self.first <= c && c <= self.last
+    }
+}
+
+/// A character being tested against a character class. Its general category
+/// is looked up at most once, however many members of the class (and of its
+/// subtractions) ask for it, and not at all while the character stays in the
+/// run of the previous lookup.
+struct ClassChar<'a> {
+    ch: char,
+    category: Option<GeneralCategory>,
+    run: &'a mut CategoryRun,
+}
+
+impl<'a> ClassChar<'a> {
+    fn new(ch: char, run: &'a mut CategoryRun) -> Self {
+        ClassChar {
+            ch,
+            category: None,
+            run,
+        }
+    }
+
+    fn category(&mut self) -> GeneralCategory {
+        if let Some(cat) = self.category {
+            return cat;
+        }
+        let c = self.ch as u32;
+        let cat = if let Some(&cat) = ASCII_CATEGORIES.get(c as usize) {
+            cat
+        } else {
+            if !self.run.contains(c) {
+                *self.run = category_run(c);
+            }
+            self.run.category
+        };
+        self.category = Some(cat);
+        cat
+    }
+
+    /// XSD `\d`: `\p{Nd}`, the decimal digits of every script.
+    fn is_decimal_digit(&mut self) -> bool {
+        if self.ch.is_ascii() {
+            return self.ch.is_ascii_digit();
+        }
+        self.category() == GeneralCategory::Nd
+    }
+
+    /// XSD `\w`: `[#x0000-#x10FFFF]-[\p{P}\p{Z}\p{C}]`, every character except
+    /// punctuation, separators and "other" characters (controls, format,
+    /// private use and unassigned).
+    fn is_word_char(&mut self) -> bool {
+        !matches!(category_group(self.category()), 'P' | 'Z' | 'C')
+    }
+}
+
+fn char_class_matches(cc: &CharClass, ch: char, run: &mut CategoryRun) -> bool {
+    class_matches(cc, &mut ClassChar::new(ch, run))
+}
+
+fn class_matches(cc: &CharClass, c: &mut ClassChar) -> bool {
     let mut matches = if cc.negated {
-        !any_member_matches(&cc.members, ch)
+        !any_member_matches(&cc.members, c)
     } else {
-        any_member_matches(&cc.members, ch)
+        any_member_matches(&cc.members, c)
     };
 
     if let Some(ref sub) = cc.subtraction {
-        if char_class_matches(sub, ch) {
+        if class_matches(sub, c) {
             matches = false;
         }
     }
@@ -860,11 +1055,12 @@ fn char_class_matches(cc: &CharClass, ch: char) -> bool {
     matches
 }
 
-fn any_member_matches(members: &[ClassMember], ch: char) -> bool {
+fn any_member_matches(members: &[ClassMember], c: &mut ClassChar) -> bool {
+    let ch = c.ch;
     for member in members {
         match member {
-            ClassMember::Char(c) => {
-                if ch == *c {
+            ClassMember::Char(m) => {
+                if ch == *m {
                     return true;
                 }
             }
@@ -874,17 +1070,22 @@ fn any_member_matches(members: &[ClassMember], ch: char) -> bool {
                 }
             }
             ClassMember::Escape(esc) => {
-                if escape_matches(*esc, ch) {
+                if escape_matches(*esc, c) {
                     return true;
                 }
             }
             ClassMember::Property(prop) => {
-                if property_matches(prop, ch) {
+                if property_matches(prop, c) {
+                    return true;
+                }
+            }
+            ClassMember::Categories(set) => {
+                if set & category_bit(c.category()) != 0 {
                     return true;
                 }
             }
             ClassMember::Nested(inner) => {
-                if char_class_matches(inner, ch) {
+                if class_matches(inner, c) {
                     return true;
                 }
             }
@@ -893,14 +1094,15 @@ fn any_member_matches(members: &[ClassMember], ch: char) -> bool {
     false
 }
 
-fn escape_matches(esc: CharEscape, ch: char) -> bool {
+fn escape_matches(esc: CharEscape, c: &mut ClassChar) -> bool {
+    let ch = c.ch;
     match esc {
-        CharEscape::Digit => ch.is_ascii_digit(),
-        CharEscape::NotDigit => !ch.is_ascii_digit(),
+        CharEscape::Digit => c.is_decimal_digit(),
+        CharEscape::NotDigit => !c.is_decimal_digit(),
         CharEscape::Space => matches!(ch, ' ' | '\t' | '\n' | '\r'),
         CharEscape::NotSpace => !matches!(ch, ' ' | '\t' | '\n' | '\r'),
-        CharEscape::Word => is_word_char(ch),
-        CharEscape::NotWord => !is_word_char(ch),
+        CharEscape::Word => c.is_word_char(),
+        CharEscape::NotWord => !c.is_word_char(),
         CharEscape::XmlInitial => is_xml_initial(ch),
         CharEscape::NotXmlInitial => !is_xml_initial(ch),
         CharEscape::XmlNameChar => is_xml_name_char(ch),
@@ -908,140 +1110,104 @@ fn escape_matches(esc: CharEscape, ch: char) -> bool {
     }
 }
 
-/// XSD \w: all characters except the set of "punctuation", "separator",
-/// and "other" characters. Simplified to [a-zA-Z0-9_] for ASCII, plus
-/// Unicode letters and digits.
-fn is_word_char(ch: char) -> bool {
-    ch.is_alphanumeric() || ch == '_'
+/// The run of one general category that holds `c`, a non-ASCII code point: a
+/// binary search of the runs of `c`'s 256-code-point page, which the page
+/// index narrows to a few runs (often one). No allocation, no recursion, and
+/// every index is clamped into the table.
+fn category_run(c: u32) -> CategoryRun {
+    let len = CATEGORY_RUNS.len();
+    let page = (c >> 8) as usize;
+    let lo = CATEGORY_PAGES
+        .get(page)
+        .map_or(0, |&i| usize::from(i))
+        .min(len - 1);
+    let hi = CATEGORY_PAGES
+        .get(page + 1)
+        .map_or(len - 1, |&i| usize::from(i))
+        .clamp(lo, len - 1);
+    // The run at `lo` holds the page's first code point (or U+0080), which is
+    // at most `c`, so at least one run of the slice starts at or before `c`.
+    let i = CATEGORY_RUNS[lo..=hi].partition_point(|&(start, _)| start <= c);
+    let j = lo + i.max(1) - 1;
+    let (first, category) = CATEGORY_RUNS[j];
+    let last = CATEGORY_RUNS
+        .get(j + 1)
+        .map_or(0x10FFFF, |&(next, _)| next - 1);
+    CategoryRun {
+        first,
+        last,
+        category,
+    }
 }
 
-/// XML 1.0 initial name character: Letter | '_' | ':'
+/// The general category of `ch`, without a run cache.
+#[cfg(test)]
+fn general_category(ch: char) -> GeneralCategory {
+    let mut run = CategoryRun::EMPTY;
+    ClassChar::new(ch, &mut run).category()
+}
+
+/// The one-letter group of a general category (`L`, `M`, `N`, `P`, `S`, `Z`
+/// or `C`).
+fn category_group(cat: GeneralCategory) -> char {
+    use GeneralCategory::*;
+    match cat {
+        Lu | Ll | Lt | Lm | Lo => 'L',
+        Mn | Mc | Me => 'M',
+        Nd | Nl | No => 'N',
+        Pc | Pd | Ps | Pe | Pi | Pf | Po => 'P',
+        Sm | Sc | Sk | So => 'S',
+        Zs | Zl | Zp => 'Z',
+        Cc | Cf | Cs | Co | Cn => 'C',
+    }
+}
+
+/// Whether `c` lies in one of `ranges`, which are sorted, disjoint and
+/// inclusive: a binary search.
+fn in_ranges(ranges: &[(u32, u32)], c: u32) -> bool {
+    let i = ranges.partition_point(|&(first, _)| first <= c);
+    ranges
+        .get(i.wrapping_sub(1))
+        .is_some_and(|&(_, last)| c <= last)
+}
+
+/// Whether `c` lies in one of `ranges` (all in the BMP), using `pages`, their
+/// page index, to narrow the binary search to the ranges that meet `c`'s
+/// 256-code-point page. A code point beyond the BMP is in none of them.
+fn in_paged_ranges(ranges: &[(u32, u32)], pages: &[u16; 257], c: u32) -> bool {
+    let page = (c >> 8) as usize;
+    let (Some(&lo), Some(&hi)) = (pages.get(page), pages.get(page + 1)) else {
+        return false;
+    };
+    let hi = (usize::from(hi) + 1).min(ranges.len());
+    ranges
+        .get(usize::from(lo)..hi)
+        .is_some_and(|candidates| in_ranges(candidates, c))
+}
+
+/// XSD `\i`: XML 1.0 (Second Edition) `Letter | '_' | ':'`.
 fn is_xml_initial(ch: char) -> bool {
-    ch == '_' || ch == ':' || ch.is_alphabetic()
+    if ch.is_ascii() {
+        return ch.is_ascii_alphabetic() || ch == '_' || ch == ':';
+    }
+    in_paged_ranges(&XML_NAME_START_RANGES, &XML_NAME_START_PAGES, ch as u32)
 }
 
-/// XML 1.0 name character: Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender
+/// XSD `\c`: XML 1.0 (Second Edition) `NameChar`.
 fn is_xml_name_char(ch: char) -> bool {
-    is_xml_initial(ch) || ch.is_ascii_digit() || ch == '.' || ch == '-'
-        || ch.is_numeric() // covers digits in other scripts
-        // CombiningChar and Extender — cover via Unicode categories
-        || is_combining_char(ch)
-        || is_extender(ch)
-}
-
-fn is_combining_char(ch: char) -> bool {
-    let c = ch as u32;
-    // Unicode combining marks (approximate, covers Mn and Mc)
-    (0x0300..=0x036F).contains(&c)  // Combining Diacritical Marks
-        || (0x0483..=0x0487).contains(&c)
-        || (0x0591..=0x05BD).contains(&c)
-        || (0x05BF..=0x05BF).contains(&c)
-        || (0x05C1..=0x05C2).contains(&c)
-        || (0x05C4..=0x05C5).contains(&c)
-        || (0x0610..=0x061A).contains(&c)
-        || (0x064B..=0x065F).contains(&c)
-        || (0x0670..=0x0670).contains(&c)
-        || (0x06D6..=0x06DC).contains(&c)
-        || (0x06DF..=0x06E4).contains(&c)
-        || (0x06E7..=0x06E8).contains(&c)
-        || (0x06EA..=0x06ED).contains(&c)
-        || (0x0711..=0x0711).contains(&c)
-        || (0x0730..=0x074A).contains(&c)
-        || (0x0901..=0x0903).contains(&c)
-        || (0x093C..=0x093C).contains(&c)
-        || (0x093E..=0x094D).contains(&c)
-        || (0x0951..=0x0954).contains(&c)
-        || (0x0962..=0x0963).contains(&c)
-        || (0x0981..=0x0983).contains(&c)
-        || (0x09BC..=0x09BC).contains(&c)
-        || (0x09BE..=0x09C4).contains(&c)
-        || (0x09C7..=0x09C8).contains(&c)
-        || (0x09CB..=0x09CD).contains(&c)
-        || (0x09D7..=0x09D7).contains(&c)
-        || (0x09E2..=0x09E3).contains(&c)
-        || (0x0A01..=0x0A03).contains(&c)
-        || (0x0A3C..=0x0A3C).contains(&c)
-        || (0x0A3E..=0x0A42).contains(&c)
-        || (0x0A47..=0x0A48).contains(&c)
-        || (0x0A4B..=0x0A4D).contains(&c)
-        || (0x0A70..=0x0A71).contains(&c)
-        || (0x0A81..=0x0A83).contains(&c)
-        || (0x0ABC..=0x0ABC).contains(&c)
-        || (0x0ABE..=0x0AC5).contains(&c)
-        || (0x0AC7..=0x0AC9).contains(&c)
-        || (0x0ACB..=0x0ACD).contains(&c)
-        || (0x0B01..=0x0B03).contains(&c)
-        || (0x0B3C..=0x0B3C).contains(&c)
-        || (0x0B3E..=0x0B43).contains(&c)
-        || (0x0B47..=0x0B48).contains(&c)
-        || (0x0B4B..=0x0B4D).contains(&c)
-        || (0x0B56..=0x0B57).contains(&c)
-        || (0x0B82..=0x0B82).contains(&c)
-        || (0x0BBE..=0x0BC2).contains(&c)
-        || (0x0BC6..=0x0BC8).contains(&c)
-        || (0x0BCA..=0x0BCD).contains(&c)
-        || (0x0BD7..=0x0BD7).contains(&c)
-        || (0x0C01..=0x0C03).contains(&c)
-        || (0x0C3E..=0x0C44).contains(&c)
-        || (0x0C46..=0x0C48).contains(&c)
-        || (0x0C4A..=0x0C4D).contains(&c)
-        || (0x0C55..=0x0C56).contains(&c)
-        || (0x0C82..=0x0C83).contains(&c)
-        || (0x0CBE..=0x0CC4).contains(&c)
-        || (0x0CC6..=0x0CC8).contains(&c)
-        || (0x0CCA..=0x0CCD).contains(&c)
-        || (0x0CD5..=0x0CD6).contains(&c)
-        || (0x0D02..=0x0D03).contains(&c)
-        || (0x0D3E..=0x0D43).contains(&c)
-        || (0x0D46..=0x0D48).contains(&c)
-        || (0x0D4A..=0x0D4D).contains(&c)
-        || (0x0D57..=0x0D57).contains(&c)
-        || (0x0E31..=0x0E31).contains(&c)
-        || (0x0E34..=0x0E3A).contains(&c)
-        || (0x0E47..=0x0E4E).contains(&c)
-        || (0x0EB1..=0x0EB1).contains(&c)
-        || (0x0EB4..=0x0EB9).contains(&c)
-        || (0x0EBB..=0x0EBC).contains(&c)
-        || (0x0EC8..=0x0ECD).contains(&c)
-        || (0x0F18..=0x0F19).contains(&c)
-        || (0x0F35..=0x0F35).contains(&c)
-        || (0x0F37..=0x0F37).contains(&c)
-        || (0x0F39..=0x0F39).contains(&c)
-        || (0x0F3E..=0x0F3F).contains(&c)
-        || (0x0F71..=0x0F84).contains(&c)
-        || (0x0F86..=0x0F87).contains(&c)
-        || (0x0F90..=0x0F97).contains(&c)
-        || (0x0F99..=0x0FBC).contains(&c)
-        || (0x0FC6..=0x0FC6).contains(&c)
-        || (0x20D0..=0x20DC).contains(&c)
-        || (0x20E1..=0x20E1).contains(&c)
-        || (0x302A..=0x302F).contains(&c)
-        || (0x3099..=0x309A).contains(&c)
-        || (0xFE20..=0xFE23).contains(&c)
-}
-
-fn is_extender(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x00B7
-        || c == 0x02D0
-        || c == 0x02D1
-        || c == 0x0387
-        || c == 0x0640
-        || c == 0x0E46
-        || c == 0x0EC6
-        || c == 0x3005
-        || (0x3031..=0x3035).contains(&c)
-        || (0x309D..=0x309E).contains(&c)
-        || (0x30FC..=0x30FE).contains(&c)
+    if ch.is_ascii() {
+        return ch.is_ascii_alphanumeric() || matches!(ch, '_' | ':' | '.' | '-');
+    }
+    in_paged_ranges(&XML_NAME_RANGES, &XML_NAME_PAGES, ch as u32)
 }
 
 /// Match Unicode property \p{...} or \P{...}.
-fn property_matches(prop: &UnicodeProperty, ch: char) -> bool {
-    // Unknown property names are rejected at compile time (see
-    // `is_known_property_name`), so they cannot reach here. Treat the
-    // impossible unknown case as "matches nothing" (fail-closed) so a
-    // future regression can never make `\P{unknown}` admit every char.
-    let base_match = match_property_name(&prop.name, ch).unwrap_or(false);
+fn property_matches(prop: &UnicodeProperty, c: &mut ClassChar) -> bool {
+    let base_match = match prop.class {
+        PropertyClass::Category(cat) => c.category() == cat,
+        PropertyClass::Group(group) => category_group(c.category()) == group,
+        PropertyClass::Block(ranges) => in_ranges(ranges, c.ch as u32),
+    };
     if prop.negated {
         !base_match
     } else {
@@ -1049,822 +1215,200 @@ fn property_matches(prop: &UnicodeProperty, ch: char) -> bool {
     }
 }
 
-/// Returns `true` if `name` is a recognized Unicode general category or block.
+/// Resolve the name inside `\p{..}` or `\P{..}`. Returns `None` when `name` is
+/// not a recognized property, so the pattern is refused at compile time:
+/// otherwise `\p{unknown}` would match nothing and `\P{unknown}` *every*
+/// character, silently widening a pattern (a validation bypass).
 ///
-/// Unknown property names must be rejected at compile time: otherwise
-/// `\p{unknown}` matches nothing and `\P{unknown}` matches *every* character,
-/// silently widening a pattern (a validation bypass). The supplied char is
-/// irrelevant to known-ness — a recognized property yields `Some(_)` and an
-/// unrecognized one yields `None`.
-///
-/// The recognized set is the **closed** list XSD 1.0 Part 2 defines: the Unicode
-/// general categories plus the Appendix-F `IsBlock` names (see
-/// [`match_unicode_block`]). A name outside that list is not a valid escape, so
-/// rejecting it is spec-correct rather than an over-restriction.
-fn is_known_property_name(name: &str) -> bool {
-    match_property_name(name, 'a').is_some()
-}
-
-/// Match a Unicode general category or block name. Returns `None` when `name`
-/// is not a recognized property (so callers can fail closed).
-fn match_property_name(name: &str, ch: char) -> Option<bool> {
-    let matched = match name {
-        // General categories
-        "L" => ch.is_alphabetic(),
-        "Lu" => ch.is_uppercase(),
-        "Ll" => ch.is_lowercase(),
-        "Lt" => is_titlecase(ch),
-        "Lm" => is_modifier_letter(ch),
-        "Lo" => is_other_letter(ch),
-        "M" => is_mark(ch),
-        "Mn" => is_nonspacing_mark(ch),
-        "Mc" => is_spacing_mark(ch),
-        "Me" => is_enclosing_mark(ch),
-        "N" => ch.is_numeric(),
-        "Nd" => ch.is_ascii_digit() || is_decimal_digit(ch),
-        "Nl" => is_letter_number(ch),
-        "No" => is_other_number(ch),
-        "P" => is_punctuation(ch),
-        "Pc" => is_connector_punctuation(ch),
-        "Pd" => is_dash_punctuation(ch),
-        "Ps" => is_open_punctuation(ch),
-        "Pe" => is_close_punctuation(ch),
-        "Pi" => is_initial_punctuation(ch),
-        "Pf" => is_final_punctuation(ch),
-        "Po" => is_other_punctuation(ch),
-        "S" => is_symbol(ch),
-        "Sm" => is_math_symbol(ch),
-        "Sc" => is_currency_symbol(ch),
-        "Sk" => is_modifier_symbol(ch),
-        "So" => is_other_symbol(ch),
-        "Z" => is_separator(ch),
-        "Zs" => is_space_separator(ch),
-        "Zl" => ch == '\u{2028}',
-        "Zp" => ch == '\u{2029}',
-        "C" => is_other(ch),
-        "Cc" => ch.is_control(),
-        "Cf" => is_format(ch),
-        "Co" => is_private_use(ch),
-        "Cn" => !ch.is_alphanumeric() && !is_assigned(ch),
-        // Unicode block escapes (Is...)
-        _ if name.starts_with("Is") => return match_unicode_block(&name[2..], ch),
+/// The recognized set is **closed**: the general categories of XSD 1.0 Part 2
+/// (Appendix F.1) `IsCategory`, which exclude `Cs`, and the `IsBlock` names of
+/// [`XSD_BLOCKS`].
+fn resolve_property(name: &str) -> Option<PropertyClass> {
+    use GeneralCategory::*;
+    if let Some(block) = name.strip_prefix("Is") {
+        return XSD_BLOCKS
+            .iter()
+            .find(|(block_name, _)| *block_name == block)
+            .map(|&(_, ranges)| PropertyClass::Block(ranges));
+    }
+    let category = match name {
+        "L" | "M" | "N" | "P" | "S" | "Z" | "C" => {
+            return name.chars().next().map(PropertyClass::Group);
+        }
+        "Lu" => Lu,
+        "Ll" => Ll,
+        "Lt" => Lt,
+        "Lm" => Lm,
+        "Lo" => Lo,
+        "Mn" => Mn,
+        "Mc" => Mc,
+        "Me" => Me,
+        "Nd" => Nd,
+        "Nl" => Nl,
+        "No" => No,
+        "Pc" => Pc,
+        "Pd" => Pd,
+        "Ps" => Ps,
+        "Pe" => Pe,
+        "Pi" => Pi,
+        "Pf" => Pf,
+        "Po" => Po,
+        "Sm" => Sm,
+        "Sc" => Sc,
+        "Sk" => Sk,
+        "So" => So,
+        "Zs" => Zs,
+        "Zl" => Zl,
+        "Zp" => Zp,
+        "Cc" => Cc,
+        "Cf" => Cf,
+        "Co" => Co,
+        "Cn" => Cn,
         _ => return None,
     };
-    Some(matched)
-}
-
-// ─── Unicode category helpers ────────────────────────────────────────────────
-// These provide approximate implementations using Rust's built-in char methods
-// where possible, and code point ranges for specifics.
-
-fn is_titlecase(ch: char) -> bool {
-    let c = ch as u32;
-    // Titlecase letters: Dz, Lj, Nj, etc.
-    matches!(
-        c,
-        0x01C5 | 0x01C8 | 0x01CB | 0x01F2 | 0x1F88..=0x1F8F | 0x1F98..=0x1F9F
-        | 0x1FA8..=0x1FAF | 0x1FBC | 0x1FCC | 0x1FFC
-    )
-}
-
-fn is_modifier_letter(ch: char) -> bool {
-    let c = ch as u32;
-    (0x02B0..=0x02C1).contains(&c)
-        || (0x02C6..=0x02D1).contains(&c)
-        || (0x02E0..=0x02E4).contains(&c)
-        || c == 0x02EC
-        || c == 0x02EE
-        || (0x0374..=0x0375).contains(&c)
-        || c == 0x037A
-        || (0x0559..=0x0559).contains(&c)
-        || c == 0x0640
-        || (0x06E5..=0x06E6).contains(&c)
-        || c == 0x07F4
-        || c == 0x07F5
-        || c == 0x07FA
-        || (0x0E46..=0x0E46).contains(&c)
-        || (0x0EC6..=0x0EC6).contains(&c)
-        || (0x10FC..=0x10FC).contains(&c)
-        || (0x17D7..=0x17D7).contains(&c)
-        || (0x1843..=0x1843).contains(&c)
-        || (0x1D2C..=0x1D6A).contains(&c)
-        || (0x1D78..=0x1D78).contains(&c)
-        || (0x1D9B..=0x1DBF).contains(&c)
-        || (0x2090..=0x2094).contains(&c)
-        || (0x2D6F..=0x2D6F).contains(&c)
-        || (0x3005..=0x3005).contains(&c)
-        || (0x3031..=0x3035).contains(&c)
-        || (0x303B..=0x303B).contains(&c)
-        || (0x309D..=0x309E).contains(&c)
-        || (0x30FC..=0x30FE).contains(&c)
-        || (0xA717..=0xA71F).contains(&c)
-        || (0xFF70..=0xFF70).contains(&c)
-        || (0xFF9E..=0xFF9F).contains(&c)
-}
-
-fn is_other_letter(ch: char) -> bool {
-    // Lo: letters that are not Lu, Ll, Lt, Lm
-    ch.is_alphabetic()
-        && !ch.is_uppercase()
-        && !ch.is_lowercase()
-        && !is_titlecase(ch)
-        && !is_modifier_letter(ch)
-}
-
-fn is_mark(ch: char) -> bool {
-    is_nonspacing_mark(ch) || is_spacing_mark(ch) || is_enclosing_mark(ch)
-}
-
-fn is_nonspacing_mark(ch: char) -> bool {
-    is_combining_char(ch) && !is_spacing_mark(ch)
-}
-
-fn is_spacing_mark(ch: char) -> bool {
-    let c = ch as u32;
-    // Mc category — spacing combining marks
-    (0x0903..=0x0903).contains(&c)
-        || (0x093E..=0x0940).contains(&c)
-        || (0x0949..=0x094C).contains(&c)
-        || (0x0982..=0x0983).contains(&c)
-        || (0x09BE..=0x09C0).contains(&c)
-        || (0x09C7..=0x09C8).contains(&c)
-        || (0x09CB..=0x09CC).contains(&c)
-        || (0x09D7..=0x09D7).contains(&c)
-        || (0x0A03..=0x0A03).contains(&c)
-        || (0x0A3E..=0x0A40).contains(&c)
-        || (0x0A83..=0x0A83).contains(&c)
-        || (0x0ABE..=0x0AC0).contains(&c)
-        || (0x0AC9..=0x0AC9).contains(&c)
-        || (0x0ACB..=0x0ACC).contains(&c)
-        || (0x0B02..=0x0B03).contains(&c)
-        || (0x0B3E..=0x0B3E).contains(&c)
-        || (0x0B40..=0x0B40).contains(&c)
-        || (0x0B47..=0x0B48).contains(&c)
-        || (0x0B4B..=0x0B4C).contains(&c)
-        || (0x0B57..=0x0B57).contains(&c)
-        || (0x0BBE..=0x0BBF).contains(&c)
-        || (0x0BC1..=0x0BC2).contains(&c)
-        || (0x0BC6..=0x0BC8).contains(&c)
-        || (0x0BCA..=0x0BCC).contains(&c)
-        || (0x0BD7..=0x0BD7).contains(&c)
-        || (0x0C01..=0x0C03).contains(&c)
-        || (0x0C41..=0x0C44).contains(&c)
-        || (0x0C82..=0x0C83).contains(&c)
-        || (0x0CBE..=0x0CBE).contains(&c)
-        || (0x0CC0..=0x0CC4).contains(&c)
-        || (0x0CC7..=0x0CC8).contains(&c)
-        || (0x0CCA..=0x0CCB).contains(&c)
-        || (0x0CD5..=0x0CD6).contains(&c)
-        || (0x0D02..=0x0D03).contains(&c)
-        || (0x0D3E..=0x0D40).contains(&c)
-        || (0x0D46..=0x0D48).contains(&c)
-        || (0x0D4A..=0x0D4C).contains(&c)
-        || (0x0D57..=0x0D57).contains(&c)
-        || (0x0F3E..=0x0F3F).contains(&c)
-        || (0x0F7F..=0x0F7F).contains(&c)
-}
-
-fn is_enclosing_mark(ch: char) -> bool {
-    let c = ch as u32;
-    (0x0488..=0x0489).contains(&c)
-        || (0x20DD..=0x20E0).contains(&c)
-        || (0x20E2..=0x20E4).contains(&c)
-        || c == 0xA670
-        || c == 0xA671
-        || c == 0xA672
-}
-
-fn is_decimal_digit(ch: char) -> bool {
-    let c = ch as u32;
-    ch.is_ascii_digit()
-        || (0x0660..=0x0669).contains(&c) // Arabic-Indic
-        || (0x06F0..=0x06F9).contains(&c) // Extended Arabic-Indic
-        || (0x0966..=0x096F).contains(&c) // Devanagari
-        || (0x09E6..=0x09EF).contains(&c) // Bengali
-        || (0x0A66..=0x0A6F).contains(&c) // Gurmukhi
-        || (0x0AE6..=0x0AEF).contains(&c) // Gujarati
-        || (0x0B66..=0x0B6F).contains(&c) // Oriya
-        || (0x0BE7..=0x0BEF).contains(&c) // Tamil
-        || (0x0C66..=0x0C6F).contains(&c) // Telugu
-        || (0x0CE6..=0x0CEF).contains(&c) // Kannada
-        || (0x0D66..=0x0D6F).contains(&c) // Malayalam
-        || (0x0E50..=0x0E59).contains(&c) // Thai
-        || (0x0ED0..=0x0ED9).contains(&c) // Lao
-        || (0x0F20..=0x0F29).contains(&c) // Tibetan
-        || (0x1040..=0x1049).contains(&c) // Myanmar
-        || (0x17E0..=0x17E9).contains(&c) // Khmer
-        || (0x1810..=0x1819).contains(&c) // Mongolian
-        || (0xFF10..=0xFF19).contains(&c) // Fullwidth
-}
-
-fn is_letter_number(ch: char) -> bool {
-    let c = ch as u32;
-    (0x2160..=0x2182).contains(&c) // Roman numerals
-        || (0x3007..=0x3007).contains(&c) // CJK ideograph zero
-        || (0x3021..=0x3029).contains(&c) // Hangzhou numerals
-        || (0x3038..=0x303A).contains(&c)
-}
-
-fn is_other_number(ch: char) -> bool {
-    let c = ch as u32;
-    (0x00B2..=0x00B3).contains(&c) // superscript 2-3
-        || c == 0x00B9 // superscript 1
-        || (0x00BC..=0x00BE).contains(&c) // vulgar fractions
-        || (0x09F4..=0x09F9).contains(&c) // Bengali currency
-        || (0x0BF0..=0x0BF2).contains(&c) // Tamil
-        || (0x0F2A..=0x0F33).contains(&c) // Tibetan
-        || (0x2070..=0x2079).contains(&c) // superscripts
-        || (0x2080..=0x2089).contains(&c) // subscripts
-        || (0x2153..=0x215E).contains(&c) // fractions
-        || (0x2460..=0x249B).contains(&c) // enclosed alphanumerics
-        || (0x24EA..=0x24EA).contains(&c)
-        || (0x2776..=0x2793).contains(&c)
-        || (0x2CFD..=0x2CFD).contains(&c)
-        || (0x3192..=0x3195).contains(&c)
-        || (0x3220..=0x3229).contains(&c)
-        || (0x3251..=0x325F).contains(&c)
-        || (0x3280..=0x3289).contains(&c)
-        || (0x32B1..=0x32BF).contains(&c)
-}
-
-fn is_punctuation(ch: char) -> bool {
-    is_connector_punctuation(ch)
-        || is_dash_punctuation(ch)
-        || is_open_punctuation(ch)
-        || is_close_punctuation(ch)
-        || is_initial_punctuation(ch)
-        || is_final_punctuation(ch)
-        || is_other_punctuation(ch)
-}
-
-fn is_connector_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x005F // _
-        || c == 0x203F
-        || c == 0x2040
-        || c == 0x2054
-        || c == 0xFE33
-        || c == 0xFE34
-        || c == 0xFE4D
-        || c == 0xFE4E
-        || c == 0xFE4F
-        || c == 0xFF3F
-}
-
-fn is_dash_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x002D // -
-        || c == 0x058A
-        || c == 0x05BE
-        || c == 0x1400
-        || c == 0x1806
-        || c == 0x2010
-        || c == 0x2011
-        || c == 0x2012
-        || c == 0x2013
-        || c == 0x2014
-        || c == 0x2015
-        || c == 0x2E17
-        || c == 0x301C
-        || c == 0x3030
-        || c == 0x30A0
-        || c == 0xFE31
-        || c == 0xFE32
-        || c == 0xFE58
-        || c == 0xFE63
-        || c == 0xFF0D
-}
-
-fn is_open_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x0028 // (
-        || c == 0x005B // [
-        || c == 0x007B // {
-        || c == 0x0F3A
-        || c == 0x0F3C
-        || c == 0x169B
-        || c == 0x201A
-        || c == 0x201E
-        || c == 0x2045
-        || c == 0x207D
-        || c == 0x208D
-        || c == 0x2329
-        || c == 0x23B4 // not technically Ps in all versions
-        || c == 0x2768
-        || c == 0x276A
-        || c == 0x276C
-        || c == 0x276E
-        || c == 0x2770
-        || c == 0x2772
-        || c == 0x2774
-        || c == 0x27C5
-        || c == 0x27E6
-        || c == 0x27E8
-        || c == 0x27EA
-        || c == 0x2983
-        || c == 0x2985
-        || c == 0x2987
-        || c == 0x2989
-        || c == 0x298B
-        || c == 0x298D
-        || c == 0x298F
-        || c == 0x2991
-        || c == 0x2993
-        || c == 0x2995
-        || c == 0x2997
-        || c == 0x29D8
-        || c == 0x29DA
-        || c == 0x29FC
-        || c == 0x3008
-        || c == 0x300A
-        || c == 0x300C
-        || c == 0x300E
-        || c == 0x3010
-        || c == 0x3014
-        || c == 0x3016
-        || c == 0x3018
-        || c == 0x301A
-        || c == 0x301D
-        || c == 0xFD3E
-        || c == 0xFE17
-        || c == 0xFE35
-        || c == 0xFE37
-        || c == 0xFE39
-        || c == 0xFE3B
-        || c == 0xFE3D
-        || c == 0xFE3F
-        || c == 0xFE41
-        || c == 0xFE43
-        || c == 0xFE47
-        || c == 0xFE59
-        || c == 0xFE5B
-        || c == 0xFE5D
-        || c == 0xFF08
-        || c == 0xFF3B
-        || c == 0xFF5B
-        || c == 0xFF5F
-        || c == 0xFF62
-}
-
-fn is_close_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x0029 // )
-        || c == 0x005D // ]
-        || c == 0x007D // }
-        || c == 0x0F3B
-        || c == 0x0F3D
-        || c == 0x169C
-        || c == 0x2046
-        || c == 0x207E
-        || c == 0x208E
-        || c == 0x232A
-        || c == 0x23B5
-        || c == 0x2769
-        || c == 0x276B
-        || c == 0x276D
-        || c == 0x276F
-        || c == 0x2771
-        || c == 0x2773
-        || c == 0x2775
-        || c == 0x27C6
-        || c == 0x27E7
-        || c == 0x27E9
-        || c == 0x27EB
-        || c == 0x2984
-        || c == 0x2986
-        || c == 0x2988
-        || c == 0x298A
-        || c == 0x298C
-        || c == 0x298E
-        || c == 0x2990
-        || c == 0x2992
-        || c == 0x2994
-        || c == 0x2996
-        || c == 0x2998
-        || c == 0x29D9
-        || c == 0x29DB
-        || c == 0x29FD
-        || c == 0x3009
-        || c == 0x300B
-        || c == 0x300D
-        || c == 0x300F
-        || c == 0x3011
-        || c == 0x3015
-        || c == 0x3017
-        || c == 0x3019
-        || c == 0x301B
-        || c == 0x301E
-        || c == 0x301F
-        || c == 0xFD3F
-        || c == 0xFE18
-        || c == 0xFE36
-        || c == 0xFE38
-        || c == 0xFE3A
-        || c == 0xFE3C
-        || c == 0xFE3E
-        || c == 0xFE40
-        || c == 0xFE42
-        || c == 0xFE44
-        || c == 0xFE48
-        || c == 0xFE5A
-        || c == 0xFE5C
-        || c == 0xFE5E
-        || c == 0xFF09
-        || c == 0xFF3D
-        || c == 0xFF5D
-        || c == 0xFF60
-        || c == 0xFF63
-}
-
-fn is_initial_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x00AB
-        || c == 0x2018
-        || c == 0x201B
-        || c == 0x201C
-        || c == 0x201F
-        || c == 0x2039
-        || c == 0x2E02
-        || c == 0x2E04
-        || c == 0x2E09
-        || c == 0x2E0C
-        || c == 0x2E1C
-}
-
-fn is_final_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x00BB
-        || c == 0x2019
-        || c == 0x201D
-        || c == 0x203A
-        || c == 0x2E03
-        || c == 0x2E05
-        || c == 0x2E0A
-        || c == 0x2E0D
-        || c == 0x2E1D
-}
-
-fn is_other_punctuation(ch: char) -> bool {
-    let c = ch as u32;
-    // Common ASCII punctuation (Pc, Pd, Ps, Pe excluded)
-    matches!(
-        c,
-        0x0021..=0x0023
-            | 0x0025..=0x0027
-            | 0x002A
-            | 0x002C
-            | 0x002E..=0x002F
-            | 0x003A..=0x003B
-            | 0x003F..=0x0040
-            | 0x005C
-            | 0x00A1
-            | 0x00A7
-            | 0x00B6..=0x00B7
-            | 0x00BF
-            | 0x037E
-            | 0x0387
-            | 0x055A..=0x055F
-            | 0x0589
-            | 0x05C0
-            | 0x05C3
-            | 0x05C6
-            | 0x05F3..=0x05F4
-            | 0x060C..=0x060D
-            | 0x061B
-            | 0x061E..=0x061F
-            | 0x066A..=0x066D
-            | 0x06D4
-            | 0x0700..=0x070D
-    )
-}
-
-fn is_symbol(ch: char) -> bool {
-    is_math_symbol(ch) || is_currency_symbol(ch) || is_modifier_symbol(ch) || is_other_symbol(ch)
-}
-
-fn is_math_symbol(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x002B // +
-        || matches!(c, 0x003C..=0x003E) // <, =, >
-        || c == 0x007C // |
-        || c == 0x007E // ~
-        || c == 0x00AC
-        || c == 0x00B1
-        || c == 0x00D7
-        || c == 0x00F7
-        || (0x2200..=0x22FF).contains(&c) // Mathematical Operators
-        || (0x2A00..=0x2AFF).contains(&c) // Supplemental Mathematical Operators
-        || (0x27C0..=0x27EF).contains(&c) // Misc Mathematical Symbols-A
-        || (0x2980..=0x29FF).contains(&c) // Misc Mathematical Symbols-B
-        || c == 0xFB29
-        || c == 0xFE62
-        || c == 0xFE64
-        || c == 0xFE65
-        || c == 0xFE66
-        || c == 0xFF0B
-        || c == 0xFF1C
-        || c == 0xFF1D
-        || c == 0xFF1E
-        || c == 0xFF5C
-        || c == 0xFF5E
-        || c == 0xFFE2
-        || c == 0xFFE9
-        || c == 0xFFEA
-        || c == 0xFFEB
-        || c == 0xFFEC
-}
-
-fn is_currency_symbol(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x0024 // $
-        || matches!(c, 0x00A2..=0x00A5)
-        || c == 0x058F
-        || c == 0x060B
-        || c == 0x09F2
-        || c == 0x09F3
-        || c == 0x0AF1
-        || c == 0x0BF9
-        || c == 0x0E3F
-        || c == 0x17DB
-        || c == 0x20A0
-        || c == 0x20A1
-        || c == 0x20A2
-        || c == 0x20A3
-        || c == 0x20A4
-        || c == 0x20A5
-        || c == 0x20A6
-        || c == 0x20A7
-        || c == 0x20A8
-        || c == 0x20A9
-        || c == 0x20AA
-        || c == 0x20AB
-        || c == 0x20AC // €
-        || c == 0x20AD
-        || c == 0x20AE
-        || c == 0x20AF
-        || c == 0x20B0
-        || c == 0x20B1
-        || c == 0xFDFC
-        || c == 0xFE69
-        || c == 0xFF04
-        || c == 0xFFE0
-        || c == 0xFFE1
-        || c == 0xFFE5
-        || c == 0xFFE6
-}
-
-fn is_modifier_symbol(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x005E // ^
-        || c == 0x0060 // `
-        || c == 0x00A8
-        || c == 0x00AF
-        || c == 0x00B4
-        || c == 0x00B8
-        || c == 0x02C2
-        || c == 0x02C3
-        || c == 0x02C4
-        || c == 0x02C5
-        || (0x02D2..=0x02DF).contains(&c)
-        || (0x02E5..=0x02ED).contains(&c)
-        || (0x02EF..=0x02FF).contains(&c)
-        || c == 0x0374
-        || c == 0x0375
-        || c == 0x0384
-        || c == 0x0385
-        || c == 0x1FBD
-        || (0x1FBF..=0x1FC1).contains(&c)
-        || (0x1FCD..=0x1FCF).contains(&c)
-        || (0x1FDD..=0x1FDF).contains(&c)
-        || (0x1FED..=0x1FEF).contains(&c)
-        || (0x1FFD..=0x1FFE).contains(&c)
-        || c == 0x309B
-        || c == 0x309C
-        || c == 0xA700
-        || c == 0xFF3E
-        || c == 0xFF40
-        || c == 0xFFE3
-}
-
-fn is_other_symbol(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x00A6
-        || c == 0x00A9
-        || c == 0x00AE
-        || c == 0x00B0
-        || (0x2100..=0x214F).contains(&c) // Letterlike Symbols
-        || (0x2190..=0x21FF).contains(&c) // Arrows
-        || (0x2300..=0x23FF).contains(&c) // Misc Technical
-        || (0x2400..=0x243F).contains(&c) // Control Pictures
-        || (0x2440..=0x245F).contains(&c) // OCR
-        || (0x2500..=0x257F).contains(&c) // Box Drawing
-        || (0x2580..=0x259F).contains(&c) // Block Elements
-        || (0x25A0..=0x25FF).contains(&c) // Geometric Shapes
-        || (0x2600..=0x26FF).contains(&c) // Misc Symbols
-        || (0x2700..=0x27BF).contains(&c) // Dingbats
-        || (0x2800..=0x28FF).contains(&c) // Braille
-        || (0x2B00..=0x2BFF).contains(&c) // Misc Symbols and Arrows
-        || (0x3200..=0x32FF).contains(&c) // Enclosed CJK
-        || (0x3300..=0x33FF).contains(&c) // CJK Compatibility
-        || (0xFE00..=0xFE0F).contains(&c) // Variation Selectors
-        || (0xFFE4..=0xFFE8).contains(&c)
-        || (0xFFED..=0xFFEE).contains(&c)
-}
-
-fn is_separator(ch: char) -> bool {
-    is_space_separator(ch) || ch == '\u{2028}' || ch == '\u{2029}'
-}
-
-fn is_space_separator(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x0020
-        || c == 0x00A0
-        || c == 0x1680
-        || c == 0x180E
-        || (0x2000..=0x200A).contains(&c)
-        || c == 0x202F
-        || c == 0x205F
-        || c == 0x3000
-}
-
-fn is_other(ch: char) -> bool {
-    ch.is_control() || is_format(ch) || is_private_use(ch)
-}
-
-fn is_format(ch: char) -> bool {
-    let c = ch as u32;
-    c == 0x00AD
-        || c == 0x0600
-        || c == 0x0601
-        || c == 0x0602
-        || c == 0x0603
-        || c == 0x06DD
-        || c == 0x070F
-        || c == 0x17B4
-        || c == 0x17B5
-        || (0x200B..=0x200F).contains(&c)
-        || (0x202A..=0x202E).contains(&c)
-        || (0x2060..=0x2064).contains(&c)
-        || (0x206A..=0x206F).contains(&c)
-        || c == 0xFEFF
-        || (0xFFF9..=0xFFFB).contains(&c)
-}
-
-fn is_private_use(ch: char) -> bool {
-    let c = ch as u32;
-    (0xE000..=0xF8FF).contains(&c)
-        || (0xF0000..=0xFFFFD).contains(&c)
-        || (0x100000..=0x10FFFD).contains(&c)
-}
-
-fn is_assigned(ch: char) -> bool {
-    // Approximate: consider a character assigned if it has any Unicode property
-    ch.is_alphanumeric()
-        || ch.is_alphabetic()
-        || is_punctuation(ch)
-        || is_symbol(ch)
-        || is_separator(ch)
-        || ch.is_control()
-        || is_format(ch)
-        || is_private_use(ch)
-        || is_mark(ch)
+    Some(PropertyClass::Category(category))
 }
 
 // ─── Unicode Block matching ─────────────────────────────────────────────────
 
-/// Match a Unicode block name (the part after `Is`). Returns `None` when the
-/// block name is not recognized so callers can fail closed.
+/// The `IsBlock` names of XSD 1.0 and their code points: Unicode block names
+/// with the white space removed.
 ///
-/// The recognized names are the **closed** set of `IsBlock` identifiers defined
-/// by XSD 1.0 Part 2 Appendix F (the Unicode 3.1 block list), plus a few later
-/// blocks. Because XSD defines this as a closed list, a name outside it is not a
-/// valid block escape and is correctly rejected at compile time (`None`) rather
-/// than silently matching nothing — which would let `\P{IsTypo}` match every
-/// character (a validation bypass). Adding a genuinely new block is therefore a
-/// deliberate table edit, not an open-ended fallback.
-fn match_unicode_block(block_name: &str, ch: char) -> Option<bool> {
-    let c = ch as u32;
-    let matched = match block_name {
-        "BasicLatin" => (0x0000..=0x007F).contains(&c),
-        "Latin-1Supplement" => (0x0080..=0x00FF).contains(&c),
-        "LatinExtended-A" => (0x0100..=0x017F).contains(&c),
-        "LatinExtended-B" => (0x0180..=0x024F).contains(&c),
-        "IPAExtensions" => (0x0250..=0x02AF).contains(&c),
-        "SpacingModifierLetters" => (0x02B0..=0x02FF).contains(&c),
-        "CombiningDiacriticalMarks" => (0x0300..=0x036F).contains(&c),
-        "Greek" | "GreekandCoptic" => (0x0370..=0x03FF).contains(&c),
-        "Cyrillic" => (0x0400..=0x04FF).contains(&c),
-        "CyrillicSupplement" => (0x0500..=0x052F).contains(&c),
-        "Armenian" => (0x0530..=0x058F).contains(&c),
-        "Hebrew" => (0x0590..=0x05FF).contains(&c),
-        "Arabic" => (0x0600..=0x06FF).contains(&c),
-        "Syriac" => (0x0700..=0x074F).contains(&c),
-        "Thaana" => (0x0780..=0x07BF).contains(&c),
-        "Devanagari" => (0x0900..=0x097F).contains(&c),
-        "Bengali" => (0x0980..=0x09FF).contains(&c),
-        "Gurmukhi" => (0x0A00..=0x0A7F).contains(&c),
-        "Gujarati" => (0x0A80..=0x0AFF).contains(&c),
-        "Oriya" => (0x0B00..=0x0B7F).contains(&c),
-        "Tamil" => (0x0B80..=0x0BFF).contains(&c),
-        "Telugu" => (0x0C00..=0x0C7F).contains(&c),
-        "Kannada" => (0x0C80..=0x0CFF).contains(&c),
-        "Malayalam" => (0x0D00..=0x0D7F).contains(&c),
-        "Sinhala" => (0x0D80..=0x0DFF).contains(&c),
-        "Thai" => (0x0E00..=0x0E7F).contains(&c),
-        "Lao" => (0x0E80..=0x0EFF).contains(&c),
-        "Tibetan" => (0x0F00..=0x0FFF).contains(&c),
-        "Myanmar" => (0x1000..=0x109F).contains(&c),
-        "Georgian" => (0x10A0..=0x10FF).contains(&c),
-        "HangulJamo" => (0x1100..=0x11FF).contains(&c),
-        "Ethiopic" => (0x1200..=0x137F).contains(&c),
-        "Cherokee" => (0x13A0..=0x13FF).contains(&c),
-        "UnifiedCanadianAboriginalSyllabics" => (0x1400..=0x167F).contains(&c),
-        "Ogham" => (0x1680..=0x169F).contains(&c),
-        "Runic" => (0x16A0..=0x16FF).contains(&c),
-        "Tagalog" => (0x1700..=0x171F).contains(&c),
-        "Hanunoo" => (0x1720..=0x173F).contains(&c),
-        "Buhid" => (0x1740..=0x175F).contains(&c),
-        "Tagbanwa" => (0x1760..=0x177F).contains(&c),
-        "Khmer" => (0x1780..=0x17FF).contains(&c),
-        "Mongolian" => (0x1800..=0x18AF).contains(&c),
-        "Limbu" => (0x1900..=0x194F).contains(&c),
-        "TaiLe" => (0x1950..=0x197F).contains(&c),
-        "KhmerSymbols" => (0x19E0..=0x19FF).contains(&c),
-        "PhoneticExtensions" => (0x1D00..=0x1D7F).contains(&c),
-        "LatinExtendedAdditional" => (0x1E00..=0x1EFF).contains(&c),
-        "GreekExtended" => (0x1F00..=0x1FFF).contains(&c),
-        "GeneralPunctuation" => (0x2000..=0x206F).contains(&c),
-        "SuperscriptsandSubscripts" => (0x2070..=0x209F).contains(&c),
-        "CurrencySymbols" => (0x20A0..=0x20CF).contains(&c),
-        "CombiningDiacriticalMarksforSymbols" | "CombiningMarksforSymbols" => {
-            (0x20D0..=0x20FF).contains(&c)
-        }
-        "LetterlikeSymbols" => (0x2100..=0x214F).contains(&c),
-        "NumberForms" => (0x2150..=0x218F).contains(&c),
-        "Arrows" => (0x2190..=0x21FF).contains(&c),
-        "MathematicalOperators" => (0x2200..=0x22FF).contains(&c),
-        "MiscellaneousTechnical" => (0x2300..=0x23FF).contains(&c),
-        "ControlPictures" => (0x2400..=0x243F).contains(&c),
-        "OpticalCharacterRecognition" => (0x2440..=0x245F).contains(&c),
-        "EnclosedAlphanumerics" => (0x2460..=0x24FF).contains(&c),
-        "BoxDrawing" => (0x2500..=0x257F).contains(&c),
-        "BlockElements" => (0x2580..=0x259F).contains(&c),
-        "GeometricShapes" => (0x25A0..=0x25FF).contains(&c),
-        "MiscellaneousSymbols" => (0x2600..=0x26FF).contains(&c),
-        "Dingbats" => (0x2700..=0x27BF).contains(&c),
-        "MiscellaneousMathematicalSymbols-A" => (0x27C0..=0x27EF).contains(&c),
-        "SupplementalArrows-A" => (0x27F0..=0x27FF).contains(&c),
-        "BraillePatterns" => (0x2800..=0x28FF).contains(&c),
-        "SupplementalArrows-B" => (0x2900..=0x297F).contains(&c),
-        "MiscellaneousMathematicalSymbols-B" => (0x2980..=0x29FF).contains(&c),
-        "SupplementalMathematicalOperators" => (0x2A00..=0x2AFF).contains(&c),
-        "CJKRadicalsSupplement" => (0x2E80..=0x2EFF).contains(&c),
-        "KangxiRadicals" => (0x2F00..=0x2FDF).contains(&c),
-        "IdeographicDescriptionCharacters" => (0x2FF0..=0x2FFF).contains(&c),
-        "CJKSymbolsandPunctuation" => (0x3000..=0x303F).contains(&c),
-        "Hiragana" => (0x3040..=0x309F).contains(&c),
-        "Katakana" => (0x30A0..=0x30FF).contains(&c),
-        "Bopomofo" => (0x3100..=0x312F).contains(&c),
-        "HangulCompatibilityJamo" => (0x3130..=0x318F).contains(&c),
-        "Kanbun" => (0x3190..=0x319F).contains(&c),
-        "BopomofoExtended" => (0x31A0..=0x31BF).contains(&c),
-        "KatakanaPhoneticExtensions" => (0x31F0..=0x31FF).contains(&c),
-        "EnclosedCJKLettersandMonths" => (0x3200..=0x32FF).contains(&c),
-        "CJKCompatibility" => (0x3300..=0x33FF).contains(&c),
-        "CJKUnifiedIdeographsExtensionA" => (0x3400..=0x4DBF).contains(&c),
-        "YijingHexagramSymbols" => (0x4DC0..=0x4DFF).contains(&c),
-        "CJKUnifiedIdeographs" => (0x4E00..=0x9FFF).contains(&c),
-        "YiSyllables" => (0xA000..=0xA48F).contains(&c),
-        "YiRadicals" => (0xA490..=0xA4CF).contains(&c),
-        "HangulSyllables" => (0xAC00..=0xD7AF).contains(&c),
-        "HighSurrogates" => (0xD800..=0xDB7F).contains(&c),
-        "HighPrivateUseSurrogates" => (0xDB80..=0xDBFF).contains(&c),
-        "LowSurrogates" => (0xDC00..=0xDFFF).contains(&c),
-        "PrivateUseArea" | "PrivateUse" => (0xE000..=0xF8FF).contains(&c),
-        "CJKCompatibilityIdeographs" => (0xF900..=0xFAFF).contains(&c),
-        "AlphabeticPresentationForms" => (0xFB00..=0xFB4F).contains(&c),
-        "ArabicPresentationForms-A" => (0xFB50..=0xFDFF).contains(&c),
-        "VariationSelectors" => (0xFE00..=0xFE0F).contains(&c),
-        "CombiningHalfMarks" => (0xFE20..=0xFE2F).contains(&c),
-        "CJKCompatibilityForms" => (0xFE30..=0xFE4F).contains(&c),
-        "SmallFormVariants" => (0xFE50..=0xFE6F).contains(&c),
-        "ArabicPresentationForms-B" => (0xFE70..=0xFEFF).contains(&c),
-        "HalfwidthandFullwidthForms" => (0xFF00..=0xFFEF).contains(&c),
-        "Specials" => (0xFFF0..=0xFFFD).contains(&c),
-        // Supplementary planes
-        "OldItalic" => (0x10300..=0x1032F).contains(&c),
-        "Gothic" => (0x10330..=0x1034F).contains(&c),
-        "Deseret" => (0x10400..=0x1044F).contains(&c),
-        "ByzantineMusicalSymbols" => (0x1D000..=0x1D0FF).contains(&c),
-        "MusicalSymbols" => (0x1D100..=0x1D1FF).contains(&c),
-        "MathematicalAlphanumericSymbols" => (0x1D400..=0x1D7FF).contains(&c),
-        "CJKUnifiedIdeographsExtensionB" => (0x20000..=0x2A6DF).contains(&c),
-        "CJKCompatibilityIdeographsSupplement" => (0x2F800..=0x2FA1F).contains(&c),
-        "Tags" => (0xE0000..=0xE007F).contains(&c),
-        _ => return None,
-    };
-    Some(matched)
-}
+/// The first part is the table of XSD 1.0 Part 2 (Second Edition), Appendix
+/// F.1, verbatim: the BMP blocks of Unicode 3.1, with `Specials` in two
+/// ranges. The rest are the other blocks of Unicode 3.1, the version of the
+/// Unicode Database that edition references and whose blocks a minimally
+/// conforming processor must support: the three surrogate blocks, which the
+/// table leaves out and no character can match, and the supplementary blocks.
+/// `PrivateUse` keeps the table's single BMP range, although Unicode 3.1 also
+/// gives that name to planes 15 and 16. Last come 20 names outside that list
+/// which earlier releases accepted, with the ranges they used; they are kept so
+/// that existing schemas still build. No other name is recognized, and no later
+/// range replaces the XSD 1.0 ones.
+static XSD_BLOCKS: [(&str, &[(u32, u32)]); 116] = [
+    ("BasicLatin", &[(0x0000, 0x007F)]),
+    ("Latin-1Supplement", &[(0x0080, 0x00FF)]),
+    ("LatinExtended-A", &[(0x0100, 0x017F)]),
+    ("LatinExtended-B", &[(0x0180, 0x024F)]),
+    ("IPAExtensions", &[(0x0250, 0x02AF)]),
+    ("SpacingModifierLetters", &[(0x02B0, 0x02FF)]),
+    ("CombiningDiacriticalMarks", &[(0x0300, 0x036F)]),
+    ("Greek", &[(0x0370, 0x03FF)]),
+    ("Cyrillic", &[(0x0400, 0x04FF)]),
+    ("Armenian", &[(0x0530, 0x058F)]),
+    ("Hebrew", &[(0x0590, 0x05FF)]),
+    ("Arabic", &[(0x0600, 0x06FF)]),
+    ("Syriac", &[(0x0700, 0x074F)]),
+    ("Thaana", &[(0x0780, 0x07BF)]),
+    ("Devanagari", &[(0x0900, 0x097F)]),
+    ("Bengali", &[(0x0980, 0x09FF)]),
+    ("Gurmukhi", &[(0x0A00, 0x0A7F)]),
+    ("Gujarati", &[(0x0A80, 0x0AFF)]),
+    ("Oriya", &[(0x0B00, 0x0B7F)]),
+    ("Tamil", &[(0x0B80, 0x0BFF)]),
+    ("Telugu", &[(0x0C00, 0x0C7F)]),
+    ("Kannada", &[(0x0C80, 0x0CFF)]),
+    ("Malayalam", &[(0x0D00, 0x0D7F)]),
+    ("Sinhala", &[(0x0D80, 0x0DFF)]),
+    ("Thai", &[(0x0E00, 0x0E7F)]),
+    ("Lao", &[(0x0E80, 0x0EFF)]),
+    ("Tibetan", &[(0x0F00, 0x0FFF)]),
+    ("Myanmar", &[(0x1000, 0x109F)]),
+    ("Georgian", &[(0x10A0, 0x10FF)]),
+    ("HangulJamo", &[(0x1100, 0x11FF)]),
+    ("Ethiopic", &[(0x1200, 0x137F)]),
+    ("Cherokee", &[(0x13A0, 0x13FF)]),
+    ("UnifiedCanadianAboriginalSyllabics", &[(0x1400, 0x167F)]),
+    ("Ogham", &[(0x1680, 0x169F)]),
+    ("Runic", &[(0x16A0, 0x16FF)]),
+    ("Khmer", &[(0x1780, 0x17FF)]),
+    ("Mongolian", &[(0x1800, 0x18AF)]),
+    ("LatinExtendedAdditional", &[(0x1E00, 0x1EFF)]),
+    ("GreekExtended", &[(0x1F00, 0x1FFF)]),
+    ("GeneralPunctuation", &[(0x2000, 0x206F)]),
+    ("SuperscriptsandSubscripts", &[(0x2070, 0x209F)]),
+    ("CurrencySymbols", &[(0x20A0, 0x20CF)]),
+    ("CombiningMarksforSymbols", &[(0x20D0, 0x20FF)]),
+    ("LetterlikeSymbols", &[(0x2100, 0x214F)]),
+    ("NumberForms", &[(0x2150, 0x218F)]),
+    ("Arrows", &[(0x2190, 0x21FF)]),
+    ("MathematicalOperators", &[(0x2200, 0x22FF)]),
+    ("MiscellaneousTechnical", &[(0x2300, 0x23FF)]),
+    ("ControlPictures", &[(0x2400, 0x243F)]),
+    ("OpticalCharacterRecognition", &[(0x2440, 0x245F)]),
+    ("EnclosedAlphanumerics", &[(0x2460, 0x24FF)]),
+    ("BoxDrawing", &[(0x2500, 0x257F)]),
+    ("BlockElements", &[(0x2580, 0x259F)]),
+    ("GeometricShapes", &[(0x25A0, 0x25FF)]),
+    ("MiscellaneousSymbols", &[(0x2600, 0x26FF)]),
+    ("Dingbats", &[(0x2700, 0x27BF)]),
+    ("BraillePatterns", &[(0x2800, 0x28FF)]),
+    ("CJKRadicalsSupplement", &[(0x2E80, 0x2EFF)]),
+    ("KangxiRadicals", &[(0x2F00, 0x2FDF)]),
+    ("IdeographicDescriptionCharacters", &[(0x2FF0, 0x2FFF)]),
+    ("CJKSymbolsandPunctuation", &[(0x3000, 0x303F)]),
+    ("Hiragana", &[(0x3040, 0x309F)]),
+    ("Katakana", &[(0x30A0, 0x30FF)]),
+    ("Bopomofo", &[(0x3100, 0x312F)]),
+    ("HangulCompatibilityJamo", &[(0x3130, 0x318F)]),
+    ("Kanbun", &[(0x3190, 0x319F)]),
+    ("BopomofoExtended", &[(0x31A0, 0x31BF)]),
+    ("EnclosedCJKLettersandMonths", &[(0x3200, 0x32FF)]),
+    ("CJKCompatibility", &[(0x3300, 0x33FF)]),
+    ("CJKUnifiedIdeographsExtensionA", &[(0x3400, 0x4DB5)]),
+    ("CJKUnifiedIdeographs", &[(0x4E00, 0x9FFF)]),
+    ("YiSyllables", &[(0xA000, 0xA48F)]),
+    ("YiRadicals", &[(0xA490, 0xA4CF)]),
+    ("HangulSyllables", &[(0xAC00, 0xD7A3)]),
+    ("PrivateUse", &[(0xE000, 0xF8FF)]),
+    ("CJKCompatibilityIdeographs", &[(0xF900, 0xFAFF)]),
+    ("AlphabeticPresentationForms", &[(0xFB00, 0xFB4F)]),
+    ("ArabicPresentationForms-A", &[(0xFB50, 0xFDFF)]),
+    ("CombiningHalfMarks", &[(0xFE20, 0xFE2F)]),
+    ("CJKCompatibilityForms", &[(0xFE30, 0xFE4F)]),
+    ("SmallFormVariants", &[(0xFE50, 0xFE6F)]),
+    ("ArabicPresentationForms-B", &[(0xFE70, 0xFEFE)]),
+    ("Specials", &[(0xFEFF, 0xFEFF), (0xFFF0, 0xFFFD)]),
+    ("HalfwidthandFullwidthForms", &[(0xFF00, 0xFFEF)]),
+    // The other Unicode 3.1 blocks.
+    ("HighSurrogates", &[(0xD800, 0xDB7F)]),
+    ("HighPrivateUseSurrogates", &[(0xDB80, 0xDBFF)]),
+    ("LowSurrogates", &[(0xDC00, 0xDFFF)]),
+    ("OldItalic", &[(0x10300, 0x1032F)]),
+    ("Gothic", &[(0x10330, 0x1034F)]),
+    ("Deseret", &[(0x10400, 0x1044F)]),
+    ("ByzantineMusicalSymbols", &[(0x1D000, 0x1D0FF)]),
+    ("MusicalSymbols", &[(0x1D100, 0x1D1FF)]),
+    ("MathematicalAlphanumericSymbols", &[(0x1D400, 0x1D7FF)]),
+    ("CJKUnifiedIdeographsExtensionB", &[(0x20000, 0x2A6D6)]),
+    (
+        "CJKCompatibilityIdeographsSupplement",
+        &[(0x2F800, 0x2FA1F)],
+    ),
+    ("Tags", &[(0xE0000, 0xE007F)]),
+    // Names outside XSD 1.0's list that earlier releases of this crate accepted,
+    // with the ranges they used, kept so that existing schemas still build.
+    ("GreekandCoptic", &[(0x0370, 0x03FF)]),
+    ("CyrillicSupplement", &[(0x0500, 0x052F)]),
+    ("Tagalog", &[(0x1700, 0x171F)]),
+    ("Hanunoo", &[(0x1720, 0x173F)]),
+    ("Buhid", &[(0x1740, 0x175F)]),
+    ("Tagbanwa", &[(0x1760, 0x177F)]),
+    ("Limbu", &[(0x1900, 0x194F)]),
+    ("TaiLe", &[(0x1950, 0x197F)]),
+    ("KhmerSymbols", &[(0x19E0, 0x19FF)]),
+    ("PhoneticExtensions", &[(0x1D00, 0x1D7F)]),
+    ("CombiningDiacriticalMarksforSymbols", &[(0x20D0, 0x20FF)]),
+    ("MiscellaneousMathematicalSymbols-A", &[(0x27C0, 0x27EF)]),
+    ("SupplementalArrows-A", &[(0x27F0, 0x27FF)]),
+    ("SupplementalArrows-B", &[(0x2900, 0x297F)]),
+    ("MiscellaneousMathematicalSymbols-B", &[(0x2980, 0x29FF)]),
+    ("SupplementalMathematicalOperators", &[(0x2A00, 0x2AFF)]),
+    ("KatakanaPhoneticExtensions", &[(0x31F0, 0x31FF)]),
+    ("YijingHexagramSymbols", &[(0x4DC0, 0x4DFF)]),
+    ("PrivateUseArea", &[(0xE000, 0xF8FF)]),
+    ("VariationSelectors", &[(0xFE00, 0xFE0F)]),
+];
 
 #[cfg(test)]
 mod tests {
@@ -2216,5 +1760,194 @@ mod tests {
             re.is_match(&input),
             "100K-char linear-pattern input must match"
         );
+    }
+
+    // ─── Generated tables ───────────────────────────────────────────────────
+
+    /// The tables are well formed: runs start at U+0080, ascend strictly and
+    /// change category at every entry; name ranges are sorted and disjoint.
+    #[test]
+    fn test_generated_tables_are_well_formed() {
+        assert_eq!(CATEGORY_RUNS[0].0, 0x80);
+        for pair in CATEGORY_RUNS.windows(2) {
+            assert!(pair[0].0 < pair[1].0 && pair[0].1 != pair[1].1, "{pair:?}");
+        }
+        assert!(CATEGORY_RUNS.last().unwrap().0 <= 0x10FFFF);
+        for (page, pair) in CATEGORY_PAGES.windows(2).enumerate() {
+            let (first, next) = (usize::from(pair[0]), usize::from(pair[1]));
+            assert!(first <= next, "page {page:#X}");
+            assert!(
+                CATEGORY_RUNS[first].0 <= ((page as u32) << 8).max(0x80),
+                "page {page:#X}"
+            );
+        }
+        assert_eq!(
+            usize::from(*CATEGORY_PAGES.last().unwrap()),
+            CATEGORY_RUNS.len() - 1
+        );
+        for table in [&XML_NAME_START_RANGES[..], &XML_NAME_RANGES[..]] {
+            for pair in table.windows(2) {
+                assert!(
+                    pair[0].0 <= pair[0].1 && pair[0].1 + 1 < pair[1].0,
+                    "{pair:?}"
+                );
+            }
+        }
+    }
+
+    /// The lookup returns the table's category for every code point, both
+    /// fresh and through a run cache carried from one code point to the next
+    /// (in order, and stepping backwards across every run boundary).
+    #[test]
+    fn test_general_category_agrees_with_the_table_everywhere() {
+        for (cp, &cat) in ASCII_CATEGORIES.iter().enumerate() {
+            assert_eq!(general_category(char::from(cp as u8)), cat);
+        }
+        let mut run = CategoryRun::EMPTY;
+        for (i, &(start, cat)) in CATEGORY_RUNS.iter().enumerate() {
+            let end = CATEGORY_RUNS.get(i + 1).map_or(0x10FFFF, |next| next.0 - 1);
+            for ch in (start..=end).filter_map(char::from_u32) {
+                assert_eq!(general_category(ch), cat, "U+{:04X}", ch as u32);
+                let cached = ClassChar::new(ch, &mut run).category();
+                assert_eq!(cached, cat, "cached U+{:04X}", ch as u32);
+            }
+            if let Some(before) = char::from_u32(start - 1) {
+                let previous = ClassChar::new(before, &mut run).category();
+                assert_eq!(previous, general_category(before), "U+{:04X}", start - 1);
+            }
+        }
+    }
+
+    /// Every run of decimal digits: its first and last code points match
+    /// `\d` and `\p{Nd}`, and the code points just outside it do not (runs
+    /// are maximal, so a neighbour is never `Nd`).
+    #[test]
+    fn test_every_nd_run_matches_d_at_both_ends() {
+        let compile = |p: &str| XsdRegex::compile(p).unwrap();
+        let (d, not_d, nd) = (compile(r"\d"), compile(r"\D"), compile(r"\p{Nd}"));
+        let mut runs = vec![(0x30, 0x39)];
+        for (i, &(start, cat)) in CATEGORY_RUNS.iter().enumerate() {
+            if cat == GeneralCategory::Nd {
+                runs.push((start, CATEGORY_RUNS[i + 1].0 - 1));
+            }
+        }
+        assert!(runs.len() > 60, "{} runs", runs.len());
+        for (first, last) in runs {
+            for cp in [first, last] {
+                let s = char::from_u32(cp).unwrap().to_string();
+                assert!(d.is_match(&s) && nd.is_match(&s), "U+{cp:04X}");
+                assert!(!not_d.is_match(&s), "U+{cp:04X}");
+            }
+            for cp in [first - 1, last + 1] {
+                let s = char::from_u32(cp).unwrap().to_string();
+                assert!(!d.is_match(&s) && !nd.is_match(&s), "U+{cp:04X}");
+                assert!(not_d.is_match(&s), "U+{cp:04X}");
+            }
+        }
+    }
+
+    /// `\w` at both ends of every run: a word character exactly when the
+    /// run's category is outside P, Z and C.
+    #[test]
+    fn test_w_at_both_ends_of_every_run() {
+        let w = XsdRegex::compile(r"\w").unwrap();
+        let not_w = XsdRegex::compile(r"\W").unwrap();
+        for (i, &(start, cat)) in CATEGORY_RUNS.iter().enumerate() {
+            let end = CATEGORY_RUNS.get(i + 1).map_or(0x10FFFF, |next| next.0 - 1);
+            let word = !matches!(category_group(cat), 'P' | 'Z' | 'C');
+            for ch in [start, end].into_iter().filter_map(char::from_u32) {
+                let s = ch.to_string();
+                assert_eq!(w.is_match(&s), word, "U+{:04X} {cat:?}", ch as u32);
+                assert_eq!(not_w.is_match(&s), !word, "U+{:04X} {cat:?}", ch as u32);
+            }
+        }
+    }
+
+    /// A class whose category members are folded into one set matches exactly
+    /// the code points the same members match one by one.
+    #[test]
+    fn test_folded_category_members_match_like_the_members() {
+        let bodies = [
+            r"\p{Lu}\p{Ll}\p{Nd}\i",
+            r"\w\p{IsCyrillic}\-\p{Sm}",
+            r"\W\d",
+            r"\P{L}\p{Nd}",
+            r"\p{N}\P{Lu}a-z",
+            r"\D\s\p{Lu}",
+            r"\p{Zs}\p{Cc}\p{Co}\p{Cn}\p{Pc}",
+        ];
+        for body in bodies {
+            let chars: Vec<char> = body.chars().collect();
+            let mut members = Vec::new();
+            parse_class_members(&chars, &mut 0, &mut members).unwrap();
+            for negated in [false, true] {
+                let plain = CharClass {
+                    negated,
+                    members: members.clone(),
+                    subtraction: None,
+                };
+                let folded = char_class(negated, members.clone(), None);
+                assert!(
+                    folded
+                        .members
+                        .iter()
+                        .any(|m| matches!(m, ClassMember::Categories(_))),
+                    "{body}"
+                );
+                let mut run = CategoryRun::EMPTY;
+                for ch in (0u32..=0x10FFFF).filter_map(char::from_u32) {
+                    let mut fresh = CategoryRun::EMPTY;
+                    assert_eq!(
+                        class_matches(&folded, &mut ClassChar::new(ch, &mut run)),
+                        class_matches(&plain, &mut ClassChar::new(ch, &mut fresh)),
+                        "{body} negated={negated} U+{:04X}",
+                        ch as u32
+                    );
+                }
+            }
+        }
+    }
+
+    /// The page-indexed name lookups give what a search of the whole table
+    /// gives, for every code point.
+    #[test]
+    fn test_paged_name_lookup_agrees_with_the_full_tables() {
+        for cp in 0u32..=0x10FFFF {
+            assert_eq!(
+                in_paged_ranges(&XML_NAME_START_RANGES, &XML_NAME_START_PAGES, cp),
+                in_ranges(&XML_NAME_START_RANGES, cp),
+                "U+{cp:04X}"
+            );
+            assert_eq!(
+                in_paged_ranges(&XML_NAME_RANGES, &XML_NAME_PAGES, cp),
+                in_ranges(&XML_NAME_RANGES, cp),
+                "U+{cp:04X}"
+            );
+        }
+    }
+
+    /// The ASCII fast paths give what the tables give.
+    #[test]
+    fn test_ascii_fast_paths_agree_with_the_tables() {
+        for cp in 0u32..0x80 {
+            let ch = char::from_u32(cp).unwrap();
+            assert_eq!(
+                is_xml_initial(ch),
+                in_ranges(&XML_NAME_START_RANGES, cp),
+                "{ch:?}"
+            );
+            assert_eq!(
+                is_xml_name_char(ch),
+                in_ranges(&XML_NAME_RANGES, cp),
+                "{ch:?}"
+            );
+            let nd = ASCII_CATEGORIES[cp as usize] == GeneralCategory::Nd;
+            let mut run = CategoryRun::EMPTY;
+            assert_eq!(
+                ClassChar::new(ch, &mut run).is_decimal_digit(),
+                nd,
+                "{ch:?}"
+            );
+        }
     }
 }

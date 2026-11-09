@@ -130,6 +130,8 @@ pub mod xpath;
 pub mod xsd;
 /// XSD regular expression engine for pattern facets.
 pub mod xsd_regex;
+/// Generated character tables of the XSD regular expression engine.
+mod xsd_regex_tables;
 /// XSLT 1.0 transformation engine.
 pub mod xslt;
 
