@@ -13,6 +13,7 @@
 //! since our validator validates instances against schemas.
 
 use std::fs;
+use std::panic::{self, AssertUnwindSafe};
 use std::path::{Path, PathBuf};
 
 use uppsala::xsd::XsdValidator;
@@ -23,6 +24,7 @@ struct XstsTestGroup {
     name: String,
     schema_path: Option<PathBuf>,
     schema_valid: bool,
+    schema_status: String,
     instance_tests: Vec<XstsInstanceTest>,
 }
 
@@ -32,6 +34,32 @@ struct XstsInstanceTest {
     name: String,
     path: PathBuf,
     expected_valid: bool,
+    status: String,
+}
+
+/// Outcome of a single schema or instance test.
+#[derive(Debug)]
+enum XstsOutcome {
+    Pass,
+    /// Expected invalid, but the validator accepted it.
+    FalseAccept(String),
+    /// Expected valid, but the validator rejected it.
+    FalseRefuse(String),
+    /// The parser or the validator panicked.
+    Panic(String),
+    Skip(String),
+}
+
+/// Result of one schema or instance test.
+#[derive(Debug)]
+struct XstsCaseResult {
+    kind: &'static str,
+    group: String,
+    name: String,
+    path: PathBuf,
+    status: String,
+    expected_valid: bool,
+    outcome: XstsOutcome,
 }
 
 /// Simple XML attribute extraction (same approach as w3c_xmlconf.rs).
@@ -52,6 +80,19 @@ fn extract_attr(tag: &str, attr_name: &str) -> Option<String> {
 /// Extract xlink:href attribute.
 fn extract_href(tag: &str) -> Option<String> {
     extract_attr(tag, "xlink:href")
+}
+
+/// Extract the `status` of a test's `<current>` element ("accepted", "queried", ...).
+fn extract_status(test_text: &str) -> String {
+    if let Some(c_start) = test_text.find("<current") {
+        if let Some(c_end) = test_text[c_start..].find('>') {
+            let c_tag = &test_text[c_start..c_start + c_end];
+            if let Some(status) = extract_attr(c_tag, "status") {
+                return status;
+            }
+        }
+    }
+    String::new()
 }
 
 /// Parse a testSet XML file to extract test groups.
@@ -80,9 +121,11 @@ fn parse_test_set(path: &Path) -> Vec<XstsTestGroup> {
                 // Extract schemaTest
                 let mut schema_path = None;
                 let mut schema_valid = false;
+                let mut schema_status = String::new();
                 if let Some(st_start) = group_text.find("<schemaTest") {
                     if let Some(st_end) = group_text[st_start..].find("</schemaTest>") {
                         let schema_test = &group_text[st_start..st_start + st_end];
+                        schema_status = extract_status(schema_test);
                         // Find schemaDocument href
                         if let Some(sd_start) = schema_test.find("<schemaDocument") {
                             if let Some(sd_end) = schema_test[sd_start..].find("/>") {
@@ -146,6 +189,7 @@ fn parse_test_set(path: &Path) -> Vec<XstsTestGroup> {
                                     name: it_name,
                                     path,
                                     expected_valid,
+                                    status: extract_status(inst_test),
                                 });
                             }
 
@@ -162,6 +206,7 @@ fn parse_test_set(path: &Path) -> Vec<XstsTestGroup> {
                     name: group_name,
                     schema_path,
                     schema_valid,
+                    schema_status,
                     instance_tests,
                 });
 
@@ -177,24 +222,40 @@ fn parse_test_set(path: &Path) -> Vec<XstsTestGroup> {
     groups
 }
 
-/// Run XSTS instance tests for a given test set file.
-/// Returns (passed, failed, skipped, failure_details).
+/// Run the XSTS cases of a test set file and return one result per case.
+///
+/// Instance tests are run against the group's schema when the schema is
+/// expected to be valid and compiles; otherwise they are skipped. When
+/// `check_schemas` is true, each group's schemaTest is also checked: the
+/// schema must compile exactly when it is expected to be valid.
 /// When `enforce_qname_length_facets` is false, QName/NOTATION length facets are skipped
 /// (needed for NIST tests which expect them to be ignored per W3C Bug #4009).
-fn run_xsts_instance_tests(
+fn run_xsts_cases(
     test_set_path: &Path,
     enforce_qname_length_facets: bool,
-) -> (usize, usize, usize, Vec<String>) {
+    check_schemas: bool,
+) -> Vec<XstsCaseResult> {
     let groups = parse_test_set(test_set_path);
-    let mut passed = 0;
-    let mut failed = 0;
-    let mut skipped = 0;
-    let mut failures = Vec::new();
+    let mut results = Vec::new();
 
     for group in &groups {
+        let skip_instances = |results: &mut Vec<XstsCaseResult>, reason: &str| {
+            for inst_test in &group.instance_tests {
+                results.push(XstsCaseResult {
+                    kind: "instance",
+                    group: group.name.clone(),
+                    name: inst_test.name.clone(),
+                    path: inst_test.path.clone(),
+                    status: inst_test.status.clone(),
+                    expected_valid: inst_test.expected_valid,
+                    outcome: XstsOutcome::Skip(reason.to_string()),
+                });
+            }
+        };
+
         // Skip if schema is not expected to be valid
-        if !group.schema_valid {
-            skipped += group.instance_tests.len();
+        if !group.schema_valid && !check_schemas {
+            skip_instances(&mut results, "schema expected invalid");
             continue;
         }
 
@@ -202,105 +263,375 @@ fn run_xsts_instance_tests(
         let schema_path = match &group.schema_path {
             Some(p) => p,
             None => {
-                skipped += group.instance_tests.len();
+                skip_instances(&mut results, "no schema document");
                 continue;
             }
+        };
+        let mut schema_case = XstsCaseResult {
+            kind: "schema",
+            group: group.name.clone(),
+            name: group.name.clone(),
+            path: schema_path.clone(),
+            status: group.schema_status.clone(),
+            expected_valid: group.schema_valid,
+            outcome: XstsOutcome::Pass,
         };
 
         let schema_str = match fs::read_to_string(schema_path) {
             Ok(s) => s,
-            Err(_) => {
-                skipped += group.instance_tests.len();
+            Err(e) => {
+                if check_schemas {
+                    schema_case.outcome = XstsOutcome::Skip(format!("unreadable: {}", e));
+                    results.push(schema_case);
+                }
+                skip_instances(&mut results, "schema unreadable");
                 continue;
             }
         };
 
-        let schema_doc = match uppsala::parse(&schema_str) {
-            Ok(d) => d,
-            Err(_) => {
-                // Can't parse the schema XML — skip these tests
-                skipped += group.instance_tests.len();
-                continue;
+        // Parse and compile the schema inside one panic boundary, so that a
+        // panic in either is reported for this group only. A schema that
+        // fails to parse is rejected.
+        let compiled = panic::catch_unwind(AssertUnwindSafe(|| {
+            let schema_doc =
+                uppsala::parse(&schema_str).map_err(|e| format!("schema parse error: {}", e))?;
+            if group.schema_valid {
+                eprintln!("  DEBUG: Compiling schema for group '{}'...", group.name);
             }
-        };
-
-        eprintln!("  DEBUG: Compiling schema for group '{}'...", group.name);
-        let mut validator =
-            match XsdValidator::from_schema_with_base_path(&schema_doc, Some(schema_path)) {
-                Ok(v) => v,
-                Err(e) => {
+            XsdValidator::from_schema_with_base_path(&schema_doc, Some(schema_path))
+                .map_err(|e| format!("schema error: {}", e))
+        }));
+        let validator = match compiled {
+            Ok(Ok(v)) => {
+                if !group.schema_valid {
+                    schema_case.outcome =
+                        XstsOutcome::FalseAccept("expected invalid schema, compiled".to_string());
+                }
+                Some(v)
+            }
+            Ok(Err(e)) => {
+                if group.schema_valid {
                     // Can't compile the schema — skip these tests
                     if !group.instance_tests.is_empty() {
                         eprintln!(
-                            "  SKIP group '{}' ({} tests): schema error: {}",
+                            "  SKIP group '{}' ({} tests): {}",
                             group.name,
                             group.instance_tests.len(),
                             e
                         );
                     }
-                    skipped += group.instance_tests.len();
-                    continue;
+                    schema_case.outcome = XstsOutcome::FalseRefuse(e);
                 }
-            };
+                None
+            }
+            Err(p) => {
+                let message = panic_message(&p);
+                eprintln!(
+                    "  PANIC parsing or compiling schema for group '{}' ({} tests skipped): {}",
+                    group.name,
+                    group.instance_tests.len(),
+                    message
+                );
+                schema_case.outcome = XstsOutcome::Panic(message);
+                None
+            }
+        };
+        // A panic is always reported, even when schema tests are not scored,
+        // so that callers can count it.
+        if check_schemas || matches!(schema_case.outcome, XstsOutcome::Panic(_)) {
+            results.push(schema_case);
+        }
+
+        if !group.schema_valid {
+            skip_instances(&mut results, "schema expected invalid");
+            continue;
+        }
+        let mut validator = match validator {
+            Some(v) => v,
+            None => {
+                skip_instances(&mut results, "schema did not compile");
+                continue;
+            }
+        };
         validator.set_enforce_qname_length_facets(enforce_qname_length_facets);
 
         for inst_test in &group.instance_tests {
             eprintln!("    DEBUG: Validating instance '{}'", inst_test.name);
+            let mut case = XstsCaseResult {
+                kind: "instance",
+                group: group.name.clone(),
+                name: inst_test.name.clone(),
+                path: inst_test.path.clone(),
+                status: inst_test.status.clone(),
+                expected_valid: inst_test.expected_valid,
+                outcome: XstsOutcome::Pass,
+            };
             let inst_str = match fs::read_to_string(&inst_test.path) {
                 Ok(s) => s,
-                Err(_) => {
-                    skipped += 1;
-                    continue;
-                }
-            };
-
-            let inst_doc = match uppsala::parse(&inst_str) {
-                Ok(d) => d,
                 Err(e) => {
-                    if inst_test.expected_valid {
-                        failures.push(format!(
-                            "{} ({}): expected valid, parse error: {}",
-                            inst_test.name,
-                            inst_test.path.display(),
-                            e
-                        ));
-                        failed += 1;
-                    } else {
-                        // Expected invalid and we can't even parse — count as pass
-                        passed += 1;
-                    }
+                    case.outcome = XstsOutcome::Skip(format!("unreadable: {}", e));
+                    results.push(case);
                     continue;
                 }
             };
 
-            let errors = validator.validate(&inst_doc);
-            let is_valid = errors.is_empty();
-
-            if is_valid == inst_test.expected_valid {
-                passed += 1;
-            } else {
-                let detail = if inst_test.expected_valid {
-                    format!(
-                        "{} ({}): expected valid, got {} error(s): {}",
-                        inst_test.name,
-                        inst_test.path.display(),
+            // Parse and validate the instance inside one panic boundary, so
+            // that a panic in either is reported for this case only.
+            let outcome = panic::catch_unwind(AssertUnwindSafe(|| {
+                let inst_doc = match uppsala::parse(&inst_str) {
+                    Ok(d) => d,
+                    Err(e) => {
+                        // Expected invalid and we can't even parse — count as pass
+                        return if inst_test.expected_valid {
+                            XstsOutcome::FalseRefuse(format!("expected valid, parse error: {}", e))
+                        } else {
+                            XstsOutcome::Pass
+                        };
+                    }
+                };
+                let errors = validator.validate(&inst_doc);
+                let is_valid = errors.is_empty();
+                if is_valid == inst_test.expected_valid {
+                    XstsOutcome::Pass
+                } else if inst_test.expected_valid {
+                    XstsOutcome::FalseRefuse(format!(
+                        "expected valid, got {} error(s): {}",
                         errors.len(),
                         errors.first().map(|e| e.to_string()).unwrap_or_default()
-                    )
+                    ))
                 } else {
-                    format!(
-                        "{} ({}): expected invalid, got valid",
-                        inst_test.name,
-                        inst_test.path.display(),
-                    )
-                };
-                failures.push(detail);
-                failed += 1;
+                    XstsOutcome::FalseAccept("expected invalid, got valid".to_string())
+                }
+            }));
+            case.outcome = match outcome {
+                Ok(outcome) => outcome,
+                Err(p) => XstsOutcome::Panic(panic_message(&p)),
+            };
+            results.push(case);
+        }
+    }
+
+    results
+}
+
+fn panic_message(payload: &Box<dyn std::any::Any + Send>) -> String {
+    let msg = payload
+        .downcast_ref::<&str>()
+        .map(|s| s.to_string())
+        .or_else(|| payload.downcast_ref::<String>().cloned())
+        .unwrap_or_default();
+    format!("panic: {}", msg)
+}
+
+/// Counts of a run of a test set's instance tests.
+#[derive(Debug, Default)]
+struct XstsCounts {
+    passed: usize,
+    failed: usize,
+    skipped: usize,
+    /// One line per failed instance test, panics included.
+    failures: Vec<String>,
+    /// One line per panic caught while parsing or compiling a schema, or
+    /// while parsing or validating an instance.
+    panics: Vec<String>,
+    /// One entry per group with skipped instance tests: the group, the
+    /// reason and the number of instance tests skipped.
+    skipped_groups: Vec<(String, String, usize)>,
+}
+
+/// Run XSTS instance tests for a given test set file and count them.
+/// A panic while parsing or validating an instance counts as a failed
+/// instance test; a panic while parsing or compiling a schema skips the
+/// group's instance tests. Both are also listed in `panics`.
+/// When `enforce_qname_length_facets` is false, QName/NOTATION length facets are skipped
+/// (needed for NIST tests which expect them to be ignored per W3C Bug #4009).
+fn run_xsts_instance_tests(test_set_path: &Path, enforce_qname_length_facets: bool) -> XstsCounts {
+    let mut counts = XstsCounts::default();
+
+    for case in run_xsts_cases(test_set_path, enforce_qname_length_facets, false) {
+        let line = |detail: &str| format!("{} ({}): {}", case.name, case.path.display(), detail);
+        if case.kind == "schema" {
+            // Only a panic while parsing or compiling the schema is reported
+            // here.
+            if let XstsOutcome::Panic(detail) = &case.outcome {
+                counts
+                    .panics
+                    .push(format!("schema of group {}", line(detail)));
+            }
+            continue;
+        }
+        match &case.outcome {
+            XstsOutcome::Pass => counts.passed += 1,
+            XstsOutcome::Skip(reason) => {
+                counts.skipped += 1;
+                match counts.skipped_groups.last_mut() {
+                    Some((group, last_reason, n))
+                        if *group == case.group && last_reason == reason =>
+                    {
+                        *n += 1
+                    }
+                    _ => counts
+                        .skipped_groups
+                        .push((case.group.clone(), reason.clone(), 1)),
+                }
+            }
+            XstsOutcome::FalseAccept(detail) | XstsOutcome::FalseRefuse(detail) => {
+                counts.failures.push(line(detail));
+                counts.failed += 1;
+            }
+            XstsOutcome::Panic(detail) => {
+                counts.failures.push(line(detail));
+                counts.panics.push(format!("instance {}", line(detail)));
+                counts.failed += 1;
             }
         }
     }
 
-    (passed, failed, skipped, failures)
+    counts
+}
+
+/// Print the skipped groups and the panics of a default run, then check it
+/// against the counts recorded for the test set: no panic, at least
+/// `min_passed` passed, at most `max_failed` failed and at most
+/// `max_skipped` skipped, and every skipped group listed in `known_skips`.
+/// An improvement passes; any regression, including a newly skipped group,
+/// fails.
+fn check_xsts_counts(
+    label: &str,
+    counts: &XstsCounts,
+    min_passed: usize,
+    max_failed: usize,
+    max_skipped: usize,
+    known_skips: &[&str],
+) {
+    for (group, reason, n) in &counts.skipped_groups {
+        println!(
+            "XSTS {} skipped group '{}': {} test(s), {}",
+            label, group, n, reason
+        );
+    }
+    for panic in &counts.panics {
+        println!("XSTS {} PANIC: {}", label, panic);
+    }
+    assert!(
+        counts.panics.is_empty(),
+        "XSTS {}: {} panic(s) caught:\n  {}",
+        label,
+        counts.panics.len(),
+        counts.panics.join("\n  ")
+    );
+    assert!(
+        counts.passed >= min_passed,
+        "XSTS {}: {} passed, fewer than the recorded {}",
+        label,
+        counts.passed,
+        min_passed
+    );
+    assert!(
+        counts.failed <= max_failed,
+        "XSTS {}: {} failed, more than the recorded {}",
+        label,
+        counts.failed,
+        max_failed
+    );
+    assert!(
+        counts.skipped <= max_skipped,
+        "XSTS {}: {} skipped, more than the recorded {}",
+        label,
+        counts.skipped,
+        max_skipped
+    );
+    let unexpected: Vec<&str> = counts
+        .skipped_groups
+        .iter()
+        .map(|(group, _, _)| group.as_str())
+        .filter(|group| !known_skips.contains(group))
+        .collect();
+    assert!(
+        unexpected.is_empty(),
+        "XSTS {}: groups skipped that were not before: {:?}",
+        label,
+        unexpected
+    );
+}
+
+/// Run every schema and instance test of a test set, print pass/fail/skip
+/// counts per kind, and write one line per case to
+/// `$CARGO_TARGET_TMPDIR/xsts/<file stem>.tsv`:
+/// outcome, kind, status, expected, group, name, path, detail.
+fn run_xsts_full_report(label: &str, test_set_path: &Path) {
+    if !test_set_path.exists() {
+        eprintln!("XSTS {} test set not found, skipping.", label);
+        return;
+    }
+
+    let cases = run_xsts_cases(test_set_path, true, true);
+    let out_dir = Path::new(env!("CARGO_TARGET_TMPDIR")).join("xsts");
+    fs::create_dir_all(&out_dir).expect("create xsts output directory");
+    let stem = test_set_path.file_stem().unwrap().to_string_lossy();
+    let out_path = out_dir.join(format!("{}.tsv", stem));
+
+    let mut lines = String::new();
+    for kind in ["schema", "instance"] {
+        let (mut pass, mut false_accept, mut false_refuse, mut panics, mut skip) = (0, 0, 0, 0, 0);
+        for case in cases.iter().filter(|c| c.kind == kind) {
+            let (outcome, detail) = match &case.outcome {
+                XstsOutcome::Pass => {
+                    pass += 1;
+                    ("pass", "")
+                }
+                XstsOutcome::FalseAccept(d) => {
+                    false_accept += 1;
+                    ("false-accept", d.as_str())
+                }
+                XstsOutcome::FalseRefuse(d) => {
+                    false_refuse += 1;
+                    ("false-refuse", d.as_str())
+                }
+                XstsOutcome::Panic(d) => {
+                    panics += 1;
+                    ("panic", d.as_str())
+                }
+                XstsOutcome::Skip(d) => {
+                    skip += 1;
+                    ("skip", d.as_str())
+                }
+            };
+            let detail: String = detail
+                .chars()
+                .map(|c| if c.is_control() { ' ' } else { c })
+                .take(300)
+                .collect();
+            lines.push_str(&format!(
+                "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n",
+                outcome,
+                case.kind,
+                case.status,
+                if case.expected_valid {
+                    "valid"
+                } else {
+                    "invalid"
+                },
+                case.group,
+                case.name,
+                case.path.display().to_string().replace('\\', "/"),
+                detail
+            ));
+        }
+        println!(
+            "XSTS {} {} tests: {} passed, {} failed ({} false accept, {} false refuse, {} panic), {} skipped",
+            label,
+            kind,
+            pass,
+            false_accept + false_refuse + panics,
+            false_accept,
+            false_refuse,
+            panics,
+            skip
+        );
+    }
+    fs::write(&out_path, lines).expect("write xsts case list");
+    println!("XSTS {} per-case results: {}", label, out_path.display());
 }
 
 /// Sweep every schema and instance document referenced by a testSet through
@@ -406,8 +737,14 @@ fn xsts_nist_datatypes() {
     }
 
     // NIST tests expect QName/NOTATION length facets to be ignored (W3C Bug #4009)
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, false);
-    let total = passed + failed;
+    let counts = run_xsts_instance_tests(test_set_path, false);
+    let XstsCounts {
+        passed,
+        failed,
+        skipped,
+        ref failures,
+        ..
+    } = counts;
 
     println!(
         "\nXSTS NIST Datatypes: {} passed, {} failed, {} skipped",
@@ -424,7 +761,7 @@ fn xsts_nist_datatypes() {
         // Show first list failures
         println!("\nFirst list failures:");
         let mut list_count = 0;
-        for f in &failures {
+        for f in failures {
             if f.contains("/list/") && list_count < 5 {
                 println!("  {}", f);
                 list_count += 1;
@@ -433,7 +770,7 @@ fn xsts_nist_datatypes() {
         // Breakdown by datatype
         let mut by_type: std::collections::HashMap<String, usize> =
             std::collections::HashMap::new();
-        for f in &failures {
+        for f in failures {
             // Extract datatype from path like "nistData/atomic/QName/..."
             if let Some(start) = f.find("nistData/") {
                 let rest = &f[start + 9..];
@@ -452,16 +789,8 @@ fn xsts_nist_datatypes() {
         }
     }
 
-    if total > 0 {
-        let pass_rate = (passed as f64 / total as f64) * 100.0;
-        println!("Pass rate: {:.1}% ({}/{})", pass_rate, passed, total);
-        // Start with a reasonable threshold and improve
-        assert!(
-            pass_rate >= 40.0,
-            "NIST datatype pass rate {:.1}% is below 40% threshold",
-            pass_rate
-        );
-    }
+    // Recorded counts: 19217 passed, 0 failed, 0 skipped.
+    check_xsts_counts("NIST Datatypes", &counts, 19217, 0, 0, &[]);
 }
 
 #[test]
@@ -472,8 +801,14 @@ fn xsts_sun_combined() {
         return;
     }
 
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, true);
-    let total = passed + failed;
+    let counts = run_xsts_instance_tests(test_set_path, true);
+    let XstsCounts {
+        passed,
+        failed,
+        skipped,
+        ref failures,
+        ..
+    } = counts;
 
     println!(
         "\nXSTS Sun Combined: {} passed, {} failed, {} skipped",
@@ -486,16 +821,8 @@ fn xsts_sun_combined() {
         }
     }
 
-    if total > 0 {
-        let pass_rate = (passed as f64 / total as f64) * 100.0;
-        println!("Pass rate: {:.1}% ({}/{})", pass_rate, passed, total);
-        // Sun tests use more advanced features; be more lenient
-        assert!(
-            pass_rate >= 20.0,
-            "Sun combined pass rate {:.1}% is below 20% threshold",
-            pass_rate
-        );
-    }
+    // Recorded counts: 199 passed, 0 failed, 0 skipped.
+    check_xsts_counts("Sun Combined", &counts, 199, 0, 0, &[]);
 }
 
 #[test]
@@ -506,8 +833,14 @@ fn xsts_ms_datatypes() {
         return;
     }
 
-    let (passed, failed, skipped, failures) = run_xsts_instance_tests(test_set_path, true);
-    let total = passed + failed;
+    let counts = run_xsts_instance_tests(test_set_path, true);
+    let XstsCounts {
+        passed,
+        failed,
+        skipped,
+        ref failures,
+        ..
+    } = counts;
 
     println!(
         "\nXSTS MS DataTypes: {} passed, {} failed, {} skipped",
@@ -523,13 +856,174 @@ fn xsts_ms_datatypes() {
         }
     }
 
-    if total > 0 {
-        let pass_rate = (passed as f64 / total as f64) * 100.0;
-        println!("Pass rate: {:.1}% ({}/{})", pass_rate, passed, total);
-        assert!(
-            pass_rate >= 20.0,
-            "MS DataTypes pass rate {:.1}% is below 20% threshold",
-            pass_rate
-        );
-    }
+    // Recorded counts: 1212 passed, 0 failed, 1 skipped. The skipped test is
+    // group anyURI_a004_1339, whose schema includes an absolute ftp:// URI,
+    // which the schema loader refuses by design; no other group may be skipped.
+    check_xsts_counts("MS DataTypes", &counts, 1212, 0, 1, &["anyURI_a004_1339"]);
+}
+
+// Full schema + instance runs over the remaining XSTS 2006 test sets. These
+// are conformance reports, not regression gates: run them explicitly with
+// `cargo test --test w3c_xsts -- --ignored --nocapture xsts_full_`.
+
+#[test]
+#[ignore]
+fn xsts_full_ms_datatypes() {
+    run_xsts_full_report(
+        "MS DataTypes",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/DataTypes_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_simple_type() {
+    run_xsts_full_report(
+        "MS SimpleType",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/SimpleType_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_attribute() {
+    run_xsts_full_report(
+        "MS Attribute",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Attribute_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_element() {
+    run_xsts_full_report(
+        "MS Element",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Element_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_complex_type() {
+    run_xsts_full_report(
+        "MS ComplexType",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/ComplexType_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_regex() {
+    run_xsts_full_report(
+        "MS Regex",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Regex_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_particles() {
+    run_xsts_full_report(
+        "MS Particles",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Particles_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_identity_constraint() {
+    run_xsts_full_report(
+        "MS IdentityConstraint",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/IdentityConstraint_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_model_groups() {
+    run_xsts_full_report(
+        "MS ModelGroups",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/ModelGroups_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_additional() {
+    run_xsts_full_report(
+        "MS Additional",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Additional_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_wildcards() {
+    run_xsts_full_report(
+        "MS Wildcards",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Wildcards_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_group() {
+    run_xsts_full_report(
+        "MS Group",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Group_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_schema() {
+    run_xsts_full_report(
+        "MS Schema",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Schema_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_attribute_group() {
+    run_xsts_full_report(
+        "MS AttributeGroup",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/AttributeGroup_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_notations() {
+    run_xsts_full_report(
+        "MS Notations",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Notations_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_annotations() {
+    run_xsts_full_report(
+        "MS Annotations",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Annotations_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_ms_errata10() {
+    run_xsts_full_report(
+        "MS Errata10",
+        Path::new("test-data/xsts/xmlschema2006-11-06/msMeta/Errata10_w3c.xml"),
+    );
+}
+
+#[test]
+#[ignore]
+fn xsts_full_boeing() {
+    run_xsts_full_report(
+        "Boeing",
+        Path::new("test-data/xsts/xmlschema2006-11-06/boeingMeta/BoeingXSDTestSet.testSet"),
+    );
 }
