@@ -1118,11 +1118,15 @@ pub(crate) fn validate_list_facet(
 }
 
 /// Compute the "length" of a value for Length/MinLength/MaxLength facets,
-/// taking into account type-specific semantics per XSD 1.1 spec:
+/// taking into account type-specific semantics (XSD 1.0 Part 2 4.3.1):
 /// - hexBinary: number of octets (string length / 2)
 /// - base64Binary: number of decoded octets
-/// - QName/NOTATION: number of URI-qualified characters (URI + local-name length)
-/// - All others: number of characters
+/// - QName: number of characters of the namespace URI plus the local name
+/// - All others (string and its derivations, anyURI, NOTATION): number of
+///   characters, that is Unicode code points, not UTF-8 bytes
+///
+/// A list's own length facets count items (see `validate_list_facet`); only
+/// the facets of its item type reach this function, once per item.
 pub(crate) fn type_aware_length(
     text: &str,
     base_type: &BuiltInType,
@@ -1156,21 +1160,23 @@ pub(crate) fn type_aware_length(
                 ("", trimmed)
             };
 
+            let local_len = local_name.chars().count();
             if prefix.is_empty() {
                 // Unprefixed QName: in no namespace, length = local name length.
-                local_name.len()
+                local_len
             } else {
                 // Prefixed QName: resolve the prefix to a namespace URI
                 let resolver = build_resolver_for_node(doc, node);
                 if let Some(ns_uri) = resolver.resolve(prefix) {
-                    ns_uri.len() + local_name.len()
+                    ns_uri.chars().count() + local_len
                 } else {
-                    // Prefix not bound — fall back to local name length
-                    local_name.len()
+                    // Prefix not bound: the value is already refused by
+                    // `validate_builtin_value`; fall back to the local name.
+                    local_len
                 }
             }
         }
-        _ => text.len(),
+        _ => text.chars().count(),
     }
 }
 
