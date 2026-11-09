@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-06
+
+### Fixed
+
+- Preserve namespace URIs on attributes copied by XSLT `xsl:copy` and
+  `xsl:copy-of`, including whole-element copies. Declare missing prefixes on
+  result elements and assign fresh prefixes when bindings conflict, so output
+  remains namespace-well-formed when source ancestors are omitted.
+  Preserve literal and computed attribute namespaces, respect shadowed bindings,
+  and handle prefixless DOM attributes while reusing generated namespace bindings.
+  ([pyuppsala#36](https://github.com/kushaldas/pyuppsala/issues/36)).
+
+- Honor explicit namespace AVTs and complete prefix bindings for computed XSLT
+  attributes. Charge attribute-name growth during namespace fixup against the
+  result-tree memory limit before allocating replacement names.
+
+- Keep the reserved XML prefix bound to its standard namespace during attribute
+  fixup. Reject computed attributes that normalize to `xmlns` or use the reserved
+  XMLNS namespace.
+
 ## [0.12.0] - 2026-10-09
 
 ### Added
